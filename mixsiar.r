@@ -1,5 +1,5 @@
 # Brian Stock
-# Oct 3, 2013
+# Oct 15, 2013
 # 
 # Previous version:
 #   MixSIAR GUI 0.2
