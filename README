@@ -1,0 +1,47 @@
+MixSIAR GUI is a graphical user interface (GUI) that allows you to analyze stable isotope data using the MixSIAR model framework. MixSIAR is a Bayesian mixing model that uses stable isotope data to estimate the proportions of source (prey) contributions to a mixture (consumer).
+
+MixSIAR represents a collaborative coding project between the investigators behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, Andrew Jackson, Jon Moore, Stuart Bearhop, and Richard Inger.
+
+The MixSIAR GUI incorporates several years of advances in Bayesian mixing model theory since MixSIR and SIAR, currently:
+
+- Any number of isotope values (tested with 1, 2, or 3)
+- Source fitting (both for raw source data and means+SD data)
+- Categorical covariates (up to 2, modeled as random effects, either nested or non-nested)
+- Continuous covariates (up to 1, theoretically any number)
+- Option to include Individual effects (as random effect)
+- Error structure options (residual, combined source, or both--default)
+- Concentration dependence
+
+TO DOWNLOAD AND INSTALL:
+On the right hand side of this page, click the "Download ZIP" button. See the user manual (MixSIAR GUI User Manual 1.0.pdf) for installation instructions and a walk-through of MixSIAR via four example datasets.
+
+ON CITING MixSIAR:
+If you use MixSIAR GUI results in publications, please cite the MixSIAR GUI manual as (similar to how you cite R):
+
+B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual, version 1.0. https://github.com/brianstock/MixSIAR.
+
+The primary citation for Bayesian mixing models is:
+
+Moore, J. W., & Semmens, B. X. (2008). Incorporating uncertainty and prior information into stable isotope mixing models. Ecology Letters, 11(5), 470-480.
+
+If you are using a hierarchical structure/random effects, consider citing:
+
+Semmens, B. X., Ward, E. J., Moore, J. W., & Darimont, C. T. (2009). Quantifying inter-and intra-population niche variability using hierarchical Bayesian stable isotope mixing models. PLoS One, 4(7), e6187.
+
+If you are using residual error terms, consider citing:
+
+Parnell, A. C., Inger, R., Bearhop, S., & Jackson, A. L. (2010). Source partitioning using stable isotopes: coping with too much variation. PLoS One, 5(3), e9672.
+
+If you are using continuous effects, consider citing:
+
+Francis, T. B., Schindler, D. E., Holtgrieve, G. W., Larson, E. R., Scheuerell, M. D., Semmens, B. X., & Ward, E. J. (2011). Habitat structure determines resource use by zooplankton in temperate lakes. Ecology letters, 14(4), 364-372.
+
+If you are using source fitting, consider citing:
+
+Ward, E. J., Semmens, B. X., & Schindler, D. E. (2010). Including source uncertainty and prior information in the analysis of stable isotope mixing models. Environmental science & technology, 44(12), 4645-4650.
+
+For a detailed description of the math underlying these models, see:
+
+Parnell, A. C., Phillips, D. L., Bearhop, S., Semmens, B. X., Ward, E. J., Moore, J. W., Jackson, A. L., & Inger, R. (2012). Bayesian Stable Isotope Mixing Models. arXiv preprint arXiv:1209.6457.
+
+Finally, a MS introducing MixSIAR is in the works and will be forthcoming shortly.
