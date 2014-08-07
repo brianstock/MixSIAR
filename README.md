@@ -15,24 +15,9 @@ The MixSIAR GUI incorporates several years of advances in Bayesian mixing model 
 - Error structure options: residual error (SIAR) or not (MixSIR)
 - Concentration dependence
 
-### UPDATES (Aug 2014):
-
-Important changes to the MixSIAR GUI 1.0 code (Oct 2013) include:
-
-1. Several bug/error fixes
-2. New scripted version, check out "mixsiar_script.r"
-3. Altered the GUI function call, now:
-```r
-source("mixsiar_gui.r")
-mixsiar_gui()
-```
-4. Added option for fixed effects
-5. Separated OUTPUT button from RUN MODEL button
-6. Simplified MCMC options
-
 ### TO DOWNLOAD AND INSTALL:
 
-On the right hand side of this page, click the **"Download ZIP"** button. See the user manual (MixSIAR GUI User Manual 1.0.pdf) for installation instructions and a walk-through of MixSIAR via four example datasets.
+Just above the blue bar, there is a row with "commits", "branches", "releases", and "contributors". Click on **"releases"** and you should see the latest version. Below the release notes, click on the "Source code (zip)" button to download the release. The current user manual will be in the .zip folder with installation instructions and a walk-through of MixSIAR via several example datasets.
 
 ### FEEDBACK PLEASE!
 
