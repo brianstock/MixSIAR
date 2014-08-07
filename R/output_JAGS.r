@@ -1,56 +1,49 @@
+# Brian Stock
+# February 6, 2014
+
 # Function: output_JAGS
-# Input: code differs based on n.re (0,1,2) and mcmc.chains (1 or more),
-#        but also takes in jags.1, random_effects, n.sources, and source_names 
-# Output: prints Gelman, Heidelberger, and Geweke diagnostics;
-#         summary statistics for p.global, p.fac1, p.fac2, and factor SDs;
-#         trace/XY plots for p.global's and factor SD's;
-#         pairs plot for p.global;
-#         posterior density plots for p.global's and factor SD's
+# Input: jags.1,         rjags model object, returned by run_model function
+#        mix,            output from 'load_mix_data'
+#        source,         output from 'load_source_data'
+#        output_options, list containing (with defaults):
+#         # summary_save = TRUE,                    # Save the summary statistics as a txt file?
+          # summary_name = "summary_statistics",    # If yes, specify the file name (.txt will be appended later)
+          # sup_post = FALSE,                       # Suppress posterior density plot output in R?
+          # plot_post_save_pdf = TRUE,              # Save posterior density plots as pdfs?
+          # plot_post_name = "posterior_density",   # If yes, specify the base file name(s) (.pdf/.png will be appended later)
+          # sup_pairs = FALSE,                      # Suppress pairs plot output in R?
+          # plot_pairs_save_pdf = TRUE,             # Save pairs plot as pdf?
+          # plot_pairs_name = "pairs_plot",         # If yes, specify the file name (.pdf/.png will be appended later)
+          # sup_xy = FALSE,                         # Suppress xy/trace plot output in R?
+          # plot_xy_save_pdf = TRUE,                # Save xy/trace plot as pdf?
+          # plot_xy_name = "xy_plot",               # If yes, specify the file name (.pdf/.png will be appended later)
+          # gelman = TRUE,                          # Calculate Gelman-Rubin diagnostic test?
+          # heidel = TRUE,                          # Calculate Heidelberg-Welch diagnostic test?
+          # geweke = TRUE,                          # Calculate Geweke diagnostic test?
+          # diag_save = TRUE,                       # Save the diagnostics as a txt file?
+          # diag_name = "diagnostics",              # If yes, specify the file name (.txt will be appended later)
+          # indiv_effect = indiv_effect,            # Is Individual a random effect in the model? (already specified)
+          # plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
+          # plot_pairs_save_png = FALSE,            # Save pairs plot as png?
+          # plot_xy_save_png = FALSE)               # Save xy/trace plot as png?
 
-# May 28
-# Changed 'num_factors' to 'n.re' (# random effects) to match the new 'n.ce' variable (# continuous effects)
+# Output: prints and saves diagnostics;
+#         prints and saves summary statistics;
+#         prints and saves trace/XY plots;
+#         prints and saves pairs plot;
+#         prints and saves posterior density plots for random effects;
+#         calls 'plot_continuous_var' to print and save posterior density plots for continuous effects
 
-# July 8
-# Adjusted factor2 posterior plots (removed f1 dimension, so same as factor1)
-# Removed factor1_levels, factor2_levels, and factor1_names from the function call (global vars, don't need to pass btwn functions)
-# Changed plot saving to .png instead of .pdf (so you can flip through them quickly using a photo viewer)
-
-# July 24
-# Added option to save plots as pdf and/or png (changed plot_post_save to plot_post_save_pdf and plot_post_save_png)
-# Changed 'Open plot in new window' to 'Suppress plot output', since most users will want to see the plots (changed 'plot_post_w' to 'sup_post')
-
-# Oct 4
-# Added DIC printout to Summary Statistics file
-# Changed 'p.fac1[1,1]' labels to be more informative (e.g. p.Region 1.Salmon)
-
-# Oct 13
-# Scaled posterior density plots so you can always see each distribution clearly
-
-#output_options is a LIST:
-#1) svalue(summary_save), 
-#2) svalue(summary_name), 
-#3) svalue(sup_post), 
-#4) svalue(plot_post_save_pdf),
-#5) svalue(plot_post_name), 
-#6) svalue(sup_pairs), 
-#7) svalue(plot_pairs_save_pdf), 
-#8) svalue(plot_pairs_name),
-#9) svalue(sup_xy), 
-#10) svalue(plot_xy_save_pdf), 
-#11) svalue(plot_xy_name), 
-#12) svalue(gelman), 
-#13) svalue(heidel), 
-#14) svalue(geweke),
-#15) svalue(diag_save), 
-#16) svalue(diag_name),
-#17) include_indiv (include_indiv = TRUE means we have 'ind.sig' and 'p.ind' in the model)
-#18) svalue(plot_post_save_png)
-#19) svalue(plot_pairs_save_png)
-#20) svalue(plot_xy_save_png)
-
-output_JAGS <- function(jags.1, mcmc.chains, n.re, random_effects, n.sources, source_names, output_options){
+output_JAGS <- function(jags.1, mix, source, output_options){
+mcmc.chains <- jags.1$BUGSoutput$n.chains
+N <- mix$N
+n.re <- mix$n.re
+n.effects <- mix$n.effects
+random_effects <- mix$random_effects
+n.sources <- source$n.sources
+source_names <- source$source_names
 attach.jags(jags.1)
-jags1.mcmc<<-as.mcmc(jags.1)
+jags1.mcmc <- as.mcmc(jags.1)
 
 ###########################################################################################
 # XY/Trace Plots
@@ -184,16 +177,16 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     dev.copy(png,mypath)
   }
   
-  if(n.re >= 1){
+  if(n.effects >= 1){
     # Posterior density plots for p.fac1's
-    for(f1 in 1:factor1_levels){ 
+    for(f1 in 1:mix$FAC[[1]]$levels){    # formerly factor1_levels
       dev.new()
       df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
       for(src in 1:n.sources){
         df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(p.fac1[,f1,src]) # fill in the p.fac1[f1] values
         df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
       }
-      my.title <- factor1_names[f1]
+      my.title <- mix$FAC[[1]]$labels[f1]  # formerly factor1_names
       print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
 #        geom_density(alpha=.3) +
         geom_density(alpha=.3, aes(y=..scaled..)) +
@@ -206,18 +199,18 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
         
       # Save the plot to file
       if(output_options[[4]]){ # svalue(plot_post_save_pdf)
-        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",factor1_names[f1],".pdf",sep=""))  # svalue(plot_post_name)
+        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[1]]$labels[f1],".pdf",sep=""))  # svalue(plot_post_name), factor1_names
         dev.copy2pdf(file=mypath)
       }
       if(output_options[[18]]){ # svalue(plot_post_save_png)
-        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",factor1_names[f1],".png",sep=""))  # svalue(plot_post_name)
+        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[1]]$labels[f1],".png",sep=""))  # svalue(plot_post_name), factor1_names
         dev.copy(png,mypath)
       }
     } # end p.fac1 posterior plots
     
-    if(n.re==2){
+    if(n.effects==2){
       # Posterior density plots for p.fac2's
-        for(f2 in 1:factor2_levels){
+        for(f2 in 1:mix$FAC[[2]]$levels){  # formerly factor2_levels
           dev.new()
           df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
           for(src in 1:n.sources){
@@ -225,7 +218,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
             df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
           }
           #my.title <- paste(factor1_names[f1],", ", random_effects[2]," ",f2,sep="") # plot title (ex. "Region 1, Pack 3")
-          my.title <- factor2_names[f2]
+          my.title <- mix$FAC[[2]]$labels[f2] # formerly factor2_names
           print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
 #             geom_density(alpha=.3) +
             geom_density(alpha=.3, aes(y=..scaled..)) +
@@ -238,11 +231,11 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
             
           # Save the plot as a pdf file  
           if(output_options[[4]]){ # svalue(plot_post_save_pdf)
-            mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",factor2_names[f2],".pdf",sep="")) #  svalue(plot_post_name)
+            mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".pdf",sep="")) #  svalue(plot_post_name), factor2_names
             dev.copy2pdf(file=mypath)
           }
           if(output_options[[18]]){  # svalue(plot_post_save_png)
-            mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",factor2_names[f2],".png",sep="")) #  svalue(plot_post_name)
+            mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".png",sep="")) #  svalue(plot_post_name), factor2_names
             dev.copy(png,mypath)
           }
         }# end p.fac2 posterior plots
@@ -291,60 +284,94 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
 
 # Calculate the summary statistics for the variables we're interested in (p.global's and factor SD's, maybe p.ind's)
 # We print them out later, at the very bottom
-s <- summary(jags1.mcmc)
-stats <- s$stat
-quantiles <- s$quantile
-
-# Re-index summary stats using 'ind' to only print out the statistics we're interested in, in a more sensical order
-fac2_ind <- grep("^p.fac2",rownames(stats))     # find the rows for p.fac2's
-fac1_ind <- grep("^p.fac1",rownames(stats))     # find the rows for p.fac1's
-global_ind <- grep("^p.global",rownames(stats)) # find the rows for p.global's
-ind_ind <- grep("^p.ind",rownames(stats))       # find the rows for p.ind's
-sig_ind <- grep("sig",rownames(stats))          # find the rows for SDs
-ind <- c(sig_ind,global_ind,fac1_ind,fac2_ind,ind_ind)
-stats <- stats[ind,]
-quantiles <- quantiles[ind,]
-
-# Create new labels for SD, fac1, fac2, and ind terms
-# Now instead of displaying 'p.fac1[2,3]', it will display 'p.Region 2.Salmon'
-sig_labels <- NULL; ind_labels <- NULL; fac1_labels <- NULL; fac2_labels <- NULL;
+sig_labels <- NULL; ind_labels <- NULL; fac1_labels <- NULL; fac2_labels <- NULL; sig_stats <- NULL;
 global_labels <- rep(NA,n.sources)
 for(src in 1:n.sources){
   global_labels[src] <- paste("p.global.",source_names[src],sep="")
 }
-if(n.re > 0){
-  sig_labels <- paste(random_effects[1],".SD",sep="")
-  fac1_labels <- rep(NA,factor1_levels*n.sources)
+getQuant <- function(x) quantile(x,probs=c(.025,.05,.25,.5,.75,.95,.975))
+getMeanSD <- function(x) cbind(round(apply(x,2,mean),3),round(apply(x,2,sd),3))
+global_quants <- t(round(apply(p.global,2,getQuant),3))
+global_means <- getMeanSD(p.global)
+stats <- cbind(global_means, global_quants)
+rownames(stats) <- global_labels
+
+if(n.effects > 0){
+  fac1_quants <- as.matrix(cast(melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac1_means <- cbind(melt(round(apply(p.fac1,c(2,3),mean),3))$value, melt(round(apply(p.fac1,c(2,3),sd),3))$value)
+  fac1_stats <- cbind(fac1_means,fac1_quants)
+  fac1_labels <- rep(NA,mix$FAC[[1]]$levels*n.sources)
   for(src in 1:n.sources){
-    for(f1 in 1:factor1_levels){
-      fac1_labels[factor1_levels*(src-1)+f1] <- paste("p.",factor1_names[f1],".",source_names[src],sep="")
+    for(f1 in 1:mix$FAC[[1]]$levels){
+      fac1_labels[mix$FAC[[1]]$levels*(src-1)+f1] <- paste("p.",mix$FAC[[1]]$labels[f1],".",source_names[src],sep="")
     }
   }
+  rownames(fac1_stats) <- fac1_labels
+  stats <- rbind(stats,fac1_stats)
+  if(n.re > 0){
+    sig_stats <- cbind(getMeanSD(fac1.sig),t(round(apply(fac1.sig,2,getQuant),3)))
+    sig_labels <- paste(random_effects[1],".SD",sep="")
+  }
 }
-if(n.re > 1){
-  sig_labels <- c(sig_labels, paste(random_effects[2],".SD",sep=""))
-  fac2_labels <- rep(NA,factor2_levels*n.sources)
+if(n.effects > 1){
+  fac2_quants <- as.matrix(cast(melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac2_means <- cbind(melt(round(apply(p.fac2,c(2,3),mean),3))$value, melt(round(apply(p.fac2,c(2,3),sd),3))$value)
+  fac2_stats <- cbind(fac2_means,fac2_quants)
+  fac2_labels <- rep(NA,mix$FAC[[2]]$levels*n.sources)
   for(src in 1:n.sources){
-    for(f2 in 1:factor2_levels){
-      fac2_labels[factor2_levels*(src-1)+f2] <- paste("p.",factor2_names[f2],".",source_names[src],sep="")
+    for(f2 in 1:mix$FAC[[2]]$levels){
+      fac2_labels[mix$FAC[[2]]$levels*(src-1)+f2] <- paste("p.",mix$FAC[[2]]$labels[f2],".",source_names[src],sep="")
     }
+  }
+  rownames(fac2_stats) <- fac2_labels
+  stats <- rbind(stats,fac2_stats)
+  if(n.re > 1){
+    sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
+    sig_labels <- c(sig_labels,paste(random_effects[2],".SD",sep=""))
   }
 }
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)
-  sig_labels <- c(sig_labels,"Individual.SD")
+  ind_quants <- as.matrix(cast(melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  ind_means <- cbind(melt(round(apply(p.ind,c(2,3),mean),3))$value, melt(round(apply(p.ind,c(2,3),sd),3))$value)
+  ind_stats <- cbind(ind_means,ind_quants)  
   ind_labels <- rep(NA,N*n.sources)
   for(src in 1:n.sources){
     for(j in 1:N){
       ind_labels[N*(src-1)+j] <- paste("p.Ind ",j,".",source_names[src],sep="")
     }
   }
-} 
-rownames(stats) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-rownames(quantiles) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+  sig_stats <- rbind(sig_stats,cbind(getMeanSD(ind.sig),t(round(apply(ind.sig,2,getQuant),3))))
+  sig_labels <- c(sig_labels,"Individual.SD")
+  rownames(ind_stats) <- ind_labels
+  stats <- rbind(stats, ind_stats)
+}
+
+# Add SD stats to the top of the summary
+rownames(sig_stats) <- sig_labels
+stats <- rbind(sig_stats,stats)
+colnames(stats) <- c("Mean","SD","2.5%","5%","25%","50%","75%","95%","97.5%")
+
+# Pack 1 stats only
+#stats[grep("Pack 1",rownames(stats)),]
+
+# Region stats only
+#stats[grep("Region",rownames(stats)),]
+
+# Region stats, by Region
+# byVec <- function(x){ind <- NULL; for(i in 1:length(x)){ ind <- c(ind,grep(x[i],rownames(stats)))}; return(ind)}
+# stats[byVec(mix$RE[[1]]$labels),]
+
+# All means
+# stats[,"Mean"]
+
+# Region means only
+# stats[byVec(mix$RE[[1]]$labels),"Mean"]
 
 ################################################################################
 # Calulate diagnostics
 ################################################################################
+# Get number of variables in the model
+n.var <- nvar(jags1.mcmc)
 # Gelman-Rubin diagnostic
 if(output_options[[12]]){  # if Gelman is checked
   if(mcmc.chains == 1){
@@ -353,15 +380,18 @@ if(output_options[[12]]){  # if Gelman is checked
   if(mcmc.chains > 1){    # Gelman diagnostic requires more than one chain
     # Gelman diagnostic, for when the multivariate Gelman fails (matrix not positive definite)
     # Remove the test results for dummy/empty variables
-    gelman <- matrix(NA, nrow=nvar(jags1.mcmc), ncol=2)
+    gelman <- matrix(NA, nrow=n.var, ncol=2)
     for (v in 1:nvar(jags1.mcmc)) {
       gelman[v,] <- gelman.diag(jags1.mcmc[,v])$psrf
     }
-    gelman <- gelman[ind,]
+    #gelman <- gelman[ind,]
     colnames(gelman) <- c("Point est.","Upper C.I.")
-    #rownames(gelman) <- varnames(jags1.mcmc)
-    rownames(gelman) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-    gelman <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)    
+    rownames(gelman) <- varnames(jags1.mcmc)
+    #rownames(gelman) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+    gelman.all <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)    
+    gelman_short <- gelman[order(gelman[,1],decreasing=T),]
+    if(n.var>10) gelman_short <- gelman_short[1:10,]
+    gelman_fail <- c(length(which(gelman[,1]>1.01)), length(which(gelman[,1]>1.05)), length(which(gelman[,1]>1.1)))   
   }
 }
 
@@ -375,13 +405,26 @@ if(output_options[[13]]){   # if Heidel is checked
   for(i in 1:mcmc.chains){
     heidel.tmp <- as.data.frame(heidel[[i]][w,c("stest","pvalue","htest")]) # stest, pvalue, and htest are the relevant statistics - get them
     heidel.all[,(3*i-2):(3*i)] <- heidel.tmp
-    colstring[(3*i-2):(3*i)] <- c(paste("stest.chain",i,sep=""), paste("p.val.chain",i,sep=""), paste("hwtest.chain",i,sep="")) # create the appropriate column names
+    colstring[(3*i-2):(3*i)] <- c(paste("stest.",i,sep=""), paste("pval.",i,sep=""), paste("hwtest.",i,sep="")) # create the appropriate column names
   }
-  heidel.all <- heidel.all[ind,]
-  rownames(heidel.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+  #heidel.all <- heidel.all[ind,]
+  #rownames(heidel.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+  rownames(heidel.all) <- varnames(jags1.mcmc)
   colnames(heidel.all) <- colstring
-  heidel.all <- replace(heidel.all,heidel.all==0,"failed")  # A normal call to 'heidel.diag' prints "failed" and "passed", for some reason they turn to 0's and 1's
-  heidel.all <- replace(heidel.all,heidel.all==1,"passed")  # when you access the statistics directly.  Here we turn the 0's and 1's back into "failed" and "passed"
+  heidel.all <- round(heidel.all,3)
+  heidel.all <- replace(heidel.all,heidel.all==0,"fail")  # A normal call to 'heidel.diag' prints "fail" and "pass", for some reason they turn to 0's and 1's
+  heidel.all <- replace(heidel.all,heidel.all==1,"pass")  # when you access the statistics directly.  Here we turn the 0's and 1's back into "fail" and "pass"
+  # When the stationarity test fails, hwtest returns <NA>...change these NAs to 'fail'
+  heidel.all <- replace(heidel.all,is.na(heidel.all),"fail")
+  # Count the number of failures (2 tests per chain - 'stationarity' and 'half-width')
+  stest_fail <- rep(NA,mcmc.chains); hwtest_fail <- rep(NA,mcmc.chains)
+  for(i in 1:mcmc.chains){
+    stest_fail[i] <- sum(heidel.all[,3*i-2]=="fail")
+    hwtest_fail[i] <- sum(heidel.all[,3*i]=="fail")
+  }
+  heidel_fail <- rbind(stest_fail,hwtest_fail)
+  rownames(heidel_fail) <- c("Stationarity","Half-width")
+  colnames(heidel_fail) <- paste("Chain",1:mcmc.chains)
 }
 
 # Geweke diagnostic
@@ -396,9 +439,17 @@ if(output_options[[14]]){ # if Geweke is checked
     geweke.all[,i] <- geweke.tmp
     colstring[i] <- c(paste("chain",i,sep=""))  # create the column names "chain1", "chain2", etc.
   }
-  geweke.all <- geweke.all[ind,]
-  rownames(geweke.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+  #geweke.all <- geweke.all[ind,]
+  #rownames(geweke.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
+  rownames(geweke.all) <- varnames(jags1.mcmc)
   colnames(geweke.all) <- colstring
+  geweke.all <- round(geweke.all,3)
+  geweke_fail <- matrix(NA,nrow=1,ncol=mcmc.chains)
+  for(i in 1:mcmc.chains){
+    geweke_fail[1,i] <- sum(abs(geweke.all[,i])>1.96)
+  }
+  colnames(geweke_fail) <- paste("Chain",1:mcmc.chains)
+  rownames(geweke_fail) <- "Geweke"
 }
 
 ################################################################################
@@ -411,17 +462,38 @@ cat("
 # Gelman-Rubin Diagnostic
 ################################################################################
 
-")
-print(gelman)
+Generally the Gelman diagnostic should be < 1.05
+
+",paste("Out of ",n.var," variables: ",gelman_fail[1]," > 1.01",sep=""),"
+                      ",paste(gelman_fail[2]," > 1.05",sep=""),"
+                      ",paste(gelman_fail[3]," > 1.1",sep=""),"
+
+The worst variables are:
+",sep="")
+print(gelman_short)
+
+#print(gelman)
 
 if(output_options[[15]]){  # svalue(diag_save)
   mypath <- file.path(paste(getwd(),"/",output_options[[16]],".txt",sep=""))  # svalue(diag_name)
   out <- capture.output(gelman)
+  out2 <- capture.output(gelman_short)
   cat("
 ################################################################################
 # Gelman-Rubin Diagnostic
 ################################################################################
-      ",out,sep="\n", file=mypath, append=FALSE)
+
+Generally the Gelman diagnostic should be < 1.05
+
+",paste("Out of ",n.var," variables: ",gelman_fail[1]," > 1.01",sep=""),"
+                      ",paste(gelman_fail[2]," > 1.05",sep=""),"
+                      ",paste(gelman_fail[3]," > 1.1",sep=""),"
+
+The worst variables are:
+",out2,"
+
+And here are the Gelman diagnostics for all variables:
+",out,sep="\n", file=mypath, append=FALSE)
 } # end save Gelman
 } # end Gelman printout
 
@@ -431,17 +503,29 @@ cat("
 # Heidelberger and Welch Diagnostic
 ################################################################################
 
-")
-print(heidel.all)
+A few failures is normal and acceptable...
+Number of failures in each chain (out of ",n.var," variables):
+
+",sep="")
+print(heidel_fail)
+#print(heidel.all)
 
 if(output_options[[15]]){  # svalue(diag_save)
   mypath <- file.path(paste(getwd(),"/",output_options[[16]],".txt",sep=""))  # svalue(diag_name)
   out <- capture.output(heidel.all)
+  out2 <- capture.output(heidel_fail)
   cat("
 ################################################################################
 # Heidelberger and Welch Diagnostic
 ################################################################################
-      ",out,sep="\n", file=mypath, append=output_options[[12]]) # svalue(gelman)
+
+A few failures is normal and acceptable...
+Number of failures in each chain (out of ",n.var," variables):
+
+",out2,"
+
+And here are the Heidelberger-Welch diagnostics for all variables:
+",out,sep="\n", file=mypath, append=output_options[[12]]) # svalue(gelman)
 } # end save Heidel
 } # end Heidel printout
 
@@ -451,21 +535,33 @@ cat("
 # Geweke Diagnostic
 ################################################################################
 
-")
-print(geweke.all)
+The Geweke diagnostic is a standard z-score, so we'd expect 5% to be outside +/-1.96
+Number of variables outside +/-1.96 in each chain (out of ",n.var,"):
+
+",sep="")
+print(geweke_fail)
+#print(geweke.all)
 
 if(output_options[[15]]){  # svalue(diag_save)
   mypath <- file.path(paste(getwd(),"/",output_options[[16]],".txt",sep=""))  # svalue(diag_name)
   out <- capture.output(geweke.all)
+  out2 <- capture.output(geweke_fail)
   cat("
-#################################################################
+################################################################################
 # Geweke Diagnostic
-#################################################################
-  ",out,sep="\n", file=mypath, append=output_options[[12]]||output_options[[13]]) # svalue(gelman) || svalue(heidel)
+################################################################################
+
+The Geweke diagnostic is a standard z-score, so we'd expect 5% to be outside +/-1.96
+Number of variables outside +/-1.96 in each chain (out of ",n.var,"):
+
+",out2,"
+
+And here are the Geweke diagnostics for all variables:
+",out,sep="\n", file=mypath, append=output_options[[12]]||output_options[[13]]) # svalue(gelman) || svalue(heidel)
 } # end Geweke save
 } # end Geweke printout
 
-DIC <<- jags.1$BUGSoutput$DIC
+DIC <- jags.1$BUGSoutput$DIC
 cat("
 ################################################################################
 # Summary Statistics
@@ -473,9 +569,8 @@ cat("
 
 DIC = ",DIC,sep="")
 out1 <- capture.output(stats)
-out2 <- capture.output(quantiles)
 cat("
-",out1,out2,sep="\n")
+",out1,sep="\n")
 
 if(output_options[[1]]){  # svalue(summary_save)
   mypath <- file.path(paste(getwd(),"/",output_options[[2]],".txt",sep=""))  # svalue(summary_name)
@@ -486,7 +581,12 @@ if(output_options[[1]]){  # svalue(summary_save)
   
 DIC = ",DIC,sep="", file=mypath, append=FALSE)
 cat("
-",out1,out2,sep="\n", file=mypath, append=TRUE)
+",out1,sep="\n", file=mypath, append=TRUE)
+}
+
+# Plot any continuous effects
+if(mix$n.ce > 0){
+  plot_continuous_var(jags.1,mix,source,output_options)
 }
 
 } # end function output_JAGS
