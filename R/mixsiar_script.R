@@ -167,7 +167,7 @@ write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,sourc
 
 # Wolves, Palmyra, Geese examples
 jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename)
-# test
+
 # Lake example
 # jags.1 <- run_model(run="normal", indiv_effect,mix,source,discr,model_filename)
 
