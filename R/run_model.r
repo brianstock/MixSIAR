@@ -14,7 +14,7 @@
 #        model_filename   name of the JAGS model file (created by 'write_JAGS_model.r')
 # Output: jags.1, a rjags model object
 
-run_model <- function(run,indiv_effect,mix,source,discr,model_filename){
+run_model <- function(run,indiv_effect,mix,source,discr,model_filename, alpha.prior = 1){
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
   if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
@@ -94,8 +94,12 @@ run_model <- function(run,indiv_effect,mix,source,discr,model_filename){
       jags.params <- c(jags.params,"ilr.global",paste("ilr.cont",ce,sep=""))   # add "ilr.cont(ce)" to jags.params (e.g. ilr.cont1)
     }
   }
-
-  alpha <- rep(1,source$n.sources)
+  
+  if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
+  if(length(alpha.prior)==1) alpha = rep(alpha.prior,source$n.sources) # All sources have same value
+  if(length(alpha.prior) > 1 & length(alpha.prior) != source$n.sources) alpha = rep(1,source$n.sources) # Error checking for user inputted string/ NA
+  if(length(alpha.prior) > 1 & length(alpha.prior) == source$n.sources) alpha = alpha.prior # All sources have different value inputted by user
+  
   X_iso <- mix$data_iso
   n.iso <- mix$n.iso
   frac_mu <- discr$mu
