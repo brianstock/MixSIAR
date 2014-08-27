@@ -57,6 +57,9 @@ mix <- load_mix_data(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"),
 # 1-iso example
 # mix <- load_mix_data(filename="13_mix.csv", iso_names="d13C", random_effects=NULL, cont_effects=NULL, fixed_effects=NULL)
 
+# killer whale - salmon example
+# mix <- load_mix_data(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, cont_effects=NULL, fixed_effects=NULL)
+
 #####################################################################################
 # Load source data, i.e. your:
 #	Source isotope values (trophic ecology / diet)
@@ -85,6 +88,10 @@ source <- load_source_data(filename="wolves_sources.csv", source_random_effects=
 # 1-iso example
 # source <- load_source_data(filename="13_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
+# killer whale - salmon example
+# source <- load_source_data(filename="killerwhale_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="means", mix)    
+
+
 #####################################################################################
 # Load discrimination data, i.e. your:
 #	Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology / diet)
@@ -109,6 +116,10 @@ discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # 1-iso example
 # discr <- load_discr_data(filename="13_discrimination.csv", mix) 
+
+# killer whale - salmon example
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+
 
 #####################################################################################
 # Make isospace plot
@@ -149,6 +160,12 @@ write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,sourc
 # nested <- FALSE                         # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
 # write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,source)
 
+# Killer whale - salmon example
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# indiv_effect <- FALSE                   # Include Individual as a random effect in the model?
+# nested <- FALSE                         # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
+# write_JAGS_model(model_filename, indiv_effect, nested, resid_err=FALSE, mix,source)
+
 #####################################################################################
 # Run model
 # JAGS output will be saved as 'jags.1'
@@ -173,6 +190,12 @@ jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename)
 
 # You can use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
 # jags.1 <- run_model(run="test", indiv_effect,mix,source,discr,model_filename)
+
+# Killer whale - salmon example with and without informative prior
+# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename) # alpha = 1 by default
+# Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources. Note: the Dirichlet hyperparameters for the 
+# alpha.prior cannot be 0!
+# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename, alpha.prior = c(10, 1, 0.001, 0.001, 3))
 
 #####################################################################################
 # Process JAGS output
