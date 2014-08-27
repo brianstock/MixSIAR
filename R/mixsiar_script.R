@@ -195,7 +195,7 @@ jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename)
 # jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename) # alpha = 1 by default
 # Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources. Note: the Dirichlet hyperparameters for the 
 # alpha.prior cannot be 0!
-# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename, alpha.prior = c(10, 1, 0.001, 0.001, 3))
+# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename, alpha.prior = c(10, 1, 0.001, 0.001, 3)) # informative prior
 
 #####################################################################################
 # Process JAGS output
