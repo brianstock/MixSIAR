@@ -134,7 +134,7 @@ tbl_cont <- gtable(character(0), container=grp_cont, multiple=T, expand=T)
 
 grp_bottom <- ggroup(container=mix_grp_all, horizontal=F)
 indiv_box <- gcheckbox("Include 'Individual' as a Random Effect", cont=grp_bottom)
-svalue(indiv_box) <- TRUE    # Default is to include 'Individual', but can change that here
+svalue(indiv_box) <- FALSE    # Default is to include 'Individual', but can change that here
 mix_status_bar <- gstatusbar("", progress.bar="gui", container=grp_bottom, expand=T)
 
 grp_close <- ggroup(horizontal=T, container=mix_grp_all)
