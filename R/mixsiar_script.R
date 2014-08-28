@@ -66,30 +66,30 @@ mix <- load_mix_data(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"),
 #	Sediment/water source tracer values (sediment/hydrology fingerprinting)
 
 # 'filename' - name of the CSV file with source data
-# 'source_random_effects' - column headings of random effects you have source data by
+# 'source_factors' - column headings of random/fixed effects you have source data by
 # 'conc_dep' - TRUE or FALSE, do you have concentration dependence data in the file?
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-source <- load_source_data(filename="wolves_sources.csv", source_random_effects="Region", conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
-# source <- load_source_data(filename="lake_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # Geese example
-# source <- load_source_data(filename="geese_sources.csv", source_random_effects=NULL, conc_dep=TRUE, data_type="means", mix)    
+# source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
 
 # Palmyra example
-# source <- load_source_data(filename="palmyra_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # Storm-petrel example
-# source <- load_source_data(filename="7_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="raw", mix)  
+# source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
 
 # 1-iso example
-# source <- load_source_data(filename="13_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # killer whale - salmon example
-# source <- load_source_data(filename="killerwhale_sources.csv", source_random_effects=NULL, conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 
 #####################################################################################

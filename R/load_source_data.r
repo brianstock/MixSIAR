@@ -2,9 +2,9 @@
 # January 29, 2014
 
 # Function: load_source_data
-# Usage: source <- load_source_data(filename,source_random_effects,conc_dep,data_type,mix)
+# Usage: source <- load_source_data(filename,source_factors,conc_dep,data_type,mix)
 # Input: filename        (csv file with the mixture/consumer data),
-#        source_random_effects  (NULL or vector of source random effect column headings in 'filename'),
+#        source_factors  (NULL or vector of source factor column headings in 'filename'),
 #        conc_dep               (TRUE or FALSE - is there concentration dependence data in 'filename'),
 #        data_type              ("raw" or "means" - raw source data are repeated source isotope measurements, means data are source isotope values as means, SDs, and sample size. See manual for formatting),
 #        mix                    (output from 'load_mix_data')
@@ -25,25 +25,23 @@
 #       source$data_type        "raw" or "means" - which type of source data do we have? See manual for details, formatting
 #       source$conc_dep         T/F, do we have concentration dependence data? See manual for details, formatting
 
-#test
-
-load_source_data <- function(filename,source_random_effects,conc_dep,data_type,mix){
+load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
   SOURCE <- read.csv(filename)
-  source.re <- length(source_random_effects)
-  if(source.re > 1){
-    stop(paste("*** Error: More than one source random effect.
-    MixSIAR can only fit source data by up to ONE random effect. 
+  source.fac <- length(source_factors)
+  if(source.fac > 1){
+    stop(paste("*** Error: More than one source factor.
+    MixSIAR can only fit source data by up to ONE factor. 
     Please specify 0 or 1 source factor and try again.",sep=""))
   }
-  test_re <- match(source_random_effects,c(mix$random_effects,mix$fixed_effects))
-  if(source.re==1 && (length(test_re)==0 || is.na(test_re))){
-    stop(paste("*** Error: source random effect not in mix$random_effects. 
-    You cannot model a source random effect that is not included as a 
-    random/fixed effect for the mixture/consumer. Either 1) remove the source 
-    random effect (reload source data), or 2) include the random/fixed effect 
+  test_re <- match(source_factors,c(mix$random_effects,mix$fixed_effects))
+  if(source.fac==1 && (length(test_re)==0 || is.na(test_re))){
+    stop(paste("*** Error: source factor not in mix$random_effects or 
+    mix$fixed_effects. You cannot model a source random effect that is not included
+    as a random/fixed effect for the mixture/consumer. Either 1) remove the source 
+    factor (reload source data), or 2) include the random/fixed effect 
     in the mixture (reload mix data).",sep=""))
   }
-  if(source.re==0) by_factor <- FALSE else by_factor <- TRUE
+  if(source.fac==0) by_factor <- FALSE else by_factor <- TRUE
 
   # turn source names into numbers
   source_names <- levels(SOURCE[,1])   # first save the source names in source_names
@@ -51,7 +49,7 @@ load_source_data <- function(filename,source_random_effects,conc_dep,data_type,m
   levels(SOURCE[,1]) <- 1:n.sources    # convert the source names in SOURCE into numbers
   SOURCE[,1] <- as.numeric(SOURCE[,1])
   # sorts SOURCE by source name, then by the source factors (if present)
-  source_factor_cols <- match(source_random_effects,colnames(SOURCE)) # the column number(s) of the user-selected random effects
+  source_factor_cols <- match(source_factors,colnames(SOURCE)) # the column number(s) of the user-selected random effects
   S_factor_levels <- rep(0,length(source_factor_cols))                # the number of levels of each source random effect
   if(by_factor){
     SOURCE <- SOURCE[order(SOURCE[,1],SOURCE[,source_factor_cols]),]
@@ -86,8 +84,8 @@ load_source_data <- function(filename,source_random_effects,conc_dep,data_type,m
       if(mix$n.iso > 1) sig <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,source_factor_cols[1]],SOURCE[,1])),col_sd))   # calculate the sds for each iso/source/fac1 combination
       if(mix$n.iso==1) sig <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,source_factor_cols[1]],SOURCE[,1])),sd))
       S_SIG <- cbind(sig,rep(1:S_factor_levels,n.sources))  # S_SIG has source sds by (columns): isotopes and fac1.  Sorted by source name and then factor 1
-      colnames(S_MU) <- c(mix$iso_names, source_random_effects)
-      S_MU_factor_col <- match(source_random_effects,colnames(S_MU))
+      colnames(S_MU) <- c(mix$iso_names, source_factors)
+      S_MU_factor_col <- match(source_factors,colnames(S_MU))
       S_factor1 <- S_MU[,S_MU_factor_col]
     }
     if(!by_factor){ # if we have raw source data NOT by factor

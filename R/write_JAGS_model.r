@@ -208,7 +208,7 @@ cat("
   for(src in 1:(n.sources-1)){
     ilr.fac1[1,src] <- 0;
     for(f1 in 2:factor1_levels){
-      ilr.fac1[f1,src] ~ dnorm(0,.001);
+      ilr.fac1[f1,src] ~ dnorm(0,1);
     }
   }
 ", file=filename, append=T)}
@@ -219,7 +219,7 @@ cat("
   for(src in 1:(n.sources-1)){
     ilr.fac2[1,src] <- 0;
     for(f2 in 2:factor2_levels){
-      ilr.fac2[f2,src] ~ dnorm(0,.001);
+      ilr.fac2[f2,src] ~ dnorm(0,1);
     }
   }
 ", file=filename, append=T)}
