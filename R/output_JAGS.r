@@ -298,6 +298,7 @@ rownames(stats) <- global_labels
 
 if(n.effects > 0){
   fac1_quants <- as.matrix(cast(melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   fac1_means <- cbind(melt(round(apply(p.fac1,c(2,3),mean),3))$value, melt(round(apply(p.fac1,c(2,3),sd),3))$value)
   fac1_stats <- cbind(fac1_means,fac1_quants)
   fac1_labels <- rep(NA,mix$FAC[[1]]$levels*n.sources)
@@ -315,6 +316,7 @@ if(n.effects > 0){
 }
 if(n.effects > 1){
   fac2_quants <- as.matrix(cast(melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   fac2_means <- cbind(melt(round(apply(p.fac2,c(2,3),mean),3))$value, melt(round(apply(p.fac2,c(2,3),sd),3))$value)
   fac2_stats <- cbind(fac2_means,fac2_quants)
   fac2_labels <- rep(NA,mix$FAC[[2]]$levels*n.sources)
@@ -332,6 +334,7 @@ if(n.effects > 1){
 }
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)
   ind_quants <- as.matrix(cast(melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  ind_quants <- t(apply(ind_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   ind_means <- cbind(melt(round(apply(p.ind,c(2,3),mean),3))$value, melt(round(apply(p.ind,c(2,3),sd),3))$value)
   ind_stats <- cbind(ind_means,ind_quants)  
   ind_labels <- rep(NA,N*n.sources)

@@ -146,7 +146,7 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 indiv_effect <- TRUE	               # Include Individual as a random effect in the model?
 nested <- TRUE                          # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
-write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,source)
+write_JAGS_model(model_filename, indiv_effect, nested, resid_err=FALSE, mix,source)
 
 # Lake example
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
