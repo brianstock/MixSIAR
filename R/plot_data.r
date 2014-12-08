@@ -63,10 +63,12 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
   if(length(grep("N",mix$iso_names[isotopes[1]]))==1) x_label <- expression(paste(delta^15, "N (\u2030)",sep=""))
   if(length(grep("S",mix$iso_names[isotopes[1]]))==1) x_label <- expression(paste(delta^34, "S (\u2030)",sep=""))
   if(length(grep("O",mix$iso_names[isotopes[1]]))==1) x_label <- expression(paste(delta^18, "O (\u2030)",sep=""))
+  if(length(grep("SP",mix$iso_names[isotopes[1]]))==1) y_label <- expression(paste(delta^15, "N-SP (\u2030)",sep=""))
   if(length(grep("C",mix$iso_names[isotopes[2]]))==1) y_label <- expression(paste(delta^13, "C (\u2030)",sep=""))
   if(length(grep("N",mix$iso_names[isotopes[2]]))==1) y_label <- expression(paste(delta^15, "N (\u2030)",sep=""))
   if(length(grep("S",mix$iso_names[isotopes[2]]))==1) y_label <- expression(paste(delta^34, "S (\u2030)",sep=""))
   if(length(grep("O",mix$iso_names[isotopes[2]]))==1) y_label <- expression(paste(delta^18, "O (\u2030)",sep=""))
+  if(length(grep("SP",mix$iso_names[isotopes[2]]))==1) y_label <- expression(paste(delta^15, "N-SP (\u2030)",sep=""))
   if(!exists("x_label")) x_label <- mix$iso_names[isotopes[1]]
   if(!exists("y_label")) y_label <- mix$iso_names[isotopes[2]]
   
@@ -258,6 +260,7 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
   if(length(grep("N",mix$iso_names))==1) x_label <- expression(paste(delta^15, "N (\u2030)",sep=""))
   if(length(grep("S",mix$iso_names))==1) x_label <- expression(paste(delta^34, "S (\u2030)",sep=""))
   if(length(grep("O",mix$iso_names))==1) x_label <- expression(paste(delta^18, "O (\u2030)",sep=""))
+  if(length(grep("SP",mix$iso_names))==1) x_label <- expression(paste(delta^15, "N-SP (\u2030)",sep=""))
   if(!exists("x_label")) x_label <- mix$iso_names
 
   y_data <- 0.5
