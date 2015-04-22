@@ -120,7 +120,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
     shapes <- c(16,17,15,3,7,8,1,6,35,36,37,4,18,14,11,9,13)
     shapes <- shapes[1:mix$FAC[[2]]$levels]  # 1:factor2_levels
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
           geom_point(aes(colour = factor(mix$FAC[[1]]$values), # Factor.1
                         shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +   # Factor.2
           scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
@@ -141,9 +141,10 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
           ylab(y_label) +
           xlab(x_label) +
           theme_bw() +
-          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
    } else { # sources not by factor (make the sources black)      
-    print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+    g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
           geom_point(aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
                         shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +  # Factor.2
           scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
@@ -164,13 +165,14 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
           ylab(y_label) +
           xlab(x_label) +
           theme_bw() +
-          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
     }
 
   } # end n.effects==2
   if(mix$n.effects==1){
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      print(ggplot(data = df,aes(x = x,y = y),,environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),,environment=.e) +
             geom_point(aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
             scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),    # Factor.1
                             labels = mix$FAC[[1]]$labels) +  # factor1_names
@@ -189,9 +191,10 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
             ylab(y_label) +
             xlab(x_label) +
             theme_bw() +
-            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        print(g)
     } else { # sources not by factor (make the sources black)
-      print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
             geom_point(aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
             scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                             labels = mix$FAC[[1]]$labels) +    # factor1_names
@@ -210,11 +213,12 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
             ylab(y_label) +
             xlab(x_label) +
             theme_bw() +
-            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        print(g)
     }
   } # end n.effects==1
   if(mix$n.effects==0){
-    print(ggplot(data = df,aes(x = x,y = y)) +
+    g <- ggplot(data = df,aes(x = x,y = y)) +
           geom_point() +
           geom_pointrange(data=df_sources,
                           aes(ymin=ymin,ymax=ymax),
@@ -230,15 +234,21 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
           geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
           ylab(y_label) +
           xlab(x_label) +
-          theme_bw())
+          theme_bw()
+      print(g)
   }
   if(plot_save_pdf==TRUE){
     mypath <- file.path(paste(getwd(),"/",filename,"_",isotopes[1],"_",isotopes[2],".pdf",sep=""))
-    dev.copy2pdf(file=mypath)
+    # dev.copy2pdf(file=mypath)
+    cairo_pdf(filename=mypath, width=7, height=7)
+    print(g)
+    dev.off()
   }
   if(plot_save_png==TRUE){
     mypath <- file.path(paste(getwd(),"/",filename,"_",isotopes[1],"_",isotopes[2],".png",sep=""))
-    dev.copy(png,mypath)
+    png(filename=mypath)
+    print(g)
+    dev.off()
   }
 } # End plot_data_two_iso function
 
@@ -317,7 +327,7 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
     shapes <- c(16,17,15,3,7,8,1,6,35,36,37,4,18,14,11,9,13)
     shapes <- shapes[1:mix$FAC[[2]]$levels]  # 1:factor2_levels
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
           geom_point(aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
                         shape = factor(mix$FAC[[2]]$values)), position=position_jitter(width=.2,height=.1), show_guide=T) +    # Factor.2
           scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
@@ -339,9 +349,10 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
           ylab("") +
           xlab(x_label) +
           theme_bw() +
-          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
    } else { # sources not by factor (make the sources black)      
-    print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+    g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
           geom_point(aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
                         shape = factor(mix$FAC[[2]]$values)), position=position_jitter(width=.2,height=.1), show_guide=T) +   # Factor.2
           scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
@@ -363,12 +374,13 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
           ylab("") +
           xlab(x_label) +
           theme_bw() +
-          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
     }
   } # end n.effects==2
   if(mix$n.effects==1){
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
             geom_point(aes(colour = factor(mix$FAC[[1]]$values)), position=position_jitter(width=.2,height=.1), show_guide=T) +  # Factor.1
             scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                             labels = mix$FAC[[1]]$labels) +  # factor1_names
@@ -388,9 +400,10 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
             ylab("") +
             xlab(x_label) +
             theme_bw() +
-            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
     } else { # sources not by factor (make the sources black)
-      print(ggplot(data = df,aes(x = x,y = y),environment=.e) +
+      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
             geom_point(aes(colour = factor(mix$FAC[[1]]$values)), position=position_jitter(width=.2,height=.1), show_guide=T) +  # Factor.1
             scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                             labels = mix$FAC[[1]]$labels) +     # factor1_names
@@ -410,11 +423,12 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
             ylab("") +
             xlab(x_label) +
             theme_bw() +
-            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+      print(g)
     }
   } # end n.effects==1
   if(mix$n.effects==0){
-    print(ggplot(data = df,aes(x = x,y = y)) +
+    g <- ggplot(data = df,aes(x = x,y = y)) +
           geom_point(position=position_jitter(width=.2,height=.1)) +
           geom_point(data=df_sources,
                           aes(x=x,y=y),
@@ -432,15 +446,20 @@ plot_data_one_iso <- function(mix,source,discr,plot_filename,plot_save_pdf,plot_
           ylab("") +
           xlab(x_label) +
           theme_bw() +
-          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+    print(g)
   }
   if(plot_save_pdf==TRUE){
     mypath <- file.path(paste(getwd(),"/",plot_filename,".pdf",sep=""))
-    dev.copy2pdf(file=mypath)
+    cairo_pdf(filename=mypath, width=7, height=7)
+    print(g)
+    dev.off()
   }
   if(plot_save_png==TRUE){
     mypath <- file.path(paste(getwd(),"/",plot_filename,".png",sep=""))
-    dev.copy(png,mypath)
+    png(filename=mypath)
+    print(g)
+    dev.off()
   }
 }
 
