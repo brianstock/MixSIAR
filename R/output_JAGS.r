@@ -53,7 +53,7 @@ jags1.mcmc <- as.mcmc(jags.1)
 if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   # XY plot for p.global
   dev.new()
-  print(xyplot(as.mcmc(p.global),strip=strip.custom(factor.levels=source_names)))
+  print(lattice::xyplot(as.mcmc(p.global),strip=strip.custom(factor.levels=source_names)))
   
   # Save the xy p.global plot to file 
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
@@ -75,16 +75,16 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       }
     }
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
-    if(n.re==2) print(xyplot(as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-    if(n.re==1) print(xyplot(as.mcmc(cbind(fac1.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-    if(n.re==0) print(xyplot(as.mcmc(ind.sig),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==1) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==0) print(lattice::xyplot(as.mcmc(ind.sig),strip=strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
       dev.new()
       traceplot_labels <- rep("",length(random_effects))  
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
-      if(n.re==2) print(xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-      if(n.re==1) print(xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==1) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
     }
   }
   # Save the xy factor SD plot to file 

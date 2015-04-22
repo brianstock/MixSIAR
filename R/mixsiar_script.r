@@ -10,6 +10,7 @@ require(R2jags)
 require(MASS)
 require(RColorBrewer)
 require(reshape)
+require(lattice)
 
 # Next we clean up the workspace
 rm(list=ls()) 	# deletes everything previously in the workspace
