@@ -1,8 +1,7 @@
 # Brian Stock
-# July 2014
-# 
-# Previous version:
-#   MixSIAR GUI 1.0 (Oct 2013)
+# MixSIAR GUI
+# July 31, 2015
+# v2.1.4
 
 # Before running this script, a brand new user will need to install the latest
 # versions of R and JAGS.  The install.packages("gWidgetsRGtk2") command

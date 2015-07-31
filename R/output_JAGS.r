@@ -149,32 +149,34 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
 # Posterior density plots
 ######################################################################
 if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
-  # Posterior density plot for p.global
-  dev.new()
   n.draws <- length(p.global[,1])   # number of posterior draws
-  df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
-  for(i in 1:n.sources){
-    df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(p.global[,i]) # fill in the p.global[i] values
-    df$sources[seq(1+n.draws*(i-1),i*n.draws)] <- rep(source_names[i],n.draws)  # fill in the source names
-  }
-  my.title <- "Overall Population"
-  print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-    geom_density(alpha=.3) +
-    theme_bw() +
-    xlab("Proportion of Diet") +
-    ylab("Posterior Density") +
-    xlim(0,1) +
-    labs(title = my.title) +
-    theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
-  
-  # Save the plot to file  
-  if(output_options[[4]]){ # svalue(plot_post_save_pdf)
-    mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_global.pdf",sep=""))  # svalue(plot_post_name)
-    dev.copy2pdf(file=mypath)
-  }
-  if(output_options[[18]]){ # svalue(plot_post_save_png)
-    mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_global.png",sep=""))  # svalue(plot_post_name)
-    dev.copy(png,mypath)
+  if(mix$n.fe == 0){ # only if there are fixed effects, otherwise p.global is meaningless
+    # Posterior density plot for p.global
+    dev.new()
+    df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
+    for(i in 1:n.sources){
+      df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(p.global[,i]) # fill in the p.global[i] values
+      df$sources[seq(1+n.draws*(i-1),i*n.draws)] <- rep(source_names[i],n.draws)  # fill in the source names
+    }
+    my.title <- "Overall Population"
+    print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
+      geom_density(alpha=.3) +
+      theme_bw() +
+      xlab("Proportion of Diet") +
+      ylab("Posterior Density") +
+      xlim(0,1) +
+      labs(title = my.title) +
+      theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+    
+    # Save the plot to file  
+    if(output_options[[4]]){ # svalue(plot_post_save_pdf)
+      mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_global.pdf",sep=""))  # svalue(plot_post_name)
+      dev.copy2pdf(file=mypath)
+    }
+    if(output_options[[18]]){ # svalue(plot_post_save_png)
+      mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_global.png",sep=""))  # svalue(plot_post_name)
+      dev.copy(png,mypath)
+    }
   }
   
   if(n.effects >= 1){
@@ -285,17 +287,22 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
 # Calculate the summary statistics for the variables we're interested in (p.global's and factor SD's, maybe p.ind's)
 # We print them out later, at the very bottom
 sig_labels <- NULL; ind_labels <- NULL; fac1_labels <- NULL; fac2_labels <- NULL; sig_stats <- NULL;
-global_labels <- rep(NA,n.sources)
-for(src in 1:n.sources){
-  global_labels[src] <- paste("p.global.",source_names[src],sep="")
-}
 getQuant <- function(x) quantile(x,probs=c(.025,.05,.25,.5,.75,.95,.975))
 getMeanSD <- function(x) cbind(round(apply(x,2,mean),3),round(apply(x,2,sd),3))
-global_quants <- t(round(apply(p.global,2,getQuant),3))
-global_means <- getMeanSD(p.global)
-stats <- cbind(global_means, global_quants)
-rownames(stats) <- global_labels
 
+stats <- NULL
+print(mix)
+print(mix$n.fe)
+if(mix$n.fe == 0){
+  global_quants <- t(round(apply(p.global,2,getQuant),3))
+  global_means <- getMeanSD(p.global)
+  stats <- cbind(global_means, global_quants)
+  global_labels <- rep(NA,n.sources)
+  for(src in 1:n.sources){
+    global_labels[src] <- paste("p.global.",source_names[src],sep="")
+  }
+  rownames(stats) <- global_labels
+}
 if(n.effects > 0){
   fac1_quants <- as.matrix(cast(melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
