@@ -3,18 +3,17 @@
 
 # Function: run_model
 #   sets up JAGS objects and calls JAGS ("running the model")
-# Usage: jags.1 <- run_model(run,mix,source,discr,indiv_effect)
+# Usage: jags.1 <- run_model(run,mix,source,discr)
 # Input: run              list of mcmc parameters (chainLength, burn, thin, chains, calcDIC)
 #                         alternatively, a user can enter "test", "very short", "short", "normal", "long", or "very long"
 #                         these have pre-defined mcmc parameter sets (see lines 14-20)
-#        indiv_effect     T/F, is Individual included as a random effect?
 #        mix              output from 'load_mix_data'
 #        source           output from 'load_source_data'
 #        discr            output from 'load_discrimination_data'
 #        model_filename   name of the JAGS model file (created by 'write_JAGS_model.r')
 # Output: jags.1, a rjags model object
 
-run_model <- function(run,indiv_effect,mix,source,discr,model_filename, alpha.prior = 1){
+run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
   if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
@@ -40,9 +39,6 @@ run_model <- function(run,indiv_effect,mix,source,discr,model_filename, alpha.pr
   tmp.p <- array(data=NA,dim=c(N,n.sources))              # dummy variable for inverse ILR calculation
   #jags.params <- c("p.global", "ilr.global")
   jags.params <- c("p.global")
-  if(indiv_effect){
-    jags.params <- c(jags.params, "ind.sig", "p.ind")
-  }
   
   # Random/Fixed Effect data
   f.data <- character(0)
@@ -57,11 +53,12 @@ run_model <- function(run,indiv_effect,mix,source,discr,model_filename, alpha.pr
   if(mix$n.effects > 1){
     factor2_levels <- mix$FAC[[2]]$levels
     Factor.2 <- mix$FAC[[2]]$values
-    factor1_lookup <- mix$FAC[[2]]$lookup
+    if(mix$fac_nested[1]) {factor2_lookup <- mix$FAC[[1]]$lookup; f.data <- c(f.data, "factor2_lookup");}
+    if(mix$fac_nested[2]) {factor1_lookup <- mix$FAC[[2]]$lookup; f.data <- c(f.data, "factor1_lookup");}
     cross.fac2 <- array(data=NA,dim=c(factor2_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
     tmp.p.fac2 <- array(data=NA,dim=c(factor2_levels,n.sources))              # dummy variable for inverse ILR calculation
     if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "p.fac2", "fac2.sig") else jags.params <- c(jags.params, "p.fac2")
-    f.data <- c(f.data, "factor2_levels", "Factor.2", "cross.fac2", "tmp.p.fac2", "factor1_lookup")
+    f.data <- c(f.data, "factor2_levels", "Factor.2", "cross.fac2", "tmp.p.fac2")
   }
 
   # Source data

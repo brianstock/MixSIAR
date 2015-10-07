@@ -33,10 +33,10 @@ load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
     MixSIAR can only fit source data by up to ONE factor. 
     Please specify 0 or 1 source factor and try again.",sep=""))
   }
-  test_re <- match(source_factors,c(mix$random_effects,mix$fixed_effects))
-  if(source.fac==1 && (length(test_re)==0 || is.na(test_re))){
-    stop(paste("*** Error: source factor not in mix$random_effects or 
-    mix$fixed_effects. You cannot model a source random effect that is not included
+  test_fac <- match(source_factors,mix$factors)
+  if(source.fac==1 && (length(test_fac)==0 || is.na(test_fac))){
+    stop(paste("*** Error: source factor not in mix$factors. 
+    You cannot model a source random effect that is not included
     as a random/fixed effect for the mixture/consumer. Either 1) remove the source 
     factor (reload source data), or 2) include the random/fixed effect 
     in the mixture (reload mix data).",sep=""))

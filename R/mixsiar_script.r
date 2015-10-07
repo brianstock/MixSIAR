@@ -17,7 +17,7 @@ rm(list=ls()) 	# deletes everything previously in the workspace
 runif(1)		# generates one random number (else JAGS can complain)
 
 # Load all MixSIAR functions into the workspace
-source("load_mix_data.r")
+source("load_mix_data_script.r")
 source("load_source_data.r")
 source("load_discr_data.r")
 source("plot_data.r")
@@ -41,25 +41,25 @@ source("plot_continuous_var.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-mix <- load_mix_data(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), random_effects=c("Region","Pack"), cont_effects=NULL, fixed_effects=NULL)
+# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
-# mix <- load_mix_data(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, cont_effects="Secchi.Mixed", fixed_effects=NULL)
+# mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, fixed_effects=NULL, nested=NULL, cont_effects="Secchi.Mixed")
 
 # Geese example (concentration dependence)
-# mix <- load_mix_data(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), random_effects="Group", cont_effects=NULL, fixed_effects=NULL)
+# mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
-# Palmyra example
-# mix <- load_mix_data(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), random_effects="Taxa", cont_effects=NULL, fixed_effects=NULL)
+# Palmyra example (fixed effect)
+# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Storm-petrel example (fixed effect)
-# mix <- load_mix_data(filename="7_mix.csv", iso_names=c("d13C","d15N"), random_effects=NULL, cont_effects=NULL, fixed_effects="Region")
+# mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # 1-iso example
-# mix <- load_mix_data(filename="13_mix.csv", iso_names="d13C", random_effects=NULL, cont_effects=NULL, fixed_effects=NULL)
+# mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # killer whale - salmon example
-# mix <- load_mix_data(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, cont_effects=NULL, fixed_effects=NULL)
+mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -72,7 +72,7 @@ mix <- load_mix_data(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"),
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
 # source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
@@ -90,7 +90,7 @@ source <- load_source_data(filename="wolves_sources.csv", source_factors="Region
 # source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # killer whale - salmon example
-# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 
 #####################################################################################
@@ -101,7 +101,7 @@ source <- load_source_data(filename="wolves_sources.csv", source_factors="Region
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
+# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # Lake example
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
@@ -119,7 +119,7 @@ discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 # discr <- load_discr_data(filename="13_discrimination.csv", mix) 
 
 # killer whale - salmon example
-# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
 
 
 #####################################################################################
@@ -138,34 +138,16 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 # Write JAGS model file
 # Model will be saved as 'model_filename' ("MixSIAR_model.txt" is default, but may want to change if in a loop)
 
-# 'indiv_effect' - TRUE or FALSE, do you want Individual as a random effect in the model?
 # 'model_filename' - don't need to change, unless you are creating many different model files
-# 'nested' - TRUE or FALSE, if you have 2 random effects, is the 2nd nested within the 1st?
 # 'resid_err' - TRUE or FALSE, do you want to include residual error in the model (FALSE = MixSIR, TRUE = SIAR)?
 
-# Wolves example
+# Wolves, Killer whale examples
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-indiv_effect <- TRUE	               # Include Individual as a random effect in the model?
-nested <- TRUE                          # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
-write_JAGS_model(model_filename, indiv_effect, nested, resid_err=FALSE, mix,source)
+write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 
-# Lake example
+# Geese, Palmyra, Storm-petrel, 1-iso examples
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-# indiv_effect <- TRUE                    # Include Individual as a random effect in the model?
-# nested <- FALSE                         # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
-# write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,source)
-
-# Geese and Palmyra examples
-# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-# indiv_effect <- FALSE                   # Include Individual as a random effect in the model?
-# nested <- FALSE                         # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
-# write_JAGS_model(model_filename, indiv_effect, nested, resid_err=TRUE, mix,source)
-
-# Killer whale - salmon example
-# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-# indiv_effect <- FALSE                   # Include Individual as a random effect in the model?
-# nested <- FALSE                         # If there are 2 random effects, is the 2nd nested in the 1st (hierarchical)?
-# write_JAGS_model(model_filename, indiv_effect, nested, resid_err=FALSE, mix,source)
+# write_JAGS_model(model_filename, resid_err=TRUE, mix,source)
 
 #####################################################################################
 # Run model
@@ -183,20 +165,25 @@ write_JAGS_model(model_filename, indiv_effect, nested, resid_err=FALSE, mix,sour
 # Can also set custom MCMC parameters
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
+# Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
+# jags.1 <- run_model(run="test", mix,source,discr,model_filename)
+
 # Wolves, Palmyra, Geese examples
-jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename)
+# jags.1 <- run_model(run="short",mix,source,discr,model_filename)
 
 # Lake example
-# jags.1 <- run_model(run="normal", indiv_effect,mix,source,discr,model_filename)
+# jags.1 <- run_model(run="normal",mix,source,discr,model_filename)
 
-# You can use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-# jags.1 <- run_model(run="test", indiv_effect,mix,source,discr,model_filename)
+# Killer whale example with UNINFORMATIVE / GENERALIST prior (alpha = 1)
+# jags.1 <- run_model(run="short",mix,source,discr,model_filename) # alpha = 1 by default
 
-# Killer whale - salmon example with and without informative prior
-# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename) # alpha = 1 by default
-# Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources. Note: the Dirichlet hyperparameters for the 
-# alpha.prior cannot be 0!
-# jags.1 <- run_model(run="short", indiv_effect,mix,source,discr,model_filename, alpha.prior = c(10, 1, 0.001, 0.001, 3)) # informative prior
+# Killer whale example with INFORMATIVE prior (construct alpha from fecal data)
+#   Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources.
+
+# kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
+# kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
+# kw.alpha[which(kw.alpha==0)] <- 0.001 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .001)
+# jags.1 <- run_model(run="short",mix,source,discr,model_filename, alpha.prior=kw.alpha) # informative prior
 
 #####################################################################################
 # Process JAGS output
@@ -218,7 +205,7 @@ output_options <- list(summary_save = TRUE,                 # Save the summary s
                     geweke = TRUE,                          # Calculate Geweke diagnostic test?
                     diag_save = TRUE,                       # Save the diagnostics as a txt file?
                     diag_name = "diagnostics",              # If yes, specify the base file name (.txt will be appended later)
-                    indiv_effect = indiv_effect,            # Is Individual a random effect in the model? (already specified)
+                    indiv_effect = FALSE,                   # Is Individual a random effect in the model? (already specified)
                     plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
                     plot_pairs_save_png = FALSE,            # Save pairs plot as png?
                     plot_xy_save_png = FALSE)               # Save xy/trace plot as png?

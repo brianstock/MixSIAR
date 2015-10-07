@@ -24,21 +24,13 @@
 
 # Output: JAGS model text file saved to working directory as 'filename' (default is "MixSIAR_model.txt")
 
-write_JAGS_model <- function(filename, indiv_effect, nested, resid_err, mix,source){
+write_JAGS_model <- function(filename, resid_err, mix,source){
 process_err <- TRUE
 resid_err_mult <- FALSE
   if(!resid_err && !process_err){
     stop(paste("Neither residual nor process error selected.
   Choose one (or both) of the error terms in Model Error
   Options (top-right corner), and try again.",sep=""))
-  }
-
-  if(mix$n.ce > 0 && indiv_effect==F){
-    stop(paste("In order to analyze a continuous
-  covariate, Individual must be included in the model as
-  a random effect. Restart MixSIAR and this time make
-  sure to check the 'Include Individual as Random Effect'
-  box when loading the mixture data."))
   }
 
 cat(paste("# source$data_type: ",source$data_type,sep=""), file=filename)
@@ -50,10 +42,13 @@ cat("
 cat(paste("# random effects: ",mix$n.re,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
-cat(paste("# nested random effects: ",nested,sep=""), file=filename, append=T)
+cat(paste("# fixed effects: ",mix$n.fe,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
-cat(paste("# fixed effects: ",mix$n.fe,sep=""), file=filename, append=T)
+cat(paste("# nested factors: ",paste(mix$fac_nested,collapse=" "),sep=""), file=filename, append=T)
+cat("
+", file=filename, append=T)
+cat(paste("# factors: ",paste(mix$factors,collapse=" "),sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
 cat(paste("# continuous effects: ",mix$n.ce,sep=""), file=filename, append=T)
@@ -66,9 +61,9 @@ cat(paste("# resid_err: ",resid_err,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
 cat(paste("# process_err: ",process_err,sep=""), file=filename, append=T)
-cat("
-", file=filename, append=T)
-cat(paste("# indiv_effect: ",indiv_effect,sep=""), file=filename, append=T)
+# cat("
+# ", file=filename, append=T)
+# cat(paste("# indiv_effect: ",indiv_effect,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
 cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T)
@@ -178,7 +173,7 @@ cat("
     }
 ", file=filename, append=T)
 
-if(mix$n.re > 0){ # at least 1 random effect
+if(mix$n.effects > 0 && mix$FAC[[1]]$re){ # factor 1 is random effect
 cat("
    fac1.sig ~ dunif(0,20);
    fac1.invSig2 <- 1/(fac1.sig*fac1.sig);
@@ -190,7 +185,18 @@ cat("
    }   
 ", file=filename, append=T)}
 
-if(mix$n.re > 1){ # 2 random effects (0 fixed effects)
+if(mix$n.effects > 0 && !mix$FAC[[1]]$re){ # factor 1 is fixed effect
+cat("
+  # draw the fac1 specific ILR terms (fixed effect)
+  for(src in 1:(n.sources-1)){
+    ilr.fac1[1,src] <- 0;
+    for(f1 in 2:factor1_levels){
+      ilr.fac1[f1,src] ~ dnorm(0,1);
+    }
+  }
+", file=filename, append=T)}
+
+if(mix$n.effects > 1 && mix$FAC[[2]]$re){ # factor 2 is random effect
 cat("
    fac2.sig ~ dunif(0,20);
    fac2.invSig2 <- 1/(fac2.sig*fac2.sig);
@@ -202,18 +208,7 @@ cat("
    }
 ", file=filename, append=T)}
 
-if(mix$n.fe > 0 && mix$n.re == 0){ # at least 1 fixed effect (0 random effects)
-cat("
-  # draw the fac1 specific ILR terms (fixed effect)
-  for(src in 1:(n.sources-1)){
-    ilr.fac1[1,src] <- 0;
-    for(f1 in 2:factor1_levels){
-      ilr.fac1[f1,src] ~ dnorm(0,1);
-    }
-  }
-", file=filename, append=T)}
-
-if(mix$n.fe > 1 || (mix$n.re > 0 && mix$n.fe > 0)){ # add 2nd effect as fixed (either n.fe=2 or n.re=1 and n.fe=1)
+if(mix$n.effects > 1 && !mix$FAC[[2]]$re){ # factor 2 is fixed effect
 cat("
   # draw the fac2 specific ILR terms (fixed effect)
   for(src in 1:(n.sources-1)){
@@ -238,21 +233,21 @@ cat("
 ilr.cont.string <- paste(ilr.cont.string," + ilr.cont",ce,"[src]*Cont.",ce,"[i]",sep="")}
 }
 
-if(indiv_effect){  # if user has chosen to include Individual as a random effect
-cat("
-   ind.sig ~ dunif(0,20); 
-   ind.invSig2 <- 1/(ind.sig*ind.sig);
-   # generate individual deviates from the global/region/pack mean
-   for(i in 1:N) {
-      for(src in 1:(n.sources-1)) {
-         ilr.ind[i,src] ~ dnorm(0, ind.invSig2);", file=filename, append=T)
-} else { # user has chosen to NOT include Individual as a random effect - remove ind.sig and set ilr.ind=0
+# if(indiv_effect){  # if user has chosen to include Individual as a random effect
+# cat("
+#    ind.sig ~ dunif(0,20); 
+#    ind.invSig2 <- 1/(ind.sig*ind.sig);
+#    # generate individual deviates from the global/region/pack mean
+#    for(i in 1:N) {
+#       for(src in 1:(n.sources-1)) {
+#          ilr.ind[i,src] ~ dnorm(0, ind.invSig2);", file=filename, append=T)
+# } else { # user has chosen to NOT include Individual as a random effect - remove ind.sig and set ilr.ind=0
 cat("
    # DON'T generate individual deviates from the global/region/pack mean (but keep same model structure)
    for(i in 1:N) {
       for(src in 1:(n.sources-1)) {
          ilr.ind[i,src] <- 0;", file=filename, append=T)
-} # end Individual effect block
+# } # end Individual effect block
 
 # Add ilr.tot line, adding ilr.global, ilr.fac's, ilr.ind, and ilr.cont's
 #   This will be different according to n.effects, but *MUST* be directly after the individual effect section!!
@@ -302,8 +297,25 @@ cat("
 ", file=filename, append=T)
 
 if(mix$n.effects > 0){
-cat("   
-   # Transform ilr.fac1 into p.fac1
+  if(mix$fac_nested[1]){
+  cat("
+     # Transform ilr.fac1 into p.fac1 (fac1 nested within fac2)
+     for(f1 in 1:factor1_levels) {
+        for(src in 1:(n.sources-1)) {
+            ilr.fac1.tot[f1,src] <- ilr.global[src] + ilr.fac2[factor2_lookup[f1],src] + ilr.fac1[f1,src];
+            cross.fac1[f1,,src] <- (e[,src]^ilr.fac1.tot[f1,src])/sum(e[,src]^ilr.fac1.tot[f1,src]);
+        }
+        for(src in 1:n.sources) {
+          tmp.p.fac1[f1,src] <- prod(cross.fac1[f1,src,]);
+        }
+        for(src in 1:n.sources){
+          p.fac1[f1,src] <- tmp.p.fac1[f1,src]/sum(tmp.p.fac1[f1,]);
+        }
+      }
+  ", file=filename, append=T)
+  } else {
+  cat("   
+   # Transform ilr.fac1 into p.fac1 (fac1 not nested within fac2)
    for(f1 in 1:factor1_levels) {
       for(src in 1:(n.sources-1)) {
         ilr.fac1.tot[f1,src] <- ilr.global[src] + ilr.fac1[f1,src];
@@ -316,42 +328,44 @@ cat("
         p.fac1[f1,src] <- tmp.p.fac1[f1,src]/sum(tmp.p.fac1[f1,]);
       }
    }
-", file=filename, append=T)}
+", file=filename, append=T)
+  } # end nested ilr.fac1 section
+}
 
 if(mix$n.effects > 1){
-if(nested){
-cat("
-   # Transform ilr.fac2 into p.fac2 (nested)
-    for(f2 in 1:factor2_levels){
-      for(src in 1:(n.sources-1)){
-          ilr.fac2.tot[f2,src] <- ilr.global[src] + ilr.fac1[factor1_lookup[f2],src] + ilr.fac2[f2,src];
-          cross.fac2[f2,,src] <- (e[,src]^ilr.fac2.tot[f2,src])/sum(e[,src]^ilr.fac2.tot[f2,src]);
+  if(mix$fac_nested[2]){
+  cat("
+     # Transform ilr.fac2 into p.fac2 (fac2 nested within fac1)
+      for(f2 in 1:factor2_levels){
+        for(src in 1:(n.sources-1)){
+            ilr.fac2.tot[f2,src] <- ilr.global[src] + ilr.fac1[factor1_lookup[f2],src] + ilr.fac2[f2,src];
+            cross.fac2[f2,,src] <- (e[,src]^ilr.fac2.tot[f2,src])/sum(e[,src]^ilr.fac2.tot[f2,src]);
+        }
+        for(src in 1:n.sources) {
+          tmp.p.fac2[f2,src] <- prod(cross.fac2[f2,src,]);
+        }
+        for(src in 1:n.sources){
+          p.fac2[f2,src] <- tmp.p.fac2[f2,src]/sum(tmp.p.fac2[f2,]);
+        }
       }
-      for(src in 1:n.sources) {
-        tmp.p.fac2[f2,src] <- prod(cross.fac2[f2,src,]);
+  ", file=filename, append=T)
+  } else {
+  cat("
+     # Transform ilr.fac2 into p.fac2 (fac2 not nested within fac1)
+      for(f2 in 1:factor2_levels){
+        for(src in 1:(n.sources-1)){
+            ilr.fac2.tot[f2,src] <- ilr.global[src] + ilr.fac2[f2,src];
+            cross.fac2[f2,,src] <- (e[,src]^ilr.fac2.tot[f2,src])/sum(e[,src]^ilr.fac2.tot[f2,src]);
+        }
+        for(src in 1:n.sources) {
+          tmp.p.fac2[f2,src] <- prod(cross.fac2[f2,src,]);
+        }
+        for(src in 1:n.sources){
+          p.fac2[f2,src] <- tmp.p.fac2[f2,src]/sum(tmp.p.fac2[f2,]);
+        }
       }
-      for(src in 1:n.sources){
-        p.fac2[f2,src] <- tmp.p.fac2[f2,src]/sum(tmp.p.fac2[f2,]);
-      }
-    }
-", file=filename, append=T)
-} else {
-cat("
-   # Transform ilr.fac2 into p.fac2 (not nested)
-    for(f2 in 1:factor2_levels){
-      for(src in 1:(n.sources-1)){
-          ilr.fac2.tot[f2,src] <- ilr.global[src] + ilr.fac2[f2,src];
-          cross.fac2[f2,,src] <- (e[,src]^ilr.fac2.tot[f2,src])/sum(e[,src]^ilr.fac2.tot[f2,src]);
-      }
-      for(src in 1:n.sources) {
-        tmp.p.fac2[f2,src] <- prod(cross.fac2[f2,src,]);
-      }
-      for(src in 1:n.sources){
-        p.fac2[f2,src] <- tmp.p.fac2[f2,src]/sum(tmp.p.fac2[f2,]);
-      }
-    }
-", file=filename, append=T)
-} # end nested ilr.fac2 section
+  ", file=filename, append=T)
+  } # end nested ilr.fac2 section
 } # end n.re=2 section
 
 ###############################################################################

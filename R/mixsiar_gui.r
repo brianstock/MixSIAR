@@ -235,7 +235,7 @@ grp_run_model <- ggroup(cont=grp_bot, horizontal=TRUE, expand=TRUE)
 go_button <- gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE,
   handler = function(h, ...){
     if(svalue(mixsiar$error_option)=="SIAR (process + residual)") resid_err <- TRUE else resid_err <- FALSE
-    write_JAGS_model("MixSIAR_model.txt", mixsiar$indiv_effect, mixsiar$nested, resid_err, mixsiar$mix, mixsiar$source)
+    write_JAGS_model("MixSIAR_model.txt", resid_err, mixsiar$mix, mixsiar$source)
 
     run <- svalue(mixsiar$mcmc_run)
     jags.1 <- run_model(run, mixsiar$indiv_effect, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt")

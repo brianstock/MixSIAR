@@ -39,7 +39,12 @@ mcmc.chains <- jags.1$BUGSoutput$n.chains
 N <- mix$N
 n.re <- mix$n.re
 n.effects <- mix$n.effects
-random_effects <- mix$random_effects
+if(n.re==1){
+  random_effects <- ifelse(mix$FAC[[1]]$re,mix$FAC[[1]]$name,mix$FAC[[2]]$name)
+}
+if(n.re==2){
+  random_effects <- mix$factors
+}
 n.sources <- source$n.sources
 source_names <- source$source_names
 attach.jags(jags.1)
@@ -76,7 +81,10 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
     }
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
     if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-    if(n.re==1) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==1){
+      if(mix$FAC[[1]]$re) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(mix$FAC[[2]]$re) print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+    }
     if(n.re==0) print(lattice::xyplot(as.mcmc(ind.sig),strip=strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
@@ -84,7 +92,10 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       traceplot_labels <- rep("",length(random_effects))  
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
       if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-      if(n.re==1) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==1){
+        if(mix$FAC[[1]]$re) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        if(mix$FAC[[2]]$re) print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      }
     }
   }
   # Save the xy factor SD plot to file 
@@ -255,8 +266,14 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       x <- c(x,ind.sig)
     }
     if(n.re==1){ # if Factor.1 is in the model, add fac1.sig to the SD plot
-      level <- c(level,rep(paste(random_effects[1]," SD",sep=""),n.draws))
-      x <- c(x,fac1.sig)
+      if(mix$FAC[[1]]$re){
+        level <- c(level,rep(paste(mix$FAC[[1]]$name," SD",sep=""),n.draws))
+        x <- c(x,fac1.sig)
+      }
+      if(mix$FAC[[2]]$re){
+        level <- c(level,rep(paste(mix$FAC[[2]]$name," SD",sep=""),n.draws))
+        x <- c(x,fac2.sig)
+      }
     }
     if(n.re==2){ # if Factor.2 is in the model, add fac1.sig and fac2.sig to the SD plot
       level <- c(level,rep(paste(random_effects[1]," SD",sep=""),n.draws), rep(paste(random_effects[2]," SD",sep=""),n.draws))
@@ -291,8 +308,10 @@ getQuant <- function(x) quantile(x,probs=c(.025,.05,.25,.5,.75,.95,.975))
 getMeanSD <- function(x) cbind(round(apply(x,2,mean),3),round(apply(x,2,sd),3))
 
 stats <- NULL
-print(mix)
-print(mix$n.fe)
+sig_stats <- NULL
+sig_labels <- NULL
+# print(mix)
+# print(mix$n.fe)
 if(mix$n.fe == 0){
   global_quants <- t(round(apply(p.global,2,getQuant),3))
   global_means <- getMeanSD(p.global)
@@ -316,9 +335,9 @@ if(n.effects > 0){
   }
   rownames(fac1_stats) <- fac1_labels
   stats <- rbind(stats,fac1_stats)
-  if(n.re > 0){
+  if(mix$FAC[[1]]$re){
     sig_stats <- cbind(getMeanSD(fac1.sig),t(round(apply(fac1.sig,2,getQuant),3)))
-    sig_labels <- paste(random_effects[1],".SD",sep="")
+    sig_labels <- paste(mix$FAC[[1]]$name,".SD",sep="")
   }
 }
 if(n.effects > 1){
@@ -334,9 +353,9 @@ if(n.effects > 1){
   }
   rownames(fac2_stats) <- fac2_labels
   stats <- rbind(stats,fac2_stats)
-  if(n.re > 1){
+  if(mix$FAC[[2]]$re){
     sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
-    sig_labels <- c(sig_labels,paste(random_effects[2],".SD",sep=""))
+    sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
   }
 }
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)

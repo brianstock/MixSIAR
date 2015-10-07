@@ -133,8 +133,6 @@ remove_cont <- gbutton(
 tbl_cont <- gtable(character(0), container=grp_cont, multiple=T, expand=T)
 
 grp_bottom <- ggroup(container=mix_grp_all, horizontal=F)
-indiv_box <- gcheckbox("Include 'Individual' as a Random Effect", cont=grp_bottom)
-svalue(indiv_box) <- FALSE    # Default is to include 'Individual', but can change that here
 mix_status_bar <- gstatusbar("", progress.bar="gui", container=grp_bottom, expand=T)
 
 grp_close <- ggroup(horizontal=T, container=mix_grp_all)
@@ -150,42 +148,41 @@ btn_close <- gbutton(
     random_effects <- tbl_re[]; n.re <- length(random_effects);
     fixed_effects <- tbl_fe[]; n.fe <- length(fixed_effects);
     cont_effects <- tbl_cont[]
+    n.effects <- n.re+n.fe
 
-    # Was individual effect checked?
-    indiv_effect <- svalue(indiv_box)
-    assign("indiv_effect", indiv_effect, envir = mixsiar)
+    mix <- load_mix_data(mixsiar$mix_filename,iso_names,random_effects,fixed_effects,cont_effects)
+    assign("mix", mix, envir = mixsiar)
 
-    # Hierarchical question box: if the user has included 2 random effects, ask if the model should be hierarchical (Factor 2 within Factor 1)
+    # Hierarchical question box: if the user has included 2 random/fixed effects, ask if the model should be hierarchical (Factor 2 within Factor 1)
     # Creates 'nested', a T/F variable
     #   hierarch=T --> ilr.fac2.tot = ilr.global + ilr.fac1 + ilr.fac2
     #   hierarch=F --> ilr.fac2.tot = ilr.global + ilr.fac2
-    nested <- FALSE
+    nested <- rep(FALSE,n.effects)
     assign("nested", nested, envir = mixsiar)
-    if(n.re==2){ 
-      hierarch_win <- gwindow("QUESTION: Hierarchical Data?", visible=T)
+    if(mixsiar$mix$n.effects==2){ 
+      hierarch_win <- gwindow("QUESTION: Hierarchical/Nested Data?", visible=T)
       hierarch_grp_all <- ggroup(horizontal=F, cont=hierarch_win)
-      hierarch_msg1 <- glabel(paste("You have 2 random effects: ",random_effects[1]," and ",random_effects[2],sep=""),cont=hierarch_grp_all)
+      hierarch_msg1 <- glabel(paste("You have 2 random/fixed effects: ",mix$FAC[[1]]$name," and ",mix$FAC[[2]]$name,sep=""),cont=hierarch_grp_all)
       hierarch_msg2 <- glabel("Should MixSIAR run a hierarchical analysis?",cont=hierarch_grp_all)
-      h_yes <- paste("Yes (",random_effects[2]," within ",random_effects[1],")",sep="")
-      h_no <- paste("No (",random_effects[1],", ",random_effects[2]," independent)",sep="")
-      hierarch_rad <- gradio(c(h_yes,h_no),cont=hierarch_grp_all,horizontal=F)
-      svalue(hierarch_rad) <- h_yes
+      h_yes21 <- paste("Yes (",mix$FAC[[2]]$name," nested within ",mix$FAC[[1]]$name,")",sep="")
+      h_yes12 <- paste("Yes (",mix$FAC[[1]]$name," nested within ",mix$FAC[[2]]$name,")",sep="")
+      h_no <- paste("No (",mix$FAC[[1]]$name,", ",mix$FAC[[2]]$name," independent)",sep="")
+      hierarch_rad <- gradio(c(h_yes21,h_yes12,h_no),cont=hierarch_grp_all,horizontal=F)
+      svalue(hierarch_rad) <- h_no
       btn_done_hierarch <- gbutton(
         text    = "I'm finished",
         container = hierarch_grp_all,
         expand = F,
         handler = function(h, ...){
           nested <- mixsiar$nested
-          if(svalue(hierarch_rad)==h_yes){nested <- TRUE} else {nested <- FALSE}
+          if(svalue(hierarch_rad)==h_yes21) nested <- c(FALSE,TRUE)
+          if(svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)          
           visible(hierarch_win) <- FALSE
-          mixsiar$nested <- nested
+          mixsiar$mix$fac_nested <- nested
         }
       )
       addSpring(hierarch_grp_all)
     }
-    
-    mix <- load_mix_data(mixsiar$mix_filename,iso_names,random_effects,cont_effects,fixed_effects)
-    assign("mix", mix, envir = mixsiar)
 
     # Need to make this check more robust
     test <- get("mix",envir=mixsiar)
