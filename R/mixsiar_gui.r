@@ -238,7 +238,7 @@ go_button <- gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE,
     write_JAGS_model("MixSIAR_model.txt", resid_err, mixsiar$mix, mixsiar$source)
 
     run <- svalue(mixsiar$mcmc_run)
-    jags.1 <- run_model(run, mixsiar$indiv_effect, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt")
+    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt")
     assign("jags.1",jags.1,envir=mixsiar)
     
     test <- get("jags.1",envir=mixsiar)
@@ -267,7 +267,7 @@ output_button <- gbutton(text="Process output", cont=grp_output, expand=TRUE,
                     svalue(mixsiar$geweke),                  # Calculate Geweke diagnostic test?
                     svalue(mixsiar$diag_save),               # Save the diagnostics as a txt file?
                     svalue(mixsiar$diag_name),               # If yes, specify the base file name (.txt will be appended later)
-                    mixsiar$indiv_effect,                    # Is Individual a random effect in the model? (already specified)
+                    FALSE,                                   # Is Individual a random effect in the model? (already specified)
                     svalue(mixsiar$plot_post_save_png),      # Save posterior density plots as pngs?
                     svalue(mixsiar$plot_pairs_save_png),     # Save pairs plot as png?
                     svalue(mixsiar$plot_xy_save_png))

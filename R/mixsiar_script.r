@@ -41,7 +41,7 @@ source("plot_continuous_var.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
 # mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, fixed_effects=NULL, nested=NULL, cont_effects="Secchi.Mixed")
@@ -59,7 +59,7 @@ source("plot_continuous_var.r")
 # mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # killer whale - salmon example
-mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -72,7 +72,7 @@ mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d1
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
 # source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
@@ -90,7 +90,7 @@ mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d1
 # source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # killer whale - salmon example
-source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 
 #####################################################################################
@@ -101,7 +101,7 @@ source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NU
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
+discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # Lake example
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
@@ -119,7 +119,7 @@ source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NU
 # discr <- load_discr_data(filename="13_discrimination.csv", mix) 
 
 # killer whale - salmon example
-discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
 
 
 #####################################################################################
@@ -166,7 +166,7 @@ write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-# jags.1 <- run_model(run="test", mix,source,discr,model_filename)
+jags.1 <- run_model(run="test", mix,source,discr,model_filename)
 
 # Wolves, Palmyra, Geese examples
 # jags.1 <- run_model(run="short",mix,source,discr,model_filename)

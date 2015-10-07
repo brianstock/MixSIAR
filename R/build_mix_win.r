@@ -158,6 +158,7 @@ btn_close <- gbutton(
     #   hierarch=T --> ilr.fac2.tot = ilr.global + ilr.fac1 + ilr.fac2
     #   hierarch=F --> ilr.fac2.tot = ilr.global + ilr.fac2
     nested <- rep(FALSE,n.effects)
+    mixsiar$mix$fac_nested <- nested
     assign("nested", nested, envir = mixsiar)
     if(mixsiar$mix$n.effects==2){ 
       hierarch_win <- gwindow("QUESTION: Hierarchical/Nested Data?", visible=T)
