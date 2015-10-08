@@ -112,10 +112,16 @@ load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_neste
     }
   } # end random/fixed effects loop
 
+  CE_orig <- replicate(n.ce, NULL)
   CE <- replicate(n.ce, NULL)  # CE is a list of length=n.ce that will contain the cont_effects values
+  CE_center <- rep(NA,n.ce) # mean of CE
+  CE_scale <- rep(NA,n.ce) # sd of CE
   if(n.ce > 0){ # If we have any continuous effects
     for(i in 1:n.ce){ # For each continuous effect selected, put the data from X into CE
-      CE[[i]] <- X[,cont_effects[i]]  # Get the values for CE[[1]] from X (raw consumer file)
+      CE_orig[[i]] <- X[,cont_effects[i]]  # Get the values for CE[[1]] from X (raw consumer file)
+      CE[[i]] <- scale(X[,cont_effects[i]],center=TRUE,scale=TRUE)
+      CE_center[i] <- attributes(CE[[i]])$"scaled:center"
+      CE_scale[i] <- attributes(CE[[i]])$"scaled:center"
     }
   } # end continuous effects loop
 
@@ -128,6 +134,9 @@ load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_neste
       n.ce = n.ce,
       FAC = FAC,
       CE = CE,
+      CE_orig = CE_orig,
+      CE_center = CE_center,
+      CE_scale = CE_scale,
       cont_effects = cont_effects,
       MU_names = MU_names,
       SIG_names = SIG_names,

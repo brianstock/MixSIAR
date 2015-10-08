@@ -86,9 +86,9 @@ run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
   if(mix$n.ce > 0){                               # If we have any continuous effects
     for(ce in 1:mix$n.ce){                        # for each continuous effect
       name <- paste("Cont.",ce,sep="")
-      assign(name,mix$CE[[ce]])
+      assign(name,as.vector(mix$CE[[ce]]))
       c.data[ce] <- paste("Cont.",ce,sep="")  # add "Cont.ce" to c.data (e.g. c.data[1] <- Cont.1)
-      jags.params <- c(jags.params,"ilr.global",paste("ilr.cont",ce,sep=""))   # add "ilr.cont(ce)" to jags.params (e.g. ilr.cont1)
+      jags.params <- c(jags.params,"ilr.global",paste("ilr.cont",ce,sep=""),"p.ind")   # add "ilr.cont(ce)" to jags.params (e.g. ilr.cont1)
     }
   }
   

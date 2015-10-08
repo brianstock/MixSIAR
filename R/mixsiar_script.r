@@ -44,7 +44,7 @@ source("plot_continuous_var.r")
 mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
-# mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), random_effects=NULL, fixed_effects=NULL, nested=NULL, cont_effects="Secchi.Mixed")
+# mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
 
 # Geese example (concentration dependence)
 # mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
@@ -145,7 +145,7 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 
-# Geese, Palmyra, Storm-petrel, 1-iso examples
+# Geese, Palmyra, Lake, Storm-petrel, 1-iso examples
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 # write_JAGS_model(model_filename, resid_err=TRUE, mix,source)
 

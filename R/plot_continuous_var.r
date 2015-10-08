@@ -48,19 +48,20 @@ for(ce in 1:mix$n.ce){
   }
   colnames(p.median) <- source_names
 
+  Cont1.plot <- Cont1.plot*mix$CE_scale + mix$CE_center # transform Cont1.plot (x-axis) back to the original scale
   df <- data.frame(melt(p.median)[,2:3],rep(Cont1.plot,n.sources))
   colnames(df) <- c("source","median","x")
 
-  medians <- data.frame(cont,apply(p.ind,c(2,3),median))
-  colnames(medians) <- c("cont",source_names)
-  medians <- melt(medians,id="cont")
+  # medians <- data.frame(cont,apply(p.ind,c(2,3),median))
+  # colnames(medians) <- c("cont",source_names)
+  # medians <- melt(medians,id="cont")
 
   # Plot of Diet vs. Cont effect
   # Page 370 in Francis et al (2011)
   dev.new()
   print(ggplot(data=df,aes(x=x,y=median)) +
            geom_line(aes(x=x, y=median,group=source,colour=source),size=1.5) +
-           geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) + 
+           # geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) + 
            ylab("Proportion of Diet") +
            xlab(label) +
            ylim(0,1) +
