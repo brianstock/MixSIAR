@@ -30,6 +30,7 @@ if (!"MASS" %in% installed.packages()) install.packages("MASS")
 if (!"RColorBrewer" %in% installed.packages()) install.packages("RColorBrewer")
 if (!"reshape" %in% installed.packages()) install.packages("reshape")
 if (!"lattice" %in% installed.packages()) install.packages("lattice")
+if (!"compositions" %in% installed.packages()) install.packages("compositions")
 
 if (!"gWidgetsRGtk2" %in% installed.packages()) stop("*** Error: GTK+ is not installed ***")
 if (!"R2jags" %in% installed.packages()) stop("*** Error: JAGS is not installed ***")
@@ -41,6 +42,7 @@ require(MASS)
 require(RColorBrewer)
 require(reshape)
 require(lattice)
+require(compositions)
 
 source("build_mix_win.r")
 source("build_source_win.r")
@@ -52,6 +54,7 @@ source("write_JAGS_model.r")
 source("run_model.r")
 source("output_JAGS.r")
 source("plot_continuous_var.r")
+source("plot_prior.r")
 
 runif(1)
 # rm(list=ls())
@@ -130,10 +133,20 @@ svalue(mixsiar$mcmc_run) <- "test"
 ####################################################################
 # Model Error Options
 ####################################################################
-grp_error <- gframe(text="Model error options", cont=grp_input, horizontal=FALSE)
+grp_error_priors <- ggroup(cont=grp_input,horizontal=FALSE)
+grp_error <- gframe(text="Model error options", cont=grp_error_priors, horizontal=FALSE,expand=TRUE)
 error_option <- gradio(c("MixSIR (process error only)","SIAR (process + residual)"), cont=grp_error, horizontal=FALSE)
 assign("error_option",error_option,envir=mixsiar)
 svalue(mixsiar$error_option) <- "SIAR (process + residual)"
+
+####################################################################
+# Specify Prior
+####################################################################
+grp_prior <- gframe(text="Specify prior", cont=grp_error_priors, horizontal=FALSE)
+prior_option <- gradio(c("\"Uninformative\"/Generalist","Informative"),cont=grp_prior,horizontal=FALSE)
+inf_prior <- gedit("", width=15, cont = grp_prior); assign("inf_prior",inf_prior,envir=mixsiar)
+assign("prior_option",prior_option,envir=mixsiar)
+svalue(mixsiar$prior_option) <- "\"Uninformative\"/Generalist"
 
 status_bar <- gstatusbar("", progress.bar="gui", cont=grp_all, expand=TRUE)
 assign("status_bar",status_bar,envir=mixsiar)
@@ -142,7 +155,7 @@ assign("status_bar",status_bar,envir=mixsiar)
 # Isospace Plot
 ####################################################################
 
-# The 'Plot data' button calls the plot_data function to make an isospace plot
+# The 'Make isospace plot' button calls the plot_data function to make an isospace plot
 grp_plot <- ggroup(cont=grp_all, horizontal=T)
 plot_button <- gbutton(
   text = "Make isospace plot",
@@ -162,6 +175,42 @@ plot_save_png <- gcheckbox("png", cont = grp_plot_name); assign("plot_save_png",
 svalue(mixsiar$plot_save_pdf) <- TRUE
 
 ####################################################################
+# Plot Prior
+####################################################################
+
+# The 'Plot prior' button calls the plot_prior function
+grp_plot_prior <- ggroup(cont=grp_all, horizontal=T)
+addSpring(grp_plot_prior)
+plot_button <- gbutton(
+  text = "Plot prior",
+  cont = grp_plot_prior,
+  expand = TRUE,
+  handler = function(h, ...){ 
+    if(svalue(mixsiar$prior_option) == "\"Uninformative\"/Generalist"){
+      alpha.prior <- rep(1,mixsiar$source$n.sources)
+    } else { # prior_option = "Informative"
+      alpha.prior <- eval(parse(text=svalue(mixsiar$inf_prior)))
+    }
+    if(!is.numeric(alpha.prior)){
+      stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).  
+        Try again or choose the uninformative prior option. For example, 
+        c(1,1,1,1) is a valid (uninformative) prior for 4 sources. ***",sep=""))}
+    if(length(alpha.prior) != mixsiar$source$n.sources){
+      stop(paste("*** Error: Length of your prior does not match the  
+        number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
+    svalue(mixsiar$status_bar) <- "Success. Your prior is in RED, uninformative/generalist is DARK GREY"
+    plot_prior(alpha.prior,mixsiar$source)
+  }
+)
+
+grp_plot_name_prior <- ggroup(cont=grp_plot_prior, horizontal=T, expand=T)
+plot_lbl_prior <- glabel("Save plot as:",cont=grp_plot_name_prior)
+plot_filename_prior <- gedit("prior_plot", width=15, cont = grp_plot_name_prior); assign("plot_filename_prior",plot_filename_prior,envir=mixsiar)
+plot_save_pdf_prior <- gcheckbox("pdf", cont = grp_plot_name_prior); assign("plot_save_pdf_prior",plot_save_pdf_prior,envir=mixsiar)
+plot_save_png_prior <- gcheckbox("png", cont = grp_plot_name_prior); assign("plot_save_png_prior",plot_save_png_prior,envir=mixsiar)
+svalue(mixsiar$plot_save_pdf_prior) <- TRUE
+
+####################################################################
 # Output options
 ####################################################################
 grp_output <- gframe(text="Output options", cont=grp_all, horizontal=F)
@@ -179,7 +228,7 @@ svalue(mixsiar$summary_save) <- TRUE  # Default is to save the summary statistic
 grp_posterior <- ggroup(cont=grp_output, horizontal=T)
 lbl_posterior <- glabel("Posterior Density Plot", cont=grp_posterior, expand=T)
 grp_post_opt <- ggroup(cont = grp_posterior, horizontal=F)
-sup_post <- gcheckbox("Suppress plot output", cont = grp_post_opt); assign("sup_post",sup_post,envir=mixsiar);
+# sup_post <- gcheckbox("Suppress plot output", cont = grp_post_opt); assign("sup_post",sup_post,envir=mixsiar);
 grp_post_name <- ggroup(cont = grp_post_opt, horizontal=T, expand=T)
 plot_post_lbl <- glabel("Save plot as:", cont = grp_post_name)
 plot_post_name <- gedit("posterior_density", width=20, cont = grp_post_name); assign("plot_post_name",plot_post_name,envir=mixsiar);
@@ -191,7 +240,7 @@ plot_post_save_png <- gcheckbox("png", cont = grp_post_name); assign("plot_post_
 grp_pairs <- ggroup(cont=grp_output, horizontal=T)
 lbl_pairs <- glabel("Pairs Plot", cont = grp_pairs, expand=T)
 grp_pairs_opt <- ggroup(cont = grp_pairs, horizontal=F)
-sup_pairs <- gcheckbox("Suppress plot output", cont = grp_pairs_opt); assign("sup_pairs",sup_pairs,envir=mixsiar);
+# sup_pairs <- gcheckbox("Suppress plot output", cont = grp_pairs_opt); assign("sup_pairs",sup_pairs,envir=mixsiar);
 grp_pairs_name <- ggroup(cont = grp_pairs_opt, horizontal=T, expand=T)
 plot_pairs_lbl <- glabel("Save plot as:", cont = grp_pairs_name)
 plot_pairs_name <- gedit("pairs_plot", width=20, cont = grp_pairs_name); assign("plot_pairs_name",plot_pairs_name,envir=mixsiar);
@@ -203,7 +252,7 @@ plot_pairs_save_png <- gcheckbox("png", cont = grp_pairs_name); assign("plot_pai
 grp_xy <- ggroup(cont=grp_output, horizontal=T)
 lbl_xy <- glabel("XY Plot", cont = grp_xy, expand=T)
 grp_xy_opt <- ggroup(cont = grp_xy, horizontal=F)
-sup_xy <- gcheckbox("Suppress plot output", cont = grp_xy_opt); assign("sup_xy",sup_xy,envir=mixsiar);
+# sup_xy <- gcheckbox("Suppress plot output", cont = grp_xy_opt); assign("sup_xy",sup_xy,envir=mixsiar);
 grp_xy_name <- ggroup(cont = grp_xy_opt, horizontal=T, expand=T)
 plot_xy_lbl <- glabel("Save plot as:", cont = grp_xy_name); assign("plot_xy_lbl",plot_xy_lbl,envir=mixsiar);
 plot_xy_name <- gedit("xy_plot", width=20, cont = grp_xy_name); assign("plot_xy_name",plot_xy_name,envir=mixsiar);
@@ -253,13 +302,16 @@ output_button <- gbutton(text="Process output", cont=grp_output, expand=TRUE,
   handler = function(h, ...){
     output_options <- list(svalue(mixsiar$summary_save),     # Save the summary statistics as a txt file?
                     svalue(mixsiar$summary_name),            # If yes, specify the base file name (.txt will be appended later)
-                    svalue(mixsiar$sup_post),                # Suppress posterior density plot output in R?
+                    # svalue(mixsiar$sup_post),                # Suppress posterior density plot output in R?
+                    FALSE,
                     svalue(mixsiar$plot_post_save_pdf),      # Save posterior density plots as pdfs?
                     svalue(mixsiar$plot_post_name),          # If yes, specify the base file name(s) (.pdf/.png will be appended later)
-                    svalue(mixsiar$sup_pairs),               # Suppress pairs plot output in R?
+                    # svalue(mixsiar$sup_pairs),               # Suppress pairs plot output in R?
+                    FALSE,
                     svalue(mixsiar$plot_pairs_save_pdf),     # Save pairs plot as pdf?
                     svalue(mixsiar$plot_pairs_name),         # If yes, specify the base file name (.pdf/.png will be appended later)
-                    svalue(mixsiar$sup_xy),                  # Suppress xy/trace plot output in R?
+                    # svalue(mixsiar$sup_xy),                  # Suppress xy/trace plot output in R?
+                    FALSE,
                     svalue(mixsiar$plot_xy_save_pdf),        # Save xy/trace plot as pdf?
                     svalue(mixsiar$plot_xy_name),            # If yes, specify the base file name (.pdf/.png will be appended later)
                     svalue(mixsiar$gelman),                  # Calculate Gelman-Rubin diagnostic test?
