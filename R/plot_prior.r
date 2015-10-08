@@ -11,7 +11,7 @@
 #   DARK GREY = "uninformative"/generalist (alpha = 1)
 #   LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
 
-plot_prior <- function(alpha.prior = 1,source){
+plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=FALSE, filename="prior_plot"){
 	n.sources <- source$n.sources
 	if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
 	if(length(alpha.prior)==1) alpha = rep(alpha.prior,n.sources) # All sources have same value
@@ -41,4 +41,37 @@ plot_prior <- function(alpha.prior = 1,source){
 	plot.new()
 	legend(x="center", ncol=2,legend=c(paste0("Your prior: ",alpha_lab),paste0("\"Uninformative\" prior",alpha.unif_lab)),
 	       fill=c("red","darkgrey"),bty = "n",cex=1.5)
+
+	if(plot_save_pdf==TRUE){
+		mypath <- file.path(paste(getwd(),"/",filename,".pdf",sep=""))
+		cairo_pdf(filename=mypath, width=7, height=7)
+		layout(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), heights=c(rep(3,n.sources),2))
+		par(mai=rep(0.3,4))
+		for(i in 1:n.sources){
+			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+		}
+
+		par(mai=c(0,0,0,0))
+		plot.new()
+		legend(x="center", ncol=2,legend=c(paste0("Your prior: ",alpha_lab),paste0("\"Uninformative\" prior",alpha.unif_lab)),
+		       fill=c("red","darkgrey"),bty = "n",cex=1.5)
+		dev.off()
+	}
+	if(plot_save_png==TRUE){
+		mypath <- file.path(paste(getwd(),"/",filename,".png",sep=""))
+		png(filename=mypath)
+		layout(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), heights=c(rep(3,n.sources),2))
+		par(mai=rep(0.3,4))
+		for(i in 1:n.sources){
+			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+		}
+
+		par(mai=c(0,0,0,0))
+		plot.new()
+		legend(x="center", ncol=2,legend=c(paste0("Your prior: ",alpha_lab),paste0("\"Uninformative\" prior",alpha.unif_lab)),
+		       fill=c("red","darkgrey"),bty = "n",cex=1.5)
+		dev.off()
+	}
 }

@@ -199,7 +199,7 @@ plot_button <- gbutton(
       stop(paste("*** Error: Length of your prior does not match the  
         number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
     svalue(mixsiar$status_bar) <- "Success. Your prior is in RED, uninformative/generalist is DARK GREY"
-    plot_prior(alpha.prior,mixsiar$source)
+    plot_prior(alpha.prior,mixsiar$source,svalue(plot_save_pdf_prior),svalue(plot_save_png_prior),svalue(plot_filename_prior))
   }
 )
 

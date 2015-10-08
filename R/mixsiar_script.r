@@ -163,7 +163,7 @@ write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
 kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
 kw.alpha[which(kw.alpha==0)] <- 0.001 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .001)
-plot_prior(alpha.prior=kw.alpha,source)
+plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
 
 #####################################################################################
 # Run model
