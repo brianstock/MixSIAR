@@ -11,6 +11,7 @@ require(MASS)
 require(RColorBrewer)
 require(reshape)
 require(lattice)
+require(compositions) # need rdirichlet function to establish initial values for each chain 
 
 # Next we clean up the workspace
 rm(list=ls()) 	# deletes everything previously in the workspace

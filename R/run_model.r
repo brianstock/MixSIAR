@@ -111,10 +111,16 @@ run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
   #   jags.params <- c(jags.params,"mix.var")
   # }
 
+  # Set initial values for p.global different for each chain
+  jags.inits <- function(){list(p.global=rdirichlet(alpha))}
+    
+  # jags.inits <- function(){list(p.global=rdirichlet(alpha),fac1.sig=runif(1,min=0,max=20),fac2.sig=runif(1,min=0,max=20))}
+  # ilr.cont1=runif(1,min=-2,max=2)
+
   #############################################################################
   # Call JAGS
   #############################################################################
-  jags.1 <- jags(jags.data, parameters.to.save = jags.params, model.file = model_filename,
+  jags.1 <- jags(jags.data, inits=jags.inits, parameters.to.save = jags.params, model.file = model_filename,
                 n.chains = mcmc$chains, n.burnin = mcmc$burn, n.thin = mcmc$thin,
                 n.iter = mcmc$chainLength, DIC = mcmc$calcDIC)
   return(jags.1)
