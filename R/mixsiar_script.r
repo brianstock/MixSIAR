@@ -43,7 +43,7 @@ source("plot_prior.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
 # mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
@@ -61,7 +61,7 @@ source("plot_prior.r")
 # mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # killer whale - salmon example
-mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -74,7 +74,7 @@ mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d1
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
 # source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
@@ -92,7 +92,7 @@ mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d1
 # source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # killer whale - salmon example
-source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 #####################################################################################
 # Load discrimination data, i.e. your:
@@ -102,7 +102,7 @@ source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NU
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
+discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # Lake example
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
@@ -120,7 +120,7 @@ source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NU
 # discr <- load_discr_data(filename="13_discrimination.csv", mix) 
 
 # killer whale - salmon example
-discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
 
 #####################################################################################
 # Make isospace plot
@@ -160,10 +160,10 @@ write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 
 # Killer whale example with INFORMATIVE prior (construct alpha from fecal data)
 #   Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources.
-kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
-kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
-kw.alpha[which(kw.alpha==0)] <- 0.001 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .001)
-plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
+# kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
+# kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
+# kw.alpha[which(kw.alpha==0)] <- 0.001 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .001)
+# plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
 
 #####################################################################################
 # Run model
