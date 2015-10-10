@@ -512,7 +512,7 @@ cat("
 ", file=filename, append=T)
     if(source$by_factor){ # source$by_factor = TRUE, include process error as:
 cat("
-          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[src,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[src,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
     } else {  # source$by_factor = FALSE, include process error as:
 cat("
           Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[,i,j],p2[ind,]);", file=filename, append=T)
