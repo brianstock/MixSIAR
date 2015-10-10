@@ -13,7 +13,7 @@
 #        model_filename   name of the JAGS model file (created by 'write_JAGS_model.r')
 # Output: jags.1, a rjags model object
 
-run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
+run_model <- function(run,mix,source,discr,model_filename,alpha.prior = 1,resid_err=FALSE){
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
   if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
@@ -102,7 +102,8 @@ run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
   frac_mu <- discr$mu
   frac_sig2 <- discr$sig2
   # Always pass JAGS the following data:
-  all.data <- c("X_iso", "N", "n.sources", "n.iso", "alpha", "frac_mu", "frac_sig2", "e", "cross", "tmp.p")
+  # all.data <- c("X_iso", "N", "n.sources", "n.iso", "alpha", "frac_mu", "frac_sig2", "e", "cross", "tmp.p")
+  all.data <- c("X_iso", "N", "n.sources", "n.iso", "alpha", "frac_mu", "e", "cross", "tmp.p")
   jags.data <- c(all.data, f.data, s.data, c.data)
   # if(resid_err){
   #   jags.params <- c(jags.params,"var.resid")
@@ -110,6 +111,15 @@ run_model <- function(run,mix,source,discr,model_filename, alpha.prior = 1){
   # if(process_err){
   #   jags.params <- c(jags.params,"mix.var")
   # }
+
+  # Error structure objects
+  I <- diag(n.iso)
+  J <- matrix(1,n.iso,n.iso)
+  if(resid_err || source$data_type=="raw"){jags.data <- c(jags.data,"I")}
+  if(!resid_err){
+    jags.data <- c(jags.data,"frac_sig2")
+    jags.params <- c(jags.params,"resid.prop")
+  }
 
   # Set initial values for p.global different for each chain
   jags.inits <- function(){list(p.global=rdirichlet(alpha))}

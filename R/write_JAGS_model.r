@@ -83,17 +83,15 @@ cat("
     for(f1 in 1:source_factor_levels){
       for(iso in 1:n.iso){
         src_mu[src,iso,f1] ~ dnorm(0,.001)
-        src_tau[src,iso,f1] ~ dgamma(.001,.001)
       }
+      src_Sigma[src,f1,,] ~ dwish(I,n.iso+1)
     }
   }
   # each source data point is distributed normally according to the source means and precisions
   for(src in 1:n.sources){
     for(f1 in 1:source_factor_levels){
       for(r in 1:n.rep[src,f1]){
-        for(iso in 1:n.iso){
-          SOURCE_array[src,iso,f1,r] ~ dnorm(src_mu[src,iso,f1],src_tau[src,iso,f1])
-        }
+          SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma[src,f1,,])
       } 
     }
   }
@@ -104,21 +102,38 @@ if(source$data_type=="raw" && source$by_factor==FALSE){  # fit the source means 
 cat("
   # uninformed priors on source means and precisions
   for(src in 1:n.sources){
-      for(iso in 1:n.iso){
-        src_mu[src,iso] ~ dnorm(0,.001)
-        src_tau[src,iso] ~ dgamma(.001,.001)
-      }
+    for(iso in 1:n.iso){
+      src_mu[src,iso] ~ dnorm(0,.001)
+    }
+    src_Sigma[src,,] ~ dwish(I,n.iso+1)
   }
   # each source data point is distributed normally according to the source means and precisions
   for(src in 1:n.sources){
-      for(r in 1:n.rep[src]){
-        for(iso in 1:n.iso){
-          SOURCE_array[src,iso,r] ~ dnorm(src_mu[src,iso],src_tau[src,iso])
-        }
-      } 
+    for(r in 1:n.rep[src]){
+      SOURCE_array[src,,r] ~ dmnorm(src_mu[src,],src_Sigma[src,,])
+    } 
   }
 ", file=filename, append=T)  
 }
+# if(source$data_type=="raw" && source$by_factor==FALSE){  # fit the source means and precisions (not by factor 1)
+# cat("
+#   # uninformed priors on source means and precisions
+#   for(src in 1:n.sources){
+#       for(iso in 1:n.iso){
+#         src_mu[src,iso] ~ dnorm(0,.001)
+#         src_tau[src,iso] ~ dgamma(.001,.001)
+#       }
+#   }
+#   # each source data point is distributed normally according to the source means and precisions
+#   for(src in 1:n.sources){
+#       for(r in 1:n.rep[src]){
+#         for(iso in 1:n.iso){
+#           SOURCE_array[src,iso,r] ~ dnorm(src_mu[src,iso],src_tau[src,iso])
+#         }
+#       } 
+#   }
+# ", file=filename, append=T)  
+# }
 
 # Here we fit the source means and variances according to Gelman, p.79-80:
 #   u | sig2,y ~ Normal(m, sig2/n), (Eqn 3.8)
@@ -369,28 +384,6 @@ if(mix$n.effects > 1){
 } # end n.re=2 section
 
 ###############################################################################
-# resid error section
-###############################################################################
-if(resid_err_mult){
-cat("
-   # Multiplicative residual error (MixSIAR)
-    for(iso in 1:n.iso){
-      resid.prop[iso] ~ dchisqr(3);
-    }
-", file=filename, append=T)
-}
-
-if(resid_err){
-cat("
-   # Additive residual error (SIAR)
-    for(iso in 1:n.iso){
-      resid.prcsn[iso] ~ dgamma(.001,.001);
-      resid.var[iso] <- 1/resid.prcsn[iso];
-    }
-", file=filename, append=T)
-}
-
-###############################################################################
 # mix.mu section
 ###############################################################################
 cat("
@@ -413,63 +406,159 @@ if(source$by_factor==T && source$conc_dep==T){
   cat("  
          mix.mu[iso,i] <- inprod(src_mu[,iso],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
 }
+cat("
+      }
+   }
+", file=filename, append=T)
 
 ################################################################################
 # mix.prcsn section (error terms)
 ################################################################################
 
-# Add process/MixSIR error (define mix.var or set equal to 0)
-if(process_err){ # if process_err = TRUE, there are two varieties of mix.var (source$by_factor = T/F)
-  if(source$by_factor){ # source$by_factor = TRUE, include process error as:
+# # Add process/MixSIR error (define mix.var or set equal to 0)
+# if(process_err){ # if process_err = TRUE, there are two varieties of mix.var (source$by_factor = T/F)
+#   if(source$by_factor){ # source$by_factor = TRUE, include process error as:
+# cat("
+#          process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
+#   } else {  # source$by_factor = FALSE, include process error as:
+# cat("
+#          process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)  
+#   } # end if/else(source$by_factor)
+# } else {  # process_err = FALSE, set process.var[iso,i] = 0:
+# cat("
+#          process.var[iso,i] <- 0;", file=filename, append=T)
+# } # end if/else(process_err)
+
+# # Calculate total variance (mix.var)
+# if(resid_err){ # resid_err==TRUE
+# cat("
+#          mix.var[iso,i] <- process.var[iso,i] + resid.var[iso];
+#          mix.prcsn[iso,i] <- 1/mix.var[iso,i];
+#       }
+#    }
+# ", file=filename, append=T)
+# } else { # resid_err==FALSE
+#   if(resid_err_mult){
+# cat("
+#          mix.var[iso,i] <- process.var[iso,i] * resid.prop[iso];
+#          mix.prcsn[iso,i] <- 1/mix.var[iso,i];
+#       }
+#    }
+# ", file=filename, append=T)
+#   } else {  # resid_err==FALSE AND resid_err_mult==FALSE (process_err only = MixSIR)
+# cat("
+#          mix.var[iso,i] <- process.var[iso,i];
+#          mix.prcsn[iso,i] <- 1/mix.var[iso,i];
+#       }
+#    }
+# ", file=filename, append=T)
+#   }
+# } # end resid_err==FALSE
+
+###############################################################################
+# Error structure section
+###############################################################################
+if(!resid_err){
+  cat("
+    # Multiplicative residual error
+    for(iso in 1:n.iso){
+      resid.prop[iso] ~ dchisqr(3);
+    }
+", file=filename, append=T)
+
+  if(source$data_type=="means"){
+cat("
+    
+   # Calculate process variance for each isotope and population
+   for(iso in 1:n.iso) {
+      for(i in 1:N) {
+", file=filename, append=T)
+    if(source$by_factor){ # source$by_factor = TRUE, include process error as:
 cat("
          process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
-  } else {  # source$by_factor = FALSE, include process error as:
+    } else {  # source$by_factor = FALSE, include process error as:
 cat("
          process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)  
-  } # end if/else(source$by_factor)
-} else {  # process_err = FALSE, set process.var[iso,i] = 0:
+    }
 cat("
-         process.var[iso,i] <- 0;", file=filename, append=T)
-} # end if/else(process_err)
+      }
+   }
 
-# Calculate total variance (mix.var)
-if(resid_err){ # resid_err==TRUE
-cat("
-         mix.var[iso,i] <- process.var[iso,i] + resid.var[iso];
-         mix.prcsn[iso,i] <- 1/mix.var[iso,i];
+   # Construct Sigma, the mix covariance matrix
+   for(ind in 1:N){
+      for(i in 1:n.iso){
+        for(j in 1:n.iso){
+          Sigma.ind[ind,i,j] <- resid.prop[i]*process.var[i,ind]*equals(i,j);
+        }
       }
    }
+
+   # Likelihood
+   for(i in 1:N) {
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+   }
+} # end model
+
 ", file=filename, append=T)
-} else { # resid_err==FALSE
-  if(resid_err_mult){
+  } # end source$data_type=="means"
+
+  if(source$data_type=="raw"){
 cat("
-         mix.var[iso,i] <- process.var[iso,i] * resid.prop[iso];
-         mix.prcsn[iso,i] <- 1/mix.var[iso,i];
+    
+   # Construct Sigma, the mix covariance matrix
+   for(ind in 1:N){
+      for(i in 1:n.iso){
+        for(j in 1:n.iso){
+", file=filename, append=T)
+    if(source$by_factor){ # source$by_factor = TRUE, include process error as:
+cat("
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[src,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[src,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
+    } else {  # source$by_factor = FALSE, include process error as:
+cat("
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[,i,j],p2[ind,]);", file=filename, append=T)
+    }
+cat("          
+        }
       }
    }
-", file=filename, append=T)
-  } else {  # resid_err==FALSE AND resid_err_mult==FALSE (process_err only = MixSIR)
-cat("
-         mix.var[iso,i] <- process.var[iso,i];
-         mix.prcsn[iso,i] <- 1/mix.var[iso,i];
-      }
+
+   # Likelihood
+   for(i in 1:N) {
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
    }
+} # end model
+
 ", file=filename, append=T)
-  }
-} # end resid_err==FALSE
+  } # end source$data_type=="raw"
+} # end multiplicative residual error section
+
+
+if(resid_err){
+cat("
+   # Mixture covariance prior (residual error only model)
+   Sigma ~ dwish(I,n.iso+1)
+
+   # Likelihood
+   for(i in 1:N) {
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma);
+   }
+} # end model
+
+", file=filename, append=T)
+}
 
 ################################################################################
 # Likelihood
 ################################################################################
-cat("
-   # This section does the likelihood / posterior, N data points
-   for(i in 1:N) {
-      for(iso in 1:n.iso) {
-         X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
-      }
-   }
-}
+# cat("
+#    # This section does the likelihood / posterior, N data points
+#    for(i in 1:N) {
+#       for(iso in 1:n.iso) {
+#          X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
+#       }
+#    }
+# }
 
 
-", file=filename, append=T)
+# ", file=filename, append=T)
 } # end function write_JAGS_model
