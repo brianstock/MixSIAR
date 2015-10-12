@@ -67,6 +67,17 @@ cat(paste("# process_err: ",process_err,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
 cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T)
+
+if(source$data_type=="raw" && source$by_factor==FALSE){
+cat("
+
+var src_Sigma.inv[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma.ind.inv[N,n.iso,n.iso];", file=filename, append=T)  
+}
+if(source$data_type=="raw" && source$by_factor==TRUE){
+cat("
+
+var src_Sigma.inv[n.sources,source_factor_levels,n.iso,n.iso]];", file=filename, append=T)  
+}
 cat("
 
 model{", file=filename, append=T)
@@ -82,16 +93,17 @@ cat("
   for(src in 1:n.sources){
     for(f1 in 1:source_factor_levels){
       for(iso in 1:n.iso){
-        src_mu[src,iso,f1] ~ dnorm(0,.001)
+        src_mu[src,iso,f1] ~ dnorm(0,.001);
       }
-      src_Sigma[src,f1,,] ~ dwish(I,n.iso+1)
+      src_Sigma.inv[src,f1,,] ~ dwish(I,n.iso+1);
+      src_Sigma[src,f1,,] <- inverse(src_Sigma.inv[src,f1,,]);
     }
   }
   # each source data point is distributed normally according to the source means and precisions
   for(src in 1:n.sources){
     for(f1 in 1:source_factor_levels){
       for(r in 1:n.rep[src,f1]){
-          SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma[src,f1,,])
+        SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma.inv[src,f1,,]);
       } 
     }
   }
@@ -103,14 +115,15 @@ cat("
   # uninformed priors on source means and precisions
   for(src in 1:n.sources){
     for(iso in 1:n.iso){
-      src_mu[src,iso] ~ dnorm(0,.001)
+      src_mu[src,iso] ~ dnorm(0,.001);
     }
-    src_Sigma[src,,] ~ dwish(I,n.iso+1)
+    src_Sigma.inv[src,,] ~ dwish(I,n.iso+1);
+    src_Sigma[src,,] <- inverse(src_Sigma.inv[src,,]);
   }
   # each source data point is distributed normally according to the source means and precisions
   for(src in 1:n.sources){
     for(r in 1:n.rep[src]){
-      SOURCE_array[src,,r] ~ dmnorm(src_mu[src,],src_Sigma[src,,])
+      SOURCE_array[src,,r] ~ dmnorm(src_mu[src,],src_Sigma.inv[src,,]);
     } 
   }
 ", file=filename, append=T)  
@@ -484,11 +497,11 @@ cat("
       }
    }
 
-   # Construct Sigma, the mix covariance matrix
+   # Construct Sigma, the mixture precision matrix
    for(ind in 1:N){
       for(i in 1:n.iso){
         for(j in 1:n.iso){
-          Sigma.ind[ind,i,j] <- resid.prop[i]*process.var[i,ind]*equals(i,j);
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]/process.var[i,ind];
         }
       }
    }
@@ -505,26 +518,27 @@ cat("
   if(source$data_type=="raw"){
 cat("
     
-   # Construct Sigma, the mix covariance matrix
+   # Construct Sigma.ind (mix covariance) and Sigma.ind.inv (mix precision) matrices
    for(ind in 1:N){
       for(i in 1:n.iso){
         for(j in 1:n.iso){
 ", file=filename, append=T)
     if(source$by_factor){ # source$by_factor = TRUE, include process error as:
 cat("
-          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_Sigma[,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_Sigma[,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
     } else {  # source$by_factor = FALSE, include process error as:
 cat("
-          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(1/src_Sigma[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(1/src_Sigma[,i,j],p2[ind,]);", file=filename, append=T)
+          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_Sigma[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_Sigma[,i,j],p2[ind,]);", file=filename, append=T)
     }
 cat("          
         }
       }
+      Sigma.ind.inv[ind,,] <- inverse(Sigma.ind[ind,,]);
    }
 
    # Likelihood
    for(i in 1:N) {
-     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind.inv[i,,]);
    }
 } # end model
 
@@ -536,7 +550,7 @@ cat("
 if(resid_err){
 cat("
    # Mixture covariance prior (residual error only model)
-   Sigma ~ dwish(I,n.iso+1)
+   Sigma ~ dwish(I,n.iso+1);
 
    # Likelihood
    for(i in 1:N) {
