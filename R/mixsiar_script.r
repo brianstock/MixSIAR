@@ -134,6 +134,11 @@ discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 
+# If 2 isotopes/tracers, calculate the normalized surface area of the convex hull polygon(s)
+#   Note that the discrimination SD is added to the source SD (see calc_area.r for details)
+#   If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)
+if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+
 #####################################################################################
 # Write JAGS model file
 # Model will be saved as 'model_filename' ("MixSIAR_model.txt" is default, but may want to change if in a loop)
