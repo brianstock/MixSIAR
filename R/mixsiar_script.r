@@ -27,6 +27,7 @@ source("run_model.r")
 source("output_JAGS.r")
 source("plot_continuous_var.r")
 source("plot_prior.r")
+source("calc_area.r")
 
 #####################################################################################
 # Load mixture data, i.e. your:
@@ -43,7 +44,7 @@ source("plot_prior.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
+# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
 # mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
@@ -63,6 +64,9 @@ mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","
 # killer whale - salmon example
 # mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
+# Isopod example (8 fatty acids)
+mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+
 #####################################################################################
 # Load source data, i.e. your:
 #	Source isotope values (trophic ecology / diet)
@@ -74,7 +78,7 @@ mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
 # source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
@@ -94,6 +98,9 @@ source <- load_source_data(filename="wolves_sources.csv", source_factors="Region
 # killer whale - salmon example
 # source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
+# Isopod example
+source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+
 #####################################################################################
 # Load discrimination data, i.e. your:
 #	Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology / diet)
@@ -102,7 +109,7 @@ source <- load_source_data(filename="wolves_sources.csv", source_factors="Region
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
+# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # Lake example
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
@@ -121,6 +128,9 @@ discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # killer whale - salmon example
 # discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+
+# Isopod example
+discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
 
 #####################################################################################
 # Make isospace plot
@@ -146,7 +156,7 @@ if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 # 'model_filename' - don't need to change, unless you are creating many different model files
 # 'resid_err' - TRUE or FALSE, do you want to include residual error in the model (FALSE = MixSIR, TRUE = SIAR)?
 
-# Wolves, Killer whale examples
+# Wolves, Killer whale, Isopod examples
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 
