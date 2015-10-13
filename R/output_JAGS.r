@@ -82,8 +82,11 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
     if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
     if(n.re==1){
-      if(mix$FAC[[1]]$re) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-      if(mix$FAC[[2]]$re) print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(mix$FAC[[1]]$re){
+        print(lattice::xyplot(as.mcmc(cbind(fac1.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      } else { # FAC 2 is the 1 random effect
+        print(lattice::xyplot(as.mcmc(cbind(fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      }
     }
     if(n.re==0) print(lattice::xyplot(as.mcmc(ind.sig),strip=strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
@@ -93,8 +96,11 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
       if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
       if(n.re==1){
-        if(mix$FAC[[1]]$re) print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
-        if(mix$FAC[[2]]$re) print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        if(mix$FAC[[1]]$re){
+          print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        } else { # FAC 2 is the 1 random effect
+          print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        }
       }
     }
   }
@@ -269,8 +275,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       if(mix$FAC[[1]]$re){
         level <- c(level,rep(paste(mix$FAC[[1]]$name," SD",sep=""),n.draws))
         x <- c(x,fac1.sig)
-      }
-      if(mix$FAC[[2]]$re){
+      } else { # FAC 2 is the random effect
         level <- c(level,rep(paste(mix$FAC[[2]]$name," SD",sep=""),n.draws))
         x <- c(x,fac2.sig)
       }

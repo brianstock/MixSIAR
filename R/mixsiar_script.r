@@ -14,8 +14,8 @@ require(lattice)
 require(compositions) # need rdirichlet function to establish initial values for each chain 
 
 # Next we clean up the workspace
-rm(list=ls()) 	# deletes everything previously in the workspace
-runif(1)		# generates one random number (else JAGS can complain)
+rm(list=ls())  # deletes everything previously in the workspace
+runif(1)       # generates one random number (else JAGS can complain)
 
 # Load all MixSIAR functions into the workspace
 source("load_mix_data_script.r")
@@ -27,11 +27,12 @@ source("run_model.r")
 source("output_JAGS.r")
 source("plot_continuous_var.r")
 source("plot_prior.r")
+source("calc_area.r")
 
 #####################################################################################
 # Load mixture data, i.e. your:
-#	Consumer isotope values (trophic ecology / diet)
-#	Mixed sediment/water tracer values (sediment/hydrology fingerprinting)
+#    Consumer isotope values (trophic ecology / diet)
+#    Mixed sediment/water tracer values (sediment/hydrology fingerprinting)
 
 # 'filename' - name of the CSV file with mix/consumer data
 # 'iso_names' - column headings of the tracers/isotopes you'd like to use
@@ -52,7 +53,7 @@ source("plot_prior.r")
 # mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Palmyra example (fixed effect)
-mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Storm-petrel example (fixed effect)
 # mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
@@ -63,10 +64,13 @@ mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C",
 # killer whale - salmon example
 # mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
+# Isopod example (8 fatty acids)
+mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+
 #####################################################################################
 # Load source data, i.e. your:
-#	Source isotope values (trophic ecology / diet)
-#	Sediment/water source tracer values (sediment/hydrology fingerprinting)
+#    Source isotope values (trophic ecology / diet)
+#    Sediment/water source tracer values (sediment/hydrology fingerprinting)
 
 # 'filename' - name of the CSV file with source data
 # 'source_factors' - column headings of random/fixed effects you have source data by
@@ -83,7 +87,7 @@ mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C",
 # source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
 
 # Palmyra example
-source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # Storm-petrel example
 # source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
@@ -94,10 +98,13 @@ source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, 
 # killer whale - salmon example
 # source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
+# Isopod example
+source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+
 #####################################################################################
 # Load discrimination data, i.e. your:
-#	Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology / diet)
-#	xxxxxxxx (sediment/hydrology fingerprinting)
+#    Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology / diet)
+#    xxxxxxxx (sediment/hydrology fingerprinting)
 
 # 'filename' - name of the CSV file with discrimination data
 
@@ -111,7 +118,7 @@ source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, 
 # discr <- load_discr_data(filename="geese_discrimination.csv", mix)
 
 # Palmyra example
-discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
+# discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 
 # Storm-petrel example
 # discr <- load_discr_data(filename="7_discrimination.csv", mix) 
@@ -121,6 +128,9 @@ discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 
 # killer whale - salmon example
 # discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+
+# Isopod example
+discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
 
 #####################################################################################
 # Make isospace plot
@@ -134,20 +144,25 @@ discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 
 plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 
+# If 2 isotopes/tracers, calculate the normalized surface area of the convex hull polygon(s)
+#   Note that the discrimination SD is added to the source SD (see calc_area.r for details)
+#   If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)
+if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+
 #####################################################################################
 # Write JAGS model file
 # Model will be saved as 'model_filename' ("MixSIAR_model.txt" is default, but may want to change if in a loop)
+
 # 'model_filename' - don't need to change, unless you are creating many different model files
 # 'resid_err' - TRUE or FALSE, do you want to include residual error in the model (FALSE = MixSIR, TRUE = SIAR)?
-model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 
-# Wolves, Killer whale examples
-# resid_err <- TRUE
-# write_JAGS_model(model_filename, resid_err, mix,source)
+# Wolves, Killer whale, Isopod examples
+model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 
 # Geese, Palmyra, Lake, Storm-petrel, 1-iso examples
-resid_err <- FALSE
-write_JAGS_model(model_filename, resid_err, mix,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# write_JAGS_model(model_filename, resid_err=TRUE, mix,source)
 
 #####################################################################################
 # Define your prior, and then plot using "plot_prior"
@@ -170,19 +185,19 @@ write_JAGS_model(model_filename, resid_err, mix,source)
 # JAGS output will be saved as 'jags.1'
 
 # MCMC run options:
-# run <- "test"       	# list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
-# run <- "very short" 	# list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
-# run <- "short"     	# list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
-# run <- "normal"      	# list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
-# run <- "long"  		# list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
-# run <- "very long" 	# list(chainLength=1000000, burn=700000, thin=300, chains=3, calcDIC=TRUE)
-# run <- "extreme"    	# list(chainLength=3000000, burn=2700000, thin=300, chains=3, calcDIC=TRUE)
+# run <- "test"          # list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
+# run <- "very short"    # list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
+# run <- "short"         # list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
+# run <- "normal"        # list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
+# run <- "long"          # list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
+# run <- "very long"     # list(chainLength=1000000, burn=700000, thin=300, chains=3, calcDIC=TRUE)
+# run <- "extreme"       # list(chainLength=3000000, burn=2700000, thin=300, chains=3, calcDIC=TRUE)
 
 # Can also set custom MCMC parameters
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-jags.1 <- run_model(run="test", mix,source,discr,model_filename,alpha.prior=1,resid_err)
+jags.1 <- run_model(run="test", mix,source,discr,model_filename)
 
 # Wolves, Palmyra, Geese examples
 # jags.1 <- run_model(run="short",mix,source,discr,model_filename)
