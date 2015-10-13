@@ -53,7 +53,7 @@ source("calc_area.r")
 # mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Palmyra example (fixed effect)
-# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Storm-petrel example (fixed effect)
 # mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
@@ -65,7 +65,7 @@ source("calc_area.r")
 # mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # Isopod example (8 fatty acids)
-mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -87,7 +87,7 @@ mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3
 # source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
 
 # Palmyra example
-# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # Storm-petrel example
 # source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
@@ -99,7 +99,7 @@ mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3
 # source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 # Isopod example
-source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 #####################################################################################
 # Load discrimination data, i.e. your:
@@ -118,7 +118,7 @@ source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, c
 # discr <- load_discr_data(filename="geese_discrimination.csv", mix)
 
 # Palmyra example
-# discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
+discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 
 # Storm-petrel example
 # discr <- load_discr_data(filename="7_discrimination.csv", mix) 
@@ -130,7 +130,7 @@ source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, c
 # discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
 
 # Isopod example
-discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
+# discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
 
 #####################################################################################
 # Make isospace plot
