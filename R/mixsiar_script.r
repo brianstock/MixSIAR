@@ -44,7 +44,7 @@ source("calc_area.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 # Lake example (continuous effect)
 # mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
@@ -53,7 +53,7 @@ source("calc_area.r")
 # mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Palmyra example (fixed effect)
-mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # Storm-petrel example (fixed effect)
 # mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
@@ -78,7 +78,7 @@ mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C",
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 # Lake example
 # source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
@@ -87,7 +87,7 @@ mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C",
 # source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
 
 # Palmyra example
-source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # Storm-petrel example
 # source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
@@ -109,7 +109,7 @@ source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, 
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
+discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 # Lake example
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
@@ -118,7 +118,7 @@ source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, 
 # discr <- load_discr_data(filename="geese_discrimination.csv", mix)
 
 # Palmyra example
-discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
+# discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 
 # Storm-petrel example
 # discr <- load_discr_data(filename="7_discrimination.csv", mix) 
@@ -158,7 +158,8 @@ if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 
 # Wolves, Killer whale, Isopod examples
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
+resid_err <- FALSE
+write_JAGS_model(model_filename, resid_err, mix,source)
 
 # Geese, Palmyra, Lake, Storm-petrel, 1-iso examples
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
@@ -197,19 +198,19 @@ write_JAGS_model(model_filename, resid_err=FALSE, mix,source)
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-jags.1 <- run_model(run="test", mix,source,discr,model_filename)
+jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
 
 # Wolves, Palmyra, Geese examples
-# jags.1 <- run_model(run="short",mix,source,discr,model_filename)
+# jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
 
 # Lake example
-# jags.1 <- run_model(run="normal",mix,source,discr,model_filename)
+# jags.1 <- run_model(run="normal",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
 
 # Killer whale example with UNINFORMATIVE / GENERALIST prior (alpha = 1)
-# jags.1 <- run_model(run="short",mix,source,discr,model_filename, alpha.prior=1) # alpha = 1 by default
+# jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err) # alpha = 1 by default
 
 # Killer whale example with INFORMATIVE prior (constructed kw.alpha from fecal data above)
-# jags.1 <- run_model(run="short",mix,source,discr,model_filename, alpha.prior=kw.alpha) # informative prior
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = kw.alpha,resid_err) # informative prior
 
 #####################################################################################
 # Process JAGS output

@@ -71,12 +71,12 @@ cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T
 if(source$data_type=="raw" && source$by_factor==FALSE){
 cat("
 
-var rho[n.sources,n.iso,n.iso], src_cov[n.sources,n.iso,n.iso], src_var[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)  
+var rho[n.sources,n.iso,n.iso], src_cov[n.sources,n.iso,n.iso], src_var[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)  
 }
 if(source$data_type=="raw" && source$by_factor==TRUE){
 cat("
 
-var src_Sigma.inv[n.sources,source_factor_levels,n.iso,n.iso]];", file=filename, append=T)  
+var rho[n.sources,source_factor_levels,n.iso,n.iso], src_cov[n.sources,source_factor_levels,n.iso,n.iso], src_var[n.sources,source_factor_levels,n.iso,n.iso], src_Sigma[n.sources,source_factor_levels,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)  
 }
 cat("
 
@@ -87,26 +87,71 @@ model{", file=filename, append=T)
 # Fit source means (if source$data_type=="raw")
 ################################################################################
 
-if(source$data_type=="raw" && source$by_factor==TRUE){ # fit the source means and precisions (by factor 1)
+# if(source$data_type=="raw" && source$by_factor==TRUE){ # fit the source means and precisions (by factor 1)
+# cat("
+#   # uninformed priors on source means and precisions
+#   for(src in 1:n.sources){
+#     for(f1 in 1:source_factor_levels){
+#       for(iso in 1:n.iso){
+#         src_mu[src,iso,f1] ~ dnorm(0,.001);
+#       }
+
+#     }
+#   }
+#   # each source data point is distributed normally according to the source means and precisions
+#   for(src in 1:n.sources){
+#     for(f1 in 1:source_factor_levels){
+#       for(r in 1:n.rep[src,f1]){
+#         SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma.inv[src,f1,,]);
+#       } 
+#     }
+#   }
+# ", file=filename, append=T)
+# }
+if(source$data_type=="raw" && source$by_factor==TRUE){  # fit the source means and precisions (not by factor 1)
 cat("
-  # uninformed priors on source means and precisions
+  # fit source data (big for loop over sources)
   for(src in 1:n.sources){
-    for(f1 in 1:source_factor_levels){
+    for(f1 in 1:source_factor_levels){ # fit source data from each source level separately
+      # uninformative priors on source means (src_mu vector)
       for(iso in 1:n.iso){
         src_mu[src,iso,f1] ~ dnorm(0,.001);
       }
 
-    }
-  }
-  # each source data point is distributed normally according to the source means and precisions
-  for(src in 1:n.sources){
-    for(f1 in 1:source_factor_levels){
-      for(r in 1:n.rep[src,f1]){
-        SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma.inv[src,f1,,]);
+      # uninformative priors on source variances (src_tau matrix)
+      for(i in 2:n.iso){
+        for(j in 1:(i-1)){
+          src_tau[src,f1,i,j] <- 0;
+          src_tau[src,f1,j,i] <- 0;
+        }
+      }
+      for(i in 1:n.iso){
+        src_tau[src,f1,i,i] ~ dgamma(.001,.001);
+      }
+
+      # uninformative priors on source correlations (rho matrix)
+      for(i in 2:n.iso){
+        for(j in 1:(i-1)){
+          rho[src,f1,i,j] ~ dunif(-1,1);
+          rho[src,f1,j,i] <- rho[src,f1,i,j];
+        }
+      }
+      for(i in 1:n.iso){
+        rho[src,f1,i,i] <- 1;
+      }
+
+      # Construct source precision matrix (src_Sigma)
+      src_var[src,f1,,] <- inverse(src_tau[src,f1,,]);
+      src_cov[src,f1,,] <- src_var[src,f1,,] %*% rho[src,f1,,] %*% src_var[src,f1,,];
+      src_Sigma[src,f1,,] <- inverse(src_cov[src,f1,,]);
+
+      # each source data point is distributed normally according to the source means and precisions
+      for(r in 1:n.rep[src]){
+        SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma[src,f1,,]);
       } 
-    }
-  }
-", file=filename, append=T)
+    } # end loop over f1
+  } # end source data fitting loop
+", file=filename, append=T)  
 }
 
 if(source$data_type=="raw" && source$by_factor==FALSE){  # fit the source means and precisions (not by factor 1)
@@ -152,25 +197,6 @@ cat("
   } # end source data fitting loop
 ", file=filename, append=T)  
 }
-# if(source$data_type=="raw" && source$by_factor==FALSE){  # fit the source means and precisions (not by factor 1)
-# cat("
-#   # uninformed priors on source means and precisions
-#   for(src in 1:n.sources){
-#       for(iso in 1:n.iso){
-#         src_mu[src,iso] ~ dnorm(0,.001)
-#         src_tau[src,iso] ~ dgamma(.001,.001)
-#       }
-#   }
-#   # each source data point is distributed normally according to the source means and precisions
-#   for(src in 1:n.sources){
-#       for(r in 1:n.rep[src]){
-#         for(iso in 1:n.iso){
-#           SOURCE_array[src,iso,r] ~ dnorm(src_mu[src,iso],src_tau[src,iso])
-#         }
-#       } 
-#   }
-# ", file=filename, append=T)  
-# }
 
 # Here we fit the source means and variances according to Gelman, p.79-80:
 #   u | sig2,y ~ Normal(m, sig2/n), (Eqn 3.8)
@@ -499,7 +525,7 @@ if(!resid_err){
   cat("
     # Multiplicative residual error
     for(iso in 1:n.iso){
-      resid.prop[iso] ~ dchisqr(3);
+      resid.prop[iso] ~ dchisqr(3); # dchisqr(3)
     }
 ", file=filename, append=T)
 
@@ -540,39 +566,36 @@ cat("
   } # end source$data_type=="means"
 
   if(source$data_type=="raw"){
-# cat("
-    
-#    # Construct Sigma.ind (mix covariance) and Sigma.ind.inv (mix precision) matrices
-#    for(ind in 1:N){
-#       for(i in 1:n.iso){
-#         for(j in 1:n.iso){
-# ", file=filename, append=T)
-#     if(source$by_factor){ # source$by_factor = TRUE, include process error as:
-# cat("
-#           Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_Sigma[,Factor.1[ind],,],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_Sigma[,Factor.1[ind],,],p2[ind,]);", file=filename, append=T)
-#     } else {  # source$by_factor = FALSE, include process error as:
-# cat("
-#           Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_Sigma[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_Sigma[,i,j],p2[ind,]);", file=filename, append=T)
-#     }
-# cat("          
-#         }
-#       }
-#       Sigma.ind.inv[ind,,] <- inverse(Sigma.ind[ind,,]);
-#    }
 cat("
+
+  # resid.prop matrix
+  for(i in 1:n.iso){
+    for(j in 1:n.iso){
+      resid.prop.mat[i,j] <- sqrt(resid.prop[i]*resid.prop[j]);
+    }
+  }
+
   # Construct mix covariance
   for(ind in 1:N){
     for(i in 1:n.iso){
       for(j in 1:n.iso){
-        mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,i,j],p2[ind,]);
+", file=filename, append=T)
+    if(source$by_factor){ # source$by_factor = TRUE, include process error as:
+cat("
+         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,Factor.1[ind],i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,Factor.1[ind],i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)  
+    } else {  # source$by_factor = FALSE, include process error as:
+cat("
+         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)  
+    }
+cat("
       }
     }
-    Sigma[ind,,] <- inverse(mix.cov[ind,,]);
+    Sigma.ind[ind,,] <- inverse(mix.cov[ind,,]);
   }
 
    # Likelihood
   for(i in 1:N){
-    X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma[i,,]);
+    X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
   }
 } # end model
 
