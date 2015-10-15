@@ -58,9 +58,9 @@ cat(paste("# resid_err: ",resid_err,sep=""), file=filename, append=T)
 # cat("
 # ", file=filename, append=T)
 # cat(paste("# resid_err_mult: ",resid_err_mult,sep=""), file=filename, append=T)
-cat("
-", file=filename, append=T)
-cat(paste("# process_err: ",process_err,sep=""), file=filename, append=T)
+# cat("
+# ", file=filename, append=T)
+# cat(paste("# process_err: ",process_err,sep=""), file=filename, append=T)
 # cat("
 # ", file=filename, append=T)
 # cat(paste("# indiv_effect: ",indiv_effect,sep=""), file=filename, append=T)
@@ -521,11 +521,11 @@ cat("
 ###############################################################################
 # Error structure section
 ###############################################################################
-if(!resid_err){
+if(!resid_err && (mix$N > 1)){
   cat("
     # Multiplicative residual error
     for(iso in 1:n.iso){
-      resid.prop[iso] ~ dchisqr(3); # dchisqr(3)
+      resid.prop[iso] ~ dchisqr(3);
     }
 ", file=filename, append=T)
 
@@ -604,7 +604,7 @@ cat("
 } # end multiplicative residual error section
 
 
-if(resid_err){
+if(resid_err && (mix$N > 1)){
 cat("
    # Mixture covariance prior (residual error only model)
    Sigma ~ dwish(I,n.iso+1);
@@ -617,6 +617,10 @@ cat("
 
 ", file=filename, append=T)
 }
+
+# if(mix$N == 1){ # If only one datapoint, must fit MixSIR model (no residual error terms)
+
+# }
 
 ################################################################################
 # Likelihood
