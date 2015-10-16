@@ -24,14 +24,33 @@
 
 # Output: JAGS model text file saved to working directory as 'filename' (default is "MixSIAR_model.txt")
 
-write_JAGS_model <- function(filename, resid_err, mix,source){
-process_err <- TRUE
-resid_err_mult <- FALSE
-  if(!resid_err && !process_err){
-    stop(paste("Neither residual nor process error selected.
-  Choose one (or both) of the error terms in Model Error
-  Options (top-right corner), and try again.",sep=""))
-  }
+write_JAGS_model <- function(filename, resid_err, process_err, mix, source){
+if(!process_err && !resid_err){
+  stop(paste("Invalid error structure, must choose one of:
+  1. Residual * Process (resid_err=TRUE, process_err=TRUE)
+  2. Residual only (resid_err=TRUE, process_err=FALSE)
+  3. Process only (resid_err=FALSE, process_err=TRUE)",sep=""))
+}
+if(resid_err && !process_err){
+  err_model <- "Residual only"
+  err <- "resid"
+}
+if(process_err && !resid_err){
+  err_model <- "Process only (MixSIR, for N = 1)"
+  err <- "process"
+}
+if(resid_err && process_err){
+  err_model <- "Residual * Process"
+  err <- "mult"
+}
+if(mix$N==1 && err!="process"){
+  stop(paste("Invalid error structure. If N=1 mix datapoint,
+  must choose Process only error model (MixSIR).
+  Set resid_err=FALSE and process_err=TRUE.",sep=""))}
+if(mix$n.fe==1 && mix$N==mix$FAC[[1]]$levels && err!="process"){
+  stop(paste("Invalid error structure. If fitting each individual
+  mix datapoint separately, must choose Process only error model (MixSIR).
+  Set resid_err=FALSE and process_err=TRUE.",sep=""))}
 
 cat(paste("# source$data_type: ",source$data_type,sep=""), file=filename)
 cat("
@@ -54,16 +73,7 @@ cat("
 cat(paste("# continuous effects: ",mix$n.ce,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
-cat(paste("# resid_err: ",resid_err,sep=""), file=filename, append=T)
-# cat("
-# ", file=filename, append=T)
-# cat(paste("# resid_err_mult: ",resid_err_mult,sep=""), file=filename, append=T)
-# cat("
-# ", file=filename, append=T)
-# cat(paste("# process_err: ",process_err,sep=""), file=filename, append=T)
-# cat("
-# ", file=filename, append=T)
-# cat(paste("# indiv_effect: ",indiv_effect,sep=""), file=filename, append=T)
+cat(paste("# error structure: ",err_model,sep=""), file=filename, append=T)
 cat("
 ", file=filename, append=T)
 cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T)
@@ -548,7 +558,7 @@ cat("
 ###############################################################################
 # Error structure section
 ###############################################################################
-if(!resid_err && (mix$N > 1)){
+if(err=="mult"){
   cat("
     # Multiplicative residual error
     for(iso in 1:n.iso){
@@ -647,7 +657,7 @@ cat("
 } # end multiplicative residual error section
 
 # Residual error only section
-if(resid_err && (mix$N > 1) && (mix$n.iso>1)){ # > 1 iso, have covariance
+if(err=="resid" && mix$n.iso>1){ # > 1 iso, have covariance
 cat("
    # Mixture covariance prior (residual error only model)
    Sigma ~ dwish(I,n.iso+1);
@@ -660,7 +670,7 @@ cat("
 
 ", file=filename, append=T)
 }
-if(resid_err && (mix$N > 1) && mix$n.iso==1){ # if only one iso can't use dwish or dmnorm
+if(err=="resid" && mix$n.iso==1){ # if only one iso can't use dwish or dmnorm
 cat("
    # Mixture precision prior (residual error only model)
    Sigma ~ dgamma(.001,.001);
@@ -674,23 +684,29 @@ cat("
 ", file=filename, append=T)
 }
 
-# N = 1 section (must fit MixSIR error model)
-if(mix$N == 1){
-  
-}
+# MixSIR/process error section (for N = 1)
+if(err=="process"){
+cat("
+    
+  # calculate mix variance and likelihood
+  for(iso in 1:n.iso){
+    for(i in 1:N){
+", file=filename, append=T)
+    if(source$data_type=="raw"){ # source data = raw, src_tau dim = src,iso,iso
+cat("  
+      process.var[iso,i] <- inprod(1/src_tau[,iso,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T) 
+    } else { # source data = means+SD, src_tau dim = src, iso
+cat("  
+      process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)      
+    }
+cat("      
+      mix.prcsn[iso,i] <- 1/process.var[iso,i];
+      X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
+    }
+  }
+}  # end model
 
-################################################################################
-# Likelihood
-################################################################################
-# cat("
-#    # This section does the likelihood / posterior, N data points
-#    for(i in 1:N) {
-#       for(iso in 1:n.iso) {
-#          X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
-#       }
-#    }
-# }
+", file=filename, append=T)
+} # end MixSIR error section (N = 1)
 
-
-# ", file=filename, append=T)
 } # end function write_JAGS_model

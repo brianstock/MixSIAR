@@ -196,11 +196,11 @@ load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
     SOURCE_array <- NULL; n.rep <- NULL
   } # end MEANS data loading
 
-      # Error check: zero SD
-      # if(length(which(S_SIG==0))>0){
-      #   stop(paste("*** Error: Zero standard deviation.
-      #   Check your source_sds.csv data file to be sure each entry is non-zero.",sep=""))
-      # }
+  # Error check for zero SD
+  if(length(which(S_SIG==0))>0){
+    stop(paste("*** Error: You have at least one source SD = 0.
+    Check your source data file to be sure each SD entry is non-zero.",sep=""))
+  }
 
   return(list(
       n.sources = n.sources,

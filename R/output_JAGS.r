@@ -34,7 +34,27 @@
 #         prints and saves posterior density plots for random effects;
 #         calls 'plot_continuous_var' to print and save posterior density plots for continuous effects
 
-output_JAGS <- function(jags.1, mix, source, output_options){
+output_JAGS <- function(jags.1, mix, source, output_options=list(
+                                                  summary_save = TRUE,                 # Save the summary statistics as a txt file?
+                                                  summary_name = "summary_statistics",    # If yes, specify the base file name (.txt will be appended later)
+                                                  sup_post = FALSE,                       # Suppress posterior density plot output in R?
+                                                  plot_post_save_pdf = TRUE,              # Save posterior density plots as pdfs?
+                                                  plot_post_name = "posterior_density",   # If yes, specify the base file name(s) (.pdf/.png will be appended later)
+                                                  sup_pairs = FALSE,                      # Suppress pairs plot output in R?
+                                                  plot_pairs_save_pdf = TRUE,             # Save pairs plot as pdf?
+                                                  plot_pairs_name = "pairs_plot",         # If yes, specify the base file name (.pdf/.png will be appended later)
+                                                  sup_xy = FALSE,                         # Suppress xy/trace plot output in R?
+                                                  plot_xy_save_pdf = TRUE,                # Save xy/trace plot as pdf?
+                                                  plot_xy_name = "xy_plot",               # If yes, specify the base file name (.pdf/.png will be appended later)
+                                                  gelman = TRUE,                          # Calculate Gelman-Rubin diagnostic test?
+                                                  heidel = FALSE,                          # Calculate Heidelberg-Welch diagnostic test?
+                                                  geweke = TRUE,                          # Calculate Geweke diagnostic test?
+                                                  diag_save = TRUE,                       # Save the diagnostics as a txt file?
+                                                  diag_name = "diagnostics",              # If yes, specify the base file name (.txt will be appended later)
+                                                  indiv_effect = FALSE,                   # Is Individual a random effect in the model? (already specified)
+                                                  plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
+                                                  plot_pairs_save_png = FALSE,            # Save pairs plot as png?
+                                                  plot_xy_save_png = FALSE)){             # Save xy/trace plot as png?){
 mcmc.chains <- jags.1$BUGSoutput$n.chains
 N <- mix$N
 n.re <- mix$n.re

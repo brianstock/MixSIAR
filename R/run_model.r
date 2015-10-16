@@ -13,7 +13,25 @@
 #        model_filename   name of the JAGS model file (created by 'write_JAGS_model.r')
 # Output: jags.1, a rjags model object
 
-run_model <- function(run,mix,source,discr,model_filename,alpha.prior = 1,resid_err=FALSE){
+run_model <- function(run,mix,source,discr,model_filename,alpha.prior = 1,resid_err=TRUE,process_err=TRUE){
+if(!process_err && !resid_err){
+  stop(paste("Invalid error structure, must choose one of:
+  1. Residual * Process (resid_err=TRUE, process_err=TRUE)
+  2. Residual only (resid_err=TRUE, process_err=FALSE)
+  3. Process only (resid_err=FALSE, process_err=TRUE)",sep=""))
+}
+if(resid_err && !process_err) err <- "resid"
+if(process_err && !resid_err) err <- "process"
+if(resid_err && process_err) err <- "mult"
+if(mix$N==1 && err!="process"){
+  stop(paste("Invalid error structure. If N=1 mix datapoint,
+  must choose Process only error model (MixSIR).
+  Set resid_err=FALSE and process_err=TRUE.",sep=""))}
+if(mix$n.fe==1 && mix$N==mix$FAC[[1]]$levels && err!="process"){
+  stop(paste("Invalid error structure. If fitting each individual
+  mix datapoint separately, must choose Process only error model (MixSIR).
+  Set resid_err=FALSE and process_err=TRUE.",sep=""))}
+
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
   if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
@@ -114,18 +132,13 @@ run_model <- function(run,mix,source,discr,model_filename,alpha.prior = 1,resid_
 
   # Error structure objects
   I <- diag(n.iso)
-  if(resid_err && mix$n.iso>1) jags.data <- c(jags.data,"I")
-  if(!resid_err){
-    jags.data <- c(jags.data,"frac_sig2")
-    jags.params <- c(jags.params,"resid.prop")
-  }
+  if(err=="resid" && mix$n.iso>1) jags.data <- c(jags.data,"I")
+  if(err!="resid") jags.data <- c(jags.data,"frac_sig2")
+  if(err=="mult") jags.params <- c(jags.params,"resid.prop")
 
   # Set initial values for p.global different for each chain
   jags.inits <- function(){list(p.global=rdirichlet(alpha))}
     
-  # jags.inits <- function(){list(p.global=rdirichlet(alpha),fac1.sig=runif(1,min=0,max=20),fac2.sig=runif(1,min=0,max=20))}
-  # ilr.cont1=runif(1,min=-2,max=2)
-
   #############################################################################
   # Call JAGS
   #############################################################################

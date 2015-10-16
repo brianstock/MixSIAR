@@ -44,28 +44,7 @@ source("calc_area.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-# mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
-
-# Lake example (continuous effect)
-# mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
-
-# Geese example (concentration dependence)
-# mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-
-# Palmyra example (fixed effect)
-# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-
-# Storm-petrel example (fixed effect)
-# mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-
-# 1-iso example
-mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
-
-# killer whale - salmon example
-# mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
-
-# Isopod example (8 fatty acids)
-# mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -78,28 +57,7 @@ mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NUL
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-# source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
-
-# Lake example
-# source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
-
-# Geese example
-# source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
-
-# Palmyra example
-# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
-
-# Storm-petrel example
-# source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
-
-# 1-iso example
-source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
-
-# killer whale - salmon example
-# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
-
-# Isopod example
-# source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
 
 #####################################################################################
 # Load discrimination data, i.e. your:
@@ -109,28 +67,7 @@ source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_
 # 'filename' - name of the CSV file with discrimination data
 
 # Wolves example
-# discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
-
-# Lake example
-# discr <- load_discr_data(filename="lake_discrimination.csv", mix)
-
-# Geese example
-# discr <- load_discr_data(filename="geese_discrimination.csv", mix)
-
-# Palmyra example
-# discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
-
-# Storm-petrel example
-# discr <- load_discr_data(filename="7_discrimination.csv", mix) 
-
-# 1-iso example
-discr <- load_discr_data(filename="13_discrimination.csv", mix) 
-
-# killer whale - salmon example
-# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
-
-# Isopod example
-# discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
+discr <- load_discr_data(filename="wolves_discrimination.csv", mix)
 
 #####################################################################################
 # Make isospace plot
@@ -150,27 +87,6 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 
 #####################################################################################
-# Write JAGS model file
-# Model will be saved as 'model_filename' ("MixSIAR_model.txt" is default, but may want to change if in a loop)
-
-# 'model_filename' - don't need to change, unless you are creating many different model files
-# 'resid_err' - which error model to run?
-#    TRUE = residual error only model
-#    FALSE = multiplicative error model
-#  *Note: if you have only 1 mix datapoint, you have no information about the mixture/consumer variability.
-#         In this case, we ues the original MixSIR error model (which does not fit a residual error term).
-#         This is the same as 'siarsolo' in SIAR.
-
-# Wolves, Killer whale, Isopod examples
-model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-resid_err <- FALSE
-write_JAGS_model(model_filename, resid_err, mix,source)
-
-# Geese, Palmyra, Lake, Storm-petrel, 1-iso examples
-# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-# write_JAGS_model(model_filename, resid_err=TRUE, mix,source)
-
-#####################################################################################
 # Define your prior, and then plot using "plot_prior"
 #   RED = your prior
 #   DARK GREY = "uninformative"/generalist (alpha = 1)
@@ -185,6 +101,24 @@ plot_prior(alpha.prior=1,source)
 # kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
 # kw.alpha[which(kw.alpha==0)] <- 0.01 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
 # plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
+
+#####################################################################################
+# Write JAGS model file
+# Model will be saved as 'model_filename' ("MixSIAR_model.txt" is default, but may want to change if in a loop)
+
+# 'model_filename' - don't need to change, unless you are creating many different model files
+# 'resid_err' - which error model to run?
+#    TRUE = residual error only model
+#    FALSE = multiplicative error model
+#  *Note: if you have only 1 mix datapoint, you have no information about the mixture/consumer variability.
+#         In this case, we ues the original MixSIR error model (which does not fit a residual error term).
+#         This is the same as 'siarsolo' in SIAR.
+
+# Wolves example
+model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+resid_err <- TRUE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 #####################################################################################
 # Run model
@@ -203,24 +137,12 @@ plot_prior(alpha.prior=1,source)
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
-
-# Wolves, Palmyra, Geese examples
-# jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
-
-# Lake example
-# jags.1 <- run_model(run="normal",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
-
-# Killer whale example with UNINFORMATIVE / GENERALIST prior (alpha = 1)
-# jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err) # alpha = 1 by default
-
-# Killer whale example with INFORMATIVE prior (constructed kw.alpha from fecal data above)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = kw.alpha,resid_err) # informative prior
+jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
 
 #####################################################################################
 # Process JAGS output
 
-# All examples
+# Optional to change the output options (these are defaults):
 output_options <- list(summary_save = TRUE,                 # Save the summary statistics as a txt file?
                     summary_name = "summary_statistics",    # If yes, specify the base file name (.txt will be appended later)
                     sup_post = FALSE,                       # Suppress posterior density plot output in R?
@@ -243,3 +165,144 @@ output_options <- list(summary_save = TRUE,                 # Save the summary s
                     plot_xy_save_png = FALSE)               # Save xy/trace plot as png?
 output_JAGS(jags.1, mix, source, output_options)
 
+#######################################################################################
+# Other examples
+#######################################################################################
+
+#######################################################################################
+# Lake example (continuous effect)
+#######################################################################################
+# mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
+# source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# discr <- load_discr_data(filename="lake_discrimination.csv", mix)
+# plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+# if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- FALSE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+########################################################################################
+# Geese example (concentration dependence)
+########################################################################################
+# mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
+# discr <- load_discr_data(filename="geese_discrimination.csv", mix)
+# plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+# if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- FALSE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+#########################################################################################
+# Palmyra example (Taxa = fixed effect)
+#########################################################################################
+# mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
+# plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+# if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+##########################################################################################
+# Storm-petrel example (movement instead of diet, Region = fixed effect)
+##########################################################################################
+# mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
+# discr <- load_discr_data(filename="7_discrimination.csv", mix) 
+# plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+# if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- FALSE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+##########################################################################################
+# Snail example (1 isotope)
+##########################################################################################
+# mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# discr <- load_discr_data(filename="13_discrimination.csv", mix) 
+# plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+##########################################################################################
+# Killer whale example (informative prior)
+##########################################################################################
+# mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+
+# # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+# # INFORMATIVE prior (construct alpha from fecal data)
+# #  Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources.
+# kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
+# kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
+# kw.alpha[which(kw.alpha==0)] <- 0.01 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
+# plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+########################################################################################
+# Isopod example (8 fatty acids, Site = fixed effect)
+########################################################################################
+# mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"),
+#                               factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+# resid_err <- TRUE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
+
+########################################################################################
+# Cladocera example (22 fatty acids, run each consumer individually as fixed effect)
+########################################################################################
+# mix <- load_mix_data_script(filename="cladocera_consumer.csv", iso_names=c("c14.0","c16.0","c16.1w9","c16.1w7","c16.2w4","c16.3w3","c16.4w3","c17.0","c18.0","c18.1w9","c18.1w7","c18.2w6","c18.3w6","c18.3w3","c18.4w3","c18.5w3","c20.0","c22.0","c20.4w6","c20.5w3","c22.6w3","BrFA"),
+#                               factors="id", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="cladocera_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)
+# discr <- load_discr_data(filename="cladocera_discrimination.csv", mix)
+# plot_prior(alpha.prior=1,source)
+# model_filename <- "MixSIAR_model.txt"
+# resid_err <- FALSE
+# process_err <- TRUE
+# write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# output_JAGS(jags.1, mix, source)
