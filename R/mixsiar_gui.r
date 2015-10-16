@@ -134,10 +134,10 @@ svalue(mixsiar$mcmc_run) <- "test"
 # Model Error Options
 ####################################################################
 grp_error_priors <- ggroup(cont=grp_input,horizontal=FALSE)
-grp_error <- gframe(text="Model error options", cont=grp_error_priors, horizontal=FALSE,expand=TRUE)
-error_option <- gradio(c("MixSIR (process error only)","SIAR (process + residual)"), cont=grp_error, horizontal=FALSE)
+grp_error <- gframe(text="Error structure", cont=grp_error_priors, horizontal=FALSE,expand=TRUE)
+error_option <- gradio(c("Resid * Process","Residual only","Process only (N=1)"), cont=grp_error, horizontal=FALSE)
 assign("error_option",error_option,envir=mixsiar)
-svalue(mixsiar$error_option) <- "SIAR (process + residual)"
+svalue(mixsiar$error_option) <- "Resid * Process"
 
 ####################################################################
 # Specify Prior
@@ -265,8 +265,6 @@ grp_diag <- gframe(text="Diagnostics", cont=grp_output, horizontal=F)
 grp_diag_opts <- ggroup(cont=grp_diag, horizontal=T)
 gelman <- gcheckbox("Gelman-Rubin (must have > 1 chain)", cont=grp_diag_opts); assign("gelman",gelman,envir=mixsiar);
 svalue(mixsiar$gelman) <- TRUE
-heidel <- gcheckbox("Heidelberg-Welch", cont=grp_diag_opts); assign("heidel",heidel,envir=mixsiar);
-svalue(mixsiar$heidel) <- FALSE
 geweke <- gcheckbox("Geweke", cont=grp_diag_opts); assign("geweke",geweke,envir=mixsiar);
 svalue(mixsiar$geweke) <- TRUE
 grp_diag_save <- ggroup(cont=grp_diag, horizontal=T)
@@ -283,11 +281,30 @@ grp_bot <- ggroup(cont=grp_all,horizontal=TRUE)
 grp_run_model <- ggroup(cont=grp_bot, horizontal=TRUE, expand=TRUE)
 go_button <- gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE,
   handler = function(h, ...){
-    if(svalue(mixsiar$error_option)=="SIAR (process + residual)") resid_err <- TRUE else resid_err <- FALSE
-    write_JAGS_model("MixSIAR_model.txt", resid_err, mixsiar$mix, mixsiar$source)
+    # Error checks on prior
+    if(svalue(mixsiar$prior_option) == "\"Uninformative\"/Generalist"){
+      alpha.prior <- rep(1,mixsiar$source$n.sources)
+    } else { # prior_option = "Informative"
+      alpha.prior <- eval(parse(text=svalue(mixsiar$inf_prior)))
+    }
+    if(!is.numeric(alpha.prior)){
+      stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).  
+        Try again or choose the uninformative prior option. For example, 
+        c(1,1,1,1) is a valid (uninformative) prior for 4 sources. ***",sep=""))}
+    if(length(alpha.prior) != mixsiar$source$n.sources){
+      stop(paste("*** Error: Length of your prior does not match the  
+        number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
+    if(length(which(alpha.prior==0))!=0){
+      stop(paste("*** Error: You cannot set any alpha = 0.
+      Instead, set = 0.01.***",sep=""))}
+
+    if(svalue(mixsiar$error_option)=="Resid * Process"){resid_err <- TRUE; process_err <- TRUE;}
+    if(svalue(mixsiar$error_option)=="Residual only"){resid_err <- TRUE; process_err <- FALSE;}
+    if(svalue(mixsiar$error_option)=="Process only (N=1)"){resid_err <- FALSE; process_err <- TRUE;}
+    write_JAGS_model("MixSIAR_model.txt", resid_err, process_err, mixsiar$mix, mixsiar$source)
 
     run <- svalue(mixsiar$mcmc_run)
-    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt")
+    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt", alpha.prior,resid_err,process_err)
     assign("jags.1",jags.1,envir=mixsiar)
     
     test <- get("jags.1",envir=mixsiar)
@@ -315,7 +332,7 @@ output_button <- gbutton(text="Process output", cont=grp_output, expand=TRUE,
                     svalue(mixsiar$plot_xy_save_pdf),        # Save xy/trace plot as pdf?
                     svalue(mixsiar$plot_xy_name),            # If yes, specify the base file name (.pdf/.png will be appended later)
                     svalue(mixsiar$gelman),                  # Calculate Gelman-Rubin diagnostic test?
-                    svalue(mixsiar$heidel),                  # Calculate Heidelberg-Welch diagnostic test?
+                    FALSE,                                   # Calculate Heidelberg-Welch diagnostic test?
                     svalue(mixsiar$geweke),                  # Calculate Geweke diagnostic test?
                     svalue(mixsiar$diag_save),               # Save the diagnostics as a txt file?
                     svalue(mixsiar$diag_name),               # If yes, specify the base file name (.txt will be appended later)

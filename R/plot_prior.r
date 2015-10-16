@@ -12,6 +12,12 @@
 #   LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
 
 plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=FALSE, filename="prior_plot"){
+	# Error check for alpha = 0
+	if(length(which(alpha.prior==0))!=0){
+      stop(paste("*** Error: You cannot set any alpha = 0.
+      Instead, set = 0.01.***",sep=""))		
+	}
+
 	n.sources <- source$n.sources
 	if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
 	if(length(alpha.prior)==1) alpha = rep(alpha.prior,n.sources) # All sources have same value

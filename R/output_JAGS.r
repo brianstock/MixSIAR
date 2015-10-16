@@ -197,10 +197,10 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     }
     my.title <- "Overall Population"
     print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-      geom_density(alpha=.3) +
+      geom_density(alpha=.3, aes(y=..scaled..)) +
       theme_bw() +
       xlab("Proportion of Diet") +
-      ylab("Posterior Density") +
+      ylab("Scaled Posterior Density") +
       xlim(0,1) +
       labs(title = my.title) +
       theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
