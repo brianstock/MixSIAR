@@ -114,7 +114,7 @@ run_model <- function(run,mix,source,discr,model_filename,alpha.prior = 1,resid_
 
   # Error structure objects
   I <- diag(n.iso)
-  if(resid_err) jags.data <- c(jags.data,"I")
+  if(resid_err && mix$n.iso>1) jags.data <- c(jags.data,"I")
   if(!resid_err){
     jags.data <- c(jags.data,"frac_sig2")
     jags.params <- c(jags.params,"resid.prop")

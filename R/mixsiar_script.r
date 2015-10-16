@@ -59,10 +59,10 @@ source("calc_area.r")
 # mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
 
 # 1-iso example
-# mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # killer whale - salmon example
-mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
 
 # Isopod example (8 fatty acids)
 # mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"), factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
@@ -93,10 +93,10 @@ mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d1
 # source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
 
 # 1-iso example
-# source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
 
 # killer whale - salmon example
-source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
 
 # Isopod example
 # source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
@@ -124,10 +124,10 @@ source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NU
 # discr <- load_discr_data(filename="7_discrimination.csv", mix) 
 
 # 1-iso example
-# discr <- load_discr_data(filename="13_discrimination.csv", mix) 
+discr <- load_discr_data(filename="13_discrimination.csv", mix) 
 
 # killer whale - salmon example
-discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
 
 # Isopod example
 # discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
@@ -163,7 +163,7 @@ if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 
 # Wolves, Killer whale, Isopod examples
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
-resid_err <- TRUE
+resid_err <- FALSE
 write_JAGS_model(model_filename, resid_err, mix,source)
 
 # Geese, Palmyra, Lake, Storm-petrel, 1-iso examples
@@ -177,14 +177,14 @@ write_JAGS_model(model_filename, resid_err, mix,source)
 #   LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
 
 # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
-# plot_prior(alpha.prior=1,source)
+plot_prior(alpha.prior=1,source)
 
 # Killer whale example with INFORMATIVE prior (construct alpha from fecal data)
 #   Let's say we have 14 fecal diet samples that we use to construct alphas...useful in separating some of the sources.
-kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
-kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
-kw.alpha[which(kw.alpha==0)] <- 0.01 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
-plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
+# kw.alpha <- c(10,1,0,0,3)   # Our 14 fecal samples were 10, 1, 0, 0, 3
+# kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) # Generate alpha hyperparameters scaling sum(alpha)=n.sources
+# kw.alpha[which(kw.alpha==0)] <- 0.01 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
+# plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=FALSE,filename="prior_plot")
 
 #####################################################################################
 # Run model
@@ -203,7 +203,7 @@ plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
+jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
 
 # Wolves, Palmyra, Geese examples
 # jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err)
@@ -215,7 +215,7 @@ plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE, plot_save_png=
 # jags.1 <- run_model(run="short",mix,source,discr,model_filename,alpha.prior = 1,resid_err) # alpha = 1 by default
 
 # Killer whale example with INFORMATIVE prior (constructed kw.alpha from fecal data above)
-jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = kw.alpha,resid_err) # informative prior
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = kw.alpha,resid_err) # informative prior
 
 #####################################################################################
 # Process JAGS output

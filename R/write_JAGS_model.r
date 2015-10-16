@@ -108,7 +108,9 @@ model{", file=filename, append=T)
 #   }
 # ", file=filename, append=T)
 # }
-if(source$data_type=="raw" && source$by_factor==TRUE){  # fit the source means and precisions (not by factor 1)
+
+# fit the source means and precisions (by factor 1)
+if(source$data_type=="raw" && source$by_factor==TRUE && mix$n.iso > 1){  
 cat("
   # fit source data (big for loop over sources)
   for(src in 1:n.sources){
@@ -154,7 +156,8 @@ cat("
 ", file=filename, append=T)  
 }
 
-if(source$data_type=="raw" && source$by_factor==FALSE){  # fit the source means and precisions (not by factor 1)
+# fit the source means and precisions (not by factor 1)
+if(source$data_type=="raw" && source$by_factor==FALSE && mix$n.iso > 1){
 cat("
   # fit source data (big for loop over sources)
   for(src in 1:n.sources){
@@ -196,6 +199,30 @@ cat("
     } 
   } # end source data fitting loop
 ", file=filename, append=T)  
+}
+
+if(source$data_type=="raw" && mix$n.iso == 1){ # if one iso, can't call "i in 2:n.iso"
+cat("
+  # fit source data (big for loop over sources)
+  for(src in 1:n.sources){
+    # uninformative priors on source means and precisions, rho=1
+    for(iso in 1:n.iso){
+      src_mu[src,iso] ~ dnorm(0,.001);
+      src_tau[src,iso,iso] ~ dgamma(.001,.001);
+      rho[src,iso,iso] <- 1;
+    }
+
+    # Construct source precision matrix (src_Sigma)
+    src_var[src,,] <- 1/src_tau[src,,];
+    src_cov[src,,] <- src_var[src,,] %*% rho[src,,] %*% src_var[src,,];
+    src_Sigma[src,,] <- 1/src_cov[src,,];
+
+    # each source data point is distributed normally according to the source means and precisions
+    for(r in 1:n.rep[src]){
+      SOURCE_array[src,,r] ~ dnorm(src_mu[src,],src_Sigma[src,,]);
+    } 
+  } # end source data fitting loop
+", file=filename, append=T)   
 }
 
 # Here we fit the source means and variances according to Gelman, p.79-80:
@@ -558,7 +585,15 @@ cat("
 
    # Likelihood
    for(i in 1:N) {
-     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+", file=filename, append=T)
+    if(mix$n.iso > 1){
+cat("  
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+    } else { # n.iso == 1, can't use dmnorm
+cat("  
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)      
+    }
+cat("     
    }
 } # end model
 
@@ -595,7 +630,15 @@ cat("
 
    # Likelihood
   for(i in 1:N){
-    X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+", file=filename, append=T)
+    if(mix$n.iso > 1){
+cat("  
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+    } else { # n.iso == 1, can't use dmnorm
+cat("  
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)      
+    }
+cat("    
   }
 } # end model
 
@@ -603,8 +646,8 @@ cat("
   } # end source$data_type=="raw"
 } # end multiplicative residual error section
 
-
-if(resid_err && (mix$N > 1)){
+# Residual error only section
+if(resid_err && (mix$N > 1) && (mix$n.iso>1)){ # > 1 iso, have covariance
 cat("
    # Mixture covariance prior (residual error only model)
    Sigma ~ dwish(I,n.iso+1);
@@ -617,10 +660,24 @@ cat("
 
 ", file=filename, append=T)
 }
+if(resid_err && (mix$N > 1) && mix$n.iso==1){ # if only one iso can't use dwish or dmnorm
+cat("
+   # Mixture precision prior (residual error only model)
+   Sigma ~ dgamma(.001,.001);
 
-# if(mix$N == 1){ # If only one datapoint, must fit MixSIR model (no residual error terms)
+   # Likelihood
+   for(i in 1:N) {
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma);
+   }
+} # end model
 
-# }
+", file=filename, append=T)
+}
+
+# N = 1 section (must fit MixSIR error model)
+if(mix$N == 1){
+  
+}
 
 ################################################################################
 # Likelihood
