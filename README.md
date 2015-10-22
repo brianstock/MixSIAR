@@ -1,19 +1,20 @@
 MixSIAR GUI
 =============
 
-MixSIAR GUI is a graphical user interface (GUI) that allows you to analyze stable isotope data using the MixSIAR model framework. MixSIAR is a Bayesian mixing model that uses stable isotope data to estimate the proportions of source (prey) contributions to a mixture (consumer).
+MixSIAR GUI is a graphical user interface (GUI) that allows you to analyze biotracer data (i.e. stable isotopes, fatty acids) using the MixSIAR model framework. MixSIAR is a Bayesian mixing model that estimates the proportions of source (prey) contributions to a mixture (consumer).
 
 MixSIAR represents a collaborative coding project between the investigators behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, Andrew Jackson, Jon Moore, Stuart Bearhop, and Richard Inger.
 
 The MixSIAR GUI incorporates several years of advances in Bayesian mixing model theory since MixSIR and SIAR, currently:
 
-- Any number of isotope/tracer values (usually 1, 2, or 3, but tested up to 20)
-- Source fitting (both for raw source data and means+SD data)
-- Hierarchical random/fixed effects (up to 2, either hierarchical/nested or not)
-- Continuous covariates (up to 1, theoretically any number)
-- Option to include Individual random effects
-- Error structure options: residual error (SIAR) or not (MixSIR)
+- Any number of biotracers (examples with 1 isotope, 2 isotope, 8 fatty acids, and 22 fatty acids)
+- Source data fit hierarchically within the model
+- Source data by categorical covariate (e.g. sources by Region)
+- Categorical covariates (up to 2, choice of modeling as random or fixed effects, either nested or independent)
+- Continuous covariate (up to 1)
+- Error structure options with covariance (Residual * Process, Residual only)
 - Concentration dependence
+- Ability to plot and include “uninformative”/generalist or informative priors
 
 ### TO DOWNLOAD AND INSTALL:
 
@@ -21,7 +22,7 @@ Just above the blue bar, there is a row with "commits", "branches", "releases", 
 
 ### FEEDBACK PLEASE!
 
-This software has been improved by the questions, suggestions, and bug reports of the user community. If you have a comment, ideally use the _issues_ (exclamation point in a circle) or _wiki_ (looks like a book) tabs on the right hand side of this page. You can also post to the [SIAR facebook group] or shoot me an email (_b1stock@ucsd.edu_).
+This software has been improved by the questions, suggestions, and bug reports of the user community. If you have a comment, ideally use the _issues_ (exclamation point in a circle) tab on the right hand side of this page. You can also post to the [SIAR facebook group] or shoot me an email (_b1stock@ucsd.edu_).
 
 ### ON CITING MixSIAR:
 
