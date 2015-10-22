@@ -1,0 +1,12106 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red},
+    citecolor={blue},
+    urlcolor={blue}
+}
+\usepackage{pdflscape}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\hypersetup{   
+    pdfpagemode=UseOutlines,    % this is the option you were lookin for
+    pdfpagelayout=TwoPageRight
+}
+\end_preamble
+\use_default_options true
+\begin_modules
+knitr
+logicalmkup
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman palatino
+\font_sans lmss
+\font_typewriter lmtt
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "pdfpagemode=UseOutlines"
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MixSIAR User Manual v3.0
+\end_layout
+
+\begin_layout Author
+Brian Stock and Brice Semmens
+\end_layout
+
+\begin_layout Date
+October 2015
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+Scripps Institution of Oceanography, UC San Diego
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset CommandInset href
+LatexCommand href
+name "b1stock@ucsd.edu"
+target "b1stock@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset href
+LatexCommand href
+name "semmens@ucsd.edu"
+target "semmens@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+RaggedRight
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Subsection
+What is the MixSIAR GUI?
+\end_layout
+
+\begin_layout Standard
+The MixSIAR GUI is a graphical user interface (GUI) that helps you create
+ and run Bayesian mixing models to analyze biotracer data, following the
+ MixSIAR model framework 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SemmensPrep"
+
+\end_inset
+
+.
+ Both the GUI and script versions are written in the open source languages
+ R 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Rcore"
+
+\end_inset
+
+ and JAGS 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Plummer2003"
+
+\end_inset
+
+, are freely available online (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/brianstock/MixSIAR
+\end_layout
+
+\end_inset
+
+), and can be installed on machines running Mac OS X, Microsoft Windows,
+ and Linux.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename mixsiar_gui_shot.png
+	width 3in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+MixSIAR GUI screenshot
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+What is the MixSIAR model framework? How does it relate to SIAR and MixSIR?
+\end_layout
+
+\begin_layout Standard
+Analysis of biotracers (i.e.
+ stable isotopes, fatty acids)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Mixing models were originally developed using stable isotopes, but they
+ are general statistical models that apply to any mixing process.
+ We make a conscious effort to keep terminology general by using 
+\emph on
+biotracers
+\emph default
+ throughout---can be stable isotopes, fatty acids, compound-specific stable
+ isotopes, element concentrations, or color coefficients from diffuse reflectanc
+e spectrometry (used in sediment mixing models).
+\end_layout
+
+\end_inset
+
+ has become an important tool to ecologists, since it can be used to determine
+ diet composition, population structure, and animal movement.
+ Mixing models use biotracer data to estimate the proportions of source
+ (prey) contributions to a mixture (consumer)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Likewise maintaining general terminology, we use 
+\size normal
+\emph on
+mixture
+\emph default
+ and 
+\emph on
+source
+\emph default
+ throughout.
+ In diet studies the mixture data are consumers/predators and source data
+ are prey.
+ In sediment studies the mixture data is a downstream soil sample and the
+ source data are upstream sediments (e.g.
+ pasture, forest, cropland).
+\end_layout
+
+\end_inset
+
+.
+ Bayesian mixing models improve upon simpler linear mixing models by explicitly
+ taking into account uncertainty in source values 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Moore2008,Ward2010"
+
+\end_inset
+
+, categorical and continuous covariates 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Semmens2009a,Francis2011,Parnell2013"
+
+\end_inset
+
+, and prior information 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Moore2008"
+
+\end_inset
+
+.
+ While diet analysis using stable isotope data is the most common application
+ of mixing models, MixSIAR can also be applied to solve many other environmental
+ questions.
+ To name a few: pollutant sourcing, determining carbon sources for soils,
+ determining carbon sources for ecosystem respiration, and calculating plant
+ water use from soil horizons.
+\end_layout
+
+\begin_layout Standard
+MixSIAR incorporates several years of advances in Bayesian mixing model
+ theory since MixSIR and SIAR:
+\end_layout
+
+\begin_layout Itemize
+MixSIR (original Bayesian mixing model, 
+\begin_inset CommandInset href
+LatexCommand href
+name "MATLAB GUI"
+target "http://conserver.iugo-cafe.org/user/brice.semmens/MixSIR"
+
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Moore2008"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+SIAR (residual error, 
+\begin_inset CommandInset href
+LatexCommand href
+name "R package"
+target "https://cran.r-project.org/web/packages/siar/index.html"
+
+\end_inset
+
+, 
+\begin_inset CommandInset href
+LatexCommand href
+name "support group"
+target "https://www.facebook.com/SIAR-Stable-Isotope-Analysis-in-R-148501811896914/"
+
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2010"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Population structure (categorical covariate) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Semmens2009a"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Uncertainty in discrimination
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+We use 
+\emph on
+discrimination
+\emph default
+ to refer to the differences between biotracer values found in the mixture
+ and sources.
+ In diet analysis, these differences are also refered to as ‘fractionation’,
+ ‘trophic enrichment factors’ (‘TEF’), and ‘trophic discrimination factors’
+ (‘TDF’).
+\end_layout
+
+\end_inset
+
+ values, concentration dependence
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Concentration dependence occurs when sources contain variable amounts of
+ the biotracer element.
+ See 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Phillips2002"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2010"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Continuous covariate 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Francis2011"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Isotope covariance 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Hopkins2012"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Sources and consumers changing through time (via P-splines) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2013"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Multiplicative error structure 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "StockPrep"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+MixSIAR is not a single mixing model---it is a general framework that can
+ create many different models based on user data and choices (see 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sub:features"
+
+\end_inset
+
+).
+ MixSIAR represents a collaborative coding project between the investigators
+ behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell,
+ Donald Phillips, Andrew Jackson, Stuart Bearhop, and Richard Inger.
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SemmensPrep"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Model options
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:features"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The current implementation of MixSIAR includes the following model options:
+\end_layout
+
+\begin_layout Itemize
+Any number of biotracers (examples with 1 isotope, 2 isotope, 8 fatty acids,
+ and 22 fatty acids)
+\end_layout
+
+\begin_layout Itemize
+Source data fit hierarchically within the model
+\end_layout
+
+\begin_layout Itemize
+Source data by categorical covariate (e.g.
+ sources by Region)
+\end_layout
+
+\begin_layout Itemize
+Categorical covariates (up to 2, choice of modeling as random or fixed effects,
+ either nested or independent)
+\end_layout
+
+\begin_layout Itemize
+Continuous covariate (up to 1)
+\end_layout
+
+\begin_layout Itemize
+Error structure options with covariance (Residual * Process, Residual only)
+\end_layout
+
+\begin_layout Itemize
+Concentration dependence
+\end_layout
+
+\begin_layout Itemize
+Ability to plot and include 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+/generalist or informative priors
+\end_layout
+
+\begin_layout Standard
+Any combination of these options creates a different model, which is then
+ fit to the data.
+ Each of the above options are demonstrated with various examples (see 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sec:examples]{Working Examples}
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection
+Great! How do I get started using MixSIAR?
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+**Warning** Not so fast!
+\end_layout
+
+\begin_layout Standard
+We have created the MixSIAR GUI because we feel it can be a useful tool
+ for ecologists wishing to conduct stable isotope analysis on their data.
+ However, it can also be easily abused, since there are a number of ways
+ to receive completely fallacious results:
+\end_layout
+
+\begin_layout Itemize
+MCMC chains not converged
+\end_layout
+
+\begin_layout Itemize
+Mixing model assumptions not met (i.e.
+ missing a source, incorrect TDF)
+\end_layout
+
+\begin_layout Itemize
+Incorrect model options selected (fitting a nonsensical model)
+\end_layout
+
+\begin_layout Standard
+Before using MixSIAR ouput, you should be able to comfortably explain to
+ someone how you've considered and ruled out these concerns.
+ Take some time to understand the assumptions and limitations of mixing
+ models and Bayesian methods (e.g.
+ how MCMC works, what is a prior vs.
+ a posterior) before beginning.
+ See the last page for several links we think are helpful to someone new
+ to these topics.
+ Once you know the basics of what the model does, you’re ready to run the
+ working examples.
+ After you are confident MixSIAR is installed and working correctly, you
+ can then begin using it to analyze your own data.
+\end_layout
+
+\begin_layout Section
+Installation
+\end_layout
+
+\begin_layout Standard
+The MixSIAR GUI depends on the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+gWidgetsRGtk2
+\end_layout
+
+\end_inset
+
+ package in R.
+ We think 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+gWidgetsRGtk2
+\end_layout
+
+\end_inset
+
+ is a pretty nifty, fairly painless way to create cross-platform GUIs in
+ R---many thanks to John Verzani and other contributors.
+ MixSIAR GUI has been tested and runs on Windows (8), Mac OS X (Lion), and
+ Linux (Ubuntu 14.04).
+ The most common install problem is getting GTK+ configured on Mac OS X.
+ If all else fails, the script version should always work! If you have install
+ issues, obviously try to resolve them yourself first, but feel free to
+ contact the authors at 
+\begin_inset CommandInset href
+LatexCommand href
+name "b1stock@ucsd.edu"
+target "b1stock@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset href
+LatexCommand href
+name "semmens@ucsd.edu"
+target "semmens@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Windows
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Check to make sure you have the most recent version of R (3.2.2 at time of
+ writing)
+\emph default
+.
+ If you have never installed R on your computer, download it from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.r-project.org/index.html
+\end_layout
+
+\end_inset
+
+.
+ You can check which version of R (and any packages) you are running using
+ the command 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+sessionInfo()
+\end_layout
+
+\end_inset
+
+.
+ If you have an older version of R installed, the easiest thing to do is
+ use the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+installr
+\end_layout
+
+\end_inset
+
+ package (see 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.r-statistics.com/2013/03/updating-r-from-r-on-windows-using-the-install
+r-package/
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+\emph default
+.
+ You can download JAGS from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://mcmc-jags.sourceforge.net/
+\end_layout
+
+\end_inset
+
+.
+ FYI JAGS 4.0 just came out but I'm still using 3.4---don't think this matters.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download all of the MixSIAR files
+\emph default
+.
+ MixSIAR is currently hosted on GitHub: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/brianstock/MixSIAR/releases
+\end_layout
+
+\end_inset
+
+.
+ Download the .zip or .tar.gz and extract the files.
+ You should see a bunch of .r and .csv files (
+\begin_inset Quotes eld
+\end_inset
+
+build_mix_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+build_source_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, etc.) in a sub-directory called 
+\begin_inset Quotes eld
+\end_inset
+
+R
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
+\emph default
+.
+ The easiest way to do this is simply double-click on the R Workspace in
+ the unzipped MixSIAR folder (.RData file with no name).
+ You can check what your current working directory is with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+getwd()
+\end_layout
+
+\end_inset
+
+.
+ Another useful command is 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+list.files()
+\end_layout
+
+\end_inset
+
+, which prints a list of all files in your working directory.
+ If using R Studio, you can also change your working directory by clicking
+ Session --> Set Working Directory --> Choose Directory.
+ Find where you downloaded MixSIAR and navigate to the R sub-directory.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+ This should install and load the necessary R packages.
+ The first time you run the code to install the RGtk2 package, you will
+ be prompted to install GTK+.
+ 
+\series bold
+Follow the automatic prompts and do not interrupt the GTK+ installation!
+\series default
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Restart R.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+ again.
+
+\emph default
+ If JAGS, GTK+, and the required R packages are installed properly, the
+ MixSIAR GUI will then appear as a separate window! If you have problems
+ installing GTK+, search your computer for all listings of “GTK” and delete/unin
+stall them (including the RGtk2 and gWidgetsRGtk2 package libraries in your
+ R folder), then try again.
+ You can also download GTK+ directly from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gtk.org/download/index.php
+\end_layout
+
+\end_inset
+
+, but it’s very tricky to manually get GTK+ and R to interface properly
+ (you may have to adjust your PATH variable).
+\end_layout
+
+\begin_layout Subsection
+Mac OS X
+\end_layout
+
+\begin_layout Standard
+We have had reports in the past of installation issues on Mac, but the following
+ usually works now:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Check to make sure you have the most recent version of R (3.2.2 at time of
+ writing)
+\emph default
+.
+ If you have never installed R on your computer, download it from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://cran.r-project.org/bin/macosx/
+\end_layout
+
+\end_inset
+
+.
+ You can check which version of R (and any packages) you are running using
+ the command 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+sessionInfo()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+\emph default
+.
+ You can download JAGS from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://mcmc-jags.sourceforge.net/
+\end_layout
+
+\end_inset
+
+.
+ FYI JAGS 4.0 just came out but I'm still using 3.4---don't think this matters.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Open R and run the following command
+\emph default
+: 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Close R.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download and install the newest GTK+ framework:
+\emph default
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://r.research.att.com/#other
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Install the latest X11 application (xQuartz)
+\emph default
+: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://xquartz.macosforge.org/landing/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download all of the MixSIAR files
+\emph default
+.
+ MixSIAR is currently hosted on GitHub: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/brianstock/MixSIAR/releases
+\end_layout
+
+\end_inset
+
+.
+ Download the .zip or .tar.gz and extract the files.
+ You should see a bunch of .r and .csv files (
+\begin_inset Quotes eld
+\end_inset
+
+build_mix_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+build_source_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, etc.) in a sub-directory called 
+\begin_inset Quotes eld
+\end_inset
+
+R
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
+\emph default
+.
+ One way to do this is simply double-click on the R Workspace in the unzipped
+ MixSIAR folder (.RData file with no name).
+ You can check what your current working directory is with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+getwd()
+\end_layout
+
+\end_inset
+
+.
+ Another useful command is 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+list.files()
+\end_layout
+
+\end_inset
+
+, which prints a list of all files in your working directory.
+ If using R Studio, you can also change your working directory by clicking
+ Session --> Set Working Directory --> Choose Directory.
+ Find where you downloaded MixSIAR and navigate to the R sub-directory.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Restart R.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+ again.
+
+\emph default
+ If JAGS, GTK+, and the required R packages are installed properly, the
+ MixSIAR GUI will then appear as a separate window!
+\end_layout
+
+\begin_layout Subsection
+Linux
+\end_layout
+
+\begin_layout Standard
+Installing on Ubuntu 14.04 shouldn't be too hard:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Check to make sure you have the most recent version of R (3.2.2 at time of
+ writing)
+\emph default
+.
+ If you have never installed R on your computer, see 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://cran.r-project.org/bin/linux/ubuntu/README
+\end_layout
+
+\end_inset
+
+.
+ You can check which version of R (and any packages) you are running using
+ the command 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+sessionInfo()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+\emph default
+.
+ You can download JAGS from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://mcmc-jags.sourceforge.net/
+\end_layout
+
+\end_inset
+
+ or use Ubuntu Software Center.
+ FYI JAGS 4.0 just came out but I'm still using 3.4 because this is the stable
+ package version.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download and install GTK+
+\emph default
+.
+ From the terminal, try 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+sudo apt-get install libgtk2.0-dev
+\end_layout
+
+\end_inset
+
+.
+ You can also see 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gtk.org/download/index.php
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Check if GTK+ is installed correctly
+\emph default
+.
+ Open R, install and load the RGtk2 package with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+install.packages("RGtk2")
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+library(RGtk2)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Download all of the MixSIAR files
+\emph default
+.
+ MixSIAR is currently hosted on GitHub: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/brianstock/MixSIAR/releases
+\end_layout
+
+\end_inset
+
+.
+ Download the .zip or .tar.gz and extract the files.
+ You should see a bunch of .r and .csv files (
+\begin_inset Quotes eld
+\end_inset
+
+build_mix_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+build_source_win.r
+\begin_inset Quotes erd
+\end_inset
+
+, etc.) in a sub-directory called 
+\begin_inset Quotes eld
+\end_inset
+
+R
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
+\emph default
+.
+ You can check what your current working directory is with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+getwd()
+\end_layout
+
+\end_inset
+
+.
+ Another useful command is 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+list.files()
+\end_layout
+
+\end_inset
+
+, which prints a list of all files in your working directory.
+ If using R Studio, you can also change your working directory by clicking
+ Session --> Set Working Directory --> Choose Directory.
+ Find where you downloaded MixSIAR and navigate to the R sub-directory.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+
+\emph default
+.
+ This should install and load the other necessary R packages.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Restart R.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+source("mixsiar_gui.r")
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+ again.
+
+\emph default
+ If JAGS, GTK+, and the required R packages are installed properly, the
+ MixSIAR GUI will then appear as a separate window!
+\end_layout
+
+\begin_layout Section
+Running the working examples
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:examples"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The working examples will familiarize yourself with MixSIAR GUI, and it’s
+ a good idea to walk through them before playing around with your own data.
+ The basic MixSIAR workflow is:
+\end_layout
+
+\begin_layout Enumerate
+Load data
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Mixture
+\end_layout
+
+\begin_layout Enumerate
+Sources
+\end_layout
+
+\begin_layout Enumerate
+Discrimination (TDF)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Plot data and prior
+\end_layout
+
+\begin_layout Enumerate
+Choose model structure options
+\end_layout
+
+\begin_layout Enumerate
+Choose output options
+\end_layout
+
+\begin_layout Enumerate
+Run model
+\end_layout
+
+\begin_layout Enumerate
+Use diagnostics to decide if the model has converged
+\end_layout
+
+\begin_layout Enumerate
+Analyze output
+\end_layout
+
+\begin_layout Standard
+A summary of the working examples and MixSIAR options they demonstrate is
+ below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{landscape}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup
+\backslash
+tabcolsep=3pt
+\backslash
+def
+\backslash
+arraystretch{1.1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="10">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="middle" width="1.1in">
+<column alignment="center" valignment="top" width="1in">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:wolves]{Wolves}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:geese]{Geese}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:lake]{Lake}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:palmyra]{Palmyra}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:killer]{Killer whale}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:petrel]{Storm-petrel}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:snail]{Snail}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:isopod]{Isopod}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:cladocera]{Cladocera}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Biotracers
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C, N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8 fatty acids
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+22 fatty acids
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Random effects
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Region, Pack (nested)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Fixed effects
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Group
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Taxa
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Region
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Site
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Continuous effect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Secchi:Mixed
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Source data
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means + SD 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newline
+\end_layout
+
+\end_inset
+
+(by Region)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means + SD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means + SD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means + SD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means + SD
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Error structure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid only
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid only
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Proces
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid only
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Process only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Concentration dependence
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Informative prior
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Fecal contents
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+---
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Working examples included with MixSIAR.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:examples-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{landscape}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Wolves Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:wolves"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Wolves Example” uses data reconstructed from (not identical to) Semmens
+ et al [12].
+ Here, we investigate the diet of 66 wolves in British Columbia with:
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+2 random effects (Region and Pack), where Pack is nested within Region
+\end_layout
+
+\begin_layout Itemize
+Source data as means and SDs (by Region)
+\end_layout
+
+\begin_layout Itemize
+Resid * Process error
+\end_layout
+
+\begin_layout Subsubsection
+Loading mixture data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load mixture data”, then “Load mixture data file” in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose “wolves_consumer.csv”.
+ This file has the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N isotope values, and two categorical covariates (Region and Pack).
+ The covariates don’t have to be numerical, these just happen to be.
+\end_layout
+
+\begin_layout Enumerate
+You should see the column headings of the mixture data file in the window.
+ Select which columns are isotopes (d13C and d15N) and which are random
+ effects (Region, Pack).
+ Click “I'm finished”.
+\end_layout
+
+\begin_layout Enumerate
+Another box will appear asking if the data is nested/hierarchical.
+ Choose 
+\begin_inset Quotes eld
+\end_inset
+
+Pack within Region
+\begin_inset Quotes erd
+\end_inset
+
+ and then click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Loading source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”.
+\end_layout
+
+\begin_layout Enumerate
+If you look at the source data file (“wolves_sources.csv”), you will see
+ that each Region has different isotope values---Click “Yes”, source data
+ vary by Region, and “No”, source data do not vary by Pack.
+\end_layout
+
+\begin_layout Enumerate
+There is no concentration dependence data in “wolves_sources.csv”, so “Do
+ you have Concentration Dependence data?” should be “No”.
+\end_layout
+
+\begin_layout Enumerate
+In this example we only have source summary statistics (Mean, SD, and sample
+ size), not the original “raw” data---Click “Load source means and SDs”.
+\end_layout
+
+\begin_layout Enumerate
+Choose “wolves_sources.csv” when prompted for the data file.
+ 
+\emph on
+Note that the source data file has a column titled “n” with the sample size
+ of each source estimate.
+ This must be in your source data file when you run your data!
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Subsubsection
+Loading discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load discrimination data”
+\end_layout
+
+\begin_layout Enumerate
+Choose “wolves_discrimination.csv” when prompted for the discrimination data
+ file.
+ We use 'discrimination' to refer to the differences between isotope values
+ found in the mixture and sources.
+ In diet analysis, these differences are also refered to as 'fractionation',
+ 'trophic enrichment factors' ('TEF'), and 'trophic discrimination factors'
+ ('TDF').
+\end_layout
+
+\begin_layout Subsubsection
+Making an isospace plot
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:makeisospace"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the mixture, source, and discrimination data are loaded, you can click
+ “Make isospace plot”.
+ Your plot should match that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesiso"
+
+\end_inset
+
+.
+ If you want to save the isospace plot as a .pdf or .png, make sure either/both
+ of the appropriate boxes are checked.
+ You can also change the name of the file here (default is to save the plot
+ as “isospace_plot.pdf”).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_isospace.pdf
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Wolves Example.
+
+\series default
+ Mixture data (wolves) are by Region (color) and Pack (shape).
+ Source data are by Region and have been adjusted by discrimination means
+ 
+\series bold
+and SDs
+\series default
+.
+ Error bars indicate 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+1 SD, the combined source+discrimination SD calculated as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sqrt{
+\backslash
+sigma^2_{source} + 
+\backslash
+sigma^2_{discr}}$
+\end_layout
+
+\end_inset
+
+, under the assumption of independence.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvesiso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You should ALWAYS look at the isospace plot---this is a good check that
+ the data is loaded correctly, and that the isospace geometry makes sense.
+ If the mixture data are well outside the source polygon, you have a serious
+ violation of mixing model assumptions, and it must be true that either
+ 1) You're missing a source, or 2) You're using an incorrect discrimination
+ factor.
+ MixSIAR, like SIAR, fits a residual error term, and thus will always find
+ a solution 
+\emph on
+even if it is nonsensical
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Also note that the MixSIAR isospace plot adds the discrimination means AND
+ SDs to the raw source values, since the model uses the source+discrimination
+ values to fit the mixture data.
+ Error bars indicate 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The combined source+discrimination SD is calculated as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sqrt{
+\backslash
+sigma^2_{source} + 
+\backslash
+sigma^2_{discr}}$
+\end_layout
+
+\end_inset
+
+, under the assumption of independence.
+\end_layout
+
+\end_inset
+
+.
+ The “Wolves Example” uses 2 isotope values (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N), as is most often the case.
+ If you have only 1 biotracer, MixSIAR will create a 1-D plot (see 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sub:snail"
+
+\end_inset
+
+).
+ If you have more than 2 biotracers, MixSIAR will create all possible pairwise
+ 2-D plots (see 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sub:isopod"
+
+\end_inset
+
+ for a case with 8 biotracers).
+\end_layout
+
+\begin_layout Subsubsection
+Plot your prior
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:uninformativeprior"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+Plot prior
+\begin_inset Quotes erd
+\end_inset
+
+ button, and you should get a plot that matches Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesprior"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_priors.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Uninformative prior used in Wolves Example
+\series default
+.
+ A few things to note: 1) the proportion distributions are the same for
+ all sources, 2) the mean is 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+frac{1}{n.sources} = 
+\backslash
+frac{1}{3}$
+\end_layout
+
+\end_inset
+
+, and 3) lower proportions are more likely.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvesprior"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bayesian analyses require priors, and MixSIAR includes a 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+plot_prior
+\end_layout
+
+\end_inset
+
+ function to plot the prior on the mixture (diet) proportions (at the highest
+ hierarchical level, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.global
+\end_layout
+
+\end_inset
+
+).
+ The prior represents our knowledge about the proportions 
+\emph on
+before we consider the biotracer data
+\emph default
+.
+ A natural tendency is to want a flat/
+\begin_inset Quotes erd
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior, where all values between 0 and 1 are equally likely.
+ However, because proportions are not independent, there is no truly uninformati
+ve prior (e.g.
+ the histograms in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesprior"
+
+\end_inset
+
+ are not flat).
+ The best we can do with the Dirichlet distribution is set 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ = 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+c(1,1,1)
+\end_layout
+
+\end_inset
+
+, which is 
+\emph on
+uninformative on the simplex
+\emph default
+.
+ In other words, all 
+\emph on
+combinations
+\emph default
+ of the proportions are equally likely.
+ See the section titled 
+\begin_inset Quotes eld
+\end_inset
+
+Constructing informative Bayesian priors
+\begin_inset Quotes erd
+\end_inset
+
+ in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "SemmensPrep"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Because the mean of the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ = 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+c(1,1,1)
+\end_layout
+
+\end_inset
+
+, is 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+frac{1}{n.sources}$
+\end_layout
+
+\end_inset
+
+, we also call it the 
+\emph on
+generalist
+\emph default
+ prior.
+ This reflects two facts: 1) it is not really uninformative, and 2) for
+ weakly informative data it shifts the posterior towards a generalist diet,
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$p_1 = p_2 = p_3 = 
+\backslash
+frac{1}{3}$
+\end_layout
+
+\end_inset
+
+.
+ The amount of shift depends on the informativeness (quality and quantity)
+ of the data.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brett2014"
+
+\end_inset
+
+ showed significant shifts occur when the source biotracer values are very
+ uncertain and you only have 1 mixture datapoint.
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:mcmcparam"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is beyond the scope of this manual to explain Markov Chain Monte Carlo
+ (MCMC) methods---see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:BayesianIntros"
+
+\end_inset
+
+ for more information.
+ What you need to know to effectively use the MixSIAR GUI can be summarized
+ in a paragraph or two though:
+\end_layout
+
+\begin_layout Standard
+Running MCMC in JAGS can take a long time for a model with many parameters.
+ It's a good idea to always run the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ length first.
+ This lets you confirm the model is specified correctly, and will give you
+ an idea how long a longer MCMC run will take.
+ 
+\series bold
+For now, leave 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ selected.
+ If you want, skip ahead to 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Error-structure-options"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Briefly, MCMC is a method of estimating the probability density functions
+ of variables of interest (e.g.
+ proportion of Region 1 Wolves diet that is Deer).
+ Instead of only a mean and variance, MCMC estimates the entire distribution
+ for each variable.
+ From this estimated 
+\begin_inset Quotes eld
+\end_inset
+
+posterior
+\begin_inset Quotes erd
+\end_inset
+
+ distribution we can then calculate familiar statistics like mean/median,
+ standard deviation, and Bayesian credible intervals (NOT 95% confidence
+ intervals, see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:BayesianIntros"
+
+\end_inset
+
+).
+ As you increase the number and length of the MCMC 
+\begin_inset Quotes eld
+\end_inset
+
+chains
+\begin_inset Quotes erd
+\end_inset
+
+, they will converge on the true posterior distribution for each variable.
+ But more and longer chains take...longer, and we don’t have all day.
+ If your chains are 'long enough,' according to some diagnostics (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:MCMCdiagnostics"
+
+\end_inset
+
+), then you will get accurate estimates of the posterior distributions and
+ we say the chains have 
+\begin_inset Quotes eld
+\end_inset
+
+converged.
+\begin_inset Quotes erd
+\end_inset
+
+ Setting the MCMC parameters is a balancing act between not waiting forever
+ for an answer and achieving convergence.
+\end_layout
+
+\begin_layout Standard
+The MCMC settings available in the GUI are in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+ You can specify exact MCMC parameters using the script version (see lines
+ 127-137 of 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar_script.r
+\end_layout
+
+\end_inset
+
+).
+ If you're unfamiliar with MCMC, you may want to briefly skim the references
+ in 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:BayesianIntros"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="6">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Chain Length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Burn-in
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Thin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# Chains
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Est.
+ runtime
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+test
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+500
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+very short
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3 min
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+short
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15 min
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+normal
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+30 min
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+300,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+200,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+90 min
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+very long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1,000,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+500,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+500
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5 hours
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+extreme
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3,000,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1,500,000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+500
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15 hours
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+MCMC settings in MixSIAR GUI
+\series default
+.
+ You can specify exact MCMC parameters using the script version (see lines
+ 127-137 of 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar_script.r
+\end_layout
+
+\end_inset
+
+).
+ Estimated runtime listed is for the Wolves Example on my laptop (Ubuntu
+ 14.04, Intel Core i5 1.7GHz, 8GB RAM).
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:mcmc"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Error structure options
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Error-structure-options"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the Wolves Example we want the 
+\begin_inset Quotes eld
+\end_inset
+
+Residual * Process
+\begin_inset Quotes erd
+\end_inset
+
+ error option, and it is already.
+ The differences between 
+\begin_inset Quotes eld
+\end_inset
+
+Residual * Process
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Residual only
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+Process only
+\begin_inset Quotes erd
+\end_inset
+
+ are explained in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "StockPrep"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR (test)
+\end_layout
+
+\begin_layout Standard
+In the future you may want to change the output saving options, but not
+ now.
+ Click the “RUN MODEL” button at the bottom!
+\end_layout
+
+\begin_layout Standard
+You should see something like this in the R console:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename mixsiar_running.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is good! It means MixSIAR has created a JAGS model file, passed your
+ data to JAGS, and JAGS is fitting your model.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run should only take a few seconds.
+ If you’re familiar with JAGS and want to check out the model file, “MixSIAR
+ model.txt” will be in your working directory folder.
+\end_layout
+
+\begin_layout Standard
+Before we look at the output, it is useful to have at least a hand-wavy
+ understanding of how the MixSIAR model is set up.
+ In the introduction, we stated that MixSIAR is a Bayesian mixing model.
+ This is true, but we can also add another descriptive term and say that
+ MixSIAR is a hierarchical Bayesian mixing model.
+ The hierarchical structure allows MixSIAR to analyze diet by covariates,
+ as illustrated in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolfmodel"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolf_model.png
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Model structure and variables in the Wolf Example.
+
+\series default
+ For the diet proportion, 
+\emph on
+p
+\emph default
+, of each source (Deer shown here), we fit a distribution for all wolves
+ (p.global.Deer).
+ Means for each Region (p.Region 1-3.Deer) are drawn from this p.global.Deer
+ distribution, with deviation Region.SD.
+ The process repeats for the Pack level: means for each Pack are drawn from
+ their Region distributions (p.Pack 4-7.Deer from p.Region 2.Deer), with deviation
+ Pack.SD.
+ From 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Semmens2009a"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolfmodel"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Using MCMC diagnostics
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:MCMCdiagnostics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When the model is finished, a green check will appear next to the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename model_finished.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The R console will have two progress bars at 100% as well:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename model_finished2.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ A bunch of plots will be spit out, but first recall that the aim of MCMC
+ is to converge on the posterior distributions for all variables in the
+ model.
+ 
+\emph on
+Before accepting any of the MixSIAR results, it is imperative that you determine
+ the model has converged.
+
+\emph default
+ You should use the diagnostic tests and plots in this effort.
+ MixSIAR prints the diagnostic tests in the R console (above Summary Statistics)
+ and saves them as “diagnostics.txt”.
+ Check them out!
+\end_layout
+
+\begin_layout Standard
+MixSIAR displays 2 diagnostic tests by default: Gelman-Rubin and Geweke.
+ Briefly, the Gelman-Rubin test needs > 1 chain to be calculated, and will
+ be near 1 at convergence.
+ Gelman states that “values below 1.1 are acceptable for most examples” 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "gelman2014bayesian"
+
+\end_inset
+
+.
+ The Geweke test is a two-sided z-test comparing the mean of the first part
+ of the chain with the mean of the second part.
+ At convergence these means should be the same, and large absolute z-scores
+ indicate rejection.
+ The 
+\begin_inset CommandInset href
+LatexCommand href
+name "SAS website"
+target "http://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_introbayes_sect008.htm"
+
+\end_inset
+
+ has a good brief explanation of how to visually analyze trace plots, and
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "Patrick Lam's notes"
+target "http://www.people.fas.harvard.edu/~plam/teaching/methods/convergence/convergence_print.pdf"
+
+\end_inset
+
+ may also be useful in understanding the diagnostic tests.
+\end_layout
+
+\begin_layout Standard
+Looking at the 
+\begin_inset Quotes eld
+\end_inset
+
+diagnostics.txt
+\begin_inset Quotes erd
+\end_inset
+
+ file, our model is not even close to convergence with the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename wolves_test_diag.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+MixSIAR also produces diagnostic plots useful for determining convergence,
+ using the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+ggmcmc
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ggmcmc"
+
+\end_inset
+
+.
+ Open 
+\begin_inset Quotes eld
+\end_inset
+
+diagnostics.pdf
+\begin_inset Quotes erd
+\end_inset
+
+ and you will find:
+\end_layout
+
+\begin_layout Itemize
+Gelman-Rubin plot (same as in diagnostics.txt)
+\end_layout
+
+\begin_layout Itemize
+Geweke plot (same as in diagnostics.txt)
+\end_layout
+
+\begin_layout Itemize
+Posterior density plots 
+\emph on
+by chain
+\end_layout
+
+\begin_layout Itemize
+Traceplots
+\end_layout
+
+\begin_layout Itemize
+Running mean plots
+\end_layout
+
+\begin_layout Itemize
+Autocorrelation plots
+\end_layout
+
+\begin_layout Itemize
+Crosscorrelation plot
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR (for real)
+\end_layout
+
+\begin_layout Standard
+Let's choose a longer MCMC run and try again:
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+Normal
+\begin_inset Quotes erd
+\end_inset
+
+ under 
+\begin_inset Quotes eld
+\end_inset
+
+MCMC run length
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button again.
+ This will take much longer, about 30 minutes instead of 5 seconds.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics (again)
+\end_layout
+
+\begin_layout Standard
+When the model is finished, again click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ This time it looks like our model is pretty well converged according to
+ the Gelman-Rubin:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename wolves_normal_diag.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Looking at the Geweke, we can see that chains 1 and 2 are good, but chain
+ 3 was not quite converged:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename wolves_normal_geweke.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I would run this one step longer (
+\begin_inset Quotes eld
+\end_inset
+
+long
+\begin_inset Quotes erd
+\end_inset
+
+) if it were for a final analysis, but this is good for now.
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting MixSIAR output
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Interpreting-MixSIAR-output"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Several plots are created:
+\end_layout
+
+\begin_layout Itemize
+Posterior plot comparing the variation in diet by each factor (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolves_sd"
+
+\end_inset
+
+, “posterior_density_SD.pdf”)
+\end_layout
+
+\begin_layout Itemize
+Posterior plots of diet by Region (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesregion1"
+
+\end_inset
+
+, “posterior_density_diet_p_Region 1.pdf” etc.)
+\end_layout
+
+\begin_layout Itemize
+Posterior plots of diet by Pack (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvespack7"
+
+\end_inset
+
+, “posterior_density_diet_p_Pack 4.pdf” etc.)
+\end_layout
+
+\begin_layout Itemize
+Posterior plot of overall population diet (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesglobal"
+
+\end_inset
+
+, “posterior_density_diet_p_global.pdf”)
+\end_layout
+
+\begin_layout Itemize
+Pairs plot of overall population diet (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvespairs"
+
+\end_inset
+
+, “pairs_plot.pdf”)
+\end_layout
+
+\begin_layout Standard
+In addition to the plots, summary statistics are output to the R console
+ and saved if you check the box.
+ First, let’s look at the medians (50% quantiles) of 
+\series bold
+Region.SD
+\series default
+ and 
+\series bold
+Pack.SD
+\series default
+ terms---these are the variation in diet for Factor 1 (Region) and Factor
+ 2 (Pack):
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename regionpacksd.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You should have values close to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sigma_{Region}=0.92$
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sigma_{Pack}=1.18$
+\end_layout
+
+\end_inset
+
+.
+ These are about the same (well within 95% CI), so we can say that Region
+ and Pack contribute about equally to the variation in wolves' diets.
+ Check that the mean, SD, and quantiles for 
+\series bold
+Region.SD
+\series default
+ and 
+\series bold
+Pack.SD
+\series default
+ match their posterior density distributions (posterior_density_SD.pdf, Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolves_sd"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_posterior_density_SD.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior plot comparing the variation in diet by each factor
+\series default
+.
+ Including covariates as Random Effects in MixSIAR allows you to examine
+ which explains more of the variation in consumer diet.
+ In the Wolves Example here, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sigma_{Region}$
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sigma_{Pack}$
+\end_layout
+
+\end_inset
+
+ are about the same, so we can say that Region and Pack contribute about
+ equally to the variation in wolves' diets.
+ Median and quantile values are printed in Summary Statistics---see Region.SD
+ and Pack.SD.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolves_sd"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+You can also look at the mean, SD, and quantiles for 
+\series bold
+p.Region
+\series default
+ (diet proportion by Region), 
+\series bold
+p.Pack
+\series default
+ (diet proportion by Pack), and 
+\series bold
+p.global
+\series default
+ (diet proportion of the overall wolf population).
+ As an example, to find the median diet for Region 1 wolves (71.4% Deer,
+ 8.5% Marine Mammals, and 16.5% Salmon), look in Summary Statistics for the
+ 50% quantiles of p.Region 1.Deer, p.Region 1.Marine Mammals, and p.Region 1.Salmon
+ (red):
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename wolvesregion.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+95% credible intervals
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+These are Bayesian credible intervals, NOT frequentist confidence intervals.
+\end_layout
+
+\end_inset
+
+ for Deer, Marine Mammals, and Salmon contribution to Region 1 wolves’ diet
+ would be found in Summary Statistics 2.5% and 97.5% of p.Region 1.Deer, p.Region
+ 1.Marine Mammals, and p.Region 1.Salmon (blue).
+ Check that these values agree with the posterior plot of Region 1 wolves’
+ diet (posterior_density_diet_p_Region 1.pdf, Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesregion1"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_posterior_density_diet_p_Region 1.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior plot of Region 1 wolves’ diet
+\series default
+.
+ MixSIAR plots the diet of each level of each fixed/random effect.
+ The diet proportions of Region 1 are in Summary Statistics as p.Region 1.Deer,
+ p.Region 1.Marine Mammals, and p.Region 1.Salmon (medians = 71.4% Deer, 8.5%
+ Marine Mammals, and 16.5% Salmon).
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvesregion1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_posterior_density_diet_p_Pack 7.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior plot of Pack 7 wolves’ diet
+\series default
+.
+ MixSIAR plots the diet of each level of each categorical covariate.
+ The diet proportions of Pack 7 are in Summary Statistics as p.Pack 7.Deer,
+ p.Pack 7.Marine Mammals, and p.Pack 7.Salmon.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvespack7"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_posterior_density_diet_p_global.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior plot of overall wolves’ diet
+\series default
+.
+ MixSIAR also plots the diet of the overall consumer population, p.global---this
+ is what we'd expect for a new wolf if we didn't know which region or pack
+ it belonged to.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvesglobal"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename wolves_pairs_plot.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Pairs plot of the posterior diet proportions of the overall wolf population
+\series default
+.
+ The upper-diagonal shows contour plots, the diagonal shows histograms,
+ and the lower- diagonal shows the correlations between the different sources.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:wolvespairs"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Saving MixSIAR output
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Saving-MixSIAR-output"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By default MixSIAR saves .pdf files of all plots and .txt files of the diagnostics
+ and summary statistics.
+ Plot files can also be saved as .png files if you prefer.
+ If you don’t want the diagnostics or summary statistics files, uncheck
+ the relevant boxes.
+ If you don’t want to be bothered with the plots, you can check “Suppress
+ plot output”.
+\end_layout
+
+\begin_layout Standard
+To save everything in your R workspace, run:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<save, eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+save.image(file="wolves_normal.RData")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then if you close and reopen R in the future, you can load the completed
+ Wolves Example with:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<load, eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+load(file="wolves_normal.RData")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also directly access the JAGS model objects if you want to make
+ your own plots, do a post-hoc aggregation of sources, or run other diagnostics.
+ MixSIAR GUI creates a 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar
+\end_layout
+
+\end_inset
+
+ environment, with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+jags.1
+\end_layout
+
+\end_inset
+
+ the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+rjags
+\end_layout
+
+\end_inset
+
+ object holding the MCMC chains, accessed using 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar$jags.1
+\end_layout
+
+\end_inset
+
+.
+ Objects holding MCMC chains you may be interested in are:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.global
+\end_layout
+
+\end_inset
+
+: Overall consumer diet proportions
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.fac1
+\end_layout
+
+\end_inset
+
+: Region consumer diet proportions
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.fac2
+\end_layout
+
+\end_inset
+
+: Pack consumer diet proportions
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+fac1.sig
+\end_layout
+
+\end_inset
+
+: Variation in diet among Regions
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+fac2.sig
+\end_layout
+
+\end_inset
+
+: Variation in diet among Packs
+\end_layout
+
+\begin_layout Standard
+Note that while the variables in Summary Statistics are renamed to be more
+ easily interpreted, these objects are necessarily named more generally.
+ For instance, say we are interested in the diet proportions of Region 1
+ wolves.
+ In the Summary Statistics, we find 
+\series bold
+p.Region 1.Deer
+\series default
+, 
+\series bold
+p.Region 1.Marine Mammals
+\series default
+, and 
+\series bold
+p.Region 1.Salmon
+\series default
+.
+ However, in the JAGS model, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.fac1
+\end_layout
+
+\end_inset
+
+ is the diet proportion by Region, indexed as [MCMC chain, Region, Source]:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=TRUE, message=FALSE, echo=4>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+load("wolves_normal.RData")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(R2jags)
+\end_layout
+
+\begin_layout Plain Layout
+
+attach.jags(mixsiar$jags.1)
+\end_layout
+
+\begin_layout Plain Layout
+
+dim(p.fac1)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+p.fac1[,1,1]
+\end_layout
+
+\end_inset
+
+ is the chain for the proportion of Region 1 wolves’ diet that was Deer:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+median(p.fac1[,1,1])
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+p.fac1[,1,2]
+\end_layout
+
+\end_inset
+
+
+\series default
+ is the chain for the proportion of Region 1 wolves’ diet that was Marine
+ Mammals:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+median(p.fac1[,1,2])
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Likewise for Pack, coded as 
+\series bold
+
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+p.fac2
+\end_layout
+
+\end_inset
+
+
+\series default
+, indexed as [Pack, Source]).
+ 
+\emph on
+Sources are sorted alphabetically.
+
+\emph default
+ If you are unsure of the indexing, compare the Summary Statistics to the
+ posterior density plots and you should be able to figure out which is which.
+\end_layout
+
+\begin_layout Standard
+Notice that while you have access to these objects, they are not actually
+ in your workspace.
+ If you save your workspace, then close and re-open R, you will need to
+ enter 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+attach.jags(mixsiar$jags.1)
+\end_layout
+
+\end_inset
+
+ to access 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.fac1
+\end_layout
+
+\end_inset
+
+ again.
+ Alternatively, you can add 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.fac1
+\end_layout
+
+\end_inset
+
+ to your workspace by entering 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+save(p.fac1,file="p.saved")
+\end_layout
+
+\end_inset
+
+ followed by 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+load("p.saved")
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Geese Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:geese"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For this walk-through I assume you’ve already done the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:wolves]{Wolves Example}
+\end_layout
+
+\end_inset
+
+, so if something is unclear please refer to the relevant section there.
+ The “Geese Example” uses data from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Inger2006"
+
+\end_inset
+
+ of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorph
+a spp., and Ulva lactuca.
+ This is the same data included as a demo in SIAR and in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Parnell2013"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+1 
+\emph on
+fixed effect
+\emph default
+ (Group)
+\end_layout
+
+\begin_layout Itemize
+Source data as means and SDs
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Concentration dependence
+\end_layout
+
+\begin_layout Itemize
+Residual only error
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+geese_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the C and N isotope values, and categorical covariate (Group).
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are isotopes (d13C and d15N) and which is a fixed effect
+ (Group).
+ 
+\emph on
+We choose to treat Group as a fixed effect instead of a random effect here
+ because we are interested in the diet of each group separately and NOT
+ in the overall diet.
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+Our geese source data are not by Group, but we DO have concentration dependence
+ data (see 
+\begin_inset Quotes eld
+\end_inset
+
+geese_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file).
+ Next to 
+\begin_inset Quotes eld
+\end_inset
+
+Do you have Concentration Dependence data?
+\begin_inset Quotes erd
+\end_inset
+
+, click 
+\begin_inset Quotes eld
+\end_inset
+
+Yes
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We only have source means, SD, and sample size---not the original 
+\begin_inset Quotes eld
+\end_inset
+
+raw
+\begin_inset Quotes erd
+\end_inset
+
+ data---click 
+\begin_inset Quotes eld
+\end_inset
+
+Load source means and SDs
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+geese_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+geese_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Your plot should match that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:geeseiso"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename geese_isospace_plot_1_2.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Geese Example.
+
+\series default
+ Consumer data are by Group (color) and source data are labeled.
+ Error bars indicate combined source and discrimination uncertainty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:geeseiso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Geese Example we want 
+\begin_inset Quotes eld
+\end_inset
+
+Residual error only
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR (test)
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Geese Example is larger than the others, so it will take significantly
+ longer to run (~50 seconds for 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Using MCMC diagnostics
+\end_layout
+
+\begin_layout Standard
+When the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button to generate diagnostics, summary statistics, and posterior plots.
+ Has our model converged? See Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:MCMCdiagnostics"
+
+\end_inset
+
+ if you need a refresher on how to do this.
+ Based on the Gelman-Rubin diagnostics, our 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ run is not even close to convergence:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename geese_test_diag.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR (for real)
+\end_layout
+
+\begin_layout Enumerate
+Under 
+\begin_inset Quotes eld
+\end_inset
+
+MCMC run length
+\begin_inset Quotes erd
+\end_inset
+
+, click 
+\begin_inset Quotes eld
+\end_inset
+
+short
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Standard
+This will take roughly 40 minutes to complete, so be patient!
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics (again)
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button again.
+ Based on the Gelman-Rubin diagnostic, our 
+\begin_inset Quotes eld
+\end_inset
+
+short
+\begin_inset Quotes erd
+\end_inset
+
+ run is much closer to convergence:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename geese_short_diag.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We will call these good enough for the purposes of this tutorial---would
+ NOT accept these as final results.
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+You should see posterior plots of diet by Group (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:geeseGroup1"
+
+\end_inset
+
+, “posterior_density_diet_p_Group 1.pdf”, etc.).
+ 
+\emph on
+Note that there is no global/overall estimated diet
+\emph default
+---this is because we fit Group as a fixed effect instead of a random effect.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename geese_posterior_density_diet_p_Group 1.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior plot of Group 1 geese diet.
+
+\series default
+ For medians and credible interval limits, look in the Summary Statistics
+ at p.Group 1.Grass, p.Group 1.Enteromorpha, p.Group 1.U.lactuca, and 1.Group 6.Zostera.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:geeseGroup1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As in the other working examples, MixSIAR also prints and saves summary
+ statistics.
+ As an example, to find the median diet proportions for Group 1 geese (7.2%,
+ 11.9%, 21.6%, 57.7%), look in Summary Statistics for the 50% values of 
+\series bold
+p.Group 1.Enteromorpha
+\series default
+, 
+\series bold
+p.Group 1.Grass
+\series default
+, 
+\series bold
+p.Group 1.U.lactuca
+\series default
+, and 
+\series bold
+p.Group 1.Zostera
+\series default
+.
+ The 95% credible interval for Grass contribution to Group 1 geese diet
+ would be found in Summary Statistics, 2.5% and 97.5% of 
+\series bold
+p.Group 1.Grass
+\series default
+.
+ See that these values agree with the posterior plot of Group 1 diet in
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:geeseGroup1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Lake Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:lake"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Lake Example” data is simulated based on 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Francis2011"
+
+\end_inset
+
+ and we include it as a example of how MixSIAR can include a 
+\emph on
+continuous effect
+\emph default
+.
+ Here we examine the diet of zooplankton in 21 lakes using:
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+1 continuous effect (Secchi Depth : Mixed Layer Depth)
+\end_layout
+
+\begin_layout Itemize
+Raw source data 
+\end_layout
+
+\begin_layout Standard
+Fitting a model with a continuous effect is more complex than the categorical
+ fixed/random effects and can be a bit finicky.
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+lake_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the C and N isotope values, and continuous covariate (Secchi.Mixed
+).
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are isotopes (d13C and d15N) and which is the continuous
+ effect (Secchi.Mixed).
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+We do not have concentration dependence data (see 
+\begin_inset Quotes eld
+\end_inset
+
+lake_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file), so click 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We have the original 
+\begin_inset Quotes eld
+\end_inset
+
+raw
+\begin_inset Quotes erd
+\end_inset
+
+ source data---click 
+\begin_inset Quotes eld
+\end_inset
+
+Load raw source data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+lake_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+lake_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Your plot should match that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:lakeiso"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename lake_isospace_plot_1_2.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Lake Example.
+
+\series default
+ Consumer data are highly variable, but much of this variance is explained
+ by the Secchi:Mixed continuous covariate.
+ Error bars indicate combined source and discrimination uncertainty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:lakeiso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ When you're satisfied eveything is ok, then choose the 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run length.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Lake Example we want 
+\begin_inset Quotes eld
+\end_inset
+
+Residual error only
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Lake Example took my laptop ~13 minutes for 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Based on the Gelman-Rubin and Geweke diagnostics, our 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ run has converged well enough to accept the results:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename lake_normal_diag.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename lake_geweke.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+MixSIAR fits a continuous covariate as a linear regression in ILR/transform-spac
+e.
+ Two terms are fit for the proportion of each source: an intercept and a
+ slope.
+ The plot uses the posterior median estimates of the intercept and slope,
+ and the lines are curved because of the ILR-transform back into p-space
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:lakeregression"
+
+\end_inset
+
+).
+ For details, or if you would like to make modifications, see 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+plot_continous_var.r
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename lake_posterior_density_diet_p_Secchi.Mixed.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Plot of lake zooplankton diet as a function of Secchi depth:Mixed layer
+ depth ratio.
+
+\series default
+ The plot uses the posterior median estimates of the intercept and slope,
+ and the lines are curved because of the ILR-transform back into p-space.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:lakeregression"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The other posterior plots MixSIAR produces for a continuous effect show
+ the estimated diet for the minimum, median, and maximum individuals (Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:lakeminmedmax"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename lake_posterior_density_diet_min_Secchi.Mixed.pdf
+	scale 30
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename lake_posterior_density_diet_median_Secchi.Mixed.pdf
+	scale 30
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename lake_posterior_density_diet_max_Secchi.Mixed.pdf
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Lake zooplankton diet for the min, median, and max individuals.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:lakeminmedmax"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Palmyra Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:palmyra"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Palmyra Example” data is actual data from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "McCauley2012"
+
+\end_inset
+
+ and analyzes the diet of 3 large reef predators (Taxa = 
+\emph on
+fixed effect
+\emph default
+) around the Palmyra Atoll with:
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+1 fixed effect (Taxa)
+\end_layout
+
+\begin_layout Itemize
+Raw source data
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+palmyra_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the C and N isotope values, and fixed effect (Taxa).
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are isotopes (d13C and d15N) and which is the fixed
+ effect (Taxa).
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+We do not have concentration dependence data (see 
+\begin_inset Quotes eld
+\end_inset
+
+palmyra_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file), so click 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We do have the original 
+\begin_inset Quotes eld
+\end_inset
+
+raw
+\begin_inset Quotes erd
+\end_inset
+
+ source data---click 
+\begin_inset Quotes eld
+\end_inset
+
+Load raw source data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+palmyra_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+palmyra_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Your plot should match that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:palmyraiso"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename palmyra_isospace_plot_1_2.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Palmyra Example.
+
+\series default
+ Error bars indicate combined source and discrimination uncertainty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD.
+ The lagoon source error bars are wider than the other sources because it
+ is assumed to be one trophic step below them (and thus has additional discrimin
+ation uncertainty).
+ See 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "McCauley2012"
+
+\end_inset
+
+, 
+\begin_inset CommandInset href
+LatexCommand href
+name "Appendix A"
+target "http://www.esapubs.org/archive/appl/A022/091/appendix-A.htm"
+
+\end_inset
+
+, for explanation.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:palmyraiso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ When you're satisfied eveything is ok, then choose the 
+\begin_inset Quotes eld
+\end_inset
+
+short
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run length.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Palmyra Example we want 
+\begin_inset Quotes eld
+\end_inset
+
+Residual * Process
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Palmyra Example took my laptop ~75 minutes for 
+\begin_inset Quotes eld
+\end_inset
+
+short
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Based on the Gelman-Rubin and Geweke diagnostics, our 
+\begin_inset Quotes eld
+\end_inset
+
+short
+\begin_inset Quotes erd
+\end_inset
+
+ run has converged well enough to accept the results:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename palmyra_short_gelman.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename palmyra_short_geweke.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+Your posterior density plots for blacktip and grey reef sharks should match
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:palmyradiet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename palmyra_posterior_density_diet_p_Blacktip shark.pdf
+	scale 45
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename palmyra_posterior_density_diet_p_Grey reef shark.pdf
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior diet estimates for blacktip and grey reef sharks in the Palmyra
+ Example.
+
+\series default
+ Median diet proportions are (27.6% Lagoon, 49.8% Pelagic, 21.9% Reef) for
+ blacktip sharks , and (2.6% Lagoon, 91.3% Pelagic, 6% Reef) for grey reef
+ sharks.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:palmyradiet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Check that the medians and 95% CIs in the summary statistics match the posterior
+ plots in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:palmyradiet"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename palmyra_short_summary.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Killer Whale Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:killer"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Killer Whale Example demonstrates the difference 
+\emph on
+informative priors
+\emph default
+ make, and illustrates how to construct them.
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+Source data as means + SDs
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Informative vs.
+ uninformative priors
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+killerwhale_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the C and N isotope values.
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are isotopes (d13C and d15N).
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+We do not have concentration dependence data (see 
+\begin_inset Quotes eld
+\end_inset
+
+killerwhale_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file), so click 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We only have source summary statistics (mean, SD, and sample size), not
+ the original “raw” data---Click “Load source means and SDs”.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+killerwhale_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+killerwhale_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Your plot should match that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:kwiso"
+
+\end_inset
+
+.
+ Notice that the high degree of correlation places the sources on a line,
+ which makes it difficult for the model to determine if killer whales are
+ eating Chinook vs.
+ Coho, or Sockeye vs.
+ Steelhead vs.
+ Chum.
+ We can give the model additional information to resolve this problem by
+ using an 
+\emph on
+informative prior
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename kw_isospace_plot_1_2.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Killer Whale Example.
+
+\series default
+ Error bars indicate combined source and discrimination uncertainty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD.
+ Notice that the high degree of correlation places the sources on a line,
+ which makes it difficult for the model to determine if killer whales are
+ eating Chinook vs.
+ Coho, Sockeye vs.
+ Steelhead vs.
+ Chum.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:kwiso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Constructing the informative prior
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:informativeprior"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "SemmensPrep"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+One of the benefits to conducting mixture models in a Bayesian framework
+ is that information from other data sources can be included via 
+\emph on
+informative prior distributions
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Moore2008"
+
+\end_inset
+
+.
+ Suppose we have collected 14 fecal samples from the killer whale population
+ we are studying, and we find 10 chinook, 1 chum, 0 coho, 0 sockeye, and
+ 3 steelhead.
+ The sum of the Dirichlet hyperparameters roughly correspond to prior sample
+ size, so one approach would be to construct a prior with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(10,1,0,0,3
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+.
+ A downside of this prior is that a sample size of 14 represents a very
+ informative prior, with much of the parameter space given very little weight.
+ Keeping the relative contributions the same, the hyperparameters can be
+ rescaled to have the same mean, but different variance.
+ An alternative is to scale the prior to have a weight of 5, equal to the
+ same weight as the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(1,1,1,1,1
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+.
+ This prior could be represented as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(
+\backslash
+frac{10*5}{14},
+\backslash
+frac{1*5}{14},
+\backslash
+frac{0*5}{14},
+\backslash
+frac{0*5}{14},
+\backslash
+frac{3*5}{14}
+\backslash
+right)=
+\backslash
+left(3.57,0.36,0.01,0.01,1.07
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+In the MixSIAR GUI, under 
+\begin_inset Quotes eld
+\end_inset
+
+Specify prior
+\begin_inset Quotes erd
+\end_inset
+
+, click 
+\begin_inset Quotes eld
+\end_inset
+
+Informative.
+\begin_inset Quotes erd
+\end_inset
+
+ In the box, enter your 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ vector in R format, e.g.
+ 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+c(..., ..., ...)
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename specifyprior.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You cannot have 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ parameters = 0, so while we had no coho and sockeye in our fecal samples,
+ we set their 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ parameters = 0.01.
+ 
+\emph on
+Remember that the sources are sorted alphabetically
+\emph default
+.
+ Click the 
+\begin_inset Quotes eld
+\end_inset
+
+Plot prior
+\begin_inset Quotes erd
+\end_inset
+
+ button to compare your informative prior with the uninformative prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(1,1,1,1,1
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+, as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:kwprior"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename kw_prior_plot.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Informative prior for Killer Whale Example.
+
+\series default
+ The fecal data was 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+left(10,1,0,0,3
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+, and then the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha$
+\end_layout
+
+\end_inset
+
+ vector is scaled to sum to the number of sources, keeping the same mean.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:kwprior"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ When you're satisfied eveything is ok, then choose the 
+\begin_inset Quotes eld
+\end_inset
+
+very long
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run length.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Killer Whale Example, choose 
+\begin_inset Quotes eld
+\end_inset
+
+Residual only
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Killer Whale Example took my laptop ~5 minutes for 
+\begin_inset Quotes eld
+\end_inset
+
+very long
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Check the Gelman-Rubin and Geweke diagnostics as usual.
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+Your posterior density plot with the informative prior should match the
+ right panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:kwdiet"
+
+\end_inset
+
+.
+ If you run the model again using the uninformative prior, you should get
+ the left panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:kwdiet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename kw_uninf_posterior_density_diet_p_global.pdf
+	scale 45
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename kw_inf_posterior_density_diet_p_global.pdf
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior diet estimates for the Killer Whale Example.
+
+\series default
+ On the left are the results using the uninformative prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(1,1,1,1,1
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+, and on the right are the results using the informative prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(3.57,0.36,0.01,0.01,1.07
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:kwdiet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Check that the medians and 95% CIs in the summary statistics match the right
+ plot (informative prior) in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:kwdiet"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename kw_summary.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our prior was quite informative on Coho and Sockeye, effectively setting
+ them to 0.
+ Notice, however, that there was still significant information in our data---evi
+denced by the posteriors for Chinook and Steelhead being very different
+ from their priors (Chinook prior mean = 10/14 = 71.4%, Chinook posterior
+ mean = 50.5%, Steelhead prior mean = 3/14 = 21.4%, Steelhead posterior mean
+ = 43.0%).
+\end_layout
+
+\begin_layout Subsection
+Isopod Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:isopod"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Isopod Example is from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Isopod"
+
+\end_inset
+
+ and demonstrates MixSIAR applied to an 
+\emph on
+8-dimensional fatty acid 
+\emph default
+dataset.
+ Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles,
+ with 5 replicates at each of 6 sites in Puget Sound, WA:
+\end_layout
+
+\begin_layout Itemize
+8 biotracers (carbon 16.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 18.2
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+6, 18.3
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 18.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 20.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+6, 20.5
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 22.5
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 22.6
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3)
+\end_layout
+
+\begin_layout Itemize
+1 random effect (Site)
+\end_layout
+
+\begin_layout Itemize
+Source data as means and SDs
+\end_layout
+
+\begin_layout Standard
+Fatty acid data greatly increase the number of biotracers beyond the typical
+ 2 stable isotopes, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N, which gives the mixing model power to resolve more sources.
+ We caution, however, that it is not only a matter of # biotracers > # sources
+ + 1.
+ As the number of sources increases, the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=1$
+\end_layout
+
+\end_inset
+
+ has greater influence, illustrated in the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:cladocera]{Cladocera Example}
+\end_layout
+
+\end_inset
+
+, Figure .
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+isopod_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the fatty acid and random effect (Site) values.
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are 
+\begin_inset Quotes eld
+\end_inset
+
+isotopes
+\begin_inset Quotes erd
+\end_inset
+
+ (c16.4w3, c18.2w6, c18.3w3, c18.4w3, c20.4w6 , c20.5w3, c22.5w3, c22.6w3).
+\end_layout
+
+\begin_layout Enumerate
+Select Site as a random effect
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Standard
+Here we treat Site as a 
+\emph on
+random effect
+\emph default
+.
+ This makes sense if we are interested in the overall population and think
+ of Site as a nuisance factor.
+ Fitting Site as a 
+\emph on
+fixed effect
+\emph default
+ would make more sense if we were interested specifically in the diet at
+ each Site, as opposed to the overall population diet and variability between
+ Sites.
+ This differs from the analysis in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Isopod"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+We do not have concentration dependence data (see 
+\begin_inset Quotes eld
+\end_inset
+
+isopod_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file), so click 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We only have source summary statistics (mean, SD, and sample size), not
+ the original “raw” data---Click “Load source means and SDs”.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+isopod_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+isopod_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Note that 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Isopod"
+
+\end_inset
+
+ conducted feeding trials to create a 
+\begin_inset Quotes eld
+\end_inset
+
+resource library
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In the mixing model, the sources are actually consumers fed exclusively
+ each of the sources.
+ This allowed them to set the discrimination = 0 (see 
+\begin_inset Quotes eld
+\end_inset
+
+isopod_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+.
+ When there are more than 2 biotracers, MixSIAR currently plots every pairwise
+ combination.
+ Here, that means 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+choose{8}{2}=28$
+\end_layout
+
+\end_inset
+
+ plots are produced.
+ In the future, MixSIAR will offer non-metric multidimensional scaling (NMDS)
+ plots for these cases.
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ When you're satisfied eveything is ok, then choose the 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run length.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Isopod Example, choose 
+\begin_inset Quotes eld
+\end_inset
+
+Residual only
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Isopod Example took my laptop ~60 minutes for 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Check the Gelman-Rubin and Geweke diagnostics as usual:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename isopod_normal_gelman.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename isopod_normal_geweke.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+Since we fit Site as a random effect, we can make inference on diet at the
+ overall population level (
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.global
+\end_layout
+
+\end_inset
+
+, posterior plot in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:isopoddiet"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename isopod_posterior_density_diet_p_global.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior diet estimates for the overall population in the Isopod Example.
+
+\series default
+ Median diet proportions are 10% Brown algae, 53.7% Green algae, 35.2% Red
+ algae.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:isopoddiet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Check that the medians and 95% CIs in the summary statistics for 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.global
+\end_layout
+
+\end_inset
+
+ match the posterior distributions in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:isopoddiet"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename isopod_summary_global.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also have posterior plots for each Site (Site shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:isopodSite"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename isopod_posterior_density_diet_p_CP.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior estimates of isopod diet at Site CP.
+
+\series default
+ Median diet proportions are 5.8% Brown algae, 39.1% Green algae, 54.9% Red
+ algae.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:isopodSite"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cladocera Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:cladocera"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Cladocera Example is from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cladocera"
+
+\end_inset
+
+ and demonstrates MixSIAR applied to a 
+\emph on
+22-dimensional fatty acid 
+\emph default
+dataset.
+ Here the 14 mixture datapoints are Cladocera (water fleas) fatty acid profiles
+ from 6 lakes in Finland over 2 seasons.
+ Besides the high dimensionality, the other difference with this analysis
+ is that we 
+\emph on
+fit each mixture datapoint individually
+\emph default
+, because there is no clear covariate structure (some sites have 2 seasons,
+ some have 1, some sites in the same lake).
+ We do this by creating an 
+\begin_inset Quotes eld
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+ column and treating 
+\begin_inset Quotes eld
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+ as a fixed effect.
+\end_layout
+
+\begin_layout Itemize
+22 biotracers (carbon 14.0, 16.0, 16.1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+9, 16.1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+7, 16.2
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+4, 16.3
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 16.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 17.0, 18.0, 18.1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+9, 18.1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+7, 18.2
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+6, 18.3
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+6, 18.3
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 18.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 18.5
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 20.0, 22.0, 20.4
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+6, 20.5
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, 22.6
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+omega$
+\end_layout
+
+\end_inset
+
+3, BrFA)
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Mix datapoints fit independently
+\end_layout
+
+\begin_layout Itemize
+Source data as means and SDs
+\end_layout
+
+\begin_layout Standard
+Fatty acid data greatly increase the number of biotracers beyond the typical
+ 2 stable isotopes, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N, which gives the mixing model power to resolve more sources.
+ We caution, however, that it is not only a matter of # biotracers > # sources
+ + 1.
+ As the number of sources increases, the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=1$
+\end_layout
+
+\end_inset
+
+ has greater influence, illustrated in Figure .
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data
+\begin_inset Quotes erd
+\end_inset
+
+, then 
+\begin_inset Quotes eld
+\end_inset
+
+Load mixture data file
+\begin_inset Quotes erd
+\end_inset
+
+ in the new window.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+cladocera_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This file has the fatty acid and fixed effect (id) values.
+\end_layout
+
+\begin_layout Enumerate
+Select which columns are 
+\begin_inset Quotes eld
+\end_inset
+
+isotopes
+\begin_inset Quotes erd
+\end_inset
+
+ (c14.0, c16.0, c16.1w9, c16.1w7, c16.2w4, c16.3w3, c16.4w3, c17.0, c18.0, c18.1w9,
+ c18.1w7 , c18.2w6, c18.3w6, c18.3w3, c18.4w3, c18.5w3, c20.0, c22.0, c20.4w6, c20.5w3,
+ c22.6w3, BrFA).
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+ as a fixed effect
+\end_layout
+
+\begin_layout Enumerate
+Click “I'm finished”.
+\end_layout
+
+\begin_layout Standard
+Here we treat 
+\begin_inset Quotes eld
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+ as a fixed effect---this will estimate the diet of each mixture datapoint
+ separately (sample size of 1).
+ This makes sense to do when you think there will be clear differences between
+ sites/seasons/etc., but only have 1 or 2 points from each site/season (i.e
+\emph on
+, you don't have enough data to estimate a site/season effect
+\emph default
+).
+ If you are interested in the site/season effect, you need replicates within
+ each site/season, and then it is best to fit site/season as a fixed or
+ random effect.
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Enumerate
+Click “Load source data”
+\end_layout
+
+\begin_layout Enumerate
+We do not have concentration dependence data (see 
+\begin_inset Quotes eld
+\end_inset
+
+cladocera_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ file), so click 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+We only have source summary statistics (mean, SD, and sample size), not
+ the original “raw” data---Click “Load source means and SDs”.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+cladocera_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Enumerate
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Load discrimination data
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose 
+\begin_inset Quotes eld
+\end_inset
+
+cladocera_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for the file, and click 
+\begin_inset Quotes eld
+\end_inset
+
+Ok
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Note that 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cladocera"
+
+\end_inset
+
+ conducted feeding trials to create a 
+\begin_inset Quotes eld
+\end_inset
+
+resource library
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In the mixing model, the sources are actually consumers fed exclusively
+ each of the sources.
+ This allowed them to set the discrimination = 0 (see 
+\begin_inset Quotes eld
+\end_inset
+
+cladocera_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot: DON'T
+\end_layout
+
+\begin_layout Standard
+Do NOT click 
+\begin_inset Quotes eld
+\end_inset
+
+Make isospace plot
+\begin_inset Quotes erd
+\end_inset
+
+! When there are more than 2 biotracers, MixSIAR currently plots every pairwise
+ combination.
+ Here, that means 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+choose{22}{2}=231$
+\end_layout
+
+\end_inset
+
+ plots are produced.
+ Yikes! In the future, MixSIAR will offer non-metric multidimensional scaling
+ (NMDS) plots for these cases.
+\end_layout
+
+\begin_layout Subsubsection
+Plot prior
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+Plot prior
+\begin_inset Quotes erd
+\end_inset
+
+ to see our 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(1,1,1,1,1,1,1
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+ prior, as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cladoceraprior"
+
+\end_inset
+
+.
+ Fatty acid data greatly increase the number of biotracers beyond the typical
+ 2 stable isotopes, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N, which gives the mixing model power to resolve more sources.
+ We caution, however, that it is not only a matter of # biotracers > # sources
+ + 1.
+ As the number of sources increases, the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=1$
+\end_layout
+
+\end_inset
+
+ has greater influence, illustrated in the difference between the plots
+ with 7 sources (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cladoceraprior"
+
+\end_inset
+
+) vs.
+ 3 sources (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesprior"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename cladocera_prior_plot.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Uninformative 
+\series default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+alpha=
+\backslash
+left(1,1,1,1,1,1,1
+\backslash
+right)$
+\end_layout
+
+\end_inset
+
+
+\series bold
+ prior for 7 sources.
+
+\series default
+ Compare to the uninformative prior with 3 sources (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:wolvesprior"
+
+\end_inset
+
+).
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cladoceraprior"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Specify MCMC parameters
+\end_layout
+
+\begin_layout Standard
+First run using the 
+\begin_inset Quotes eld
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+ settings to make sure the model is setup correctly.
+ When you're satisfied eveything is ok, then choose the 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ MCMC run length.
+ For more description of these parameters, see Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:mcmc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Error term options
+\end_layout
+
+\begin_layout Standard
+In the Cladocera Example, choose 
+\begin_inset Quotes eld
+\end_inset
+
+Process only (N = 1)
+\begin_inset Quotes erd
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename processonly.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will fit the 
+\begin_inset Quotes eld
+\end_inset
+
+process error
+\begin_inset Quotes erd
+\end_inset
+
+ model of MixSIR, which we MUST do when we only have one mix datapoint (or
+ here, one mix datapoint per fixed effect).
+ With only one datapoint, there is no information to estimate an additional
+ mixture variance term, so we have to assume a fixed variance based on the
+ variance of the sources (see 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Moore2008"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Run MixSIAR
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+RUN MODEL
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom.
+ The Cladocera Example took my laptop ~30 minutes for 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Check diagnostics
+\end_layout
+
+\begin_layout Standard
+After the model is finished, click the 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Check the Gelman-Rubin and Geweke diagnostics as usual (these are not great,
+ and should be run longer for a final analysis):
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename cladocera_normal_gelman.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename cladocera_normal_geweke.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Interpreting output
+\end_layout
+
+\begin_layout Standard
+Since we fit 
+\begin_inset Quotes eld
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+ as a fixed effect, there is no inference on diet at the overall population
+ level (no 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+p.global
+\end_layout
+
+\end_inset
+
+).
+ You should see posterior plots for all 14 mixture samples, as in Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cladoceradiet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename cladocera_posterior_density_diet_p_id 7.pdf
+	scale 45
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename cladocera_posterior_density_diet_p_id 14.pdf
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Posterior estimates of Cladocera diet for samples 7 and 14.
+
+\series default
+ Cladocera diet for sample 7 is dominated by Chl+Cya, while diet for sample
+ 14 is comprised of Crypto and Bacil.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cladoceradiet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Storm-petrel Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:petrel"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Storm-petrel Example
+\begin_inset Quotes erd
+\end_inset
+
+ is based on 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Bicknell2014"
+
+\end_inset
+
+ and shows MixSIAR in a 
+\emph on
+non-diet application: movement
+\emph default
+.
+ Here the mixture data are juvenile (non-breeding) birds and the source
+ data are adult (breeding) birds from 3 breeding colonies.
+ Discrimination is set to zero, making the reasonable assumptions that 1)
+ juvenile and adult birds feeding in the same region will look isotopically
+ identical, and 2) discrimination is the same for juvenile and adult birds.
+ We have:
+\end_layout
+
+\begin_layout Itemize
+2 biotracers (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{15}$
+\end_layout
+
+\end_inset
+
+N)
+\end_layout
+
+\begin_layout Itemize
+1 fixed effect (Region)
+\end_layout
+
+\begin_layout Itemize
+Raw source data
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset Quotes eld
+\end_inset
+
+stormpetrel_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+stormpetrel_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+stormpetrel_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Snail Example
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:snail"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Snail Example” data is from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Yanes2013"
+
+\end_inset
+
+ and demonstrates how MixSIAR handles 
+\emph on
+1-dimensional data
+\emph default
+.
+ The preference of land snails between C3 and CAM plants is analyzed with:
+\end_layout
+
+\begin_layout Itemize
+1 biotracer (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+delta^{13}$
+\end_layout
+
+\end_inset
+
+C)
+\end_layout
+
+\begin_layout Itemize
+Raw source data
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset Quotes eld
+\end_inset
+
+snail_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+snail_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+snail_discrimination.csv
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Using MixSIAR with your own data
+\end_layout
+
+\begin_layout Standard
+After you've run the working examples, you should be confident that MixSIAR
+ is installed and working correctly, and now you can begin using it to analyze
+ your own biotracer data.
+ You may find it more convenient to use the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:scriptversion]{script version}
+\end_layout
+
+\end_inset
+
+ than the GUI.
+\end_layout
+
+\begin_layout Subsection
+Running your own data
+\end_layout
+
+\begin_layout Standard
+The process for running MixSIAR on your data is the same as in the working
+ examples:
+\end_layout
+
+\begin_layout Enumerate
+Open R.
+ Check to see that all of the necessary MixSIAR files and your data files
+ are in your working directory (can use 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+getwd()
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+setwd()
+\end_layout
+
+\end_inset
+
+, and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+list.files()
+\end_layout
+
+\end_inset
+
+ commands in R).
+ See 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:Data-file-format]{Data file format and loading}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Create the MixSIAR GUI using 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+source(
+\begin_inset Quotes eld
+\end_inset
+
+mixsiar_gui.r
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar_gui()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Load your files using the “Read-in data” buttons.
+\end_layout
+
+\begin_layout Enumerate
+Plot your data with the “Make isospace plot” button.
+ Refer to Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:makeisospace"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose your MCMC parameters (“# of Chains”, “Chain Length”, “Burn-in”, and
+ “Thin”).
+ Refer to Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:mcmcparam"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose your error structure.
+ See 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "StockPrep"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Choose your prior.
+ Refer to Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:uninformativeprior"
+
+\end_inset
+
+ for the uninformative prior and Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:informativeprior"
+
+\end_inset
+
+ on how to construct an informative prior.
+\end_layout
+
+\begin_layout Enumerate
+Plot your prior with the 
+\begin_inset Quotes eld
+\end_inset
+
+Plot prior
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Enumerate
+Choose your output options for summary statistics, plots, and diagnostics.
+\end_layout
+
+\begin_layout Enumerate
+Click “RUN MODEL.”
+\end_layout
+
+\begin_layout Enumerate
+When the model is finished, click 
+\begin_inset Quotes eld
+\end_inset
+
+Process output
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Check that the model has converged using the diagnostics.
+ Refer to Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:MCMCdiagnostics"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Look at your results---posterior density plots and summary statistics.
+ See Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Interpreting-MixSIAR-output"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Save your workspace if you wish.
+ See Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Saving-MixSIAR-output"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Data file format and loading
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Data-file-format"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Check to see that all of the necessary files are in the 
+\series bold
+correct format
+\series default
+ and in your 
+\series bold
+working directory
+\series default
+\emph default
+.
+ In all files, extra unused columns are not a problem and column order is
+ not important.
+ You need 3 .csv files: 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Mixture/consumer biotracer values
+\series default
+ (with covariates if desired).
+ After you load the file, you will tell MixSIAR which columns to use as
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Isotopes
+\begin_inset Quotes erd
+\end_inset
+
+, Random Effects, and Continuous Effects.
+ Covariates can be numerical or text.
+ If you include two Random Effects, you will be asked 
+\begin_inset Quotes eld
+\end_inset
+
+Should MixSIAR run a hierarchical analysis?
+\begin_inset Quotes erd
+\end_inset
+
+ You should answer 
+\begin_inset Quotes eld
+\end_inset
+
+Yes
+\begin_inset Quotes erd
+\end_inset
+
+ if your second covariate is clearly nested within the first (e.g.
+ Pack within Region), and 
+\begin_inset Quotes eld
+\end_inset
+
+No
+\begin_inset Quotes erd
+\end_inset
+
+ if the two are not nested (e.g.
+ Month and Sex).
+ 
+\emph on
+The labels you use in the mixture file must match those in the source and
+ discrimination files
+\emph default
+ (i.e.
+ if you use 'd13C' here, then you must use 'Meand13C', 'SDd13C', and 'Concd13C'
+ in the source and discrimination files).
+ Here is the top of 
+\begin_inset Quotes eld
+\end_inset
+
+wolves_consumer.csv
+\begin_inset Quotes erd
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename wolves_consumer.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+[2.]
+\backslash
+setcounter{enumi}{2}
+\end_layout
+
+\end_inset
+
+
+\series bold
+Source isotope values
+\series default
+ (with covariate and/or concentration dependence optional).
+ There are several options for the source data file, depending on the type
+ of data you have.
+ Three different source data scenarios are demonstrated in the four working
+ examples.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+\begin_inset Quotes eld
+\end_inset
+
+Raw source data
+\begin_inset Quotes erd
+\end_inset
+
+---original measurements
+\emph default
+.
+ Column labels must match those in the mixture file (e.g.
+ 'd13C').
+ The Lake Example had 
+\begin_inset Quotes eld
+\end_inset
+
+Raw source data
+\begin_inset Quotes erd
+\end_inset
+
+ without a covariate (
+\begin_inset Quotes eld
+\end_inset
+
+lake_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename lake_sources1.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename lake_sources2.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename lake_sources3.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+\begin_inset Quotes eld
+\end_inset
+
+Source means+SDs
+\begin_inset Quotes erd
+\end_inset
+
+---summary statistics
+\emph default
+.
+ Add 
+\begin_inset Quotes eld
+\end_inset
+
+Mean
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+SD
+\begin_inset Quotes erd
+\end_inset
+
+ to the biotracer labels you used in the mixture file (i.e.
+ if you used 'd13C' before, then you must use 'Meand13C' and 'SDd13C').
+ You cannot enter 
+\begin_inset Quotes eld
+\end_inset
+
+0
+\begin_inset Quotes erd
+\end_inset
+
+ as a standard deviation.
+ 
+\series bold
+You must also have a column titled “n” with the sample size of each source
+ estimate
+\series default
+.
+ If you do not know the sample size, entering an arbitrary large number
+ (e.g.
+ 1000) will have MixSIAR effectively treat the means and SDs as known parameters
+ instead of fitting them with the data.
+ The Geese Example had 
+\begin_inset Quotes eld
+\end_inset
+
+Source means+SDs
+\begin_inset Quotes erd
+\end_inset
+
+ data with concentration dependence and without a covariate (
+\begin_inset Quotes eld
+\end_inset
+
+geese_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename geese_sources.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+\begin_inset Quotes eld
+\end_inset
+
+Concentration dependence
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+ (optional).
+ Add “Conc” to the isotope labels you used in the mixture file (i.e.
+ 'd13C' becomes 'Concd13C').
+ These can simply be the elemental concentrations for each source (e.g.
+ [C], [N]), or can incorporate digestibility as in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "KochDigest"
+
+\end_inset
+
+ (e.g.
+ Digest [C], Digest [N]).
+ Concentration dependence is built into the MixSIAR model following Equation
+ 1 in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Parnell2010"
+
+\end_inset
+
+.
+ The Geese Example included concentration dependence for 
+\begin_inset Quotes eld
+\end_inset
+
+Source means+SDs
+\begin_inset Quotes erd
+\end_inset
+
+ (
+\begin_inset Quotes eld
+\end_inset
+
+geese_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+, above), but you can also add 'Concd13C', etc.
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+Raw source data
+\begin_inset Quotes erd
+\end_inset
+
+ in the same way.
+ Before loading the source data file, make sure 
+\begin_inset Quotes eld
+\end_inset
+
+Do you have Concentration Dependence data?
+\begin_inset Quotes erd
+\end_inset
+
+ is marked 
+\begin_inset Quotes eld
+\end_inset
+
+Yes
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+\begin_inset Quotes eld
+\end_inset
+
+Covariate
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+ (optional).
+ Either 
+\begin_inset Quotes eld
+\end_inset
+
+Source means+SDs
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+Raw source data
+\begin_inset Quotes erd
+\end_inset
+
+ can have a covariate column, as in the Wolves Example (
+\begin_inset Quotes eld
+\end_inset
+
+wolves_sources.csv
+\begin_inset Quotes erd
+\end_inset
+
+, below).
+ The covariate label must match that in the mixture data file.
+ Before loading the source data file, make sure 
+\begin_inset Quotes eld
+\end_inset
+
+Does your source data vary by <covariate>?
+\begin_inset Quotes erd
+\end_inset
+
+ is marked 
+\begin_inset Quotes eld
+\end_inset
+
+Yes
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename wolves_sources.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+[3.]
+\backslash
+setcounter{enumi}{3}
+\end_layout
+
+\end_inset
+
+
+\series bold
+Discrimination data
+\series default
+.
+ Add “Mean” and “SD” to the isotope labels you used in the mixture file
+ (i.e.
+ if you used ‘d13C’ before, then you must use 'Meand13C' and 'SDd13C').
+ Discrimination data is assumed to be of the form Mean 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ SD, and “0” SD is permitted, as in “wolves_discrimination.csv”:
+\end_layout
+
+\begin_layout Subsection
+Using the MixSIAR script version
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:scriptversion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you are familiar with R, you can use the script version of MixSIAR instead
+ of the GUI---see 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar_script.r
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The script has a couple advantages:
+\end_layout
+
+\begin_layout Enumerate
+Time---no repetitive clicking GUI buttons
+\end_layout
+
+\begin_layout Enumerate
+Reproducibility---can save different script files for different model variations
+\end_layout
+
+\begin_layout Standard
+By default, the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:wolves]{Wolves Example}
+\end_layout
+
+\end_inset
+
+ is uncommented and can be run with:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+source("mixsiar_script.r")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To run the other examples, simply comment the Wolves Example lines and uncomment
+ the example you'd like to run.
+ The script is largely the same as the GUI, with only a couple differences
+ detailed below (using the Geese Example).
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Standard
+Uses 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+load_mix_data_script
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ instead of 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+load_mix_data
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Fixed and random effects are both entered as 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+factors=
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, and then for a random effect 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+fac_random=TRUE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, for a fixed effect 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+fac_random=FALSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+mix <- load_mix_data_script(filename="geese_consumer.csv", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            iso_names=c("d13C","d15N"), 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            factors="Group", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            fac_random=FALSE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            fac_nested=FALSE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            cont_effects=NULL)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+source <- load_source_data(filename="geese_sources.csv", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                           source_factors=NULL, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                           conc_dep=TRUE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                           data_type="means", mix)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+source_factors
+\end_layout
+
+\end_inset
+
+: Are your source data by a factor (must match one of the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+factors
+\end_layout
+
+\end_inset
+
+ in mixture data).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+conc_dep
+\end_layout
+
+\end_inset
+
+=TRUE/FALSE: Do you have concentration dependence data?
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+data_type
+\end_layout
+
+\end_inset
+
+=
+\begin_inset Quotes erd
+\end_inset
+
+means
+\begin_inset Quotes erd
+\end_inset
+
+/
+\begin_inset Quotes erd
+\end_inset
+
+raw
+\begin_inset Quotes erd
+\end_inset
+
+: Do you have raw source data, or summary statistics (Means, SD, and n)?
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+discr <- load_discr_data(filename="geese_discrimination.csv", mix)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Make isospace plot
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_data(filename="isospace_plot", plot_save_pdf=TRUE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+          plot_save_png=FALSE, mix,source,discr)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Calculate normalized surface area (if 2 biotracers)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brett2014"
+
+\end_inset
+
+ described the interaction between the 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+ prior and the shape of the mixing polygon (which arises from the positions
+ of the source means and their variances) as a bias of mixing models.
+ This phenomenon may be better described as weakly informative data, but
+ we agree that Brett's surface area metric may be useful in recognizing
+ when this may be a problem for a mixing model.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+calc_area
+\end_layout
+
+\end_inset
+
+ function calculates the normalized surface area as defined by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brett2014"
+
+\end_inset
+
+, except it combines the source and discrimination variance (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+sqrt{
+\backslash
+sigma^2_{source} + 
+\backslash
+sigma^2_{discr}}$
+\end_layout
+
+\end_inset
+
+), as that is what is used in the mixing model equations.
+\end_layout
+
+\begin_layout Subsubsection
+Plot prior
+\end_layout
+
+\begin_layout Standard
+Uninformative case:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=1,source)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Informative case (from Killer Whale Example):
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+kw.alpha <- c(10,1,0,0,3) # Our 14 fecal samples were 10, 1, 0, 0, 3 
+\end_layout
+
+\begin_layout Plain Layout
+
+kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha)
+\end_layout
+
+\begin_layout Plain Layout
+
+kw.alpha[which(kw.alpha==0)] <- 0.01 
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=kw.alpha,source=source,plot_save_pdf=TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+           plot_save_png=FALSE,filename="prior_plot") 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Write JAGS model
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+model_filename <- "MixSIAR_model.txt"   
+\end_layout
+
+\begin_layout Plain Layout
+
+resid_err <- TRUE 
+\end_layout
+
+\begin_layout Plain Layout
+
+process_err <- FALSE 
+\end_layout
+
+\begin_layout Plain Layout
+
+write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The GUI has 3 error structure options.
+ To create them in the script version:
+\end_layout
+
+\begin_layout Enumerate
+Process * Resid: 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+resid_err=TRUE
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+process_err=TRUE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Residual only: 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+resid_err=TRUE
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+process_err=FALSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Process only (N = 1): 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+resid_err=FALSE
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+process_err=TRUE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Run JAGS model
+\end_layout
+
+\begin_layout Standard
+Note that if using an informative prior, you need to set 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+alpha.prior
+\end_layout
+
+\end_inset
+
+ here.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+jags.1 <- run_model(run="test",mix,source,discr,model_filename,
+\end_layout
+
+\begin_layout Plain Layout
+
+                    alpha.prior = 1,resid_err,process_err)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Process output
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+output_JAGS(jags.1, mix, source)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GitHub Issues page
+\end_layout
+
+\begin_layout Standard
+We would love to hear feedback, positive or negative, if you use MixSIAR.
+ Drawing our attention to errors helps us fix them, and hearing how people
+ are using MixSIAR can help us improve the model in the future.
+ If you have a question, bug report, or suggestion, please use the 
+\begin_inset CommandInset href
+LatexCommand href
+name "GitHub Issues page"
+target "https://github.com/brianstock/MixSIAR/issues"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename githubissues.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The GitHub Issues setup is a very convenient way to ask questions and file
+ bug reports.
+ Unlike email, it provides a community forum, where you can see previous
+ questions/issues and get feedback from many people! See below for an example:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename githubissueex.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also contact the authors at 
+\begin_inset CommandInset href
+LatexCommand href
+name "b1stock@ucsd.edu"
+target "b1stock@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset href
+LatexCommand href
+name "semmens@ucsd.edu"
+target "semmens@ucsd.edu"
+type "mailto:"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Citing MixSIAR
+\end_layout
+
+\begin_layout Standard
+If you use MixSIAR results in publications, please cite the MixSIAR manual
+ as (similar to how you cite R) : 
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Stock, B.
+ C.
+ and B.
+ X.
+ Semmens (2015).
+ MixSIAR User Manual, version 3.0.
+ https://github.com/brianstock/MixSIAR/.
+\end_layout
+
+\begin_layout Standard
+A manuscript introducing MixSIAR will be available in the near future! Until
+ then, most of the math underlying these models is in 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2013"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Parnell, A.
+ C., Phillips, D.
+ L., Bearhop, S., Semmens, B.
+ X., Ward, E.
+ J., Moore, J.
+ W., Jackson, A.
+ L., Grey, J., Kelly, D.
+ J., and Inger, R.
+ (2013).
+ Bayesian stable isotope mixing models.
+ Environmetrics, 24(6), 387-399.
+\end_layout
+
+\begin_layout Standard
+The primary citation for Bayesian mixing models is 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Moore2008"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Moore, J.
+ W.
+ and Semmens, B.
+ X.
+ (2008).
+ Incorporating uncertainty and prior information into stable isotope mixing
+ models.
+ Ecology Letters, 11(5), 470-480.
+\end_layout
+
+\begin_layout Standard
+The residual error term was introduced by 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2010"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Parnell, A.
+ C., Inger, R., Bearhop, S., and Jackson, A.
+ L.
+ (2010).
+ Source partitioning using stable isotopes: coping with too much variation.
+ PLoS One, 5(3), e9672.
+\end_layout
+
+\begin_layout Standard
+If you are using a hierarchical structure/random effects (Wolves Example),
+ see 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Semmens2009a"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Semmens, B.
+ X., Ward, E.
+ J., Moore, J.
+ W., and Darimont, C.
+ T.
+ (2009).
+ Quantifying inter-and intra-population niche variability using hierarchical
+ Bayesian stable isotope mixing models.
+ PLoS One, 4(7), e6187.
+\end_layout
+
+\begin_layout Standard
+If you are using continuous effects, see 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Francis2011"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Francis, T.
+ B., Schindler, D.
+ E., Holtgrieve, G.
+ W., Larson, E.
+ R., Scheuerell, M.
+ D., Semmens, B.
+ X., and Ward, E.
+ J.
+ (2011).
+ Habitat structure determines resource use by zooplankton in temperate lakes.
+ Ecology letters, 14(4), 364-372.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Hopkins2012"
+
+\end_inset
+
+ made the case for including covariance in the error structure, by default
+ included in all MixSIAR models other than 
+\begin_inset Quotes eld
+\end_inset
+
+Process Error only (N=1)
+\begin_inset Quotes erd
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Hopkins, J.
+ B., and J.
+ M.
+ Ferguson.
+ 2012.
+ Estimating the diets of animals using stable isotopes and a comprehensive
+ Bayesian mixing model.
+ PLoS One 7:e28478.
+\end_layout
+
+\begin_layout Section
+Introductions to Bayesian Analysis
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:BayesianIntros"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Markov Chain Monte Carlo and Applied Bayesian Statistics: a short course
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.stats.ox.ac.uk/~cholmes/Courses/BDA/bda_mcmc.pdf
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Getting Started with JAGS, rjags, and Bayesian Modelling
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://jeromyanglim.blogspot.com/2012/04/getting-started-with-jags-rjags-and.
+ html
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Gibbs Sampling Made Easy
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://xcorr.net/2011/07/13/gibbs-sampling-made-easy-jags-rkward-coda/
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+A Primer on Bayesian Statistics in Health Economics and Outcomes Research
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.shef.ac.uk/content/1/c6/02/55/92/primer.pdf
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Bayesian Modeling in the Social Sciences: an Introduction to Markov-Chain
+ Monte Carlo
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://jackman.stanford.edu/mcmc/icpsr99.pdf
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Convergence Diagnostics
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Patrick Lam notes 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.people.fas.harvard.edu/~plam/teaching/methods/convergence/convergence_pri
+nt.pdf
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+SAS Support (trace plot analysis description)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#st
+atug_introbayes_sect008.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "mixsiar_manual"
+options "ecology"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

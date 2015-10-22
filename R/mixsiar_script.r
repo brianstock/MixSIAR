@@ -12,6 +12,7 @@ require(RColorBrewer)
 require(reshape)
 require(lattice)
 require(compositions) # need rdirichlet function to establish initial values for each chain 
+require(ggmcmc) # added nice diagnostic plot output from ggmcmc package
 
 # Next we clean up the workspace
 rm(list=ls())  # deletes everything previously in the workspace
@@ -130,8 +131,8 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # run <- "short"         # list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
 # run <- "normal"        # list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
 # run <- "long"          # list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
-# run <- "very long"     # list(chainLength=1000000, burn=700000, thin=300, chains=3, calcDIC=TRUE)
-# run <- "extreme"       # list(chainLength=3000000, burn=2700000, thin=300, chains=3, calcDIC=TRUE)
+# run <- "very long"     # list(chainLength=1000000, burn=500000, thin=500, chains=3, calcDIC=TRUE)
+# run <- "extreme"       # list(chainLength=3000000, burn=1500000, thin=500, chains=3, calcDIC=TRUE)
 
 # Can also set custom MCMC parameters
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
@@ -151,8 +152,8 @@ output_options <- list(summary_save = TRUE,                 # Save the summary s
                     sup_pairs = FALSE,                      # Suppress pairs plot output in R?
                     plot_pairs_save_pdf = TRUE,             # Save pairs plot as pdf?
                     plot_pairs_name = "pairs_plot",         # If yes, specify the base file name (.pdf/.png will be appended later)
-                    sup_xy = FALSE,                         # Suppress xy/trace plot output in R?
-                    plot_xy_save_pdf = TRUE,                # Save xy/trace plot as pdf?
+                    sup_xy = TRUE,                         # Suppress xy/trace plot output in R?
+                    plot_xy_save_pdf = FALSE,                # Save xy/trace plot as pdf?
                     plot_xy_name = "xy_plot",               # If yes, specify the base file name (.pdf/.png will be appended later)
                     gelman = TRUE,                          # Calculate Gelman-Rubin diagnostic test?
                     heidel = FALSE,                          # Calculate Heidelberg-Welch diagnostic test?
@@ -220,9 +221,9 @@ output_JAGS(jags.1, mix, source, output_options)
 ##########################################################################################
 # Storm-petrel example (movement instead of diet, Region = fixed effect)
 ##########################################################################################
-# mix <- load_mix_data_script(filename="7_mix.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-# source <- load_source_data(filename="7_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
-# discr <- load_discr_data(filename="7_discrimination.csv", mix) 
+# mix <- load_mix_data_script(filename="stormpetrel_consumer.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
+# source <- load_source_data(filename="stormpetrel_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
+# discr <- load_discr_data(filename="stormpetrel_discrimination.csv", mix) 
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 # plot_prior(alpha.prior=1,source)
@@ -236,9 +237,9 @@ output_JAGS(jags.1, mix, source, output_options)
 ##########################################################################################
 # Snail example (1 isotope)
 ##########################################################################################
-# mix <- load_mix_data_script(filename="13_mix.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
-# source <- load_source_data(filename="13_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
-# discr <- load_discr_data(filename="13_discrimination.csv", mix) 
+# mix <- load_mix_data_script(filename="snail_consumer.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
+# source <- load_source_data(filename="snail_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# discr <- load_discr_data(filename="snail_discrimination.csv", mix) 
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # plot_prior(alpha.prior=1,source)
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file

@@ -31,6 +31,7 @@ if (!"RColorBrewer" %in% installed.packages()) install.packages("RColorBrewer")
 if (!"reshape" %in% installed.packages()) install.packages("reshape")
 if (!"lattice" %in% installed.packages()) install.packages("lattice")
 if (!"compositions" %in% installed.packages()) install.packages("compositions")
+if (!"ggmcmc" %in% installed.packages()) install.packages("ggmcmc")
 
 if (!"gWidgetsRGtk2" %in% installed.packages()) stop("*** Error: GTK+ is not installed ***")
 if (!"R2jags" %in% installed.packages()) stop("*** Error: JAGS is not installed ***")
@@ -43,6 +44,7 @@ require(RColorBrewer)
 require(reshape)
 require(lattice)
 require(compositions)
+require(ggmcmc)
 
 source("build_mix_win.r")
 source("build_source_win.r")
@@ -248,17 +250,17 @@ plot_pairs_save_pdf <- gcheckbox("pdf", cont = grp_pairs_name); assign("plot_pai
 svalue(mixsiar$plot_pairs_save_pdf) <- TRUE
 plot_pairs_save_png <- gcheckbox("png", cont = grp_pairs_name); assign("plot_pairs_save_png",plot_pairs_save_png,envir=mixsiar);
 
-# XY Plot options
-grp_xy <- ggroup(cont=grp_output, horizontal=T)
-lbl_xy <- glabel("XY Plot", cont = grp_xy, expand=T)
-grp_xy_opt <- ggroup(cont = grp_xy, horizontal=F)
-# sup_xy <- gcheckbox("Suppress plot output", cont = grp_xy_opt); assign("sup_xy",sup_xy,envir=mixsiar);
-grp_xy_name <- ggroup(cont = grp_xy_opt, horizontal=T, expand=T)
-plot_xy_lbl <- glabel("Save plot as:", cont = grp_xy_name); assign("plot_xy_lbl",plot_xy_lbl,envir=mixsiar);
-plot_xy_name <- gedit("xy_plot", width=20, cont = grp_xy_name); assign("plot_xy_name",plot_xy_name,envir=mixsiar);
-plot_xy_save_pdf <- gcheckbox("pdf", cont = grp_xy_name); assign("plot_xy_save_pdf",plot_xy_save_pdf,envir=mixsiar);
-svalue(mixsiar$plot_xy_save_pdf) <- TRUE
-plot_xy_save_png <- gcheckbox("png", cont = grp_xy_name); assign("plot_xy_save_png",plot_xy_save_png,envir=mixsiar);
+# # XY Plot options
+# grp_xy <- ggroup(cont=grp_output, horizontal=T)
+# lbl_xy <- glabel("XY Plot", cont = grp_xy, expand=T)
+# grp_xy_opt <- ggroup(cont = grp_xy, horizontal=F)
+# # sup_xy <- gcheckbox("Suppress plot output", cont = grp_xy_opt); assign("sup_xy",sup_xy,envir=mixsiar);
+# grp_xy_name <- ggroup(cont = grp_xy_opt, horizontal=T, expand=T)
+# plot_xy_lbl <- glabel("Save plot as:", cont = grp_xy_name); assign("plot_xy_lbl",plot_xy_lbl,envir=mixsiar);
+# plot_xy_name <- gedit("xy_plot", width=20, cont = grp_xy_name); assign("plot_xy_name",plot_xy_name,envir=mixsiar);
+# plot_xy_save_pdf <- gcheckbox("pdf", cont = grp_xy_name); assign("plot_xy_save_pdf",plot_xy_save_pdf,envir=mixsiar);
+# svalue(mixsiar$plot_xy_save_pdf) <- TRUE
+# plot_xy_save_png <- gcheckbox("png", cont = grp_xy_name); assign("plot_xy_save_png",plot_xy_save_png,envir=mixsiar);
 
 # Diagnostics options
 grp_diag <- gframe(text="Diagnostics", cont=grp_output, horizontal=F)
@@ -328,9 +330,11 @@ output_button <- gbutton(text="Process output", cont=grp_output, expand=TRUE,
                     svalue(mixsiar$plot_pairs_save_pdf),     # Save pairs plot as pdf?
                     svalue(mixsiar$plot_pairs_name),         # If yes, specify the base file name (.pdf/.png will be appended later)
                     # svalue(mixsiar$sup_xy),                  # Suppress xy/trace plot output in R?
+                    TRUE,
+                    # svalue(mixsiar$plot_xy_save_pdf),        # Save xy/trace plot as pdf?
                     FALSE,
-                    svalue(mixsiar$plot_xy_save_pdf),        # Save xy/trace plot as pdf?
-                    svalue(mixsiar$plot_xy_name),            # If yes, specify the base file name (.pdf/.png will be appended later)
+                    # svalue(mixsiar$plot_xy_name),            # If yes, specify the base file name (.pdf/.png will be appended later)
+                    NULL,
                     svalue(mixsiar$gelman),                  # Calculate Gelman-Rubin diagnostic test?
                     FALSE,                                   # Calculate Heidelberg-Welch diagnostic test?
                     svalue(mixsiar$geweke),                  # Calculate Geweke diagnostic test?
@@ -339,7 +343,8 @@ output_button <- gbutton(text="Process output", cont=grp_output, expand=TRUE,
                     FALSE,                                   # Is Individual a random effect in the model? (already specified)
                     svalue(mixsiar$plot_post_save_png),      # Save posterior density plots as pngs?
                     svalue(mixsiar$plot_pairs_save_png),     # Save pairs plot as png?
-                    svalue(mixsiar$plot_xy_save_png))
+                    # svalue(mixsiar$plot_xy_save_png))
+                    FALSE)
     output_JAGS(mixsiar$jags.1, mixsiar$mix, mixsiar$source, output_options)
   })
 

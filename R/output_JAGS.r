@@ -43,8 +43,8 @@ output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   sup_pairs = FALSE,                      # Suppress pairs plot output in R?
                                                   plot_pairs_save_pdf = TRUE,             # Save pairs plot as pdf?
                                                   plot_pairs_name = "pairs_plot",         # If yes, specify the base file name (.pdf/.png will be appended later)
-                                                  sup_xy = FALSE,                         # Suppress xy/trace plot output in R?
-                                                  plot_xy_save_pdf = TRUE,                # Save xy/trace plot as pdf?
+                                                  sup_xy = TRUE,                         # Suppress xy/trace plot output in R?
+                                                  plot_xy_save_pdf = FALSE,                # Save xy/trace plot as pdf?
                                                   plot_xy_name = "xy_plot",               # If yes, specify the base file name (.pdf/.png will be appended later)
                                                   gelman = TRUE,                          # Calculate Gelman-Rubin diagnostic test?
                                                   heidel = FALSE,                          # Calculate Heidelberg-Welch diagnostic test?
@@ -642,5 +642,9 @@ cat("
 if(mix$n.ce > 0){
   plot_continuous_var(jags.1,mix,source,output_options)
 }
+
+# Use ggmcmc package to create diagnostic plots
+diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
+ggmcmc(ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
 
 } # end function output_JAGS

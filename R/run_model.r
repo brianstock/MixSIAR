@@ -32,14 +32,22 @@ if(mix$n.fe==1 && mix$N==mix$FAC[[1]]$levels && err!="process"){
   mix datapoint separately, must choose Process only error model (MixSIR).
   Set resid_err=FALSE and process_err=TRUE.",sep=""))}
 
+# Cannot set informative prior on fixed effects (no p.global)
+if(unique(alpha.prior)!=1 & mix$n.fe>0){
+  stop(paste("Cannot set an informative prior with a fixed effect,
+  since there is no global/overall population. You can set an
+  informative prior on p.global with a random effect.
+  To set a prior on each level of a fixed effect you will have to 
+  modify the code yourself!",sep=""))}
+
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
   if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
   if(run=="short") mcmc <- list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
   if(run=="normal") mcmc <- list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
   if(run=="long") mcmc <- list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
-  if(run=="very long") mcmc <- list(chainLength=1000000, burn=700000, thin=300, chains=3, calcDIC=TRUE)
-  if(run=="extreme") mcmc <- list(chainLength=3000000, burn=2700000, thin=300, chains=3, calcDIC=TRUE)
+  if(run=="very long") mcmc <- list(chainLength=1000000, burn=500000, thin=500, chains=3, calcDIC=TRUE)
+  if(run=="extreme") mcmc <- list(chainLength=3000000, burn=1500000, thin=500, chains=3, calcDIC=TRUE)
   if(!exists("mcmc")) mcmc <- run   # if the user has entered custom mcmc parameters, use them
   
   n.sources <- source$n.sources
