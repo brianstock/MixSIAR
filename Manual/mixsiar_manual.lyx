@@ -776,7 +776,7 @@ r-package/
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+Download and install JAGS (4.0.0 at time of writing)
 \emph default
 .
  You can download JAGS from 
@@ -791,7 +791,6 @@ http://mcmc-jags.sourceforge.net/
 \end_inset
 
 .
- FYI JAGS 4.0 just came out but I'm still using 3.4---don't think this matters.
 \end_layout
 
 \begin_layout Enumerate
@@ -1025,7 +1024,7 @@ sessionInfo()
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+Download and install JAGS (4.0.0 at time of writing)
 \emph default
 .
  You can download JAGS from 
@@ -1040,7 +1039,6 @@ http://mcmc-jags.sourceforge.net/
 \end_inset
 
 .
- FYI JAGS 4.0 just came out but I'm still using 3.4---don't think this matters.
 \end_layout
 
 \begin_layout Enumerate
@@ -1311,7 +1309,7 @@ sessionInfo()
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (3.4.0 or 4.0.0 at time of writing)
+Download and install JAGS (4.0.0 at time of writing) and rjags
 \emph default
 .
  You can download JAGS from 
@@ -1326,8 +1324,22 @@ http://mcmc-jags.sourceforge.net/
 \end_inset
 
  or use Ubuntu Software Center.
- FYI JAGS 4.0 just came out but I'm still using 3.4 because this is the stable
- package version.
+ However, taking JAGS and rjags direct from the Ubuntu repos should help
+ to ensure that the versions of JAGS and rjags are in sync, which is a good
+ thing.
+ On recent versions of Ubuntu, assuming that R is already installed, the
+ simplest way to install JAGS and rjags is using the command: 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+sudo apt-get install jags r-cran-rjags
+\end_layout
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Enumerate
@@ -1336,7 +1348,7 @@ http://mcmc-jags.sourceforge.net/
 Download and install GTK+
 \emph default
 .
- From the terminal, try 
+ From the terminal: 
 \begin_inset Flex Code
 status open
 
