@@ -55,7 +55,7 @@ if(unique(alpha.prior)!=1 & mix$n.fe>0){
   # make 'e', an Aitchision-orthonormal basis on the S^d simplex (equation 18, page 292, Egozcue 2003)
   # 'e' is used in the inverse-ILR transform (we pass 'e' to JAGS, where we do the ILR and inverse-ILR)
   e <- matrix(rep(0,n.sources*(n.sources-1)),nrow=n.sources,ncol=(n.sources-1))
-  for(i in 1:(source$n.sources-1)){
+  for(i in 1:(n.sources-1)){
     e[,i] <- exp(c(rep(sqrt(1/(i*(i+1))),i),-sqrt(i/(i+1)),rep(0,n.sources-i-1)))
     e[,i] <- e[,i]/sum(e[,i])
   }
@@ -66,9 +66,10 @@ if(unique(alpha.prior)!=1 & mix$n.fe>0){
   #jags.params <- c("p.global", "ilr.global")
   jags.params <- c("p.global")
   
-  # Random/Fixed Effect data
+  # Random/Fixed Effect data (original)
+  # fere <- ifelse(mix$n.effects==2 & mix$n.re < 2,TRUE,FALSE)
   f.data <- character(0)
-  if(mix$n.effects > 0){
+  if(mix$n.effects > 0 & !mix$fere){
     factor1_levels <- mix$FAC[[1]]$levels
     Factor.1 <- mix$FAC[[1]]$values
     cross.fac1 <- array(data=NA,dim=c(factor1_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
@@ -76,7 +77,7 @@ if(unique(alpha.prior)!=1 & mix$n.fe>0){
     if(mix$FAC[[1]]$re) jags.params <- c(jags.params, "p.fac1", "fac1.sig") else jags.params <- c(jags.params, "p.fac1")
     f.data <- c(f.data, "factor1_levels", "Factor.1", "cross.fac1", "tmp.p.fac1")
   }
-  if(mix$n.effects > 1){
+  if(mix$n.effects > 1 & !mix$fere){
     factor2_levels <- mix$FAC[[2]]$levels
     Factor.2 <- mix$FAC[[2]]$values
     if(mix$fac_nested[1]) {factor2_lookup <- mix$FAC[[1]]$lookup; f.data <- c(f.data, "factor2_lookup");}
@@ -86,6 +87,38 @@ if(unique(alpha.prior)!=1 & mix$n.fe>0){
     if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "p.fac2", "fac2.sig") else jags.params <- c(jags.params, "p.fac2")
     f.data <- c(f.data, "factor2_levels", "Factor.2", "cross.fac2", "tmp.p.fac2")
   }
+
+  # 2FE or 1FE + 1RE, don't get p.fac2
+  # instead, get ilr.both[f1,f2,src], using fac2_lookup (list, each element is vector of fac 2 levels in f1)
+  # but do get p.fac1 if fac1=FE and fac2=RE
+  if(mix$fere){
+    # set up factor 1 as fixed effect (if 1FE + 1RE, fac 1 is fixed effect)
+    factor1_levels <- mix$FAC[[1]]$levels
+    Factor.1 <- mix$FAC[[1]]$values
+    if(mix$n.re==1){ # have p.fac1 (fixed) for 1 FE + 1 RE
+      cross.fac1 <- array(data=NA,dim=c(factor1_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
+      tmp.p.fac1 <- array(data=NA,dim=c(factor1_levels,n.sources))              # dummy variable for inverse ILR calculation
+      jags.params <- c(jags.params, "p.fac1") 
+      f.data <- c(f.data, "cross.fac1", "tmp.p.fac1")
+    }
+
+    # set up factor 2
+    factor2_levels <- mix$FAC[[2]]$levels
+    Factor.2 <- mix$FAC[[2]]$values
+    # factor2_lookup <- list()
+    # for(f1 in 1:factor1_levels){
+    #   factor2_lookup[[f1]] <- unique(mix$FAC[[2]]$values[which(mix$FAC[[1]]$values==f1)])
+    # }
+    # f.data <- c(f.data,"factor2_lookup")
+  
+    # cross.both <- array(data=NA,dim=c(factor1_levels,factor2_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
+    # tmp.p.both <- array(data=NA,dim=c(factor1_levels,factor2_levels,n.sources))              # dummy variable for inverse ILR calculation  
+    # if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "p.both", "fac2.sig") else jags.params <- c(jags.params, "p.both")
+    # f.data <- c(f.data, "factor1_levels", "Factor.1", "factor2_levels", "Factor.2", "cross.both", "tmp.p.both")
+    if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "fac2.sig")
+    jags.params <- c(jags.params,"ilr.global","ilr.fac1","ilr.fac2")
+    f.data <- c(f.data, "factor1_levels", "Factor.1", "factor2_levels", "Factor.2")
+  }  
 
   # Source data
   if(source$data_type=="raw"){

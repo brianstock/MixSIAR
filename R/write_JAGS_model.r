@@ -411,7 +411,7 @@ cat("
    }
 ", file=filename, append=T)
 
-if(mix$n.effects > 0){
+if(mix$n.effects > 0 & !mix$fere){
   if(mix$fac_nested[1]){
   cat("
      # Transform ilr.fac1 into p.fac1 (fac1 nested within fac2)
@@ -445,9 +445,9 @@ if(mix$n.effects > 0){
    }
 ", file=filename, append=T)
   } # end nested ilr.fac1 section
-}
+} # end fac1 section
 
-if(mix$n.effects > 1){
+if(mix$n.effects > 1 & !mix$fere){ # i.e. n.re=2
   if(mix$fac_nested[2]){
   cat("
      # Transform ilr.fac2 into p.fac2 (fac2 nested within fac1)
@@ -482,6 +482,45 @@ if(mix$n.effects > 1){
   ", file=filename, append=T)
   } # end nested ilr.fac2 section
 } # end n.re=2 section
+
+# 2 FE or 1 FE + 1 RE section
+if(mix$fere){
+  if(mix$n.re==1){ # if 1 FE and 1 RE, get p.fac1 (fixed)
+  cat("   
+   # Transform ilr.fac1 into p.fac1 (fac1 fixed, not nested within fac2)
+   for(f1 in 1:factor1_levels) {
+      for(src in 1:(n.sources-1)) {
+        ilr.fac1.tot[f1,src] <- ilr.global[src] + ilr.fac1[f1,src];
+        cross.fac1[f1,,src] <- (e[,src]^ilr.fac1.tot[f1,src])/sum(e[,src]^ilr.fac1.tot[f1,src]);
+      }
+      for(src in 1:n.sources) {
+        tmp.p.fac1[f1,src] <- prod(cross.fac1[f1,src,]);
+      }
+      for(src in 1:n.sources){
+        p.fac1[f1,src] <- tmp.p.fac1[f1,src]/sum(tmp.p.fac1[f1,]);
+      }
+   }
+", file=filename, append=T)
+  }
+  # for both 2 FE and 1FE + 1RE, don't get p.fac2. Instead, get p.both[f1,f2]
+#   cat("   
+#    # Transform ilr.fac2 into p.both (fac1 fixed, so don't get p.fac2)
+#    for(f1 in 1:factor1_levels) {
+#     for(f2 in factor2_lookup[[f1]]){
+#       for(src in 1:(n.sources-1)) {
+#         ilr.both[f1,f2,src] <- ilr.global[src] + ilr.fac1[f1,src] + ilr.fac2[f2,src];
+#         cross.both[f1,f2,,src] <- (e[,src]^ilr.both[f1,f2,src])/sum(e[,src]^ilr.both[f1,f2,src]);
+#       }
+#       for(src in 1:n.sources) {
+#         tmp.p.both[f1,f2,src] <- prod(cross.both[f1,f2,src,]);
+#       }
+#       for(src in 1:n.sources){
+#         p.both[f1,f2,src] <- tmp.p.both[f1,f2,src]/sum(tmp.p.both[f1,f2,]);
+#       }
+#     }
+#    }
+# ", file=filename, append=T)  
+}
 
 ###############################################################################
 # mix.mu section

@@ -62,6 +62,7 @@ load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_neste
   n.effects <- length(factors)
   n.re <- sum(fac_random)  # number of random effects
   n.fe <- n.effects-n.re   # number of fixed effects
+  fere <- ifelse(n.effects==2 & n.re < 2,TRUE,FALSE) # either 2 FE or 1FE + 1RE
   if(n.effects==1) fac_nested <- FALSE
 
   # if n.effects > 2, error
@@ -103,13 +104,25 @@ load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_neste
                       re = re,
                       name = fac_name)
     }
-    if(n.effects > 1){
-      for(eff in 2:n.effects){
-        for(lev in 1:FAC[[eff]]$levels){
-          FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
-        }
+    if(n.re==2 & fac_nested[2]){
+      for(lev in 1:FAC[[2]]$levels){
+        FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
       }
     }
+    if(n.re==2 & fac_nested[1]){
+      for(lev in 1:FAC[[1]]$levels){
+        FAC[[1]]$lookup[lev] <- FAC[[2]]$values[which(FAC[[1]]$values==lev)][1]
+      }
+    }
+    if(n.fe==1 & n.re==1 & fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
+      tmp <- FAC[[1]]
+      FAC[[1]] <- FAC[[2]]
+      FAC[[2]] <- tmp
+      factors <- rev(factors)
+      fac_random <- rev(fac_random)
+      fac_nested <- rev(fac_nested)
+    }
+
   } # end random/fixed effects loop
 
   CE_orig <- replicate(n.ce, NULL)
@@ -146,7 +159,8 @@ load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_neste
       n.effects = n.effects,
       factors = factors,
       fac_random = fac_random,
-      fac_nested = fac_nested))
+      fac_nested = fac_nested,
+      fere = fere))
 } # end load_mix_data function
 
 
