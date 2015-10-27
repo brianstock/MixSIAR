@@ -158,7 +158,7 @@ cat("
       src_Sigma[src,f1,,] <- inverse(src_cov[src,f1,,]);
 
       # each source data point is distributed normally according to the source means and precisions
-      for(r in 1:n.rep[src]){
+      for(r in 1:n.rep[src,f1]){
         SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma[src,f1,,]);
       } 
     } # end loop over f1
