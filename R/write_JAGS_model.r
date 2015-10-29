@@ -627,7 +627,7 @@ cat("
    for(ind in 1:N){
       for(i in 1:n.iso){
         for(j in 1:n.iso){
-          Sigma.ind[ind,i,j] <- equals(i,j)*resid.prop[i]/process.var[i,ind];
+          Sigma.ind[ind,i,j] <- equals(i,j)/(process.var[i,ind]*resid.prop[i]);
         }
       }
    }
