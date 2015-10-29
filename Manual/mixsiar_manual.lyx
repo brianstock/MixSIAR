@@ -477,7 +477,7 @@ key "Francis2011"
 \end_layout
 
 \begin_layout Itemize
-Isotope covariance 
+Source tracer covariance 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Hopkins2012"
@@ -3015,7 +3015,15 @@ Note that the source data file has a column titled “n” with the sample size
 \end_layout
 
 \begin_layout Enumerate
-Click “I'm finished”.
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+I'm finished
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4208,7 +4216,7 @@ Residual * Process
 \begin_inset Quotes erd
 \end_inset
 
- error option, and it is already.
+ error option, and it is already selected.
  The differences between 
 \begin_inset Quotes eld
 \end_inset
@@ -4661,11 +4669,19 @@ Looking at the Geweke, we can see that chains 1 and 2 are good, but chain
 \end_layout
 
 \begin_layout Standard
-I would run this one step longer (
+I would run this longer (run=
 \begin_inset Quotes eld
 \end_inset
 
 long
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+very long
 \begin_inset Quotes erd
 \end_inset
 

@@ -48,7 +48,7 @@ source("calc_area.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(FALSE,FALSE), fac_nested=c(FALSE,FALSE), cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -121,7 +121,7 @@ plot_prior(alpha.prior=1,source)
 # Wolves example
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 resid_err <- TRUE
-process_err <- FALSE
+process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 #####################################################################################
