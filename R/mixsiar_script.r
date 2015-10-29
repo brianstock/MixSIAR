@@ -17,6 +17,9 @@ require(ggmcmc) # added nice diagnostic plot output from ggmcmc package
 # Next we clean up the workspace
 rm(list=ls())  # deletes everything previously in the workspace
 runif(1)       # generates one random number (else JAGS can complain)
+# Suppress warning messages (http://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script)
+oldw <- getOption("warn")
+options(warn = -1)
 
 # Load all MixSIAR functions into the workspace
 source("load_mix_data_script.r")
@@ -45,7 +48,7 @@ source("calc_area.r")
 #   have data by Region and Pack but only want MixSIAR to use Region
 
 # Wolves example (hierarchical/nested random effects)
-mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(TRUE,TRUE), fac_nested=c(FALSE,TRUE), cont_effects=NULL)
+mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","d15N"), factors=c("Region","Pack"), fac_random=c(FALSE,FALSE), fac_nested=c(FALSE,FALSE), cont_effects=NULL)
 
 #####################################################################################
 # Load source data, i.e. your:
@@ -118,7 +121,7 @@ plot_prior(alpha.prior=1,source)
 # Wolves example
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 resid_err <- TRUE
-process_err <- TRUE
+process_err <- FALSE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 #####################################################################################
@@ -307,3 +310,6 @@ output_JAGS(jags.1, mix, source, output_options)
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
 # output_JAGS(jags.1, mix, source)
+
+# Turn warning messages back on
+options(warn = oldw)

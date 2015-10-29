@@ -739,6 +739,6 @@ if(mix$n.ce > 0){
 
 # Use ggmcmc package to create diagnostic plots
 diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
-# ggmcmc(ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+ggmcmc(ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
 
 } # end function output_JAGS

@@ -20,6 +20,10 @@
 #   - plot_continuous_var.r
 
 rm(list=ls())
+# Suppress warning messages (http://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script)
+oldw <- getOption("warn")
+options(warn = -1)
+
 mixsiar <- new.env()
 mixsiar_gui <- function(){
 

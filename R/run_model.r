@@ -178,7 +178,7 @@ if(unique(alpha.prior)!=1 & mix$n.fe>0){
   if(err=="mult") jags.params <- c(jags.params,"resid.prop")
 
   # Set initial values for p.global different for each chain
-  jags.inits <- function(){list(p.global=rdirichlet(alpha))}
+  jags.inits <- function(){list(p.global=as.vector(rdirichlet(alpha)))}
     
   #############################################################################
   # Call JAGS
