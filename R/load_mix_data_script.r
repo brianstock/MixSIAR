@@ -38,6 +38,7 @@
 #        mix$fixed_effects      vector of included fixed effects
 #        mix$n.effects          number of random + fixed effects (n.re + n.fe)
 
+# load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_effects){
 load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
   X <- read.csv(filename)         # raw consumer data
   n.iso <- length(iso_names)      # number of isotopes

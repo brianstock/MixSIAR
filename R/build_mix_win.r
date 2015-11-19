@@ -180,6 +180,26 @@ btn_close <- gbutton(
           if(svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)          
           visible(hierarch_win) <- FALSE
           mixsiar$mix$fac_nested <- nested
+
+          if(mixsiar$mix$n.re==2 & mixsiar$mix$fac_nested[2]){
+            for(lev in 1:mixsiar$mix$FAC[[2]]$levels){
+              mixsiar$mix$FAC[[2]]$lookup[lev] <- mixsiar$mix$FAC[[1]]$values[which(mixsiar$mix$FAC[[2]]$values==lev)][1]
+            }
+          }
+          if(mixsiar$mix$n.re==2 & mixsiar$mix$fac_nested[1]){
+            for(lev in 1:mixsiar$mix$FAC[[1]]$levels){
+              mixsiar$mix$FAC[[1]]$lookup[lev] <- mixsiar$mix$FAC[[2]]$values[which(mixsiar$mix$FAC[[1]]$values==lev)][1]
+            }
+          }
+          if(mixsiar$mix$n.fe==1 & mixsiar$mix$n.re==1 & mixsiar$mix$fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
+            tmp <- mixsiar$mix$FAC[[1]]
+            mixsiar$mix$FAC[[1]] <- mixsiar$mix$FAC[[2]]
+            mixsiar$mix$FAC[[2]] <- tmp
+            mixsiar$mix$factors <- rev(mixsiar$mix$factors)
+            mixsiar$mix$fac_random <- rev(mixsiar$mix$fac_random)
+            mixsiar$mix$fac_nested <- rev(mixsiar$mix$fac_nested)
+          }
+
         }
       )
       addSpring(hierarch_grp_all)

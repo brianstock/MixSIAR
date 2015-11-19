@@ -28,6 +28,7 @@
 #        mix$fixed_effects      vector of included fixed effects
 #        mix$n.effects          number of random + fixed effects (n.re + n.fe)
 
+# load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
 load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_effects){
   X <- read.csv(filename)         # raw consumer data
   n.iso <- length(iso_names)      # number of isotopes
@@ -82,24 +83,26 @@ load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_e
                       re = fac_random[i],
                       name = fac_name)
     }
-    if(n.re==2 & fac_nested[2]){
-      for(lev in 1:FAC[[2]]$levels){
-        FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
-      }
-    }
-    if(n.re==2 & fac_nested[1]){
-      for(lev in 1:FAC[[1]]$levels){
-        FAC[[1]]$lookup[lev] <- FAC[[2]]$values[which(FAC[[1]]$values==lev)][1]
-      }
-    }
-    if(n.fe==1 & n.re==1 & fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
-      tmp <- FAC[[1]]
-      FAC[[1]] <- FAC[[2]]
-      FAC[[2]] <- tmp
-      factors <- rev(factors)
-      fac_random <- rev(fac_random)
-      fac_nested <- rev(fac_nested)
-    }
+
+    # Moved to the Hierarchical question box, lines 184-200 in build_mix_win()
+    # if(n.re==2 & fac_nested[2]){
+    #   for(lev in 1:FAC[[2]]$levels){
+    #     FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
+    #   }
+    # }
+    # if(n.re==2 & fac_nested[1]){
+    #   for(lev in 1:FAC[[1]]$levels){
+    #     FAC[[1]]$lookup[lev] <- FAC[[2]]$values[which(FAC[[1]]$values==lev)][1]
+    #   }
+    # }
+    # if(n.fe==1 & n.re==1 & fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
+    #   tmp <- FAC[[1]]
+    #   FAC[[1]] <- FAC[[2]]
+    #   FAC[[2]] <- tmp
+    #   factors <- rev(factors)
+    #   fac_random <- rev(fac_random)
+    #   fac_nested <- rev(fac_nested)
+    # }
   } # end random/fixed effects loop
 
   CE_orig <- replicate(n.ce, NULL)
