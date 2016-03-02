@@ -1,12 +1,23 @@
-# Function: plot_continuous_var
-# Input: output_options (for plot saving and naming)
-# Output: prints posterior plots of diet vs. Cont.1,
-#           diet of min(Cont.1), median(Cont.1), and max(Cont.1)
-
-# Oct 13
-# Fixed even Cont.1 bug - previously gave error if length(Cont.1) was even,
-# because there was no index that matches median(Cont.1) in that case.
-
+#' Plot proportions by a continuous covariate
+#'
+#' \code{plot_continuous_var} creates a plot of how the mixture proportions
+#' change according to a continuous covariate, as well as plots of the mixture
+#' proportions for the individuals with minimum, median, and maximum covariate
+#' values. Called by \code{\link{output_JAGS}} if any continuous effects are in
+#' the model.
+#'
+#' MixSIAR fits a continuous covariate as a linear regression in ILR/transform-space.
+#' Two terms are fit for the proportion of each source: an intercept and a slope.
+#' The plot uses the posterior median estimates of the intercept and slope, and
+#' the lines are curved because of the ILR-transform back into proportion-space.
+#'
+#' @param jags.1 output from \code{\link{run_model}}
+#' @param mix output from \code{\link{load_mix_data}}
+#' @param source output from \code{\link{load_source_data}}
+#' @param output_options list containing options for plots and saving,
+#' passed from \code{\link{output_JAGS}}
+#'
+#' @seealso Francis et al. 2011
 plot_continuous_var <- function(jags.1, mix, source, output_options){
 attach.jags(jags.1)
 n.sources <- source$n.sources
@@ -61,14 +72,14 @@ for(ce in 1:mix$n.ce){
   dev.new()
   print(ggplot(data=df,aes(x=x,y=median)) +
            geom_line(aes(x=x, y=median,group=source,colour=source),size=1.5) +
-           # geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) + 
+           # geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) +
            ylab("Proportion of Diet") +
            xlab(label) +
            ylim(0,1) +
            theme_bw() +
            theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
 
-  # Save the plot to file  
+  # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",label,".pdf",sep=""))  # svalue(plot_post_name)
     dev.copy2pdf(file=mypath)
@@ -98,7 +109,7 @@ for(ce in 1:mix$n.ce){
     labs(title = my.title) +
     theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
 
-  # Save the plot to file  
+  # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_min_",label,".pdf",sep=""))  # svalue(plot_post_name)
     dev.copy2pdf(file=mypath)
@@ -127,7 +138,7 @@ for(ce in 1:mix$n.ce){
     labs(title = my.title) +
     theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
 
-  # Save the plot to file  
+  # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_median_",label,".pdf",sep=""))  # svalue(plot_post_name)
     dev.copy2pdf(file=mypath)
@@ -154,7 +165,7 @@ for(ce in 1:mix$n.ce){
     labs(title = my.title) +
     theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
 
-  # Save the plot to file  
+  # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_max_",label,".pdf",sep=""))  # svalue(plot_post_name)
     dev.copy2pdf(file=mypath)

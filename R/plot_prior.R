@@ -1,21 +1,20 @@
-# Brian Stock
-# October 8, 2015
-
-# Function: plot_prior
-#   Plots the prior on diet proportions (p.global)
-# Usage: plot_prior(alpha.prior)
-# Input: alpha.prior 		vector of alpha (dirichlet hyperparameters)
-# 		 source 		 	loaded source data (need n.sources)
-# Output: none (displays plots)
-#   RED = your prior
-#   DARK GREY = "uninformative"/generalist (alpha = 1)
-#   LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
-
+#' Plot prior
+#'
+#' \code{plot_prior} plots your prior on the global diet proportions (p.global)
+#' and the uninformative prior side-by-side. Your prior is in red, and the
+#' "uninformative"/generalist prior (alpha = 1) in dark grey.
+#'
+#' @param alpha.prior vector of alpha (dirichlet hyperparameters, none can be = 0)
+#' @param source output from \code{\link{load_source_data}}
+#' @param plot_save_pdf T/F, save the plot as a pdf?
+#' @param plot_save_png T/F, save the plot as a png?
+#' @param filename name of the file to save (e.g. "prior_plot")
+#'
 plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=FALSE, filename="prior_plot"){
 	# Error check for alpha = 0
 	if(length(which(alpha.prior==0))!=0){
       stop(paste("*** Error: You cannot set any alpha = 0.
-      Instead, set = 0.01.***",sep=""))		
+      Instead, set = 0.01.***",sep=""))
 	}
 
 	n.sources <- source$n.sources
@@ -40,7 +39,7 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
 	for(i in 1:n.sources){
 		hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
 		hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
-		# hist(p.jeff[,i], breaks = seq(0,1,length.out=40),col="lightgrey", main = paste0("Source ",i,": ",alpha.jeff_lab),xlab=expression(p[i]),xlim=c(0,1))		
+		# hist(p.jeff[,i], breaks = seq(0,1,length.out=40),col="lightgrey", main = paste0("Source ",i,": ",alpha.jeff_lab),xlab=expression(p[i]),xlim=c(0,1))
 	}
 
 	par(mai=c(0,0,0,0))

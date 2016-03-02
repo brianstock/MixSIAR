@@ -1,70 +1,52 @@
-# Brian Stock
-# MixSIAR GUI
-# July 31, 2015
-# v2.1.4
+#' Run the GUI version of MixSIAR
+#'
+#' \code{mixsiar_gui} creates the GUI version of MixSIAR.
+#'
+#' \emph{Before running this function}, a new user will need to install JAGS
+#' and GTK+. See Section 2 of the manual for install instructions:
+#' \url{https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf}
+#'
+#' \code{mixsiar_gui} calls most of the other \code{MixSIAR} functions:
+#'  \itemize{
+#'    \item \code{\link{load_mix_data}}
+#'    \item \code{\link{load_source_data}}
+#'    \item \code{\link{load_discr_data}}
+#'    \item \code{\link{plot_data}}
+#'    \item \code{\link{plot_prior}}
+#'    \item \code{\link{write_JAGS_model}}
+#'    \item \code{\link{run_model}}
+#'    \item \code{\link{output_JAGS}}
+#'  }
+#'
+#' @return \code{mixsiar_gui} itself returns nothing, but using the GUI creates
+#' R objects that you can access from the console:
+#'  \itemize{
+#'    \item \code{mixsiar$mix}: mixture data, output of \code{\link{load_mix_data}})
+#'    \item \code{mixsiar$source}: source data, output of \code{\link{load_source_data}})
+#'    \item \code{mixsiar$discr}: discrimination (TDF) data, output of \code{\link{load_discr_data}}
+#'    \item \code{mixsiar$jags.1}: rjags model object with MCMC chains, output of \code{\link{run_model}}
+#'  }
+#'
+#' @examples
+#' mixsiar_gui()
+#'
+#' @seealso \code{\link{load_mix_data}} loads the mixture data file,
+#' @seealso \code{\link{load_source_data}} loads the source data file,
+#' @seealso \code{\link{load_discr_data}} loads the TDF data file,
+#' @seealso \code{\link{plot_data}} creates an isospace plot,
+#' @seealso \code{\link{plot_prior}} plots your prior and the uninformative prior,
+#' @seealso \code{\link{write_JAGS_model}} creates a JAGS model file (.txt),
+#' @seealso \code{\link{run_model}} sets up JAGS objects and calls JAGS to run
+#'          the model,
+#' @seealso \code{\link{output_JAGS}} processes the JAGS output (prints/saves
+#'          diagnostics, summary statistics, and plots)
 
-# Before running this script, a brand new user will need to install the latest
-# versions of R and JAGS.  The install.packages("gWidgetsRGtk2") command
-# will prompt the user to install GTK+, which also needs to happen.
-
-# Auxillary files:
-#   - build_mix_win.r
-#   - build_source_win.r
-#   - load_mix_data.r
-#   - load_source_data.r
-#   - load_discr_data.r
-#   - plot_data.r
-#   - write_JAGS_model.r
-#   - run_model.r
-#   - output_JAGS.r
-#   - plot_continuous_var.r
-
-rm(list=ls())
-# Suppress warning messages (http://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script)
-oldw <- getOption("warn")
-options(warn = -1)
-
-mixsiar <- new.env()
+# mixsiar <- new.env() # moved to new file: 'create_mixsiar_envir.R'
 mixsiar_gui <- function(){
 
-if (!"ggplot2" %in% installed.packages()) install.packages("ggplot2")
-if (!"gWidgetsRGtk2" %in% installed.packages()) install.packages("gWidgetsRGtk2")
-if (!"R2jags" %in% installed.packages()) install.packages("R2jags")
-if (!"MASS" %in% installed.packages()) install.packages("MASS")
-if (!"RColorBrewer" %in% installed.packages()) install.packages("RColorBrewer")
-if (!"reshape" %in% installed.packages()) install.packages("reshape")
-if (!"lattice" %in% installed.packages()) install.packages("lattice")
-if (!"compositions" %in% installed.packages()) install.packages("compositions")
-if (!"ggmcmc" %in% installed.packages()) install.packages("ggmcmc")
-
-if (!"gWidgetsRGtk2" %in% installed.packages()) stop("*** Error: GTK+ is not installed ***")
-if (!"R2jags" %in% installed.packages()) stop("*** Error: JAGS is not installed ***")
-
-require(ggplot2)
-require(gWidgetsRGtk2)
-require(R2jags)
-require(MASS)
-require(RColorBrewer)
-require(reshape)
-require(lattice)
-require(compositions)
-require(ggmcmc)
-
-source("build_mix_win.r")
-source("build_source_win.r")
-source("load_mix_data.r")
-source("load_source_data.r")
-source("load_discr_data.r")
-source("plot_data.r")
-source("write_JAGS_model.r")
-source("run_model.r")
-source("output_JAGS.r")
-source("plot_continuous_var.r")
-source("plot_prior.r")
-
 runif(1)
-# rm(list=ls())
-options("guiToolkit"="RGtk2")
+old <- options("guiToolkit"="RGtk2")
+on.exit(options(old), add = TRUE)
 
 win<-gwindow("MixSIAR GUI", visible=FALSE)
 grp_all <- ggroup(cont=win, horizontal=FALSE)
@@ -109,7 +91,7 @@ btn_frac <- gbutton(
         tryCatch(   # reads discrimination/fractionation/enrichment means data into 'FRAC'
           {
           data_frame_name <- make.names("FRAC")
-          the_data <- do.call(h$action, list(h$file))   
+          the_data <- do.call(h$action, list(h$file))
           assign(data_frame_name, the_data, envir = mixsiar)
           addSpring(grp_frac)
           svalue(mixsiar$status_bar) <- "Discrimination data successfully loaded"
@@ -167,7 +149,7 @@ plot_button <- gbutton(
   text = "Make isospace plot",
   cont = grp_plot,
   expand = TRUE,
-  handler = function(h, ...){ 
+  handler = function(h, ...){
     plot_data(svalue(mixsiar$plot_filename), svalue(mixsiar$plot_save_pdf), svalue(mixsiar$plot_save_png), mixsiar$mix,mixsiar$source,mixsiar$discr)
     svalue(mixsiar$status_bar) <- "If isospace plot looks good, you can now click 'RUN MODEL' at bottom"
   }
@@ -191,18 +173,18 @@ plot_button <- gbutton(
   text = "Plot prior",
   cont = grp_plot_prior,
   expand = TRUE,
-  handler = function(h, ...){ 
+  handler = function(h, ...){
     if(svalue(mixsiar$prior_option) == "\"Uninformative\"/Generalist"){
       alpha.prior <- rep(1,mixsiar$source$n.sources)
     } else { # prior_option = "Informative"
       alpha.prior <- eval(parse(text=svalue(mixsiar$inf_prior)))
     }
     if(!is.numeric(alpha.prior)){
-      stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).  
-        Try again or choose the uninformative prior option. For example, 
+      stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).
+        Try again or choose the uninformative prior option. For example,
         c(1,1,1,1) is a valid (uninformative) prior for 4 sources. ***",sep=""))}
     if(length(alpha.prior) != mixsiar$source$n.sources){
-      stop(paste("*** Error: Length of your prior does not match the  
+      stop(paste("*** Error: Length of your prior does not match the
         number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
     svalue(mixsiar$status_bar) <- "Success. Your prior is in RED, uninformative/generalist is DARK GREY"
     plot_prior(alpha.prior,mixsiar$source,svalue(plot_save_pdf_prior),svalue(plot_save_png_prior),svalue(plot_filename_prior))
@@ -280,7 +262,7 @@ lbl_diag <- glabel("Note: diagnostics will print in the R command line if you do
 svalue(mixsiar$diag_save) <- TRUE   # Default is to save the diagnostics
 
 ###########################################################################
-# RUN MODEL and Process Output 
+# RUN MODEL and Process Output
 ###########################################################################
 grp_bot <- ggroup(cont=grp_all,horizontal=TRUE)
 
@@ -293,16 +275,6 @@ go_button <- gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE,
     } else { # prior_option = "Informative"
       alpha.prior <- eval(parse(text=svalue(mixsiar$inf_prior)))
     }
-    if(!is.numeric(alpha.prior)){
-      stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).  
-        Try again or choose the uninformative prior option. For example, 
-        c(1,1,1,1) is a valid (uninformative) prior for 4 sources. ***",sep=""))}
-    if(length(alpha.prior) != mixsiar$source$n.sources){
-      stop(paste("*** Error: Length of your prior does not match the  
-        number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
-    if(length(which(alpha.prior==0))!=0){
-      stop(paste("*** Error: You cannot set any alpha = 0.
-      Instead, set = 0.01.***",sep=""))}
 
     if(svalue(mixsiar$error_option)=="Resid * Process"){resid_err <- TRUE; process_err <- TRUE;}
     if(svalue(mixsiar$error_option)=="Residual only"){resid_err <- TRUE; process_err <- FALSE;}
@@ -310,9 +282,9 @@ go_button <- gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE,
     write_JAGS_model("MixSIAR_model.txt", resid_err, process_err, mixsiar$mix, mixsiar$source)
 
     run <- svalue(mixsiar$mcmc_run)
-    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt", alpha.prior,resid_err,process_err)
+    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt", alpha.prior)
     assign("jags.1",jags.1,envir=mixsiar)
-    
+
     test <- get("jags.1",envir=mixsiar)
     if(exists("test")){
       add(grp_run_model,gimage("check.png"))

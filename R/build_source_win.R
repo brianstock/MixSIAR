@@ -1,19 +1,28 @@
-#' Build the window to read-in SOURCE data
+#' Build the window to read-in source data
 #'
-#' This function is run when a user clicks the "Load source data" button in the main MixSIAR GUI,
-#' and creates a separate GUI window (\code{source_win}) where the user loads the source data. It contains:
-#'  1) Questions the user if their source data is by any of their Random Effects (if they have Random Effects)
-#'  2) Questions the user if they have Concentration Dependence data in their source file,
-#'  3) Individual Effect gcheckbox ("Include 'Individual' as a Random Effect"),
-#'  4) "I'm finished" gbutton that closes \code{mix_win} and manipulates \code{X} into all the objects we use later.
-#' If more than 2 Random Effects are selected, a separate WARNING gwindow prompts the user to select 2, 1, or 0.
-#' If 2 Random Effects are selected, a separate gwindow asks the user if the effects are hierarchical/nested.
-#' If more than 1 Continuous Effect is selected, a separate WARNING gwindow prompts the user to select 1 or 0.
-#' Finally, the function adds a green check image if the data is successfully loaded, or a red x image if not.
+#' This function is run when a user clicks the "Load source data" button in the
+#' main MixSIAR GUI, and creates a separate GUI window (\code{source_win}) where
+#' the user loads the source data. \code{build_source_win} calls
+#' \code{\link{load_source_data}} when the user clicks the "I'm finished" button.
+#'
+#' The "Load source data" window contains:
+#' \enumerate{
+#'   \item Questions the user if their source data is "by factor" (if they have Fixed or Random Effects),
+#'   \item Questions the user if they have Concentration Dependence data,
+#'   \item Buttons to either load "raw" or "means + SD" source data.
+#' }
+#'
+#' If \code{mix} does not yet exist, a WARNING appears.
+#'
+#' A green check appears if the source data is successfully loaded, or a red x
+#' if not.
+#'
+#' @seealso \code{\link{load_source_data}}, which is run when the "Load source data"
+#'          window is closed by clicking the "I'm finished" button.
 build_source_win <- function(){
   mix <- mixsiar$mix
   if(!exists("mix")){
-  stop(paste("*** Error: Consumer/mixture data not yet loaded. First load your 
+  stop(paste("*** Error: Consumer/mixture data not yet loaded. First load your
       consumer/mix data, then try to load source data again. ***",sep=""))}
   n.re <- mix$n.re
   n.effects <- mix$n.effects

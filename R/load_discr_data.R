@@ -1,14 +1,19 @@
-# Brian Stock
-# January 29, 2014
-
-# Function: load_discr_data
-# Usage: discr <- load_discr_data(filename,mix)
-# Input: filename   csv file with the discrimination data
-#        mix              output from 'load_mix_data'
-# Output: discr, a list including:
-#        discr$mu     matrix of discrimination means
-#        discr$sig2   matrix of discrimination variances
-
+#' Load trophic discrimination factor (TDF) data
+#'
+#' \code{load_discr_data} loads the trophic discrimination factor (TDF) data.
+#' TDF is the amount that a consumer's tissue biotracer values are modified
+#' (enriched/depleted) \emph{after} consuming a source. If tracers are conservative,
+#' then set TDF = 0 (ex. essential fatty acids, fatty acid profile data,
+#' element concentrations).
+#'
+#' @param filename csv file with the discrimination data
+#' @param mix output from \code{\link{load_mix_data}}
+#'
+#' @return discr, a list including:
+#' \itemize{
+#'  \item \code{discr$mu}, matrix of discrimination means
+#'  \item \code{discr$sig2}, matrix of discrimination variances
+#' }
 load_discr_data <- function(filename,mix){
   DISCR <- read.csv(filename)
   row.names(DISCR)<-DISCR[,1]     # store the row names of DISCR (sources)

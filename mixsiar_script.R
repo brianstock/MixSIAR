@@ -11,15 +11,15 @@ require(MASS)
 require(RColorBrewer)
 require(reshape)
 require(lattice)
-require(compositions) # need rdirichlet function to establish initial values for each chain 
+require(compositions) # need rdirichlet function to establish initial values for each chain
 require(ggmcmc) # added nice diagnostic plot output from ggmcmc package
 
-# Next we clean up the workspace
-rm(list=ls())  # deletes everything previously in the workspace
-runif(1)       # generates one random number (else JAGS can complain)
-# Suppress warning messages (http://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script)
-oldw <- getOption("warn")
-options(warn = -1)
+# # Next we clean up the workspace
+# rm(list=ls())  # deletes everything previously in the workspace
+# runif(1)       # generates one random number (else JAGS can complain)
+# # Suppress warning messages (http://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script)
+# oldw <- getOption("warn")
+# options(warn = -1)
 
 # Load all MixSIAR functions into the workspace
 source("load_mix_data_script.r")
@@ -61,7 +61,7 @@ mix <- load_mix_data_script(filename="wolves_consumer.csv", iso_names=c("d13C","
 # 'data_type' - "means" or "raw", is your source data in the means+SD format, or do you have raw data
 
 # Wolves example
-source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)    
+source <- load_source_data(filename="wolves_sources.csv", source_factors="Region", conc_dep=FALSE, data_type="means", mix)
 
 #####################################################################################
 # Load discrimination data, i.e. your:
@@ -141,7 +141,7 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 # Good idea to use 'test' first to check if 1) the data are loaded correctly and 2) the model is specified correctly
-jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 
 #####################################################################################
 # Process JAGS output
@@ -177,7 +177,7 @@ output_JAGS(jags.1, mix, source, output_options)
 # Lake example (continuous effect)
 #######################################################################################
 # mix <- load_mix_data_script(filename="lake_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects="Secchi.Mixed")
-# source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="lake_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)
 # discr <- load_discr_data(filename="lake_discrimination.csv", mix)
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
@@ -186,14 +186,14 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- FALSE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ########################################################################################
 # Geese example (concentration dependence)
 ########################################################################################
 # mix <- load_mix_data_script(filename="geese_consumer.csv", iso_names=c("d13C","d15N"), factors="Group", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-# source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)    
+# source <- load_source_data(filename="geese_sources.csv", source_factors=NULL, conc_dep=TRUE, data_type="means", mix)
 # discr <- load_discr_data(filename="geese_discrimination.csv", mix)
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
@@ -202,14 +202,14 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- FALSE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 #########################################################################################
 # Palmyra example (Taxa = fixed effect)
 #########################################################################################
 # mix <- load_mix_data_script(filename="palmyra_consumer.csv", iso_names=c("d13C","d15N"), factors="Taxa", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
+# source <- load_source_data(filename="palmyra_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)
 # discr <- load_discr_data(filename="palmyra_discrimination.csv", mix)
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
@@ -218,15 +218,15 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ##########################################################################################
 # Storm-petrel example (movement instead of diet, Region = fixed effect)
 ##########################################################################################
 # mix <- load_mix_data_script(filename="stormpetrel_consumer.csv", iso_names=c("d13C","d15N"), factors="Region", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-# source <- load_source_data(filename="stormpetrel_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)  
-# discr <- load_discr_data(filename="stormpetrel_discrimination.csv", mix) 
+# source <- load_source_data(filename="stormpetrel_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)
+# discr <- load_discr_data(filename="stormpetrel_discrimination.csv", mix)
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 # plot_prior(alpha.prior=1,source)
@@ -234,30 +234,30 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- FALSE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ##########################################################################################
 # Snail example (1 isotope)
 ##########################################################################################
 # mix <- load_mix_data_script(filename="snail_consumer.csv", iso_names="d13C", factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
-# source <- load_source_data(filename="snail_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)    
-# discr <- load_discr_data(filename="snail_discrimination.csv", mix) 
+# source <- load_source_data(filename="snail_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="raw", mix)
+# discr <- load_discr_data(filename="snail_discrimination.csv", mix)
 # plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 # plot_prior(alpha.prior=1,source)
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 # resid_err <- TRUE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ##########################################################################################
 # Killer whale example (informative prior)
 ##########################################################################################
 # mix <- load_mix_data_script(filename="killerwhale_consumer.csv", iso_names=c("d13C","d15N"), factors=NULL, fac_random=NULL, fac_nested=NULL, cont_effects=NULL)
-# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
-# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix) 
+# source <- load_source_data(filename="killerwhale_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)
+# discr <- load_discr_data(filename="killerwhale_discrimination.csv", mix)
 
 # # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
 # plot_prior(alpha.prior=1,source)
@@ -265,7 +265,7 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 # # INFORMATIVE prior (construct alpha from fecal data)
@@ -278,7 +278,7 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- TRUE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ########################################################################################
@@ -286,14 +286,14 @@ output_JAGS(jags.1, mix, source, output_options)
 ########################################################################################
 # mix <- load_mix_data_script(filename="isopod_consumer.csv", iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"),
 #                               factors="Site", fac_random=FALSE, fac_nested=FALSE, cont_effects=NULL)
-# source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)    
-# discr <- load_discr_data(filename="isopod_discrimination.csv", mix) 
+# source <- load_source_data(filename="isopod_sources.csv", source_factors=NULL, conc_dep=FALSE, data_type="means", mix)
+# discr <- load_discr_data(filename="isopod_discrimination.csv", mix)
 # plot_prior(alpha.prior=1,source)
 # model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 # resid_err <- TRUE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 ########################################################################################
@@ -308,7 +308,7 @@ output_JAGS(jags.1, mix, source, output_options)
 # resid_err <- FALSE
 # process_err <- TRUE
 # write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1,resid_err,process_err)
+# jags.1 <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1)
 # output_JAGS(jags.1, mix, source)
 
 # Turn warning messages back on

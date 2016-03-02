@@ -1,44 +1,75 @@
-# Brian Stock
-# January 29, 2014
-
-# Function: load_source_data
-# Usage: source <- load_source_data(filename,source_factors,conc_dep,data_type,mix)
-# Input: filename        (csv file with the mixture/consumer data),
-#        source_factors  (NULL or vector of source factor column headings in 'filename'),
-#        conc_dep               (TRUE or FALSE - is there concentration dependence data in 'filename'),
-#        data_type              ("raw" or "means" - raw source data are repeated source isotope measurements, means data are source isotope values as means, SDs, and sample size. See manual for formatting),
-#        mix                    (output from 'load_mix_data')
-# Output: source, a list including:
-#       source$n.sources        scalar, # of sources
-#       source$source_names     vector, source names/labels
-#       source$S_MU             matrix, source means used for plotting - NOT passed to JAGS) If sources are by factor, then the third column of S_MU will be the factor values (e.g. for 4 sources and 3 Regions: 1 2 3 1 2 3 1 2 3 1 2 3
-#       source$S_SIG            matrix, source SDs used for plotting - NOT passed to JAGS) Same structure as S_MU
-#       source$S_factor1        factor or NULL, factor values if sources are by factor
-#       source$S_factor_levels  scalar or NULL, # of S_factor1 levels if sources are by factor
-#       source$conc             matrix or NULL, concentration dependence values for each isotope
-#       source$MU_array         array of source means, dim(src,iso,f1) or dim(src,iso) if data_type="means", NULL if data_type="raw"
-#       source$SIG2_array       array of source variances, dim(src,iso,f1) or dim(src,iso) if data_type="means", NULL if data_type="raw"
-#       source$n_array          vector/matrix of source sample sizes, dim(src,f1) or dim(src) if data_type="means", NULL if data_type="raw"
-#       source$SOURCE_array     array of source data, dim(src,iso,f1,replicate) or dim(src,iso,replicate) if data_type="raw", NULL if data_type="means"
-#       source$n.rep            vector/matrix of source sample sizes, dim(src,f1) or dim(src) if data_type="raw", NULL if data_type="means"
-#       source$by_factor        T/F, are the source data by a random effect?
-#       source$data_type        "raw" or "means" - which type of source data do we have? See manual for details, formatting
-#       source$conc_dep         T/F, do we have concentration dependence data? See manual for details, formatting
-
-load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
+#' Load source data
+#'
+#' \code{load_source_data} specifies the source data structure (factors,
+#' concentration dependence, data type) and loads the source data file. \emph{Sources
+#' are sorted alphabetically.}
+#'
+#' WARNING messages check for:
+#' \itemize{
+#'  \item More than one source factor selected
+#'  \item Source factor not in mixture data
+#'  \item Source sample sizes missing or entered incorrectly
+#'  \item Source SD = 0
+#' }
+#'
+#' @param filename character, csv file with the source data.
+#' @param source_factors character, column heading in 'filename' that matches
+#'   a Fixed or Random Effect from the mixture data (\code{mixsiar$mix$factors}).
+#'   Only used if you have source data by a factor (e.g. "Region"), otherwise \code{NULL}.
+#' @param conc_dep T/F, \code{TRUE} indicates you have concentration dependence
+#'   data in 'filename'.
+#' @param data_type \code{"raw"} or \code{"means"}. "Raw" source data are repeated
+#'  source biotracer measurements, "means" data are source biotracer values as
+#'  means, SDs, and sample size. See manual for formatting.
+#' @param mix list, output from \code{\link{load_mix_data}}.
+#'
+#' @return \code{source}, a list including:
+#' \itemize{
+#'   \item \code{source$n.sources}: integer, number of sources
+#'   \item \code{source$source_names}: vector, source names/labels
+#'   \item \code{source$S_MU}: matrix, source means used for plotting - NOT
+#'   passed to JAGS. If sources are by factor, then the third column of S_MU
+#'   will be the factor values (e.g. for 4 sources and 3 Regions:
+#'   1 2 3 1 2 3 1 2 3 1 2 3)
+#'   \item \code{source$S_SIG}: matrix, source SDs used for plotting - NOT passed
+#'    to JAGS. Same structure as S_MU.
+#'   \item \code{source$S_factor1}: factor or NULL, factor values if sources are
+#'    by factor.
+#'   \item \code{source$S_factor_levels}: scalar or NULL, number of \code{S_factor1}
+#'    levels if sources are by factor.
+#'   \item \code{source$conc}: matrix or NULL, concentration dependence values
+#'   for each isotope
+#'   \item \code{source$MU_array}: array of source means, dim(src,iso,f1) or
+#'   dim(src,iso) if data_type="means", NULL if data_type="raw".
+#'   \item \code{source$SIG2_array}: array of source variances, dim(src,iso,f1)
+#'   or dim(src,iso) if data_type="means", NULL if data_type="raw".
+#'   \item \code{source$n_array}: vector/matrix of source sample sizes,
+#'   dim(src,f1) or dim(src) if data_type="means", NULL if data_type="raw".
+#'   \item \code{source$SOURCE_array}: array of source data, dim(src,iso,f1,replicate)
+#'    or dim(src,iso,replicate) if data_type="raw", NULL if data_type="means".
+#'   \item \code{source$n.rep}: vector/matrix of source sample sizes, dim(src,f1)
+#'    or dim(src) if data_type="raw", NULL if data_type="means".
+#'   \item \code{source$by_factor}: T/F, are the source data by a Fixed or Random Effect?
+#'   \item \code{source$data_type}: \code{"raw"} or \code{"means"}, same as input.
+#'   \item \code{source$conc_dep}: T/F, same as input.
+#' }
+#'
+#' @seealso \code{\link{load_mix_data}} and \code{\link{load_discr_data}}
+#'
+load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix){
   SOURCE <- read.csv(filename)
   source.fac <- length(source_factors)
   if(source.fac > 1){
     stop(paste("*** Error: More than one source factor.
-    MixSIAR can only fit source data by up to ONE factor. 
+    MixSIAR can only fit source data by up to ONE factor.
     Please specify 0 or 1 source factor and try again.",sep=""))
   }
   test_fac <- match(source_factors,mix$factors)
   if(source.fac==1 && (length(test_fac)==0 || is.na(test_fac))){
-    stop(paste("*** Error: source factor not in mix$factors. 
+    stop(paste("*** Error: source factor not in mix$factors.
     You cannot model a source random effect that is not included
-    as a random/fixed effect for the mixture/consumer. Either 1) remove the source 
-    factor (reload source data), or 2) include the random/fixed effect 
+    as a random/fixed effect for the mixture/consumer. Either 1) remove the source
+    factor (reload source data), or 2) include the random/fixed effect
     in the mixture (reload mix data).",sep=""))
   }
   if(source.fac==0) by_factor <- FALSE else by_factor <- TRUE
@@ -151,7 +182,7 @@ load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
       stop(paste("*** Error: Source sample sizes missing or entered incorrectly.
         Check your sources.csv data file to be sure you have a column
         titled \"n\" with the sample sizes for each source isotope estimate.",sep=""))
-    }    
+    }
     S_sample_size <- SOURCE[,sample_size_col]         # Get the sample sizes
 
     if(!by_factor){
@@ -174,7 +205,7 @@ load_source_data <- function(filename,source_factors,conc_dep,data_type,mix){
       SOURCE[,source_factor_cols] <- as.numeric(factor(SOURCE[,source_factor_cols]))  # turn the Factor1 labels into numbers (already have them saved as 'factor1_levels' from X)
       S_MU <- as.matrix(SOURCE[,c(S_MU_iso_cols[],source_factor_cols)]) # rearrange S_MU columns to be the selected isotopes (in order) and source random effects
       S_SIG <- as.matrix(SOURCE[,c(S_SIG_iso_cols[],source_factor_cols)]) # rearrange S_SIG columns to be the selected isotopes (in order) and source random effects
-      
+
       # Create MU_array, SIG2_array, and n_array
       MU_array <- array(NA,dim=c(n.sources,mix$n.iso,S_factor_levels))
       SIG2_array <- array(NA,dim=c(n.sources,mix$n.iso,S_factor_levels))

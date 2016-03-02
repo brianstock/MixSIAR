@@ -1,15 +1,34 @@
-#' Build the window to read-in MIX data
+#' Build the window to read-in mixture data.
 #'
-#' This function is run when a user clicks the "Load mixture data" button in the main MixSIAR GUI,
-#' and creates a separate GUI window (\code{mix_win}) where the user loads the mixture data. It contains:
-#'  1) "Load consumer data file" gbutton which loads the .csv file into \code{X},
-#'  2) gtables where the user selects which columns of \code{X} are Isotopes, Random Effects, and Continuous Effects,
-#'  3) Individual Effect gcheckbox ("Include 'Individual' as a Random Effect"),
-#'  4) "I'm finished" gbutton that closes \code{mix_win} and manipulates \code{X} into all the objects we use later.
-#' If more than 2 Random Effects are selected, a separate WARNING gwindow prompts the user to select 2, 1, or 0.
-#' If 2 Random Effects are selected, a separate gwindow asks the user if the effects are hierarchical/nested.
-#' If more than 1 Continuous Effect is selected, a separate WARNING gwindow prompts the user to select 1 or 0.
-#' Finally, the function adds a green check image if the data is successfully loaded, or a red x image if not.
+#' This function is run when a user clicks the "Load mixture data" button in the
+#' main MixSIAR GUI, and creates a separate GUI window (\code{mix_win}) where
+#' the user loads the mixture data file. \code{build_mix_win} calls
+#' \code{\link{load_mix_data}} when the user clicks the "I'm finished" button.
+#'
+#' The "Load mix data" window contains:
+#' \enumerate{
+#'   \item "Load consumer data file" gbutton which loads the .csv file into \code{X},
+#'   \item gtables where the user selects which columns of \code{X} are Isotopes
+#'         and Fixed/Random/Continuous Effects.
+#'   \item (formerly) Individual Effect gcheckbox ("Include 'Individual' as a Random Effect"),
+#'   \item "I'm finished" gbutton that closes \code{mix_win} and calls
+#'         \code{\link{load_mix_data}}.
+#' }
+#'
+#' If more than 2 Fixed/Random Effects are selected, a separate WARNING gwindow
+#' prompts the user to select 2, 1, or 0.
+#'
+#' If more than 1 Continuous Effect is selected, a separate WARNING gwindow
+#' prompts the user to select 1 or 0.
+#'
+#' If 2 Fixed/Random Effects are selected, a separate gwindow asks the user if
+#' the effects are hierarchical/nested.
+#'
+#' Finally, the function adds a green check image if the data is successfully
+#' loaded, or a red x image if not.
+#'
+#' @seealso \code{\link{load_mix_data}}, which is run when the "Load MIX data"
+#'          window is closed by clicking the "I'm finished" button.
 build_mix_win <- function(){
 mix_win <- gwindow("Read in your MIXTURE data",visible=FALSE) # set visible=F here so that it shows up all at once when the function is finished building the window (visible=T at end of function)
 mix_grp_all <- ggroup(horizontal=F, container=mix_win)
@@ -160,7 +179,7 @@ btn_close <- gbutton(
     nested <- rep(FALSE,n.effects)
     mixsiar$mix$fac_nested <- nested
     assign("nested", nested, envir = mixsiar)
-    if(mixsiar$mix$n.effects==2){ 
+    if(mixsiar$mix$n.effects==2){
       hierarch_win <- gwindow("QUESTION: Hierarchical/Nested Data?", visible=T)
       hierarch_grp_all <- ggroup(horizontal=F, cont=hierarch_win)
       hierarch_msg1 <- glabel(paste("You have 2 random/fixed effects: ",mix$FAC[[1]]$name," and ",mix$FAC[[2]]$name,sep=""),cont=hierarch_grp_all)
@@ -177,7 +196,7 @@ btn_close <- gbutton(
         handler = function(h, ...){
           nested <- mixsiar$nested
           if(svalue(hierarch_rad)==h_yes21) nested <- c(FALSE,TRUE)
-          if(svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)          
+          if(svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)
           visible(hierarch_win) <- FALSE
           mixsiar$mix$fac_nested <- nested
 

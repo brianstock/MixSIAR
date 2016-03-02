@@ -1,30 +1,30 @@
-# Brian Stock
-# January 30, 2014
-
-# July 17, 2014
-# Changed order of input
-# Added 'filename' so the user can use the function in a loop and make different model files
-
-# Function: write_JAGS_model
-#     creates "MixSIAR_model.txt", the JAGS model file
-# Input: 
-#   filename        formerly "MixSIAR_model.txt", now the user can change (i.e. batch processing in a for loop)
-#   indiv_effect    T/F - include Individual as a random effect in the model?   include_indiv
-#   nested          T/F - if multiple random effects are included, is one nested in the other (e.g. Pack within Region)?    hierarch
-#   resid_err       T/F - include residual error in the model?            resid_err
-#   mix             output from 'load_mix_data'
-#     mix$n.re - number of random effects                                 n.re
-#     mix$n.ce - number of continuous effects                             n.ce
-#     mix$n.fe - number of fixed effects
-#     mix$n.effects - n.re + n.fe
-#   source          output from 'loac_source_data'
-#     source$data_type - "raw" or "means"                                 raw_source_data
-#     source$by_factor - T/F, are the source data by a factor?            sources_by_factor
-#     source$conc_dep - T/F, do we have concentration dependence data?    include_conc
-
-# Output: JAGS model text file saved to working directory as 'filename' (default is "MixSIAR_model.txt")
-
-write_JAGS_model <- function(filename, resid_err, process_err, mix, source){
+#' Write the JAGS model file
+#'
+#' \code{write_JAGS_model} creates "MixSIAR_model.txt", which is passed to JAGS
+#' by \code{\link{run_model}} when the "RUN MODEL" button is clicked in the GUI.
+#' Several model options will have already been specified when loading the mix
+#' and source data, but here is where the error term options are selected:
+#' \enumerate{
+#'   \item Residual * Process (resid_err = TRUE, process_err = TRUE)
+#'   \item Residual only (resid_err = TRUE, process_err = FALSE)
+#'   \item Process only (resid_err = FALSE, process_err = TRUE)
+#' }
+#'
+#' WARNING messages are displayed if:
+#' \itemize{
+#'  \item resid_err = FALSE and process_err = FALSE are both selected.
+#'  \item N=1 mix data point and did not choose "Process only" error model (MixSIR)
+#'  \item Fitting each individual mix data point separately as a Fixed Effect,
+#'    but did not choose "Process only" error model (MixSIR).
+#' }
+#'
+#' @param filename the JAGS model file is saved in the working directory as 'filename'
+#' (default is "MixSIAR_model.txt", but user can specify).
+#' @param resid_err T/F: include residual error in the model?
+#' @param process_err T/F: include process error in the model?
+#' @param mix output from \code{\link{load_mix_data}}
+#' @param source output from \code{\link{load_source_data}}
+write_JAGS_model <- function(filename = "MixSIAR_model.txt", resid_err = TRUE, process_err = TRUE, mix, source){
 if(!process_err && !resid_err){
   stop(paste("Invalid error structure, must choose one of:
   1. Residual * Process (resid_err=TRUE, process_err=TRUE)
@@ -44,12 +44,12 @@ if(resid_err && process_err){
   err <- "mult"
 }
 if(mix$N==1 && err!="process"){
-  stop(paste("Invalid error structure. If N=1 mix datapoint,
+  stop(paste("Invalid error structure. If N=1 mix data point,
   must choose Process only error model (MixSIR).
   Set resid_err=FALSE and process_err=TRUE.",sep=""))}
 if(mix$n.fe==1 && mix$N==mix$FAC[[1]]$levels && err!="process"){
   stop(paste("Invalid error structure. If fitting each individual
-  mix datapoint separately, must choose Process only error model (MixSIR).
+  mix data point separately, must choose Process only error model (MixSIR).
   Set resid_err=FALSE and process_err=TRUE.",sep=""))}
 
 cat(paste("# source$data_type: ",source$data_type,sep=""), file=filename)
@@ -81,12 +81,12 @@ cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T
 if(source$data_type=="raw" && source$by_factor==FALSE){
 cat("
 
-var rho[n.sources,n.iso,n.iso], src_cov[n.sources,n.iso,n.iso], src_var[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)  
+var rho[n.sources,n.iso,n.iso], src_cov[n.sources,n.iso,n.iso], src_var[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)
 }
 if(source$data_type=="raw" && source$by_factor==TRUE){
 cat("
 
-var rho[n.sources,source_factor_levels,n.iso,n.iso], src_cov[n.sources,source_factor_levels,n.iso,n.iso], src_var[n.sources,source_factor_levels,n.iso,n.iso], src_Sigma[n.sources,source_factor_levels,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)  
+var rho[n.sources,source_factor_levels,n.iso,n.iso], src_cov[n.sources,source_factor_levels,n.iso,n.iso], src_var[n.sources,source_factor_levels,n.iso,n.iso], src_Sigma[n.sources,source_factor_levels,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)
 }
 cat("
 
@@ -113,14 +113,14 @@ model{", file=filename, append=T)
 #     for(f1 in 1:source_factor_levels){
 #       for(r in 1:n.rep[src,f1]){
 #         SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma.inv[src,f1,,]);
-#       } 
+#       }
 #     }
 #   }
 # ", file=filename, append=T)
 # }
 
 # fit the source means and precisions (by factor 1)
-if(source$data_type=="raw" && source$by_factor==TRUE && mix$n.iso > 1){  
+if(source$data_type=="raw" && source$by_factor==TRUE && mix$n.iso > 1){
 cat("
   # fit source data (big for loop over sources)
   for(src in 1:n.sources){
@@ -160,10 +160,10 @@ cat("
       # each source data point is distributed normally according to the source means and precisions
       for(r in 1:n.rep[src,f1]){
         SOURCE_array[src,,f1,r] ~ dmnorm(src_mu[src,,f1],src_Sigma[src,f1,,]);
-      } 
+      }
     } # end loop over f1
   } # end source data fitting loop
-", file=filename, append=T)  
+", file=filename, append=T)
 }
 
 # fit the source means and precisions (not by factor 1)
@@ -206,9 +206,9 @@ cat("
     # each source data point is distributed normally according to the source means and precisions
     for(r in 1:n.rep[src]){
       SOURCE_array[src,,r] ~ dmnorm(src_mu[src,],src_Sigma[src,,]);
-    } 
+    }
   } # end source data fitting loop
-", file=filename, append=T)  
+", file=filename, append=T)
 }
 
 if(source$data_type=="raw" && mix$n.iso == 1){ # if one iso, can't call "i in 2:n.iso"
@@ -230,9 +230,9 @@ cat("
     # each source data point is distributed normally according to the source means and precisions
     for(r in 1:n.rep[src]){
       SOURCE_array[src,,r] ~ dnorm(src_mu[src,],src_Sigma[src,,]);
-    } 
+    }
   } # end source data fitting loop
-", file=filename, append=T)   
+", file=filename, append=T)
 }
 
 # Here we fit the source means and variances according to Gelman, p.79-80:
@@ -248,7 +248,7 @@ cat("
 
 # src_mu and src_tau are used in the X[i,iso] ~ dnorm call at the very bottom of this function
 # dim(MU/SIG2_array) is either (n.src,n.iso) or (n.src,n.iso,n.fac), if source$by_factor is FALSE or TRUE, respectively.
-if(source$data_type=="means" && source$by_factor==FALSE){ 
+if(source$data_type=="means" && source$by_factor==FALSE){
 cat("
   for(src in 1:n.sources){
     for(iso in 1:n.iso){
@@ -260,7 +260,7 @@ cat("
 ", file=filename, append=T)
 }
 
-if(source$data_type=="means" && source$by_factor==TRUE){ 
+if(source$data_type=="means" && source$by_factor==TRUE){
 cat("
   for(src in 1:n.sources){
     for(f1 in 1:source_factor_levels){
@@ -271,8 +271,8 @@ cat("
       }
     }
   }
-", file=filename, append=T) 
-} 
+", file=filename, append=T)
+}
 
 ###########################################################################
 # ILR transform and factors
@@ -297,7 +297,7 @@ cat("
       for(src in 1:(n.sources-1)) {
           ilr.fac1[f1,src] ~ dnorm(0,fac1.invSig2);
       }
-   }   
+   }
 ", file=filename, append=T)}
 
 if(mix$n.effects > 0 && !mix$FAC[[1]]$re){ # factor 1 is fixed effect
@@ -350,7 +350,7 @@ ilr.cont.string <- paste(ilr.cont.string," + ilr.cont",ce,"[src]*Cont.",ce,"[i]"
 
 # if(indiv_effect){  # if user has chosen to include Individual as a random effect
 # cat("
-#    ind.sig ~ dunif(0,20); 
+#    ind.sig ~ dunif(0,20);
 #    ind.invSig2 <- 1/(ind.sig*ind.sig);
 #    # generate individual deviates from the global/region/pack mean
 #    for(i in 1:N) {
@@ -389,7 +389,7 @@ cat("
 #####################################################################
 # Inverse ILR section
 #####################################################################
-cat("   
+cat("
    # Inverse ILR math (equation 24, page 294, Egozcue 2003)
    for(i in 1:N){
       for(j in 1:(n.sources-1)){
@@ -402,7 +402,7 @@ cat("
         p.ind[i,src] <- tmp.p[i,src]/sum(tmp.p[i,]);
       }
    }
-      
+
    for(src in 1:n.sources) {
       for(i in 1:N){
          # these are weights for variances
@@ -429,7 +429,7 @@ if(mix$n.effects > 0 & !mix$fere){
       }
   ", file=filename, append=T)
   } else {
-  cat("   
+  cat("
    # Transform ilr.fac1 into p.fac1 (fac1 not nested within fac2)
    for(f1 in 1:factor1_levels) {
       for(src in 1:(n.sources-1)) {
@@ -486,7 +486,7 @@ if(mix$n.effects > 1 & !mix$fere){ # i.e. n.re=2
 # 2 FE or 1 FE + 1 RE section
 if(mix$fere){
   if(mix$n.re==1){ # if 1 FE and 1 RE, get p.fac1 (fixed)
-  cat("   
+  cat("
    # Transform ilr.fac1 into p.fac1 (fac1 fixed, not nested within fac2)
    for(f1 in 1:factor1_levels) {
       for(src in 1:(n.sources-1)) {
@@ -503,7 +503,7 @@ if(mix$fere){
 ", file=filename, append=T)
   }
   # for both 2 FE and 1FE + 1RE, don't get p.fac2. Instead, get p.both[f1,f2]
-#   cat("   
+#   cat("
 #    # Transform ilr.fac2 into p.both (fac1 fixed, so don't get p.fac2)
 #    for(f1 in 1:factor1_levels) {
 #     for(f2 in factor2_lookup[[f1]]){
@@ -519,14 +519,14 @@ if(mix$fere){
 #       }
 #     }
 #    }
-# ", file=filename, append=T)  
+# ", file=filename, append=T)
 }
 
 ###############################################################################
 # mix.mu section
 ###############################################################################
 cat("
-    
+
    # for each isotope and population, calculate the predicted mixtures
    for(iso in 1:n.iso) {
       for(i in 1:N) {
@@ -539,10 +539,10 @@ if(source$by_factor==T && source$conc_dep==T){
   cat("
          mix.mu[iso,i] <- inprod(src_mu[,iso,Factor.1[i]],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
 } else if(source$by_factor==F && source$conc_dep==T){
-  cat("  
+  cat("
          mix.mu[iso,i] <- (inprod(src_mu[,iso],(p.ind[i,]*conc[,iso])) + inprod(frac_mu[,iso],(p.ind[i,]*conc[,iso]))) / inprod(p.ind[i,],conc[,iso]);", file=filename, append=T)
 } else if(source$by_factor==F && source$conc_dep==F){
-  cat("  
+  cat("
          mix.mu[iso,i] <- inprod(src_mu[,iso],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
 }
 cat("
@@ -561,7 +561,7 @@ cat("
 #          process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
 #   } else {  # source$by_factor = FALSE, include process error as:
 # cat("
-#          process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)  
+#          process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
 #   } # end if/else(source$by_factor)
 # } else {  # process_err = FALSE, set process.var[iso,i] = 0:
 # cat("
@@ -607,7 +607,7 @@ if(err=="mult"){
 
   if(source$data_type=="means"){
 cat("
-    
+
    # Calculate process variance for each isotope and population
    for(iso in 1:n.iso) {
       for(i in 1:N) {
@@ -617,7 +617,7 @@ cat("
          process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     } else {  # source$by_factor = FALSE, include process error as:
 cat("
-         process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)  
+         process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     }
 cat("
       }
@@ -636,13 +636,13 @@ cat("
    for(i in 1:N) {
 ", file=filename, append=T)
     if(mix$n.iso > 1){
-cat("  
+cat("
      X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     } else { # n.iso == 1, can't use dmnorm
-cat("  
-     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)      
+cat("
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     }
-cat("     
+cat("
    }
 } # end model
 
@@ -666,10 +666,10 @@ cat("
 ", file=filename, append=T)
     if(source$by_factor){ # source$by_factor = TRUE, include process error as:
 cat("
-         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,Factor.1[ind],i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,Factor.1[ind],i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)  
+         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,Factor.1[ind],i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,Factor.1[ind],i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)
     } else {  # source$by_factor = FALSE, include process error as:
 cat("
-         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)  
+         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)
     }
 cat("
       }
@@ -681,13 +681,13 @@ cat("
   for(i in 1:N){
 ", file=filename, append=T)
     if(mix$n.iso > 1){
-cat("  
+cat("
      X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     } else { # n.iso == 1, can't use dmnorm
-cat("  
-     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)      
+cat("
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     }
-cat("    
+cat("
   }
 } # end model
 
@@ -726,19 +726,19 @@ cat("
 # MixSIR/process error section (for N = 1)
 if(err=="process"){
 cat("
-    
+
   # calculate mix variance and likelihood
   for(iso in 1:n.iso){
     for(i in 1:N){
 ", file=filename, append=T)
     if(source$data_type=="raw"){ # source data = raw, src_tau dim = src,iso,iso
-cat("  
-      process.var[iso,i] <- inprod(1/src_tau[,iso,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T) 
+cat("
+      process.var[iso,i] <- inprod(1/src_tau[,iso,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     } else { # source data = means+SD, src_tau dim = src, iso
-cat("  
-      process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)      
+cat("
+      process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     }
-cat("      
+cat("
       mix.prcsn[iso,i] <- 1/process.var[iso,i];
       X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
     }
@@ -747,5 +747,10 @@ cat("
 
 ", file=filename, append=T)
 } # end MixSIR error section (N = 1)
+
+# Assign "resid_err" and "process_err" to the mixsiar environment, so they are
+#  accessible by "run_model" function without a user having to re-specify (and match!)
+assign("resid_err", resid_err, envir = mixsiar)
+assign("process_err", process_err, envir = mixsiar)
 
 } # end function write_JAGS_model

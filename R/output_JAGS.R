@@ -1,39 +1,41 @@
-# Brian Stock
-# February 6, 2014
-
-# Function: output_JAGS
-# Input: jags.1,         rjags model object, returned by run_model function
-#        mix,            output from 'load_mix_data'
-#        source,         output from 'load_source_data'
-#        output_options, list containing (with defaults):
-#         # summary_save = TRUE,                    # Save the summary statistics as a txt file?
-          # summary_name = "summary_statistics",    # If yes, specify the file name (.txt will be appended later)
-          # sup_post = FALSE,                       # Suppress posterior density plot output in R?
-          # plot_post_save_pdf = TRUE,              # Save posterior density plots as pdfs?
-          # plot_post_name = "posterior_density",   # If yes, specify the base file name(s) (.pdf/.png will be appended later)
-          # sup_pairs = FALSE,                      # Suppress pairs plot output in R?
-          # plot_pairs_save_pdf = TRUE,             # Save pairs plot as pdf?
-          # plot_pairs_name = "pairs_plot",         # If yes, specify the file name (.pdf/.png will be appended later)
-          # sup_xy = FALSE,                         # Suppress xy/trace plot output in R?
-          # plot_xy_save_pdf = TRUE,                # Save xy/trace plot as pdf?
-          # plot_xy_name = "xy_plot",               # If yes, specify the file name (.pdf/.png will be appended later)
-          # gelman = TRUE,                          # Calculate Gelman-Rubin diagnostic test?
-          # heidel = TRUE,                          # Calculate Heidelberg-Welch diagnostic test?
-          # geweke = TRUE,                          # Calculate Geweke diagnostic test?
-          # diag_save = TRUE,                       # Save the diagnostics as a txt file?
-          # diag_name = "diagnostics",              # If yes, specify the file name (.txt will be appended later)
-          # indiv_effect = indiv_effect,            # Is Individual a random effect in the model? (already specified)
-          # plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
-          # plot_pairs_save_png = FALSE,            # Save pairs plot as png?
-          # plot_xy_save_png = FALSE)               # Save xy/trace plot as png?
-
-# Output: prints and saves diagnostics;
-#         prints and saves summary statistics;
-#         prints and saves trace/XY plots;
-#         prints and saves pairs plot;
-#         prints and saves posterior density plots for random effects;
-#         calls 'plot_continuous_var' to print and save posterior density plots for continuous effects
-
+#' Process mixing model output from JAGS
+#'
+#' \code{output_JAGS} processes the mixing model output, prints and saves (in the
+#' working directory):
+#' \itemize{
+#'  \item diagnostics
+#'  \item summary statistics
+#'  \item posterior density plots
+#'  \item pairs plot
+#'  \item trace/XY plots
+#' }
+#'
+#' @param jags.1 rjags model object, output from \code{\link{run_model}} function
+#' @param mix output from \code{\link{load_mix_data}}
+#' @param source output from \code{\link{load_source_data}}
+#' @param output_options list containing options for plots and saving:
+#'   \itemize{
+#'    \item \code{summary_save}: Save the summary statistics as a txt file?
+#'    \item \code{summary_name}: Summary statistics file name (.txt will be appended)
+#'    \item \code{sup_post}: Suppress posterior density plot output in R?
+#'    \item \code{plot_post_save_pdf}: Save posterior density plots as pdfs?
+#'    \item \code{plot_post_name}: Posterior plot file name(s) (.pdf/.png will be appended)
+#'    \item \code{sup_pairs}: Suppress pairs plot output in R?
+#'    \item \code{plot_pairs_save_pdf}: Save pairs plot as pdf?
+#'    \item \code{plot_pairs_name}: Pairs plot file name (.pdf/.png will be appended)
+#'    \item \code{sup_xy}: Suppress xy/trace plot output in R?
+#'    \item \code{plot_xy_save_pdf}: Save xy/trace plot as pdf?
+#'    \item \code{plot_xy_name}: XY/trace plot file name (.pdf/.png will be appended)
+#'    \item \code{gelman}: Calculate Gelman-Rubin diagnostic test?
+#'    \item \code{heidel}: Calculate Heidelberg-Welch diagnostic test?
+#'    \item \code{geweke}: Calculate Geweke diagnostic test?
+#'    \item \code{diag_save}: Save the diagnostics as a .txt file?
+#'    \item \code{diag_name}: Diagnostics file name (.txt will be appended)
+#'    \item \code{indiv_effect}: artifact, set to FALSE
+#'    \item \code{plot_post_save_png}: Save posterior density plots as pngs?
+#'    \item \code{plot_pairs_save_png}: Save pairs plot as png?
+#'    \item \code{plot_xy_save_png}: Save xy/trace plot as png?
+#'   }
 output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   summary_save = TRUE,                 # Save the summary statistics as a txt file?
                                                   summary_name = "summary_statistics",    # If yes, specify the base file name (.txt will be appended later)
@@ -112,8 +114,8 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   # XY plot for p.global
   dev.new()
   print(lattice::xyplot(as.mcmc(p.global),strip=strip.custom(factor.levels=source_names)))
-  
-  # Save the xy p.global plot to file 
+
+  # Save the xy p.global plot to file
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[11]],"_diet_p.pdf",sep=""))  # svalue(plot_xy_name)
     dev.copy2pdf(file=mypath)
@@ -122,12 +124,12 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
     mypath <- file.path(paste(getwd(),"/",output_options[[11]],"_diet_p.png",sep=""))  # svalue(plot_xy_name)
     dev.copy(png,mypath)
   }
-  
+
   # XY plot for the factor SDs
   if(output_options[[17]]){ # include_indiv ('ind.sig' is in the model)
     dev.new()
     traceplot_labels <- rep("",length(random_effects)+1)  # +1 because we need to add "Individual SD"
-    if(n.re > 0){  
+    if(n.re > 0){
       for(i in 1:length(random_effects)){
         traceplot_labels[i] <- paste(random_effects[i]," SD",sep="")
       }
@@ -145,7 +147,7 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
       dev.new()
-      traceplot_labels <- rep("",length(random_effects))  
+      traceplot_labels <- rep("",length(random_effects))
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
       if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
       if(n.re==1){
@@ -157,7 +159,7 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       }
     }
   }
-  # Save the xy factor SD plot to file 
+  # Save the xy factor SD plot to file
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[11]],"_SD.pdf",sep=""))  # svalue(plot_xy_name)
     dev.copy2pdf(file=mypath)
@@ -174,8 +176,8 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
   dev.new()
   # Function: panel.hist (from ?pairs)
   # Purpose: creates histograms on the diagonal of the pairs plot matrix
-  panel.hist <- function(x, ...){   
-    usr <- par("usr"); on.exit(par(usr))
+  panel.hist <- function(x, ...){
+    usr <- par("usr"); on.exit(par(usr), add=TRUE)
     par(usr = c(usr[1:2], 0, 1.5) )
     h <- hist(x, plot = FALSE)
     breaks <- h$breaks; nB <- length(breaks)
@@ -183,10 +185,10 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
     rect(breaks[-nB], 0, breaks[-1], y, col='blue', xlim=c(0,1),...)
   }
   # Function: panel.cor (from http://personality-project.org/r/r.graphics.html)
-  # Purpose: prints correlation coefficients in the lower panel, 
+  # Purpose: prints correlation coefficients in the lower panel,
   #          scales text sizes to the correlation coefficient magnitudes
   panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
-    usr <- par("usr"); on.exit(par(usr))
+    usr <- par("usr"); on.exit(par(usr), add=TRUE)
     par(usr = c(0, 1, 0, 1))
     r = (cor(x, y,use="pairwise"))
     txt <- format(c(r, 0.123456789), digits=digits)[1]
@@ -203,7 +205,7 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
     contour(z, drawlabels=FALSE, nlevels=n.lines, col=my.cols, add=TRUE)
   }
   pairs(p.global, labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
-  
+
   # Save the plot to file
   if(output_options[[7]]){ # svalue(plot_pairs_save_pdf)
     mypath <- file.path(paste(getwd(),"/",output_options[[8]],".pdf",sep=""))  # svalue(plot_pairs_name)
@@ -237,8 +239,8 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       xlim(0,1) +
       labs(title = my.title) +
       theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
-    
-    # Save the plot to file  
+
+    # Save the plot to file
     if(output_options[[4]]){ # svalue(plot_post_save_pdf)
       mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_global.pdf",sep=""))  # svalue(plot_post_name)
       dev.copy2pdf(file=mypath)
@@ -248,7 +250,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       dev.copy(png,mypath)
     }
   }
-  
+
   if(n.effects >= 1 & mix$n.fe != 2){
     # Posterior density plots for p.fac1's
     for(f1 in 1:mix$FAC[[1]]$levels){    # formerly factor1_levels
@@ -268,7 +270,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
         ylab("Scaled Posterior Density") +
         labs(title = my.title) +
         theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
-        
+
       # Save the plot to file
       if(output_options[[4]]){ # svalue(plot_post_save_pdf)
         mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[1]]$labels[f1],".pdf",sep=""))  # svalue(plot_post_name), factor1_names
@@ -279,7 +281,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
         dev.copy(png,mypath)
       }
     } # end p.fac1 posterior plots
-    
+
     if(n.re==2){
       # Posterior density plots for p.fac2's
         for(f2 in 1:mix$FAC[[2]]$levels){  # formerly factor2_levels
@@ -300,8 +302,8 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
             ylab("Scaled Posterior Density") +
             labs(title = my.title) +
             theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
-            
-          # Save the plot as a pdf file  
+
+          # Save the plot as a pdf file
           if(output_options[[4]]){ # svalue(plot_post_save_pdf)
             mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".pdf",sep="")) #  svalue(plot_post_name), factor2_names
             dev.copy2pdf(file=mypath)
@@ -332,9 +334,9 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
           xlab("Proportion of Diet") +
           ylab("Scaled Posterior Density") +
           labs(title = my.title) +
-          theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))        
+          theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
 
-        # Save the plot as a pdf file  
+        # Save the plot as a pdf file
         if(output_options[[4]]){ # svalue(plot_post_save_pdf)
           mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".pdf",sep="")) #  svalue(plot_post_name), factor2_names
           dev.copy2pdf(file=mypath)
@@ -344,9 +346,9 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
           dev.copy(png,mypath)
         }
       } # f2
-    } # f1    
+    } # f1
   }
-    
+
   # Posterior density plot for fac1.sig, fac2.sig, and ind.sig
   if(n.re > 0 || output_options[[17]]){ # only have an SD posterior plot if we have Individual, Factor1, or Factor2 random effects)
     dev.new()
@@ -371,7 +373,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       x <- c(x,fac1.sig,fac2.sig)
     }
     df2 <- data.frame(level=level, x=x) # create the SD plot data frame
-    
+
     print(ggplot(df2, aes(x=x, fill=level, colour=level)) +
 #        geom_density(alpha=.3) +
       geom_density(alpha=.3) +
@@ -379,8 +381,8 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       xlab(expression(sigma)) +
       ylab("Posterior Density") +
       theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))   # + xlim(0,2)
-    
-    # Save the plot to file  
+
+    # Save the plot to file
     if(output_options[[4]]){ # svalue(plot_post_save_pdf)
       mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_SD.pdf",sep=""))  # svalue(plot_post_name)
       dev.copy2pdf(file=mypath)
@@ -431,7 +433,7 @@ if(n.effects > 0 & mix$n.fe != 2){
     sig_labels <- paste(mix$FAC[[1]]$name,".SD",sep="")
   }
 }
-if(n.re==2){  
+if(n.re==2){
   fac2_quants <- as.matrix(cast(melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   fac2_means <- cbind(melt(round(apply(p.fac2,c(2,3),mean),3))$value, melt(round(apply(p.fac2,c(2,3),sd),3))$value)
@@ -459,7 +461,7 @@ if(mix$fere){
       for(src in 1:n.sources){
         fac2_quants[i,] <- getQuant(p.both[,f1,f2,src])
         fac2_means[i,] <- c(mean(p.both[,f1,f2,src]),sd(p.both[,f1,f2,src]))
-        fac2_labels[i] <- paste("p",mix$FAC[[1]]$labels[f1],mix$FAC[[2]]$labels[f2],source_names[src],sep=".")        
+        fac2_labels[i] <- paste("p",mix$FAC[[1]]$labels[f1],mix$FAC[[2]]$labels[f2],source_names[src],sep=".")
         i <- i+1
       }
     }
@@ -473,14 +475,14 @@ if(mix$fere){
   if(mix$FAC[[2]]$re){
     sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
     sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
-  }  
+  }
 }
 
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)
   ind_quants <- as.matrix(cast(melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   ind_quants <- t(apply(ind_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   ind_means <- cbind(melt(round(apply(p.ind,c(2,3),mean),3))$value, melt(round(apply(p.ind,c(2,3),sd),3))$value)
-  ind_stats <- cbind(ind_means,ind_quants)  
+  ind_stats <- cbind(ind_means,ind_quants)
   ind_labels <- rep(NA,N*n.sources)
   for(src in 1:n.sources){
     for(j in 1:N){
@@ -523,7 +525,7 @@ n.var <- nvar(jags1.mcmc)
 if(output_options[[12]]){  # if Gelman is checked
   if(mcmc.chains == 1){
     gelman <- "*** Error: Gelman diagnostic requires more than one chain ***"
-  } 
+  }
   if(mcmc.chains > 1){    # Gelman diagnostic requires more than one chain
     # Gelman diagnostic, for when the multivariate Gelman fails (matrix not positive definite)
     # Remove the test results for dummy/empty variables
@@ -535,10 +537,10 @@ if(output_options[[12]]){  # if Gelman is checked
     colnames(gelman) <- c("Point est.","Upper C.I.")
     rownames(gelman) <- varnames(jags1.mcmc)
     #rownames(gelman) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-    gelman.all <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)    
+    gelman.all <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)
     gelman_short <- gelman[order(gelman[,1],decreasing=T),]
     if(n.var>10) gelman_short <- gelman_short[1:10,]
-    gelman_fail <- c(length(which(gelman[,1]>1.01)), length(which(gelman[,1]>1.05)), length(which(gelman[,1]>1.1)))   
+    gelman_fail <- c(length(which(gelman[,1]>1.01)), length(which(gelman[,1]>1.05)), length(which(gelman[,1]>1.1)))
   }
 }
 
@@ -546,7 +548,7 @@ if(output_options[[12]]){  # if Gelman is checked
 # Remove the test results for dummy/empty variables
 if(output_options[[13]]){   # if Heidel is checked
   heidel <- heidel.diag(jags1.mcmc)
-  w <- which(!is.na(heidel[[1]][,"pvalue"]))  # find all the non-dummy variables    
+  w <- which(!is.na(heidel[[1]][,"pvalue"]))  # find all the non-dummy variables
   heidel.all <- data.frame(matrix(NA,nrow=length(w),ncol=3*mcmc.chains))  # create empty data frame
   colstring <- rep(NA,mcmc.chains*3)  # vector of column names
   for(i in 1:mcmc.chains){
@@ -726,7 +728,7 @@ if(output_options[[1]]){  # svalue(summary_save)
 #################################################################
 # Summary Statistics
 #################################################################
-  
+
 DIC = ",DIC,sep="", file=mypath, append=FALSE)
 cat("
 ",out1,sep="\n", file=mypath, append=TRUE)
@@ -739,6 +741,6 @@ if(mix$n.ce > 0){
 
 # Use ggmcmc package to create diagnostic plots
 diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
-ggmcmc(ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+ggmcmc::ggmcmc(ggmcmc::ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
 
 } # end function output_JAGS

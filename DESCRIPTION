@@ -1,0 +1,43 @@
+Package: MixSIAR
+Title: Bayesian mixing models in R
+Version: 3.1.0
+Authors@R: as.person(c(
+    "Brian Stock <b1stock@ucsd.edu> [aut, cre]",
+    "Brice Semmens <semmens@ucsd.edu> [aut]",
+    "Eric Ward [ctb]",
+    "Andrew Parnell [ctb]",
+    "Andrew Jackson [ctb]",
+    "Donald Phillips [ctb]",
+    "Jon Moore [ctb]",
+    "Stuart Bearhop [ctb]",
+    "Richard Inger [ctb]"
+  ))
+Description: MixSIAR creates and runs Bayesian mixing models to analyze biotracer
+    data (i.e. stable isotopes, fatty acids), which estimate the proportions of
+    source (prey) contributions to a mixture (consumer). MixSIAR is not one
+    model, but a framework that allows a user to create a mixing model based on
+    their data structure and research questions, via options for fixed/random
+    effects, source data types, priors, and error terms. MixSIAR incorporates
+    several years of advances since MixSIR and SIAR, and includes both GUI
+    (graphical user interface) and script versions.
+Depends: R (>= 3.2.3)
+Imports:
+    ggplot2 (>= 1.0.1),
+    rjags (>= 4-4),
+    R2jags (>= 0.5-7),
+    MASS (>= 7.3),
+    RColorBrewer (>= 1.1),
+    reshape (>= 0.8),
+    lattice (>= 0.20),
+    compositions (>= 1.40),
+    ggmcmc (>= 0.7.2)
+Suggests:
+    gWidgetsRGtk2 (>= 0.0-83),
+    splancs (>= 2.01-38)
+SystemRequirements: JAGS (>= 4.1) for the script version, both JAGS and GTK+ for
+    the GUI version. For install instructions, see manual at
+    <https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf>
+URL: <https://github.com/brianstock/MixSIAR>
+BugReports: <https://github.com/brianstock/MixSIAR/issues>
+License: GPL-3
+LazyData: true
