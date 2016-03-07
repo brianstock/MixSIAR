@@ -49,7 +49,7 @@
 #'    or dim(src,iso,replicate) if data_type="raw", NULL if data_type="means".
 #'   \item \code{source$n.rep}: vector/matrix of source sample sizes, dim(src,f1)
 #'    or dim(src) if data_type="raw", NULL if data_type="means".
-#'   \item \code{source$by_factor}: T/F, are the source data by a Fixed or Random Effect?
+#'   \item \code{source$by_factor}: NA or factor number, are the source data by a Fixed or Random Effect?
 #'   \item \code{source$data_type}: \code{"raw"} or \code{"means"}, same as input.
 #'   \item \code{source$conc_dep}: T/F, same as input.
 #' }
@@ -72,7 +72,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     factor (reload source data), or 2) include the random/fixed effect
     in the mixture (reload mix data).",sep=""))
   }
-  if(source.fac==0) by_factor <- FALSE else by_factor <- TRUE
+  if(source.fac==0) by_factor <- NA else by_factor <- match(source_factors, mixsiar$mix$factors)
 
   # turn source names into numbers
   source_names <- levels(SOURCE[,1])   # first save the source names in source_names
@@ -82,9 +82,9 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   # sorts SOURCE by source name, then by the source factors (if present)
   source_factor_cols <- match(source_factors,colnames(SOURCE)) # the column number(s) of the user-selected random effects
   S_factor_levels <- rep(0,length(source_factor_cols))                # the number of levels of each source random effect
-  if(by_factor){
+  if(!is.na(by_factor)){
     SOURCE <- SOURCE[order(SOURCE[,1],SOURCE[,source_factor_cols]),]
-  } else {  # by_factor==FALSE
+  } else {  # by_factor = NA
     SOURCE <- SOURCE[order(SOURCE[,1]),]
   }
   # Concentration Dependence section (must be after SOURCE is sorted)
@@ -105,7 +105,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   if(data_type=="raw"){
     S_iso_cols <- match(mix$iso_names,colnames(SOURCE))   # find the column numbers of the user-selected isotopes
     # Create S_MU and S_SIG - the source means and sds by isotopes and fac1 (if source data are by factor)
-    if(by_factor){  # if we have raw source data BY FACTOR
+    if(!is.na(by_factor)){  # if we have raw source data BY FACTOR
       for(fac in 1:length(source_factor_cols)){
         S_factor_levels[fac] <- length(levels(SOURCE[,source_factor_cols[fac]]))
       }
@@ -119,7 +119,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
       S_MU_factor_col <- match(source_factors,colnames(S_MU))
       S_factor1 <- S_MU[,S_MU_factor_col]
     }
-    if(!by_factor){ # if we have raw source data NOT by factor
+    if(is.na(by_factor)){ # if we have raw source data NOT by factor
       if(mix$n.iso > 1) S_MU <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,1])),colMeans))   # calculate the means for each iso/source combination
       if(mix$n.iso==1) S_MU <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,1])),mean))
       if(mix$n.iso > 1) S_SIG <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,1])),col_sd))   # calculate the sds for each iso/source combination
@@ -130,13 +130,13 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
 
     # make 'n.rep': the array of source/factor replicates
     n.rep <- array(0,dim=c(n.sources,S_factor_levels))
-    if(by_factor){
+    if(!is.na(by_factor)){
       for(src in 1:n.sources){
         for(f1 in 1:S_factor_levels){
           n.rep[src,f1] <- table(SOURCE[which(SOURCE[,1]==src),source_factor_cols])[f1]
         }
       }
-    } else {  # by_factor==FALSE
+    } else {  # by_factor = NA
         for(src in 1:n.sources){
         n.rep[src] <- length(which(SOURCE[,1]==src))
       }
@@ -147,7 +147,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     # For this to work SOURCE needs to be sorted by source and then factor1 (done above)
     SOURCE_array <- array(NA,dim=c(n.sources,mix$n.iso,S_factor_levels,max.rep))
     count <- 1
-    if(by_factor){
+    if(!is.na(by_factor)){
       for(src in 1:n.sources){
         for(f1 in 1:S_factor_levels){
           for(r in 1:n.rep[src,f1]){
@@ -158,7 +158,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
           }
         }
       }
-    } else {  # by_factor==FALSE
+    } else {  # by_factor = NA
         for(src in 1:n.sources){
           for(r in 1:n.rep[src]){
             for(iso in 1:mix$n.iso){
@@ -185,14 +185,14 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     }
     S_sample_size <- SOURCE[,sample_size_col]         # Get the sample sizes
 
-    if(!by_factor){
+    if(is.na(by_factor)){
       S_MU <- as.matrix(SOURCE[,c(S_MU_iso_cols[],source_factor_cols)]) # rearrange S_MU columns to be the selected isotopes (in order) and source random effects
       S_SIG <- as.matrix(SOURCE[,c(S_SIG_iso_cols[],source_factor_cols)]) # rearrange S_SIG columns to be the selected isotopes (in order) and source random effects
       MU_array <- S_MU                      # MU_array is passed to JAGS
       SIG2_array <- S_SIG*S_SIG             # SIG2_array is passed to JAGS
       n_array <- S_sample_size              # n_array is passed to JAGS
       S_factor1 <- NULL; S_factor_levels <- NULL
-    } else {  # if by_factor==TRUE
+    } else {  # if by_factor = 1 or 2
       for(fac in 1:length(source_factor_cols)){
         S_factor_levels[fac] <- length(levels(as.factor(SOURCE[,source_factor_cols[fac]])))
       }

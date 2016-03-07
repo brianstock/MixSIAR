@@ -168,8 +168,11 @@ btn_close <- gWidgets::gbutton(
     fixed_effects <- tbl_fe[]; n.fe <- length(fixed_effects);
     cont_effects <- tbl_cont[]
     n.effects <- n.re+n.fe
+    factors <- c(random_effects, fixed_effects)
+    fac_random <- c(rep(TRUE,n.re),rep(FALSE,n.fe))
+    fac_nested <- rep(NA,n.effects)
 
-    mix <- load_mix_data(mixsiar$mix_filename,iso_names,random_effects,fixed_effects,cont_effects)
+    mix <- load_mix_data(mixsiar$mix_filename, iso_names, factors, fac_random, fac_nested, cont_effects)
     assign("mix", mix, envir = mixsiar)
 
     # Hierarchical question box: if the user has included 2 random/fixed effects, ask if the model should be hierarchical (Factor 2 within Factor 1)
@@ -210,15 +213,14 @@ btn_close <- gWidgets::gbutton(
               mixsiar$mix$FAC[[1]]$lookup[lev] <- mixsiar$mix$FAC[[2]]$values[which(mixsiar$mix$FAC[[1]]$values==lev)][1]
             }
           }
-          if(mixsiar$mix$n.fe==1 & mixsiar$mix$n.re==1 & mixsiar$mix$fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
-            tmp <- mixsiar$mix$FAC[[1]]
-            mixsiar$mix$FAC[[1]] <- mixsiar$mix$FAC[[2]]
-            mixsiar$mix$FAC[[2]] <- tmp
-            mixsiar$mix$factors <- rev(mixsiar$mix$factors)
-            mixsiar$mix$fac_random <- rev(mixsiar$mix$fac_random)
-            mixsiar$mix$fac_nested <- rev(mixsiar$mix$fac_nested)
-          }
-
+#           if(mixsiar$mix$n.fe==1 & mixsiar$mix$n.re==1 & mixsiar$mix$fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
+#             tmp <- mixsiar$mix$FAC[[1]]
+#             mixsiar$mix$FAC[[1]] <- mixsiar$mix$FAC[[2]]
+#             mixsiar$mix$FAC[[2]] <- tmp
+#             mixsiar$mix$factors <- rev(mixsiar$mix$factors)
+#             mixsiar$mix$fac_random <- rev(mixsiar$mix$fac_random)
+#             mixsiar$mix$fac_nested <- rev(mixsiar$mix$fac_nested)
+#           }
         }
       )
       gWidgets::addSpring(hierarch_grp_all)

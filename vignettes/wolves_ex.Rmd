@@ -1,0 +1,96 @@
+---
+title: "Wolves Example"
+author: "Brian Stock"
+date: "March 7, 2016"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Wolves Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). 
+
+While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:
+
+1. *Repeatability*: You can run different models and have a record of the commands that created each one. There are many reasons you'd want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, etc.
+
+2. *Speed*: Clicking through the GUI buttons can get onerous after a while.
+
+3. *Installation ease*: Some users aren't able to install the GTK+ software that the GUI depends on (more issues on Mac). It may be worth figuring out the script version (R skills!) instead of figuring out how to get GTK+ installed.
+
+The basic MixSIAR workflow is the same using a script or the GUI:
+
+1. Load data
+    + Mixture
+    + Sources
+    + Discrimination (TDF)
+    
+2. Plot data and prior
+
+3. Choose model structure options
+
+4. Choose output options
+
+5. Run model
+
+6. Use diagnostics to decide if the model has converged
+
+7. Analyze output
+
+## Wolves Example
+
+The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
+
++ 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
++ 2 random effects (Region and Pack), where Pack is nested within Region
++ Source data as means and SDs (by Region)
++ Resid * Process error
+
+### Load MixSIAR package
+
+```
+library(MixSIAR)
+```
+
+### Load mixture data
+
+
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

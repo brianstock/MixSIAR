@@ -49,7 +49,7 @@ means, SDs, and sample size. See manual for formatting.}
    or dim(src,iso,replicate) if data_type="raw", NULL if data_type="means".
   \item \code{source$n.rep}: vector/matrix of source sample sizes, dim(src,f1)
    or dim(src) if data_type="raw", NULL if data_type="means".
-  \item \code{source$by_factor}: T/F, are the source data by a Fixed or Random Effect?
+  \item \code{source$by_factor}: NA or factor number, are the source data by a Fixed or Random Effect?
   \item \code{source$data_type}: \code{"raw"} or \code{"means"}, same as input.
   \item \code{source$conc_dep}: T/F, same as input.
 }

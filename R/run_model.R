@@ -158,7 +158,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1){
     n_array <- source$n_array
     s.data <- c("MU_array", "SIG2_array", "n_array")  # MU has the source sample means, SIG2 the source variances, n_array the sample sizes
   }
-  if(source$by_factor==TRUE){       # include source factor level data, if we have it
+  if(!is.na(source$by_factor)){       # include source factor level data, if we have it
     source_factor_levels <- source$S_factor_levels
     s.data <- c(s.data, "source_factor_levels")
   }

@@ -78,12 +78,12 @@ cat("
 ", file=filename, append=T)
 cat(paste("# source$conc_dep: ",source$conc_dep,sep=""), file=filename, append=T)
 
-if(source$data_type=="raw" && source$by_factor==FALSE){
+if(source$data_type=="raw" && is.na(source$by_factor)){
 cat("
 
 var rho[n.sources,n.iso,n.iso], src_cov[n.sources,n.iso,n.iso], src_var[n.sources,n.iso,n.iso], src_Sigma[n.sources,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)
 }
-if(source$data_type=="raw" && source$by_factor==TRUE){
+if(source$data_type=="raw" && !is.na(source$by_factor)){
 cat("
 
 var rho[n.sources,source_factor_levels,n.iso,n.iso], src_cov[n.sources,source_factor_levels,n.iso,n.iso], src_var[n.sources,source_factor_levels,n.iso,n.iso], src_Sigma[n.sources,source_factor_levels,n.iso,n.iso], Sigma.ind[N,n.iso,n.iso], mix.cov[N,n.iso,n.iso];", file=filename, append=T)
@@ -119,8 +119,8 @@ model{", file=filename, append=T)
 # ", file=filename, append=T)
 # }
 
-# fit the source means and precisions (by factor 1)
-if(source$data_type=="raw" && source$by_factor==TRUE && mix$n.iso > 1){
+# fit the source means and precisions (by factor)
+if(source$data_type=="raw" && !is.na(source$by_factor) && mix$n.iso > 1){
 cat("
   # fit source data (big for loop over sources)
   for(src in 1:n.sources){
@@ -167,7 +167,7 @@ cat("
 }
 
 # fit the source means and precisions (not by factor 1)
-if(source$data_type=="raw" && source$by_factor==FALSE && mix$n.iso > 1){
+if(source$data_type=="raw" && is.na(source$by_factor) && mix$n.iso > 1){
 cat("
   # fit source data (big for loop over sources)
   for(src in 1:n.sources){
@@ -248,7 +248,7 @@ cat("
 
 # src_mu and src_tau are used in the X[i,iso] ~ dnorm call at the very bottom of this function
 # dim(MU/SIG2_array) is either (n.src,n.iso) or (n.src,n.iso,n.fac), if source$by_factor is FALSE or TRUE, respectively.
-if(source$data_type=="means" && source$by_factor==FALSE){
+if(source$data_type=="means" && is.na(source$by_factor)){
 cat("
   for(src in 1:n.sources){
     for(iso in 1:n.iso){
@@ -260,7 +260,7 @@ cat("
 ", file=filename, append=T)
 }
 
-if(source$data_type=="means" && source$by_factor==TRUE){
+if(source$data_type=="means" && !is.na(source$by_factor)){
 cat("
   for(src in 1:n.sources){
     for(f1 in 1:source_factor_levels){
@@ -532,16 +532,26 @@ cat("
       for(i in 1:N) {
 ", file=filename, append=T)
 
-if(source$by_factor==T && source$conc_dep==T){
-  cat("
+if(!is.na(source$by_factor) && source$conc_dep==T){
+  if(source$by_factor == 1){
+    cat("
          mix.mu[iso,i] <- (inprod(src_mu[,iso,Factor.1[i]],(p.ind[i,]*conc[,iso])) + inprod(frac_mu[,iso],(p.ind[i,]*conc[,iso]))) / inprod(p.ind[i,],conc[,iso]);", file=filename, append=T)
-} else if(source$by_factor==T && source$conc_dep==F){
-  cat("
+  } else { # by_factor == 2
+    cat("
+         mix.mu[iso,i] <- (inprod(src_mu[,iso,Factor.2[i]],(p.ind[i,]*conc[,iso])) + inprod(frac_mu[,iso],(p.ind[i,]*conc[,iso]))) / inprod(p.ind[i,],conc[,iso]);", file=filename, append=T)
+  }
+} else if(!is.na(source$by_factor) && source$conc_dep==F){
+  if(source$by_factor == 1){
+    cat("
          mix.mu[iso,i] <- inprod(src_mu[,iso,Factor.1[i]],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
-} else if(source$by_factor==F && source$conc_dep==T){
+  } else { # by_factor == 2
+    cat("
+         mix.mu[iso,i] <- inprod(src_mu[,iso,Factor.2[i]],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
+  }
+} else if(is.na(source$by_factor) && source$conc_dep==T){
   cat("
          mix.mu[iso,i] <- (inprod(src_mu[,iso],(p.ind[i,]*conc[,iso])) + inprod(frac_mu[,iso],(p.ind[i,]*conc[,iso]))) / inprod(p.ind[i,],conc[,iso]);", file=filename, append=T)
-} else if(source$by_factor==F && source$conc_dep==F){
+} else if(is.na(source$by_factor) && source$conc_dep==F){
   cat("
          mix.mu[iso,i] <- inprod(src_mu[,iso],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);", file=filename, append=T)
 }
@@ -612,10 +622,15 @@ cat("
    for(iso in 1:n.iso) {
       for(i in 1:N) {
 ", file=filename, append=T)
-    if(source$by_factor){ # source$by_factor = TRUE, include process error as:
-cat("
+    if(!is.na(source$by_factor)){ # source$by_factor = TRUE, include process error as:
+      if(source$by_factor == 1){
+        cat("
          process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
-    } else {  # source$by_factor = FALSE, include process error as:
+      } else { # by factor 2
+        cat("
+         process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.2[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
+      }
+    } else {  # source$by_factor = NA, include process error as:
 cat("
          process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     }
@@ -664,10 +679,15 @@ cat("
     for(i in 1:n.iso){
       for(j in 1:n.iso){
 ", file=filename, append=T)
-    if(source$by_factor){ # source$by_factor = TRUE, include process error as:
-cat("
+    if(!is.na(source$by_factor)){ # source$by_factor = 1 or 2, include process error as:
+      if(source$by_factor == 1){
+        cat("
          mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,Factor.1[ind],i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,Factor.1[ind],i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)
-    } else {  # source$by_factor = FALSE, include process error as:
+      } else { # by factor = 2
+        cat("
+         mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,Factor.2[ind],i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,Factor.2[ind],i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)
+      }
+    } else {  # source$by_factor = NA, include process error as:
 cat("
          mix.cov[ind,i,j] <- equals(i,j)*resid.prop[i]*(inprod(src_cov[,i,j],p2[ind,]) + inprod(frac_sig2[,i],p2[ind,])) + (1-equals(i,j))*inprod(src_cov[,i,j],p2[ind,])*resid.prop.mat[i,j];", file=filename, append=T)
     }

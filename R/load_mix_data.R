@@ -1,84 +1,71 @@
-#' Load mixture data
-#'
-#' \code{load_mix_data} loads the mixture data file and names the biotracers and
-#' any Fixed, Random, or Continuous Effects.
-#'
-#' @param filename csv file with the mixture/consumer data
-#' @param iso_names vector of isotope column headings in 'filename'
-#' @param random_effects vector of random effect column headings in 'filename'
-#' @param fixed_effects vector of fixed effect column headings in 'filename',
-#' @param cont_effects vector of continuous effect column headings in 'filename'
-#'
-#' @return \code{mix}, a list including:
-#' \itemize{
-#'  \item \code{mix$data}: dataframe, raw mix/consumer data (all columns in 'filename'),
-#'  \item \code{mix$data_iso}: matrix, mix/consumer biotracer/isotope values (those
-#'        specified in 'iso_names'),
-#'  \item \code{mix$n.iso}: integer, number of biotracers/isotopes,
-#'  \item \code{mix$n.re}: integer, number of random effects,
-#'  \item \code{mix$n.ce}: integer, number of continuous effects,
-#'  \item \code{mix$FAC}: list of fixed/random effect values, each of which contains:
-#'    \itemize{
-#'      \item \code{values}: factor, values of the effect for each mix/consumer point
-#'      \item \code{levels}: numeric vector, total number of values
-#'      \item \code{labels}: character vector, names for each factor level
-#'      \item \code{lookup}: numeric vector, if 2 factors and Factor.2 is nested
-#'      within Factor.1, stores Factor.1 values for each level of Factor.2 (e.g.
-#'      Wolf Ex has 8 Packs in 3 Regions, and \code{mix$FAC[[2]]$lookup =
-#'      c(1,1,1,2,2,2,2,3)}, the Regions each Pack belongs to).
-#'      \item \code{re}: T/F, is the factor a Random Effect? (FALSE = Fixed Effect)
-#'      \item \code{name}: character, name of the factor (e.g. "Region")
-#'    }
-#'  \item \code{mix$CE}: list of length \code{n.ce}, contains the \code{cont_effects}
-#'   values centered (subtract the mean) and scaled (divide by SD)
-#'  \item \code{mix$CE_orig}: list of length \code{n.ce}, contains the original
-#'   (unscaled) \code{cont_effects} values
-#'  \item \code{mix$CE_center}: vector of length \code{n.ce}, means of each \code{cont_effects}
-#'  \item \code{mix$CE_scale}: vector of length \code{n.ce}, SD of each \code{cont_effects}
-#'  \item \code{mix$cont_effects}: vector of length \code{n.ce}, names of each \code{cont_effects}
-#'  \item \code{mix$MU_names}: vector of biotracer/iso MEAN column headings to look for
-#'  in the source and discrimination files (e.g. 'd13C' in \code{iso_names},
-#'  'Meand13C' here)
-#'  \item \code{mix$SIG_names}: vector of biotracer/iso SD column headings to look for
-#'  in the source and discrimination files (e.g. 'd13C' in \code{iso_names},
-#'  'SDd13C' here)
-#'  \item \code{mix$iso_names}: vector of isotope column headings in 'filename' (same
-#'  as input)
-#'  \item \code{mix$N}: integer, number of mix/consumer data points
-#'  \item \code{mix$n.fe}: integer, number of Fixed Effects
-#'  \item \code{mix$n.effects}: integer, number of Fixed Effects + Random Effects
-#'  \item \code{mix$factors}: vector of length \code{n.effects}, names of the
-#'  Fixed and Random Effects
-#'  \item \code{mix$fac_random}: T/F vector of length \code{n.effects} indicating
-#'  which effects are Random (= TRUE) and Fixed (= FALSE)
-#'  \item \code{mix$fac_nested}: T/F vector of length \code{n.effects} indicating
-#'  which effects are nested within the other, if any
-#'  \item \code{mix$fere}: TRUE if there are 2 Fixed Effects or 1 Fixed Effect and
-#'  1 Random Effect, FALSE otherwise. Used by \code{write_JAGS_model}.
-#' }
-#'
-#' If no biotracer/isotope columns are specified, a WARNING prompts the user to
-#'  select 2, 1, or 0.
-#'
-#' If more than 2 Fixed/Random Effects are selected, a WARNING prompts the user
-#' to select 2, 1, or 0.
-#'
-#' If more than 1 Continuous Effect is selected, a WARNING prompts the user to
-#' select 1 or 0.
-#'
-# load_mix_data_script <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
-load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_effects){
+# Brian Stock
+# January 27, 2014
+
+# Function: load_mix_data
+# Usage: mix <- load_mix_data(filename,iso_names,random_effects,cont_effects)
+# Input: filename (csv file with the mixture/consumer data),
+#         iso_names (vector of isotope column headings in 'filename'),
+#         factors (vector of categorical covariate column headings in 'filename'),
+#         fac_random (vector of length(factors), is each factor a random effect?  TRUE = random effect, FALSE = fixed effect)
+#         fac_nested (vector of length(factors), is each factor nested in the other?)
+#           ex: 2 factors Region and Pack, both random effects, Pack nested within Region
+#                 factors=c("Region","Pack")
+#                 fac_random=c(TRUE,TRUE)
+#                 fac_nested=c(FALSE,TRUE)
+#           ex: fixed effect of Region and random effect of Pack, Region and Pack independent
+#                 factors=c("Region","Pack")
+#                 fac_random=c(FALSE,TRUE)
+#                 fac_nested=c(FALSE,FALSE)
+#         cont_effects (vector of continuous effect column headings in 'filename'),
+#
+#
+# Output: mix, a list including:
+#        mix$data (X)           raw consumer data
+#        mix$data_iso (X_iso)   consumer isotope values (those specified in 'iso_names')
+#        mix$n.iso              number of isotopes
+#        mix$n.re               number of random effects
+#        mix$n.ce               number of continuous effects
+#        mix$RE                 list of random effect values (Factor.2), levels (factor2_levels), labels (factor2_levels), and lookup (factor1_lookup)
+#        mix$random_effects     vector of included random effects (e.g. "Region" "Pack")
+#        mix$CE                 list of continuous effect values (Cont.1)
+#        mix$cont_effects       vector of included continuous effects (e.g. "Secchi.Mixed")
+#        mix$MU_names           vector of mean column headings to look for in the source and discrimination files (e.g. 'Meand13C')
+#        mix$SIG_names          vector of SD column headings to look for in the source and discrimination files (e.g. 'SDd13C')
+#        mix$iso_names          vector of included isotopes (e.g. "d13C" "d15N")
+#        mix$N                  scalar, number of mixture/consumer data points
+#        mix$n.fe               number of fixed effects
+#        mix$FE                 list of fixed effect values
+#        mix$fixed_effects      vector of included fixed effects
+#        mix$n.effects          number of random + fixed effects (n.re + n.fe)
+
+# load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_effects){
+load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
   X <- read.csv(filename)         # raw consumer data
   n.iso <- length(iso_names)      # number of isotopes
   # if n.iso = 0, error
   if(n.iso == 0){
   stop(paste("*** Error: No isotopes/tracers selected. Please select 1 or more
         isotopes/tracers, and then load your consumer/mixture data again. ***",sep=""))}
+  if(length(fac_random) < length(factors)){
+  stop(paste("*** Error: You have specified factors to include without saying
+        if they are random or fixed effects (length of fac_random should
+        match length of factors). Please check your load_mix_data line and try again. ***",sep=""))}
+  if(length(factors)==2 && length(fac_nested)!=2){
+  stop(paste("*** Error: You have specified factors to include without saying
+        if they are nested or independent (length of fac_nested should
+        match length of factors). Please check your load_mix_data line and try again. ***",sep=""))}
+  if(length(factors)==2 & !is.na(fac_nested[1])){
+    if(fac_nested[1]==TRUE && fac_nested[2]==TRUE){
+      stop(paste("*** Error: Both factors cannot be nested within each other. Please check
+            the fac_nested argument in your load_mix_data line and try again. ***",sep=""))}
+  }
 
-  n.fe <- length(fixed_effects)   # number of fixed effects
-  n.re <- length(random_effects)  # number of random effects
-  n.effects <- n.fe + n.re
+  n.effects <- length(factors)
+  n.re <- sum(fac_random)  # number of random effects
+  n.fe <- n.effects-n.re   # number of fixed effects
   fere <- ifelse(n.effects==2 & n.re < 2,TRUE,FALSE) # either 2 FE or 1FE + 1RE
+  if(n.effects==1) fac_nested <- FALSE
+
   # if n.effects > 2, error
   if(n.effects > 2){
   stop(paste("*** Error: More than 2 random/fixed effects selected (MixSIAR can only
@@ -99,48 +86,46 @@ load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_e
   SIG_names <- paste("SD",iso_names,sep="")   # vector of iso_names to look for SDs in the source and discrimination files (e.g. 'SDd13C')
 
   FAC <- replicate(n.effects, NULL)     # FE is a list of length=n.fe that will contain the fixed_effects values, levels, and labels
-  factors <- c(random_effects,fixed_effects)
-  fac_random <- rep(TRUE,n.effects)
-  fac_nested <- rep(NA,n.effects)
   if(n.effects > 0){
     for(i in 1:n.effects){
-        fac_values <- X[,factors[i]]
-        fac_name <- factors[i]
-        fac_levels <- length(unique(fac_values))
-        if(is.numeric(fac_values)){ # if the factor was input as numbers, add the column name to each number (e.g. "Region 1", "Region 2", "Region 3")
-          fac_labels <- paste(rep(factors[i],fac_levels),levels(factor(fac_values)),sep=" ")
-        } else {  # if factor was input as text names, save them as is
-          fac_labels <- levels(factor(fac_values))
-        }
-      if(i > n.re) fac_random[i] <- FALSE
+      re <- fac_random[i] # is the ith factor a random effect (TRUE) or fixed effect (FALSE)?
+      fac_values <- X[,factors[i]]
+      fac_name <- factors[i]
+      fac_levels <- length(unique(fac_values))
+      if(is.numeric(fac_values)){ # if the factor was input as numbers, add the column name to each number (e.g. "Region 1", "Region 2", "Region 3")
+        fac_labels <- paste(rep(factors[i],fac_levels),levels(factor(fac_values)),sep=" ")
+      } else {  # if factor was input as text names, save them as is
+        fac_labels <- levels(factor(fac_values))
+      }
       fac_values <- as.numeric(factor(fac_values))
       FAC[[i]] <- list(values = fac_values,
                       levels = fac_levels,
                       labels = fac_labels,
                       lookup = NULL,
-                      re = fac_random[i],
+                      re = re,
                       name = fac_name)
     }
+    if(n.re==2 & !is.na(fac_nested[1])){ # Only script version here. GUI sets nested = NA because need additional question answered
+      if(n.re==2 & fac_nested[2]){
+        for(lev in 1:FAC[[2]]$levels){
+          FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
+        }
+      }
+      if(n.re==2 & fac_nested[1]){
+        for(lev in 1:FAC[[1]]$levels){
+          FAC[[1]]$lookup[lev] <- FAC[[2]]$values[which(FAC[[1]]$values==lev)][1]
+        }
+      }
+    }
+    if(n.fe==1 & n.re==1 & fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
+      tmp <- FAC[[1]]
+      FAC[[1]] <- FAC[[2]]
+      FAC[[2]] <- tmp
+      factors <- rev(factors)
+      fac_random <- rev(fac_random)
+      fac_nested <- rev(fac_nested)
+    }
 
-    # Moved to the Hierarchical question box, lines 184-200 in build_mix_win()
-    # if(n.re==2 & fac_nested[2]){
-    #   for(lev in 1:FAC[[2]]$levels){
-    #     FAC[[2]]$lookup[lev] <- FAC[[1]]$values[which(FAC[[2]]$values==lev)][1]
-    #   }
-    # }
-    # if(n.re==2 & fac_nested[1]){
-    #   for(lev in 1:FAC[[1]]$levels){
-    #     FAC[[1]]$lookup[lev] <- FAC[[2]]$values[which(FAC[[1]]$values==lev)][1]
-    #   }
-    # }
-    # if(n.fe==1 & n.re==1 & fac_random[1]){ # make fac2 the random effect, fac1 the fixed effect
-    #   tmp <- FAC[[1]]
-    #   FAC[[1]] <- FAC[[2]]
-    #   FAC[[2]] <- tmp
-    #   factors <- rev(factors)
-    #   fac_random <- rev(fac_random)
-    #   fac_nested <- rev(fac_nested)
-    # }
   } # end random/fixed effects loop
 
   CE_orig <- replicate(n.ce, NULL)
@@ -152,7 +137,7 @@ load_mix_data <- function(filename,iso_names,random_effects,fixed_effects,cont_e
       CE_orig[[i]] <- X[,cont_effects[i]]  # Get the values for CE[[1]] from X (raw consumer file)
       CE[[i]] <- scale(X[,cont_effects[i]],center=TRUE,scale=TRUE)
       CE_center[i] <- attributes(CE[[i]])$"scaled:center"
-      CE_scale[i] <- attributes(CE[[i]])$"scaled:scale"
+      CE_scale[i] <- attributes(CE[[i]])$"scaled:center"
     }
   } # end continuous effects loop
 
