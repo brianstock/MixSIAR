@@ -19,7 +19,7 @@
 #'
 #' @seealso Francis et al. 2011
 plot_continuous_var <- function(jags.1, mix, source, output_options){
-attach.jags(jags.1)
+R2jags::attach.jags(jags.1)
 n.sources <- source$n.sources
 source_names <- source$source_names
 
@@ -70,14 +70,14 @@ for(ce in 1:mix$n.ce){
   # Plot of Diet vs. Cont effect
   # Page 370 in Francis et al (2011)
   dev.new()
-  print(ggplot(data=df,aes(x=x,y=median)) +
-           geom_line(aes(x=x, y=median,group=source,colour=source),size=1.5) +
+  print(ggplot2::ggplot(data=df,ggplot2::aes(x=x,y=median)) +
+          ggplot2::geom_line(aes(x=x, y=median,group=source,colour=source),size=1.5) +
            # geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) +
-           ylab("Proportion of Diet") +
-           xlab(label) +
-           ylim(0,1) +
-           theme_bw() +
-           theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank()))
+          ggplot2::ylab("Proportion of Diet") +
+          ggplot2::xlab(label) +
+          ggplot2::ylim(0,1) +
+          ggplot2::theme_bw() +
+          ggplot2::theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=ggplot2::element_blank()))
 
   # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -101,13 +101,13 @@ for(ce in 1:mix$n.ce){
     df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
   }
   my.title <- paste("Diet of min(",label,") individual",sep="")
-  print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-    geom_density(alpha=.3, aes(y=..scaled..)) +
-    theme_bw() +
-    xlab("Proportion of Diet") +
-    ylab("Scaled Posterior Density") +
-    labs(title = my.title) +
-    theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+  print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
+          ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+          ggplot2::theme_bw() +
+          ggplot2::xlab("Proportion of Diet") +
+          ggplot2::ylab("Scaled Posterior Density") +
+          ggplot2::labs(title = my.title) +
+          ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
   # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -130,13 +130,13 @@ for(ce in 1:mix$n.ce){
     df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
   }
   my.title <- paste("Diet of median(",label,") individual",sep="")
-  print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-    geom_density(alpha=.3, aes(y=..scaled..)) +
-    theme_bw() +
-    xlab("Proportion of Diet") +
-    ylab("Scaled Posterior Density") +
-    labs(title = my.title) +
-    theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+  print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
+          ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+          ggplot2::theme_bw() +
+          ggplot2::xlab("Proportion of Diet") +
+          ggplot2::ylab("Scaled Posterior Density") +
+          ggplot2::labs(title = my.title) +
+          ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
   # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -157,13 +157,13 @@ for(ce in 1:mix$n.ce){
     df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
   }
   my.title <- paste("Diet of max(",label,") individual",sep="")
-  print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-    geom_density(alpha=.3, aes(y=..scaled..)) +
-    theme_bw() +
-    xlab("Proportion of Diet") +
-    ylab("Scaled Posterior Density") +
-    labs(title = my.title) +
-    theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+  print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
+          ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+          ggplot2::theme_bw() +
+          ggplot2::xlab("Proportion of Diet") +
+          ggplot2::ylab("Scaled Posterior Density") +
+          ggplot2::labs(title = my.title) +
+          ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
   # Save the plot to file
   if(output_options[[4]]){ # svalue(plot_post_save_pdf)

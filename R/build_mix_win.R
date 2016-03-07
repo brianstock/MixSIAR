@@ -30,16 +30,16 @@
 #' @seealso \code{\link{load_mix_data}}, which is run when the "Load MIX data"
 #'          window is closed by clicking the "I'm finished" button.
 build_mix_win <- function(){
-mix_win <- gwindow("Read in your MIXTURE data",visible=FALSE) # set visible=F here so that it shows up all at once when the function is finished building the window (visible=T at end of function)
-mix_grp_all <- ggroup(horizontal=F, container=mix_win)
-mix_grp_cons <- ggroup(horizontal=T, container=mix_grp_all)
-mix_btn_cons <- gbutton(
+mix_win <- gWidgets::gwindow("Read in your MIXTURE data",visible=FALSE) # set visible=F here so that it shows up all at once when the function is finished building the window (visible=T at end of function)
+mix_grp_all <- gWidgets::ggroup(horizontal=F, container=mix_win)
+mix_grp_cons <- gWidgets::ggroup(horizontal=T, container=mix_grp_all)
+mix_btn_cons <- gWidgets::gbutton(
   text		= "Load mixture data file",
   container	= mix_grp_cons,
   expand = T,
   handler	= function(h, ...)
   {
-    gfile(
+    gWidgets::gfile(
       text	= "Load mixture data file",
       type	= "open",
       action= "read.csv",
@@ -51,14 +51,14 @@ mix_btn_cons <- gbutton(
           the_data <- do.call(h$action, list(h$file, header=T))
           assign(data_frame_name, the_data, envir = mixsiar)
           # Add a real check for X
-          add(mix_grp_cons,gimage("check.png"))
-          svalue(mix_status_bar) <- "Consumer data file successfully loaded"
+          gWidgets::add(mix_grp_cons,gWidgets::gimage(system.file("extdata", "check.png", package = "MixSIAR")))
+          gWidgets::svalue(mix_status_bar) <- "Consumer data file successfully loaded"
           tbl_data_col[] <- colnames(mixsiar$X)
           mix_filename <- h$file; assign("mix_filename",mix_filename,envir=mixsiar)
         },
         error = function(e){
-          svalue(mix_status_bar) <- "Could not load data"
-          add(mix_grp_cons,gimage("red x.png"))
+          gWidgets::svalue(mix_status_bar) <- "Could not load data"
+          gWidgets::add(mix_grp_cons,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
         }
         )
       }
@@ -66,101 +66,101 @@ mix_btn_cons <- gbutton(
   }
 )
 
-grp_middle <- ggroup(container=mix_grp_all, horizontal=T, expand=T)
-grp_data_col <- gframe(text="Data Columns", container=grp_middle, expand=T)
-tbl_data_col <- gtable(character(0), container=grp_data_col, multiple=T, expand=T)
+grp_middle <- gWidgets::ggroup(container=mix_grp_all, horizontal=T, expand=T)
+grp_data_col <- gWidgets::gframe(text="Data Columns", container=grp_middle, expand=T)
+tbl_data_col <- gWidgets::gtable(character(0), container=grp_data_col, multiple=T, expand=T)
 
-grp_right <- ggroup(container=grp_middle, horizontal=F, expand=T)
-grp_iso <- gframe(text="Isotopes", container=grp_right, horizontal=T, expand=T)
-grp_iso_btns <- ggroup(container=grp_iso, horizontal=F)
-add_iso <- gbutton(
+grp_right <- gWidgets::ggroup(container=grp_middle, horizontal=F, expand=T)
+grp_iso <- gWidgets::gframe(text="Isotopes", container=grp_right, horizontal=T, expand=T)
+grp_iso_btns <- gWidgets::ggroup(container=grp_iso, horizontal=F)
+add_iso <- gWidgets::gbutton(
               text = ">>",
               container = grp_iso_btns,
               handler = function(h,...){
-                tbl_iso[] <- c(tbl_iso[], svalue(tbl_data_col))
-                tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != svalue(tbl_data_col))]
+                tbl_iso[] <- c(tbl_iso[], gWidgets::svalue(tbl_data_col))
+                tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != gWidgets::svalue(tbl_data_col))]
               }
             )
-remove_iso <- gbutton(
+remove_iso <- gWidgets::gbutton(
                 text = "<<",
                 container = grp_iso_btns,
                 handler = function(h,...){
-                  tbl_data_col[] <- c(tbl_data_col[], svalue(tbl_iso))
-                  tbl_iso[] <- tbl_iso[which(tbl_iso[] != svalue(tbl_iso))]
+                  tbl_data_col[] <- c(tbl_data_col[], gWidgets::svalue(tbl_iso))
+                  tbl_iso[] <- tbl_iso[which(tbl_iso[] != gWidgets::svalue(tbl_iso))]
                 }
               )
-tbl_iso <- gtable(character(0), container=grp_iso, multiple=T, expand=T)
+tbl_iso <- gWidgets::gtable(character(0), container=grp_iso, multiple=T, expand=T)
 
-grp_re <- gframe(text="Random Effects", container=grp_right, horizontal=T, expand=T)
-grp_re_btns <- ggroup(container=grp_re, horizontal=F)
-add_re <- gbutton(
+grp_re <- gWidgets::gframe(text="Random Effects", container=grp_right, horizontal=T, expand=T)
+grp_re_btns <- gWidgets::ggroup(container=grp_re, horizontal=F)
+add_re <- gWidgets::gbutton(
                 text = ">>",
                 container = grp_re_btns,
                 handler = function(h,...){
-                  tbl_re[] <- c(tbl_re[], svalue(tbl_data_col))
-                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != svalue(tbl_data_col))]
+                  tbl_re[] <- c(tbl_re[], gWidgets::svalue(tbl_data_col))
+                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != gWidgets::svalue(tbl_data_col))]
                 }
               )
-remove_re <- gbutton(
+remove_re <- gWidgets::gbutton(
                   text = "<<",
                   container = grp_re_btns,
                   handler = function(h,...){
-                    tbl_data_col[] <- c(tbl_data_col[], svalue(tbl_re))
-                    tbl_re[] <- tbl_re[which(tbl_re[] != svalue(tbl_re))]
+                    tbl_data_col[] <- c(tbl_data_col[], gWidgets::svalue(tbl_re))
+                    tbl_re[] <- tbl_re[which(tbl_re[] != gWidgets::svalue(tbl_re))]
                   }
                 )
-tbl_re <- gtable(character(0), container=grp_re, multiple=T, expand=T)
+tbl_re <- gWidgets::gtable(character(0), container=grp_re, multiple=T, expand=T)
 
-grp_fe <- gframe(text="Fixed Effects", container=grp_right, horizontal=T, expand=T)
-grp_fe_btns <- ggroup(container=grp_fe, horizontal=F)
-add_fe <- gbutton(
+grp_fe <- gWidgets::gframe(text="Fixed Effects", container=grp_right, horizontal=T, expand=T)
+grp_fe_btns <- gWidgets::ggroup(container=grp_fe, horizontal=F)
+add_fe <- gWidgets::gbutton(
                 text = ">>",
                 container = grp_fe_btns,
                 handler = function(h,...){
-                  tbl_fe[] <- c(tbl_fe[], svalue(tbl_data_col))
-                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != svalue(tbl_data_col))]
+                  tbl_fe[] <- c(tbl_fe[], gWidgets::svalue(tbl_data_col))
+                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != gWidgets::svalue(tbl_data_col))]
                 }
               )
-remove_fe <- gbutton(
+remove_fe <- gWidgets::gbutton(
                   text = "<<",
                   container = grp_fe_btns,
                   handler = function(h,...){
-                    tbl_data_col[] <- c(tbl_data_col[], svalue(tbl_fe))
-                    tbl_fe[] <- tbl_fe[which(tbl_fe[] != svalue(tbl_fe))]
+                    tbl_data_col[] <- c(tbl_data_col[], gWidgets::svalue(tbl_fe))
+                    tbl_fe[] <- tbl_fe[which(tbl_fe[] != gWidgets::svalue(tbl_fe))]
                   }
                 )
-tbl_fe <- gtable(character(0), container=grp_fe, multiple=T, expand=T)
+tbl_fe <- gWidgets::gtable(character(0), container=grp_fe, multiple=T, expand=T)
 
-grp_cont <- gframe(text="Continuous Effects", container=grp_right, horizontal=T, expand=T)
-grp_cont_btns <- ggroup(container=grp_cont, horizontal=F)
-add_cont <- gbutton(
+grp_cont <- gWidgets::gframe(text="Continuous Effects", container=grp_right, horizontal=T, expand=T)
+grp_cont_btns <- gWidgets::ggroup(container=grp_cont, horizontal=F)
+add_cont <- gWidgets::gbutton(
                 text = ">>",
                 container = grp_cont_btns,
                 handler = function(h,...){
-                  tbl_cont[] <- c(tbl_cont[], svalue(tbl_data_col))
-                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != svalue(tbl_data_col))]
+                  tbl_cont[] <- c(tbl_cont[], gWidgets::svalue(tbl_data_col))
+                  tbl_data_col[] <- tbl_data_col[which(tbl_data_col[] != gWidgets::svalue(tbl_data_col))]
                 }
               )
-remove_cont <- gbutton(
+remove_cont <- gWidgets::gbutton(
                   text = "<<",
                   container = grp_cont_btns,
                   handler = function(h,...){
-                    tbl_data_col[] <- c(tbl_data_col[], svalue(tbl_cont))
-                    tbl_cont[] <- tbl_cont[which(tbl_cont[] != svalue(tbl_cont))]
+                    tbl_data_col[] <- c(tbl_data_col[], gWidgets::svalue(tbl_cont))
+                    tbl_cont[] <- tbl_cont[which(tbl_cont[] != gWidgets::svalue(tbl_cont))]
                   }
                 )
-tbl_cont <- gtable(character(0), container=grp_cont, multiple=T, expand=T)
+tbl_cont <- gWidgets::gtable(character(0), container=grp_cont, multiple=T, expand=T)
 
-grp_bottom <- ggroup(container=mix_grp_all, horizontal=F)
-mix_status_bar <- gstatusbar("", progress.bar="gui", container=grp_bottom, expand=T)
+grp_bottom <- gWidgets::ggroup(container=mix_grp_all, horizontal=F)
+mix_status_bar <- gWidgets::gstatusbar("", progress.bar="gui", container=grp_bottom, expand=T)
 
-grp_close <- ggroup(horizontal=T, container=mix_grp_all)
-btn_close <- gbutton(
+grp_close <- gWidgets::ggroup(horizontal=T, container=mix_grp_all)
+btn_close <- gWidgets::gbutton(
   text		= "I'm finished",
   container	= grp_close,
   expand = T,
   handler	= function(h, ...){
-    visible(mix_win) <- FALSE # hide the "Read in your CONSUMER data" window
+    gWidgets::visible(mix_win) <- FALSE # hide the "Read in your CONSUMER data" window
 
     # Read in the selected Isotopes, Random Effects, and Continuous Effects
     iso_names <- tbl_iso[]
@@ -180,24 +180,24 @@ btn_close <- gbutton(
     mixsiar$mix$fac_nested <- nested
     assign("nested", nested, envir = mixsiar)
     if(mixsiar$mix$n.effects==2){
-      hierarch_win <- gwindow("QUESTION: Hierarchical/Nested Data?", visible=T)
-      hierarch_grp_all <- ggroup(horizontal=F, cont=hierarch_win)
-      hierarch_msg1 <- glabel(paste("You have 2 random/fixed effects: ",mix$FAC[[1]]$name," and ",mix$FAC[[2]]$name,sep=""),cont=hierarch_grp_all)
-      hierarch_msg2 <- glabel("Should MixSIAR run a hierarchical analysis?",cont=hierarch_grp_all)
+      hierarch_win <- gWidgets::gwindow("QUESTION: Hierarchical/Nested Data?", visible=T)
+      hierarch_grp_all <- gWidgets::ggroup(horizontal=F, cont=hierarch_win)
+      hierarch_msg1 <- gWidgets::glabel(paste("You have 2 random/fixed effects: ",mix$FAC[[1]]$name," and ",mix$FAC[[2]]$name,sep=""),cont=hierarch_grp_all)
+      hierarch_msg2 <- gWidgets::glabel("Should MixSIAR run a hierarchical analysis?",cont=hierarch_grp_all)
       h_yes21 <- paste("Yes (",mix$FAC[[2]]$name," nested within ",mix$FAC[[1]]$name,")",sep="")
       h_yes12 <- paste("Yes (",mix$FAC[[1]]$name," nested within ",mix$FAC[[2]]$name,")",sep="")
       h_no <- paste("No (",mix$FAC[[1]]$name,", ",mix$FAC[[2]]$name," independent)",sep="")
-      hierarch_rad <- gradio(c(h_yes21,h_yes12,h_no),cont=hierarch_grp_all,horizontal=F)
-      svalue(hierarch_rad) <- h_no
-      btn_done_hierarch <- gbutton(
+      hierarch_rad <- gWidgets::gradio(c(h_yes21,h_yes12,h_no),cont=hierarch_grp_all,horizontal=F)
+      gWidgets::svalue(hierarch_rad) <- h_no
+      btn_done_hierarch <- gWidgets::gbutton(
         text    = "I'm finished",
         container = hierarch_grp_all,
         expand = F,
         handler = function(h, ...){
           nested <- mixsiar$nested
-          if(svalue(hierarch_rad)==h_yes21) nested <- c(FALSE,TRUE)
-          if(svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)
-          visible(hierarch_win) <- FALSE
+          if(gWidgets::svalue(hierarch_rad)==h_yes21) nested <- c(FALSE,TRUE)
+          if(gWidgets::svalue(hierarch_rad)==h_yes12) nested <- c(TRUE,FALSE)
+          gWidgets::visible(hierarch_win) <- FALSE
           mixsiar$mix$fac_nested <- nested
 
           if(mixsiar$mix$n.re==2 & mixsiar$mix$fac_nested[2]){
@@ -221,20 +221,20 @@ btn_close <- gbutton(
 
         }
       )
-      addSpring(hierarch_grp_all)
+      gWidgets::addSpring(hierarch_grp_all)
     }
 
     # Need to make this check more robust
     test <- get("mix",envir=mixsiar)
     if(exists("test")){
-      add(mixsiar$grp_cons,gimage("check.png"))
-      svalue(mixsiar$status_bar) <- "Mixture data successfully loaded"
+      gWidgets::add(mixsiar$grp_cons,gWidgets::gimage(system.file("extdata", "check.png", package = "MixSIAR")))
+      gWidgets::svalue(mixsiar$status_bar) <- "Mixture data successfully loaded"
     } else {
-        svalue(mixsiar$status_bar) <- "Could not load mixture data"
-        add(mixsiar$grp_cons,gimage("red x.png"))
+      gWidgets::svalue(mixsiar$status_bar) <- "Could not load mixture data"
+      gWidgets::add(mixsiar$grp_cons,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
     }
   } # end "I'm finished" button handler/actions
 ) # end "I'm finished" button
-visible(mix_win) <- TRUE
+gWidgets::visible(mix_win) <- TRUE
 } # end function build_mix_win
 

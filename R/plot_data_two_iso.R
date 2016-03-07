@@ -90,121 +90,121 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
     shapes <- c(16,17,15,3,7,8,1,6,35,36,37,4,18,14,11,9,13)
     shapes <- shapes[1:mix$FAC[[2]]$levels]  # 1:factor2_levels
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
-        geom_point(aes(colour = factor(mix$FAC[[1]]$values), # Factor.1
+      g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values), # Factor.1
                        shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +   # Factor.2
-        scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
+        ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +  # factor1_names
-        scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
-        geom_pointrange(data=df_sources,
-                        aes(ymin=ymin,ymax=ymax,colour=scolour),
+        ggplot2::scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
+        ggplot2::geom_pointrange(data=df_sources,
+                        ggplot2::aes(ymin=ymin,ymax=ymax,colour=scolour),
                         size=1,
                         linetype=source_linetype,
                         show_guide=F) +
-        geom_errorbarh(data=df_sources,
-                       aes(xmin=xmin,xmax=xmax,colour=scolour),
+        ggplot2::geom_errorbarh(data=df_sources,
+                       ggplot2::aes(xmin=xmin,xmax=xmax,colour=scolour),
                        size=1,
                        height=0,
                        linetype=source_linetype,
                        show_guide=F) +
-        geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
-        ylab(y_label) +
-        xlab(x_label) +
-        theme_bw() +
-        theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+        ggplot2::ylab(y_label) +
+        ggplot2::xlab(x_label) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=ggplot2::element_blank())
       print(g)
     } else { # sources not by factor (make the sources black)
-      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
-        geom_point(aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
+      g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
                        shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +  # Factor.2
-        scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
+        ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +    # factor1_names
-        scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
-        geom_pointrange(data=df_sources,
-                        aes(ymin=ymin,ymax=ymax),
+        ggplot2::scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
+        ggplot2::geom_pointrange(data=df_sources,
+                        ggplot2::aes(ymin=ymin,ymax=ymax),
                         size=1,
                         linetype=source_linetype,
                         show_guide=F) +
-        geom_errorbarh(data=df_sources,
-                       aes(xmin=xmin,xmax=xmax),
+        ggplot2::geom_errorbarh(data=df_sources,
+                       ggplot2::aes(xmin=xmin,xmax=xmax),
                        size=1,
                        height=0,
                        linetype=source_linetype,
                        show_guide=F) +
-        geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
-        ylab(y_label) +
-        xlab(x_label) +
-        theme_bw() +
-        theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+        ggplot2::ylab(y_label) +
+        ggplot2::xlab(x_label) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=ggplot2::element_blank())
       print(g)
     }
 
   } # end n.effects==2
   if(mix$n.effects==1){
     if(source$by_factor){ # sources by factor, want to color the sources by factor1
-      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
-        geom_point(aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
-        scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),    # Factor.1
+      g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
+        ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),    # Factor.1
                               labels = mix$FAC[[1]]$labels) +  # factor1_names
-        geom_pointrange(data=df_sources,
-                        aes(ymin=ymin,ymax=ymax,colour=scolour),
+        ggplot2::geom_pointrange(data=df_sources,
+                        ggplot2::aes(ymin=ymin,ymax=ymax,colour=scolour),
                         size=1,
                         linetype=source_linetype,
                         show_guide=F) +
-        geom_errorbarh(data=df_sources,
-                       aes(xmin=xmin,xmax=xmax,colour=scolour),
+        ggplot2::geom_errorbarh(data=df_sources,
+                       ggplot2::aes(xmin=xmin,xmax=xmax,colour=scolour),
                        size=1,
                        height=0,
                        linetype=source_linetype,
                        show_guide=F) +
-        geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
-        ylab(y_label) +
-        xlab(x_label) +
-        theme_bw() +
-        theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+        ggplot2::ylab(y_label) +
+        ggplot2::xlab(x_label) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=ggplot2::element_blank())
       print(g)
     } else { # sources not by factor (make the sources black)
-      g <- ggplot(data = df,aes(x = x,y = y),environment=.e) +
-        geom_point(aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
-        scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
+      g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
+        ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +    # factor1_names
-        geom_pointrange(data=df_sources,
-                        aes(ymin=ymin,ymax=ymax),
+        ggplot2::geom_pointrange(data=df_sources,
+                        ggplot2::aes(ymin=ymin,ymax=ymax),
                         size=1,
                         linetype=source_linetype,
                         show_guide=F) +
-        geom_errorbarh(data=df_sources,
-                       aes(xmin=xmin,xmax=xmax),
+        ggplot2::geom_errorbarh(data=df_sources,
+                       ggplot2::aes(xmin=xmin,xmax=xmax),
                        size=1,
                        height=0,
                        linetype=source_linetype,
                        show_guide=F) +
-        geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
-        ylab(y_label) +
-        xlab(x_label) +
-        theme_bw() +
-        theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=element_blank())
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+        ggplot2::ylab(y_label) +
+        ggplot2::xlab(x_label) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position=c(0,1), legend.justification=c(0,1), legend.title=ggplot2::element_blank())
       print(g)
     }
   } # end n.effects==1
   if(mix$n.effects==0){
-    g <- ggplot(data = df,aes(x = x,y = y)) +
-      geom_point() +
-      geom_pointrange(data=df_sources,
-                      aes(ymin=ymin,ymax=ymax),
+    g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y)) +
+      ggplot2::geom_point() +
+      ggplot2::geom_pointrange(data=df_sources,
+                      ggplot2::aes(ymin=ymin,ymax=ymax),
                       size=1,
                       linetype=source_linetype,
                       show_guide=F) +
-      geom_errorbarh(data=df_sources,
-                     aes(xmin=xmin,xmax=xmax),
+      ggplot2::geom_errorbarh(data=df_sources,
+                     ggplot2::aes(xmin=xmin,xmax=xmax),
                      size=1,
                      height=0,
                      linetype=source_linetype,
                      show_guide=F) +
-      geom_text(data=source.labels, aes(x=x,y=y,label=label), show_guide=F) +
-      ylab(y_label) +
-      xlab(x_label) +
-      theme_bw()
+      ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+      ggplot2::ylab(y_label) +
+      ggplot2::xlab(x_label) +
+      ggplot2::theme_bw()
     print(g)
   }
   if(plot_save_pdf==TRUE){

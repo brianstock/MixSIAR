@@ -69,8 +69,8 @@ if(n.re==2){
 }
 n.sources <- source$n.sources
 source_names <- source$source_names
-attach.jags(jags.1)
-jags1.mcmc <- as.mcmc(jags.1)
+R2jags::attach.jags(jags.1)
+jags1.mcmc <- coda::as.mcmc(jags.1)
 n.draws <- length(p.global[,1])
 
 # Post-processing for 2 FE or 1FE + 1RE
@@ -113,7 +113,7 @@ if(mix$fere){
 if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   # XY plot for p.global
   dev.new()
-  print(lattice::xyplot(as.mcmc(p.global),strip=strip.custom(factor.levels=source_names)))
+  print(lattice::xyplot(coda::as.mcmc(p.global),strip=lattice::strip.custom(factor.levels=source_names)))
 
   # Save the xy p.global plot to file
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
@@ -135,26 +135,26 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       }
     }
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
-    if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
     if(n.re==1){
       if(mix$FAC[[1]]$re){
-        print(lattice::xyplot(as.mcmc(cbind(fac1.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       } else { # FAC 2 is the 1 random effect
-        print(lattice::xyplot(as.mcmc(cbind(fac2.sig,ind.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       }
     }
-    if(n.re==0) print(lattice::xyplot(as.mcmc(ind.sig),strip=strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==0) print(lattice::xyplot(coda::as.mcmc(ind.sig),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
       dev.new()
       traceplot_labels <- rep("",length(random_effects))
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
-      if(n.re==2) print(lattice::xyplot(as.mcmc(cbind(fac1.sig,fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       if(n.re==1){
         if(mix$FAC[[1]]$re){
-          print(lattice::xyplot(as.mcmc(cbind(fac1.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         } else { # FAC 2 is the 1 random effect
-          print(lattice::xyplot(as.mcmc(cbind(fac2.sig)),strip=strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         }
       }
     }
@@ -200,8 +200,8 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
   # Purpose: replaces scatterplots with colored contour plots
   panel.contour <- function(x,y){
     n.lines <- 4  # number of contour lines
-    my.cols <- rev(brewer.pal(n.lines, "RdYlBu"))   # gets some pretty colors
-    z <- kde2d(x,y)   # calculates the 2D kernel density that the contour function needs
+    my.cols <- rev(RColorBrewer::brewer.pal(n.lines, "RdYlBu"))   # gets some pretty colors
+    z <- MASS::kde2d(x,y)   # calculates the 2D kernel density that the contour function needs
     contour(z, drawlabels=FALSE, nlevels=n.lines, col=my.cols, add=TRUE)
   }
   pairs(p.global, labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
@@ -231,14 +231,14 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       df$sources[seq(1+n.draws*(i-1),i*n.draws)] <- rep(source_names[i],n.draws)  # fill in the source names
     }
     my.title <- "Overall Population"
-    print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-      geom_density(alpha=.3, aes(y=..scaled..)) +
-      theme_bw() +
-      xlab("Proportion of Diet") +
-      ylab("Scaled Posterior Density") +
-      xlim(0,1) +
-      labs(title = my.title) +
-      theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+    print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
+            ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+            ggplot2::theme_bw() +
+            ggplot2::xlab("Proportion of Diet") +
+            ggplot2::ylab("Scaled Posterior Density") +
+            ggplot2::xlim(0,1) +
+            ggplot2::labs(title = my.title) +
+            ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
     # Save the plot to file
     if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -261,15 +261,15 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
         df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
       }
       my.title <- mix$FAC[[1]]$labels[f1]  # formerly factor1_names
-      print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
+      print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
 #        geom_density(alpha=.3) +
-        geom_density(alpha=.3, aes(y=..scaled..)) +
-        xlim(0,1) +
-        theme_bw() +
-        xlab("Proportion of Diet") +
-        ylab("Scaled Posterior Density") +
-        labs(title = my.title) +
-        theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+  ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+  ggplot2::xlim(0,1) +
+  ggplot2::theme_bw() +
+  ggplot2::xlab("Proportion of Diet") +
+  ggplot2::ylab("Scaled Posterior Density") +
+  ggplot2::labs(title = my.title) +
+  ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
       # Save the plot to file
       if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -293,15 +293,15 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
           }
           #my.title <- paste(factor1_names[f1],", ", random_effects[2]," ",f2,sep="") # plot title (ex. "Region 1, Pack 3")
           my.title <- mix$FAC[[2]]$labels[f2] # formerly factor2_names
-          print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
+          print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
 #             geom_density(alpha=.3) +
-            geom_density(alpha=.3, aes(y=..scaled..)) +
-            theme_bw() +
-            xlim(0,1) +
-            xlab("Proportion of Diet") +
-            ylab("Scaled Posterior Density") +
-            labs(title = my.title) +
-            theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+  ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+  ggplot2::theme_bw() +
+  ggplot2::xlim(0,1) +
+  ggplot2::xlab("Proportion of Diet") +
+  ggplot2::ylab("Scaled Posterior Density") +
+  ggplot2::labs(title = my.title) +
+  ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
           # Save the plot as a pdf file
           if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -327,14 +327,14 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
           df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
         }
         my.title <- paste(mix$FAC[[1]]$labels[f1],mix$FAC[[2]]$labels[f2],sep=" ") # formerly factor2_names
-        print(ggplot(df, aes(x=x, fill=sources, colour=sources)) +
-          geom_density(alpha=.3, aes(y=..scaled..)) +
-          theme_bw() +
-          xlim(0,1) +
-          xlab("Proportion of Diet") +
-          ylab("Scaled Posterior Density") +
-          labs(title = my.title) +
-          theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))
+        print(ggplot2::ggplot(df, ggplot2::aes(x=x, fill=sources, colour=sources)) +
+                ggplot2::geom_density(alpha=.3, ggplot2::aes(y=..scaled..)) +
+                ggplot2::theme_bw() +
+                ggplot2::xlim(0,1) +
+                ggplot2::xlab("Proportion of Diet") +
+                ggplot2::ylab("Scaled Posterior Density") +
+                ggplot2::labs(title = my.title) +
+                ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))
 
         # Save the plot as a pdf file
         if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -374,13 +374,13 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     }
     df2 <- data.frame(level=level, x=x) # create the SD plot data frame
 
-    print(ggplot(df2, aes(x=x, fill=level, colour=level)) +
+    print(ggplot2::ggplot(df2, ggplot2::aes(x=x, fill=level, colour=level)) +
 #        geom_density(alpha=.3) +
-      geom_density(alpha=.3) +
-      theme_bw() +
-      xlab(expression(sigma)) +
-      ylab("Posterior Density") +
-      theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=element_blank()))   # + xlim(0,2)
+  ggplot2::geom_density(alpha=.3) +
+  ggplot2::theme_bw() +
+  ggplot2::xlab(expression(sigma)) +
+  ggplot2::ylab("Posterior Density") +
+  ggplot2::theme(legend.position=c(1,1), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))   # + xlim(0,2)
 
     # Save the plot to file
     if(output_options[[4]]){ # svalue(plot_post_save_pdf)
@@ -416,9 +416,9 @@ if(mix$n.fe == 0){
   rownames(stats) <- global_labels
 }
 if(n.effects > 0 & mix$n.fe != 2){
-  fac1_quants <- as.matrix(cast(melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac1_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac1_means <- cbind(melt(round(apply(p.fac1,c(2,3),mean),3))$value, melt(round(apply(p.fac1,c(2,3),sd),3))$value)
+  fac1_means <- cbind(reshape::melt(round(apply(p.fac1,c(2,3),mean),3))$value, reshape::melt(round(apply(p.fac1,c(2,3),sd),3))$value)
   fac1_stats <- cbind(fac1_means,fac1_quants)
   fac1_labels <- rep(NA,mix$FAC[[1]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -434,9 +434,9 @@ if(n.effects > 0 & mix$n.fe != 2){
   }
 }
 if(n.re==2){
-  fac2_quants <- as.matrix(cast(melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac2_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac2_means <- cbind(melt(round(apply(p.fac2,c(2,3),mean),3))$value, melt(round(apply(p.fac2,c(2,3),sd),3))$value)
+  fac2_means <- cbind(reshape::melt(round(apply(p.fac2,c(2,3),mean),3))$value, reshape::melt(round(apply(p.fac2,c(2,3),sd),3))$value)
   fac2_stats <- cbind(fac2_means,fac2_quants)
   fac2_labels <- rep(NA,mix$FAC[[2]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -479,9 +479,9 @@ if(mix$fere){
 }
 
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)
-  ind_quants <- as.matrix(cast(melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  ind_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   ind_quants <- t(apply(ind_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  ind_means <- cbind(melt(round(apply(p.ind,c(2,3),mean),3))$value, melt(round(apply(p.ind,c(2,3),sd),3))$value)
+  ind_means <- cbind(reshape::melt(round(apply(p.ind,c(2,3),mean),3))$value, reshape::melt(round(apply(p.ind,c(2,3),sd),3))$value)
   ind_stats <- cbind(ind_means,ind_quants)
   ind_labels <- rep(NA,N*n.sources)
   for(src in 1:n.sources){
@@ -531,11 +531,11 @@ if(output_options[[12]]){  # if Gelman is checked
     # Remove the test results for dummy/empty variables
     gelman <- matrix(NA, nrow=n.var, ncol=2)
     for (v in 1:nvar(jags1.mcmc)) {
-      gelman[v,] <- gelman.diag(jags1.mcmc[,v])$psrf
+      gelman[v,] <- coda::gelman.diag(jags1.mcmc[,v])$psrf
     }
     #gelman <- gelman[ind,]
     colnames(gelman) <- c("Point est.","Upper C.I.")
-    rownames(gelman) <- varnames(jags1.mcmc)
+    rownames(gelman) <- coda::varnames(jags1.mcmc)
     #rownames(gelman) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
     gelman.all <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)
     gelman_short <- gelman[order(gelman[,1],decreasing=T),]
@@ -547,7 +547,7 @@ if(output_options[[12]]){  # if Gelman is checked
 # Heidelberger and Welch's diagnostic
 # Remove the test results for dummy/empty variables
 if(output_options[[13]]){   # if Heidel is checked
-  heidel <- heidel.diag(jags1.mcmc)
+  heidel <- coda::heidel.diag(jags1.mcmc)
   w <- which(!is.na(heidel[[1]][,"pvalue"]))  # find all the non-dummy variables
   heidel.all <- data.frame(matrix(NA,nrow=length(w),ncol=3*mcmc.chains))  # create empty data frame
   colstring <- rep(NA,mcmc.chains*3)  # vector of column names
@@ -558,7 +558,7 @@ if(output_options[[13]]){   # if Heidel is checked
   }
   #heidel.all <- heidel.all[ind,]
   #rownames(heidel.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-  rownames(heidel.all) <- varnames(jags1.mcmc)
+  rownames(heidel.all) <- coda::varnames(jags1.mcmc)
   colnames(heidel.all) <- colstring
   heidel.all <- round(heidel.all,3)
   heidel.all <- replace(heidel.all,heidel.all==0,"fail")  # A normal call to 'heidel.diag' prints "fail" and "pass", for some reason they turn to 0's and 1's
@@ -579,7 +579,7 @@ if(output_options[[13]]){   # if Heidel is checked
 # Geweke diagnostic
 # Remove the test results for dummy/empty variables
 if(output_options[[14]]){ # if Geweke is checked
-  geweke <- geweke.diag(jags1.mcmc)
+  geweke <- coda::geweke.diag(jags1.mcmc)
   geweke.all <- data.frame(matrix(NA,nrow=n.var,ncol=mcmc.chains))    # create empty data frame
   colstring <- rep(NA,mcmc.chains)    # vector of column names
   for(i in 1:mcmc.chains){

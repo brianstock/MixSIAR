@@ -205,12 +205,12 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1){
   if(err=="mult") jags.params <- c(jags.params,"resid.prop")
 
   # Set initial values for p.global different for each chain
-  jags.inits <- function(){list(p.global=as.vector(rdirichlet(alpha)))}
+  jags.inits <- function(){list(p.global=as.vector(bayesm::rdirichlet(alpha)))}
 
   #############################################################################
   # Call JAGS
   #############################################################################
-  jags.1 <- jags(jags.data, inits=jags.inits, parameters.to.save = jags.params, model.file = model_filename,
+  jags.1 <- R2jags::jags(jags.data, inits=jags.inits, parameters.to.save = jags.params, model.file = model_filename,
                 n.chains = mcmc$chains, n.burnin = mcmc$burn, n.thin = mcmc$thin,
                 n.iter = mcmc$chainLength, DIC = mcmc$calcDIC)
   return(jags.1)
