@@ -40,7 +40,7 @@ calc_area <- function(source,mix,discr){
 			MU_plot <- source$S_MU + discr$mu   			# source means adjusted for fractionation/enrichment
 			SIG_plot <- sqrt(source$S_SIG^2 + discr$sig2) 	# source sds adjusted for fractionation/enrichment
 			x <- MU_plot[,1]
-			y <- SIG_plot[,2]
+			y <- MU_plot[,2]
 			ind <- chull(x,y)
 			area <- splancs::areapl(cbind(x[ind],y[ind]))
 			bot <- prod(apply(SIG_plot,2,mean))
@@ -53,7 +53,7 @@ calc_area <- function(source,mix,discr){
 				MU_plot[,,f1] <- source$MU_array[,,f1] + discr$mu 				# source means adjusted for fractionation/enrichment
 				SIG_plot[,,f1] <- sqrt(source$SIG2_array[,,f1] + discr$sig2) 	# source sds adjusted for fractionation/enrichment
 				x <- MU_plot[,1,f1]
-				y <- SIG_plot[,2,f1]
+				y <- MU_plot[,2,f1]
 				ind <- chull(x,y)
 				area <- splancs::areapl(cbind(x[ind],y[ind]))
 				bot <- prod(apply(SIG_plot[,,f1],2,mean))
