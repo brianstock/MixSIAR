@@ -13,7 +13,7 @@
 #'
 #' \code{plot_data_two_iso} looks for 'C', 'N', 'S', and 'O' in the biotracer column
 #' headers and assumes they are stable isotopes, labeling the axes with, e.g.,
-#' expression(paste(delta^13, "C (\u2030)",sep="")).
+#' expression(paste(delta^13, "C (u2030)",sep="")).
 #'
 #' @param isotopes 2-vector of biotracer indices to plot (e.g. c(1,2) or c(2,3))
 #' @param mix output from \code{\link{load_mix_data}}
@@ -42,7 +42,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
   if(!exists("x_label")) x_label <- mix$iso_names[isotopes[1]]
   if(!exists("y_label")) y_label <- mix$iso_names[isotopes[2]]
 
-  if(source$by_factor){
+  if(!is.na(source$by_factor)){
     source_linetype <- sort(rep(1:source$n.sources,source$S_factor_levels))    # each source gets a different linetype (assumes source$S_MU is sorted by source and then factor, which it is)
     source_color <- factor(as.numeric(source$S_factor1))  # color sources by factor 1 (ex: region)
     index <- seq(from=1,to=1+(source$n.sources-1)*source$S_factor_levels,by=source$S_factor_levels)  # "index" gets the row in source$S_MU of the first instance of each source (for making the source labels)

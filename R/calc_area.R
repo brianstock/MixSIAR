@@ -36,7 +36,7 @@ calc_area <- function(source,mix,discr){
 
 	# library(splancs)
 	if(mix$n.iso==2){
-		if(!source$by_factor){ # == FALSE
+		if(is.na(source$by_factor)){ # == FALSE
 			MU_plot <- source$S_MU + discr$mu   			# source means adjusted for fractionation/enrichment
 			SIG_plot <- sqrt(source$S_SIG^2 + discr$sig2) 	# source sds adjusted for fractionation/enrichment
 			x <- MU_plot[,1]
@@ -46,7 +46,7 @@ calc_area <- function(source,mix,discr){
 			bot <- prod(apply(SIG_plot,2,mean))
 			val <- area/bot
 		}
-		if(source$by_factor){ # == TRUE
+		if(!is.na(source$by_factor)){ # == TRUE
 			MU_plot <- SIG_plot <- source$MU_array
 			val <- rep(NA,source$S_factor_levels)
 			for(f1 in 1:source$S_factor_levels){

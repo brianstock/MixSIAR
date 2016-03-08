@@ -13,7 +13,7 @@
 #'
 #' \code{plot_data_one_iso} looks for 'C', 'N', 'S', and 'O' in the biotracer column
 #' headers and assumes they are stable isotopes, labeling the axes with, e.g.,
-#' expression(paste(delta^13, "C (\u2030)",sep="")).
+#' expression(paste(delta^13, "C (u2030)",sep="")).
 #'
 #' @param mix output from \code{\link{load_mix_data}}
 #' @param source output from \code{\link{load_source_data}}

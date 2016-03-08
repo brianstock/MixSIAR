@@ -72,7 +72,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     factor (reload source data), or 2) include the random/fixed effect
     in the mixture (reload mix data).",sep=""))
   }
-  if(source.fac==0) by_factor <- NA else by_factor <- match(source_factors, mixsiar$mix$factors)
+  if(source.fac==0) by_factor <- NA else by_factor <- match(source_factors, mix$factors)
 
   # turn source names into numbers
   source_names <- levels(SOURCE[,1])   # first save the source names in source_names

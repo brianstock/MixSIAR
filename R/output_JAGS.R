@@ -416,9 +416,9 @@ if(mix$n.fe == 0){
   rownames(stats) <- global_labels
 }
 if(n.effects > 0 & mix$n.fe != 2){
-  fac1_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.fac1,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac1_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac1,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac1_means <- cbind(reshape::melt(round(apply(p.fac1,c(2,3),mean),3))$value, reshape::melt(round(apply(p.fac1,c(2,3),sd),3))$value)
+  fac1_means <- cbind(reshape2::melt(round(apply(p.fac1,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac1,c(2,3),sd),3))$value)
   fac1_stats <- cbind(fac1_means,fac1_quants)
   fac1_labels <- rep(NA,mix$FAC[[1]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -434,9 +434,9 @@ if(n.effects > 0 & mix$n.fe != 2){
   }
 }
 if(n.re==2){
-  fac2_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.fac2,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  fac2_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac2,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac2_means <- cbind(reshape::melt(round(apply(p.fac2,c(2,3),mean),3))$value, reshape::melt(round(apply(p.fac2,c(2,3),sd),3))$value)
+  fac2_means <- cbind(reshape2::melt(round(apply(p.fac2,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac2,c(2,3),sd),3))$value)
   fac2_stats <- cbind(fac2_means,fac2_quants)
   fac2_labels <- rep(NA,mix$FAC[[2]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -479,9 +479,9 @@ if(mix$fere){
 }
 
 if(output_options[[17]]){ # include_indiv (if Individual is in the model)
-  ind_quants <- as.matrix(reshape::cast(reshape::melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
+  ind_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.ind,c(2,3),getQuant),3)),X3+X2~X1)[,-c(1,2)])
   ind_quants <- t(apply(ind_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  ind_means <- cbind(reshape::melt(round(apply(p.ind,c(2,3),mean),3))$value, reshape::melt(round(apply(p.ind,c(2,3),sd),3))$value)
+  ind_means <- cbind(reshape2::melt(round(apply(p.ind,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.ind,c(2,3),sd),3))$value)
   ind_stats <- cbind(ind_means,ind_quants)
   ind_labels <- rep(NA,N*n.sources)
   for(src in 1:n.sources){
@@ -520,7 +520,7 @@ colnames(stats) <- c("Mean","SD","2.5%","5%","25%","50%","75%","95%","97.5%")
 # Calulate diagnostics
 ################################################################################
 # Get number of variables in the model
-n.var <- nvar(jags1.mcmc)
+n.var <- coda::nvar(jags1.mcmc)
 # Gelman-Rubin diagnostic
 if(output_options[[12]]){  # if Gelman is checked
   if(mcmc.chains == 1){
@@ -530,7 +530,7 @@ if(output_options[[12]]){  # if Gelman is checked
     # Gelman diagnostic, for when the multivariate Gelman fails (matrix not positive definite)
     # Remove the test results for dummy/empty variables
     gelman <- matrix(NA, nrow=n.var, ncol=2)
-    for (v in 1:nvar(jags1.mcmc)) {
+    for (v in 1:coda::nvar(jags1.mcmc)) {
       gelman[v,] <- coda::gelman.diag(jags1.mcmc[,v])$psrf
     }
     #gelman <- gelman[ind,]
@@ -589,7 +589,7 @@ if(output_options[[14]]){ # if Geweke is checked
   }
   #geweke.all <- geweke.all[ind,]
   #rownames(geweke.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-  rownames(geweke.all) <- varnames(jags1.mcmc)
+  rownames(geweke.all) <- coda::varnames(jags1.mcmc)
   colnames(geweke.all) <- colstring
   geweke.all <- round(geweke.all,3)
   w <- which(!is.nan(geweke[[1]]$z))  # find all the non-dummy variables

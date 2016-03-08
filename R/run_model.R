@@ -22,12 +22,14 @@
 #' @param model_filename name of JAGS model file (usually should match \code{filename}
 #'   input to \code{\link{write_JAGS_model}}).
 #' @param alpha.prior Dirichlet prior on p.global (default = 1, uninformative)
+#' @param resid_err include residual error in the model?
+#' @param process_err include process error in the model?
 #'
 #' @return jags.1, a \code{rjags} model object
 #'
-run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1){
-  resid_err <- mixsiar$resid_err
-  process_err <- mixsiar$process_err
+run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, resid_err, process_err){
+#  resid_err <- mixsiar$resid_err
+#  process_err <- mixsiar$process_err
 
   if(!process_err && !resid_err){
     stop(paste("Invalid error structure, must choose one of:
@@ -48,14 +50,19 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1){
     Set resid_err=FALSE and process_err=TRUE.",sep=""))}
 
   # Error checks on prior
-  if(!is.numeric(alpha.prior)){
+  if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
+  if(length(alpha.prior)==1) alpha = rep(alpha.prior,source$n.sources) # All sources have same value
+  if(length(alpha.prior) > 1 & length(alpha.prior) != source$n.sources) alpha = rep(1,source$n.sources) # Error checking for user inputted string/ NA
+  if(length(alpha.prior) > 1 & length(alpha.prior) == source$n.sources) alpha = alpha.prior # All sources have different value inputted by user
+
+  if(!is.numeric(alpha)){
     stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).
         Try again or choose the uninformative prior option. For example,
         c(1,1,1,1) is a valid (uninformative) prior for 4 sources. ***",sep=""))}
-  if(length(alpha.prior) != mixsiar$source$n.sources){
+  if(length(alpha) != source$n.sources){
     stop(paste("*** Error: Length of your prior does not match the
-        number of sources (",mixsiar$source$n.sources,"). Try again. ***",sep=""))}
-  if(length(which(alpha.prior==0))!=0){
+        number of sources (",source$n.sources,"). Try again. ***",sep=""))}
+  if(length(which(alpha==0))!=0){
     stop(paste("*** Error: You cannot set any alpha = 0.
       Instead, set = 0.01.***",sep=""))}
 
@@ -177,11 +184,6 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1){
       jags.params <- c(jags.params,"ilr.global",paste("ilr.cont",ce,sep=""),"p.ind")   # add "ilr.cont(ce)" to jags.params (e.g. ilr.cont1)
     }
   }
-
-  if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
-  if(length(alpha.prior)==1) alpha = rep(alpha.prior,source$n.sources) # All sources have same value
-  if(length(alpha.prior) > 1 & length(alpha.prior) != source$n.sources) alpha = rep(1,source$n.sources) # Error checking for user inputted string/ NA
-  if(length(alpha.prior) > 1 & length(alpha.prior) == source$n.sources) alpha = alpha.prior # All sources have different value inputted by user
 
   X_iso <- mix$data_iso
   n.iso <- mix$n.iso

@@ -22,7 +22,7 @@
 #'
 #' \code{plot_data} looks for 'C', 'N', 'S', and 'O' in the biotracer column
 #' headers and assumes they are stable isotopes, labeling the axes with, e.g.,
-#' expression(paste(delta^13, "C (\u2030)",sep="")).
+#' expression(paste(delta^13, "C (u2030)",sep="")).
 #'
 #' @param filename name of the plot file(s) to save (e.g. "isospace_plot")
 #' @param plot_save_pdf T/F, save the plot(s) as a pdf?

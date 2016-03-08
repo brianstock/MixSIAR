@@ -2,12 +2,18 @@
 title: "Wolves Example"
 author: "Brian Stock"
 date: "March 7, 2016"
-output: rmarkdown::html_vignette
+output: html_vignette
 vignette: >
   %\VignetteIndexEntry{Wolves Example}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc} 
 ---
+
+```{r, include=FALSE}
+options(device="cairo_pdf")
+# options(device = function(file, width = 7, height = 7, ...)  {cairo_pdf(tempfile(), width = width, height = height, ...)})
+#knitr::opts_chunk$set(dev = "cairo_pdf")
+```
 
 Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). 
 
@@ -21,22 +27,27 @@ While the GUI may be convenient for users less familiar with R, we advise using 
 
 The basic MixSIAR workflow is the same using a script or the GUI:
 
-1. Load data
-    + Mixture
-    + Sources
-    + Discrimination (TDF)
+1. Load data files:
+    + Mixture (["load_mix_data"](#load-mixture-data))
+    + Sources (["load_source_data"](#load-source-data))
+    + Discrimination (TDF) (["load_discr_data"](#load-discrimination-data))
     
-2. Plot data and prior
+2. Pre-model checks
+    + Plot your data (["plot_data"](#plot-data))
+    + Calculate convex hull area (["calc_area"](#calculate-convex-hull-area))
+    + Plot your prior (["plot_prior"](#plot-prior))
 
 3. Choose model structure options
+    + Write JAGS model file (["write_JAGS_model"](#write-JAGS-model-file))
+    
+4. Run model
+    + Run the JAGS model (["run_model"](#run-model))
 
-4. Choose output options
+5. Use diagnostics to decide if the model has converged
+    + Check diagnostics (["output_JAGS"](#analyze-diagnostics-and-output))
 
-5. Run model
-
-6. Use diagnostics to decide if the model has converged
-
-7. Analyze output
+6. Analyze output
+    + Check summary statistics and posterior density plots (["output_JAGS"](#analyze-diagnostics-and-output))
 
 ## Wolves Example
 
@@ -49,48 +60,142 @@ The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et
 
 ### Load MixSIAR package
 
-```
+```{r}
 library(MixSIAR)
 ```
 
 ### Load mixture data
 
+```{r}
+# Replace the system.file call with the path to your file
+mix.filename <- system.file("extdata", "wolves_consumer.csv", package = "MixSIAR")
 
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+# Load the mixture/consumer data
+mix <- load_mix_data(filename=mix.filename, 
+                     iso_names=c("d13C","d15N"), 
+                     factors=c("Region","Pack"), 
+                     fac_random=c(TRUE,TRUE), 
+                     fac_nested=c(FALSE,TRUE), 
+                     cont_effects=NULL)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+### Load source data
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+```{r}
+# Replace the system.file call with the path to your file
+source.filename <- system.file("extdata", "wolves_sources.csv", package = "MixSIAR")
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+# Load the source data
+source <- load_source_data(filename=source.filename,
+                           source_factors="Region", 
+                           conc_dep=FALSE, 
+                           data_type="means", 
+                           mix)
 ```
 
-Also a quote using `>`:
+### Load discrimination data
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r}
+# Replace the system.file call with the path to your file
+discr.filename <- system.file("extdata", "wolves_discrimination.csv", package = "MixSIAR")
+
+# Load the discrimination/TDF data
+discr <- load_discr_data(filename=discr.filename, mix)
+```
+
+### Plot data
+
+This is your chance to check:
+
++ Are the data loaded correctly?
++ Is your mixture data in the source polygon?
++ Are one or more of your sources confounded/hidden?
+
+```{r}
+# Make an isospace plot
+plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+```
+
+### Calculate convex hull area
+
+```{r}
+# Calculate the convex hull area, standardized by source variance
+calc_area(source=source,mix=mix,discr=discr)
+```
+
+### Plot prior
+
+```{r}
+# Plot your prior on the overall proportions. Here we use an uninformative prior.
+plot_prior(alpha.prior=1,source)
+```
+
+### Write JAGS model file
+    
+**Note:** if you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same as 'siarsolo' in SIAR.
+
+```{r}
+# Write the JAGS model file
+model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+resid_err <- TRUE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+```
+
+### Run model
+
+MCMC run options:
+
+| run ==  | Chain Length | Burn-in | Thin | # Chains |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| "test" | 1,000 | 500 | 1 | 3 |
+| "very short" | 10,000 | 5,000 | 5 | 3 |
+| "short" | 50,000 | 25,000 | 25 | 3 |
+| "normal" | 100,000 | 50,000 | 50 | 3 |
+| "long" | 300,000 | 200,000 | 100 | 3 |
+| "very long" | 1,000,000 | 500,000 | 500 | 3 |
+| "extreme" | 3,000,000 | 1,500,000 | 500 | 3 |
+
+You can also set custom MCMC parameters, e.g:
+```{r}
+# run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
+```
+
+Good idea to use `run = "test"` first to check if 1) the data are loaded correctly and 2) the model is specified correctly:
+```{r, eval=FALSE}
+# Run the JAGS model. 
+# "jags.1" will be an rjags object where you can access the MCMC chains for 
+# plotting, aggregating sources a posteriori, etc.
+jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
+                    alpha.prior = 1, resid_err, process_err)
+```
+
+### Analyze diagnostics and output
+
+```{r, eval=FALSE}
+# Set output options like file names, plot file types, etc.
+output_options <- list(summary_save = TRUE,                  # Save the summary statistics as a txt file?
+                       summary_name = "summary_statistics",  # Summary file name (.txt added later)
+                       sup_post = FALSE,                     # Suppress posterior density plot output in R?
+                       plot_post_save_pdf = TRUE,            # Save posterior density plots as pdfs?
+                       plot_post_name = "posterior_density", # Posterior plot file names (.pdf/.png added later)
+                       sup_pairs = FALSE,                    # Suppress pairs plot output in R?
+                       plot_pairs_save_pdf = TRUE,           # Save pairs plot as pdf?
+                       plot_pairs_name = "pairs_plot",       # Pairs plot file name (.pdf/.png added later)
+                       sup_xy = TRUE,                        # Suppress xy/trace plot output in R?
+                       plot_xy_save_pdf = FALSE,             # Save xy/trace plot as pdf?
+                       plot_xy_name = "xy_plot",             # XY plot file name (.pdf/.png added later)
+                       gelman = TRUE,                        # Calculate Gelman-Rubin diagnostic test?
+                       heidel = FALSE,                       # Calculate Heidelberg-Welch diagnostic test?
+                       geweke = TRUE,                        # Calculate Geweke diagnostic test?
+                       diag_save = TRUE,                     # Save the diagnostics as a txt file?
+                       diag_name = "diagnostics",            # Diagnostics file name (.txt added later)
+                       indiv_effect = FALSE,                 # Is Individual a random effect in the model?
+                       plot_post_save_png = FALSE,           # Save posterior density plots as pngs?
+                       plot_pairs_save_png = FALSE,          # Save pairs plot as png?
+                       plot_xy_save_png = FALSE)             # Save xy/trace plot as png?
+
+# Process diagnostics, summary statistics, and create posterior density plots
+output_JAGS(jags.1, mix, source, output_options)
+
+```

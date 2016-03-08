@@ -282,7 +282,7 @@ go_button <- gWidgets::gbutton(text="RUN MODEL", cont=grp_run_model, expand=TRUE
     write_JAGS_model("MixSIAR_model.txt", resid_err, process_err, mixsiar$mix, mixsiar$source)
 
     run <- gWidgets::svalue(mixsiar$mcmc_run)
-    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt", alpha.prior)
+    jags.1 <- run_model(run, mixsiar$mix, mixsiar$source, mixsiar$discr, "MixSIAR_model.txt", alpha.prior, resid_err, process_err)
     assign("jags.1",jags.1,envir=mixsiar)
 
     test <- get("jags.1",envir=mixsiar)
