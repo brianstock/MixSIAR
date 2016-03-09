@@ -1,21 +1,15 @@
 ---
-title: "Wolves Example"
+title: "MixSIAR Script Example (Wolves)"
 author: "Brian Stock"
 date: "March 7, 2016"
 output: html_vignette
 vignette: >
-  %\VignetteIndexEntry{Wolves Example}
+  %\VignetteIndexEntry{MixSIAR Script Example (Wolves)}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc} 
 ---
 
-```{r, include=FALSE}
-options(device="cairo_pdf")
-# options(device = function(file, width = 7, height = 7, ...)  {cairo_pdf(tempfile(), width = width, height = height, ...)})
-#knitr::opts_chunk$set(dev = "cairo_pdf")
-```
-
-Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). 
+Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `ex_scripts` folder of the MixSIAR package install.
 
 While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:
 
@@ -66,6 +60,21 @@ library(MixSIAR)
 
 ### Load mixture data
 
+Load the mixture data, i.e. your:
+
++ Consumer isotope values (trophic ecology / diet)
++ Mixed sediment/water tracer values (sediment/hydrology fingerprinting)
+
+  `filename`: name of the CSV file with mix/consumer data
+  
+  `iso_names`: column headings of the tracers/isotopes you'd like to use
+  
+  `random_effects`: column headings of any random effects
+  
+  `cont_effects`: column headings of any continuous effects
+
+  `iso_names`, `random_effects`, and `cont_effects` can be a subset of your columns, i.e. have 3 isotopes in file but only want MixSIAR to use 2, or have data by Region and Pack but only want MixSIAR to use Region
+
 ```{r}
 # Replace the system.file call with the path to your file
 mix.filename <- system.file("extdata", "wolves_consumer.csv", package = "MixSIAR")
@@ -81,6 +90,19 @@ mix <- load_mix_data(filename=mix.filename,
 
 ### Load source data
 
+Load the source data, i.e. your:
+
++ Source isotope values (trophic ecology / diet)
++ Sediment/water source tracer values (sediment/hydrology fingerprinting)
+
+  `filename`: name of the CSV file with source data
+  
+  `source_factors`: column headings of random/fixed effects you have source data by
+  
+  `conc_dep`: TRUE or FALSE, do you have concentration dependence data in the file?
+  
+  `data_type`: "means" or "raw", is your source data as means+SD, or do you have raw data?
+
 ```{r}
 # Replace the system.file call with the path to your file
 source.filename <- system.file("extdata", "wolves_sources.csv", package = "MixSIAR")
@@ -94,6 +116,13 @@ source <- load_source_data(filename=source.filename,
 ```
 
 ### Load discrimination data
+
+Load the discrimination data, i.e. your:
+
++ Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology/diet)
++ xxxxxxxx (sediment/hydrology fingerprinting)
+
+  `filename`: name of the CSV file with discrimination data
 
 ```{r}
 # Replace the system.file call with the path to your file
@@ -111,12 +140,24 @@ This is your chance to check:
 + Is your mixture data in the source polygon?
 + Are one or more of your sources confounded/hidden?
 
-```{r}
+  `filename`: name you'd like MixSIAR to save the isospace plot as (extension will be added automatically)
+  
+  `plot_save_pdf`: TRUE or FALSE, should MixSIAR save the plot as a .pdf?
+  
+  `plot_save_png`: TRUE or FALSE, should MixSIAR save the plot as a .png?
+
+```{r, eval=FALSE}
 # Make an isospace plot
 plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
 ```
 
 ### Calculate convex hull area
+
+If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s).
+
+**Note 1:** discrimination SD is added to the source SD (see calc_area.r for details)
+
+**Note 2:** If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)
 
 ```{r}
 # Calculate the convex hull area, standardized by source variance
@@ -125,16 +166,34 @@ calc_area(source=source,mix=mix,discr=discr)
 
 ### Plot prior
 
-```{r}
-# Plot your prior on the overall proportions. Here we use an uninformative prior.
+Define your prior, and then plot using "plot_prior"
+
++ RED = your prior
++ DARK GREY = "uninformative"/generalist (alpha = 1)
++ LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
+
+```{r, eval=FALSE}
+# default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
 plot_prior(alpha.prior=1,source)
 ```
 
 ### Write JAGS model file
     
-**Note:** if you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same as 'siarsolo' in SIAR.
+Write the JAGS model file (define model structure). The model will be saved as `model_filename` ("MixSIAR_model.txt" is default, but you may want to change if you create many different models).
 
-```{r}
+There are 3 error term options available:
+
+1. Residual * Process (`resid_err = TRUE`, `process_err = TRUE`)
+2. Residual only (`resid_err = TRUE`, `process_err = FALSE`)
+3. Process only (`resid_err = FALSE`, `process_err = TRUE`)
+
+  `model_filename`: don't need to change, unless you create many different models
+  `resid_err`: include residual error in the model?
+  `process_err`: include process error in the model?
+
+**Note:** If you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we ues the original MixSIR error model (which does not fit a residual error term). This is the same behavior as `siarsolo` in SIAR.
+
+```{r, eval=FALSE}
 # Write the JAGS model file
 model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
 resid_err <- TRUE
@@ -144,7 +203,7 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 ### Run model
 
-MCMC run options:
+Choose one of the MCMC run options:
 
 | run ==  | Chain Length | Burn-in | Thin | # Chains |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -157,45 +216,52 @@ MCMC run options:
 | "extreme" | 3,000,000 | 1,500,000 | 500 | 3 |
 
 You can also set custom MCMC parameters, e.g:
-```{r}
-# run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
+```{r, eval=FALSE}
+run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 ```
 
 Good idea to use `run = "test"` first to check if 1) the data are loaded correctly and 2) the model is specified correctly:
 ```{r, eval=FALSE}
-# Run the JAGS model. 
-# "jags.1" will be an rjags object where you can access the MCMC chains for 
-# plotting, aggregating sources a posteriori, etc.
 jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
                     alpha.prior = 1, resid_err, process_err)
 ```
 
+After a test run works, increase the MCMC run to a value that may converge
+```{r, eval=FALSE}
+jags.1 <- run_model(run="normal", mix, source, discr, model_filename, 
+                    # alpha.prior = 1, resid_err, process_err)
+```
+
+`jags.1` will be an `rjags` object where you can access the MCMC chains for plotting, aggregating sources a posteriori, etc.
+
 ### Analyze diagnostics and output
 
+First you can set output options like file names, plot file types, etc. (see ?output_JAGS for details).
+
 ```{r, eval=FALSE}
-# Set output options like file names, plot file types, etc.
-output_options <- list(summary_save = TRUE,                  # Save the summary statistics as a txt file?
-                       summary_name = "summary_statistics",  # Summary file name (.txt added later)
-                       sup_post = FALSE,                     # Suppress posterior density plot output in R?
-                       plot_post_save_pdf = TRUE,            # Save posterior density plots as pdfs?
-                       plot_post_name = "posterior_density", # Posterior plot file names (.pdf/.png added later)
-                       sup_pairs = FALSE,                    # Suppress pairs plot output in R?
-                       plot_pairs_save_pdf = TRUE,           # Save pairs plot as pdf?
-                       plot_pairs_name = "pairs_plot",       # Pairs plot file name (.pdf/.png added later)
-                       sup_xy = TRUE,                        # Suppress xy/trace plot output in R?
-                       plot_xy_save_pdf = FALSE,             # Save xy/trace plot as pdf?
-                       plot_xy_name = "xy_plot",             # XY plot file name (.pdf/.png added later)
-                       gelman = TRUE,                        # Calculate Gelman-Rubin diagnostic test?
-                       heidel = FALSE,                       # Calculate Heidelberg-Welch diagnostic test?
-                       geweke = TRUE,                        # Calculate Geweke diagnostic test?
-                       diag_save = TRUE,                     # Save the diagnostics as a txt file?
-                       diag_name = "diagnostics",            # Diagnostics file name (.txt added later)
-                       indiv_effect = FALSE,                 # Is Individual a random effect in the model?
-                       plot_post_save_png = FALSE,           # Save posterior density plots as pngs?
-                       plot_pairs_save_png = FALSE,          # Save pairs plot as png?
-                       plot_xy_save_png = FALSE)             # Save xy/trace plot as png?
+output_options <- list(summary_save = TRUE,
+                       summary_name = "summary_statistics",
+                       sup_post = FALSE,
+                       plot_post_save_pdf = TRUE,
+                       plot_post_name = "posterior_density",
+                       sup_pairs = FALSE,
+                       plot_pairs_save_pdf = TRUE,
+                       plot_pairs_name = "pairs_plot",
+                       sup_xy = TRUE,
+                       plot_xy_save_pdf = FALSE,
+                       plot_xy_name = "xy_plot",
+                       gelman = TRUE,
+                       heidel = FALSE,
+                       geweke = TRUE,
+                       diag_save = TRUE,
+                       diag_name = "diagnostics",
+                       indiv_effect = FALSE,
+                       plot_post_save_png = FALSE,
+                       plot_pairs_save_png = FALSE,
+                       plot_xy_save_png = FALSE)
+```
 
-# Process diagnostics, summary statistics, and create posterior density plots
+Then you can call `output_JAGS` to process diagnostics, summary statistics, and create posterior density plots:
+```{r, eval=FALSE}
 output_JAGS(jags.1, mix, source, output_options)
-
 ```
