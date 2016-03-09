@@ -105,7 +105,7 @@ logicalmkup
 \begin_body
 
 \begin_layout Title
-MixSIAR User Manual v3.0
+MixSIAR User Manual v3.1
 \end_layout
 
 \begin_layout Author
@@ -594,8 +594,11 @@ uninformative
 \end_layout
 
 \begin_layout Standard
-Any combination of these options creates a different model, which is then
- fit to the data.
+Any combination of these options 
+\series bold
+creates a different model
+\series default
+, which is then fit to the data.
  Each of the above options are demonstrated with various examples (see 
 \begin_inset ERT
 status open
@@ -660,6 +663,51 @@ Before using MixSIAR ouput, you should be able to comfortably explain to
 
 \begin_layout Section
 Installation
+\end_layout
+
+\begin_layout Standard
+MixSIAR is available in both GUI and script versions.
+ While the GUI may be convenient for users less familiar with R, we advise
+ using the script version of MixSIAR for several reasons:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Repeatability
+\emph default
+: You can run different models and have a record of the commands that created
+ each one.
+ There are many reasons you’d want to do this.
+ For example, you may want to compare model results with an uninformative
+ prior vs.
+ an informative prior, one error term option vs.
+ another, grouping sources a priori vs.
+ a posteriori, etc.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Speed
+\emph default
+: Clicking through the GUI buttons can get onerous after a while.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Installation ease
+\emph default
+: Some users aren’t able to install the GTK+ software that the GUI depends
+ on (more issues on Mac).
+ It may be worth figuring out the script version (R skills!) instead of
+ figuring out how to get GTK+ installed.
+ 
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard

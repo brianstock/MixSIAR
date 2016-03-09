@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `ex_scripts` folder of the MixSIAR package install.
+Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install.
 
 While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:
 
