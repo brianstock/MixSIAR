@@ -666,8 +666,50 @@ Installation
 \end_layout
 
 \begin_layout Standard
+First, install the devtools package from CRAN
+\end_layout
+
+\begin_layout Standard
+# Install and load devtools package install.packages("devtools") library("devtool
+s")
+\end_layout
+
+\begin_layout Standard
+Second, please install the following:
+\end_layout
+
+\begin_layout Standard
+TMB (Template Model Builder): https://github.com/kaskr/adcomp INLA (integrated
+ nested Laplace approximations): http://www.r-inla.org/download
+\end_layout
+
+\begin_layout Standard
+Note: at the moment, TMB and INLA can be installed using the commands
+\end_layout
+
+\begin_layout Standard
+# devtools command to get TMB from GitHub install_github("kaskr/adcomp/TMB")
+ # source script to get INLA from the web source("http://www.math.ntnu.no/inla/give
+meINLA.R") 
+\end_layout
+
+\begin_layout Standard
+Next, please install the geostatistical_delta-GLMM package from this GitHub
+ repository using a function in the "devtools" package:
+\end_layout
+
+\begin_layout Standard
+# Install package devtools::install_github(build_vignettes = TRUE) # Load
+ package library(SpatialDeltaGLMM) 
+\end_layout
+
+\begin_layout Standard
 MixSIAR is available in both GUI and script versions.
- While the GUI may be convenient for users less familiar with R, we advise
+ The GUI depends on 
+\end_layout
+
+\begin_layout Standard
+While the GUI may be convenient for users less familiar with R, we advise
  using the script version of MixSIAR for several reasons:
 \end_layout
 
@@ -704,10 +746,6 @@ Installation ease
  It may be worth figuring out the script version (R skills!) instead of
  figuring out how to get GTK+ installed.
  
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Standard
