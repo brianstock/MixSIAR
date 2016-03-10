@@ -81,10 +81,12 @@ load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_
   stop(paste("*** Error: You have specified factors to include without saying
         if they are nested or independent (length of fac_nested should
         match length of factors). Please check your load_mix_data line and try again. ***",sep=""))}
-  if(length(factors)==2 & !is.na(fac_nested[1])){
-    if(fac_nested[1]==TRUE && fac_nested[2]==TRUE){
-      stop(paste("*** Error: Both factors cannot be nested within each other. Please check
-            the fac_nested argument in your load_mix_data line and try again. ***",sep=""))}
+  if(length(factors)==2){
+    if(!is.na(fac_nested[1])){
+      if(fac_nested[1]==TRUE && fac_nested[2]==TRUE){
+        stop(paste("*** Error: Both factors cannot be nested within each other. Please check
+              the fac_nested argument in your load_mix_data line and try again. ***",sep=""))}
+    }
   }
 
   n.effects <- length(factors)

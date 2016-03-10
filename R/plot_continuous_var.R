@@ -60,7 +60,7 @@ for(ce in 1:mix$n.ce){
   colnames(p.median) <- source_names
 
   Cont1.plot <- Cont1.plot*mix$CE_scale + mix$CE_center # transform Cont1.plot (x-axis) back to the original scale
-  df <- data.frame(melt(p.median)[,2:3],rep(Cont1.plot,n.sources))
+  df <- data.frame(reshape2::melt(p.median)[,2:3],rep(Cont1.plot,n.sources))
   colnames(df) <- c("source","median","x")
 
   # medians <- data.frame(cont,apply(p.ind,c(2,3),median))
@@ -71,7 +71,7 @@ for(ce in 1:mix$n.ce){
   # Page 370 in Francis et al (2011)
   dev.new()
   print(ggplot2::ggplot(data=df,ggplot2::aes(x=x,y=median)) +
-          ggplot2::geom_line(aes(x=x, y=median,group=source,colour=source),size=1.5) +
+          ggplot2::geom_line(ggplot2::aes(x=x, y=median,group=source,colour=source),size=1.5) +
            # geom_point(data=medians,aes(x=cont,y=value,colour=variable), guide=F) +
           ggplot2::ylab("Proportion of Diet") +
           ggplot2::xlab(label) +
