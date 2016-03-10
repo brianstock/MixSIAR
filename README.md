@@ -25,17 +25,22 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
 1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/
 2. Open R. 
 3. Install GTK+ dependent packages. You will be prompted to install GTK+. **Follow the automatic prompts and do not interrupt the GTK+ installation!**:
+
     ```
     install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
     ```
+
 4. Restart R and run:
+
     ```
     library(devtools)
     devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
                              build_vignettes = TRUE)
     ```
+
 5. Load MixSIAR and run GUI:
+
     ```
     library(MixSIAR)
     mixsiar_gui()
@@ -46,13 +51,16 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
 1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/
 2. Open R. 
 3. Install GTK+ dependent R packages:
+
     ```
     install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
     ```
+
 4. Close R.
 5. Download and install the newest GTK+ framework: http://r.research.att.com/#other.
 6. Install the latest X11 application (xQuartz): http://xquartz.macosforge.org/landing/.
 7. Open R and run:
+
     ```
     library(devtools)
     devtools::install_github("brianstock/MixSIAR",
@@ -60,19 +68,24 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
                              build_vignettes = TRUE)
     ```
 8. Load MixSIAR and run GUI:
+
     ```
     library(MixSIAR)
     mixsiar_gui()
     ```
+
 #### Linux
 
 1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/. Alternatively, `sudo apt-get install jags r-cran-rjags`.2. Download and install GTK+. From the terminal: `sudo apt-get install libgtk2.0-dev`. You can also see http://www.gtk.org/download/index.php.
 3. Check if GTK+ is installed correctly. Open R, install and load the `RGtk2` package with:
+
     ```
     install.packages("RGtk2")
     library(RGtk2)
     ```
+
 4. Install and load devtools, then install MixSIAR:
+
     ```
     install.packages("devtools")
     library(devtools)
@@ -80,7 +93,9 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
                              dependencies = TRUE, 
                              build_vignettes = TRUE)
     ```
+
 5. Load MixSIAR and run GUI:
+
     ```
     library(MixSIAR)
     mixsiar_gui()
