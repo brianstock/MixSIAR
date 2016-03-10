@@ -22,7 +22,7 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
 
 #### Windows
 
-1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/
+1. Download and install [JAGS].
 2. Open R. 
 3. Install GTK+ dependent packages. You will be prompted to install GTK+. **Follow the automatic prompts and do not interrupt the GTK+ installation!**:
 
@@ -48,7 +48,7 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
 
 #### Mac OS X
 
-1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/
+1. Download and install [JAGS].
 2. Open R. 
 3. Install GTK+ dependent R packages:
 
@@ -76,7 +76,8 @@ The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence o
 
 #### Linux
 
-1. Download and install [JAGS]:http://mcmc-jags.sourceforge.net/. Alternatively, `sudo apt-get install jags r-cran-rjags`.2. Download and install GTK+. From the terminal: `sudo apt-get install libgtk2.0-dev`. You can also see http://www.gtk.org/download/index.php.
+1. Download and install [JAGS]. From the terminal: `sudo apt-get install jags r-cran-rjags`.
+2. Download and install GTK+. From the terminal: `sudo apt-get install libgtk2.0-dev`. You can also see http://www.gtk.org/download/index.php.
 3. Check if GTK+ is installed correctly. Open R, install and load the `RGtk2` package with:
 
     ```
@@ -137,5 +138,6 @@ For a detailed description of the math underlying these models, see:
 
 Finally... yes, a paper introducing MixSIAR is in the works and will be forthcoming shortly.
 
+[JAGS]:http://mcmc-jags.sourceforge.net/
 [Issues]:https://github.com/brianstock/MixSIAR/issues
 [SIAR Facebook group]:https://www.facebook.com/pages/SIAR-Stable-Isotope-Analysis-in-R/148501811896914
