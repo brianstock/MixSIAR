@@ -10,7 +10,7 @@
 # the source data are adult (breeding) birds from 3 breeding colonies. Discrimination is
 # set to zero, making the reasonable assumptions that 1) juvenile and adult birds feeding
 # in the same region will look isotopically identical, and 2) discrimination is the same for
-# juvenile and adult birds. 
+# juvenile and adult birds.
 
 # We have:
 #   2 biotracers (δ 13 C, δ 15 N)
@@ -55,14 +55,12 @@ plot_prior(alpha.prior=1,source)
 # Define model structure and write JAGS model file
 model_filename <- "MixSIAR_model.txt"
 resid_err <- TRUE
-process_err <- FALSE
+process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
-# Run the JAGS model ("test" first, then "short")
-jags.1 <- run_model(run="test", mix, source, discr, model_filename,
-	                alpha.prior=1, resid_err, process_err)
-#jags.1 <- run_model(run="normal", mix, source, discr, model_filename,
-	                alpha.prior=1, resid_err, process_err)
+# Run the JAGS model ("test" first, then "normal")
+jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+#jags.1 <- run_model(run="normal", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.1, mix, source)

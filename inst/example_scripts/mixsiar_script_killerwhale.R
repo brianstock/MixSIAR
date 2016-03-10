@@ -5,7 +5,7 @@
 ################################################################################
 # Killer whale example (informative prior)
 
-# The Killer Whale Example demonstrates the difference informative priors make, and 
+# The Killer Whale Example demonstrates the difference informative priors make, and
 # illustrates how to construct them.
 
 library(MixSIAR)
@@ -52,7 +52,8 @@ process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("very long" took ~5 min)
-jags.uninf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior = 1)
+jags.uninf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
+# jags.uninf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.uninf, mix, source)
@@ -64,13 +65,13 @@ output_JAGS(jags.uninf, mix, source)
 #   useful in separating some of the sources.
 
 # Our 14 fecal samples were 10, 1, 0, 0, 3
-kw.alpha <- c(10,1,0,0,3)   
+kw.alpha <- c(10,1,0,0,3)
 
 # Generate alpha hyperparameters scaling sum(alpha)=n.sources
-kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha) 
+kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha)
 
 # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
-kw.alpha[which(kw.alpha==0)] <- 0.01 
+kw.alpha[which(kw.alpha==0)] <- 0.01
 
 # Plot your informative prior
 plot_prior(alpha.prior=kw.alpha,
@@ -86,7 +87,8 @@ process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("very long" took ~5 min)
-jags.inf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior=kw.alpha)
+jags.inf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
+# jags.inf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.inf, mix, source)

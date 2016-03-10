@@ -2,27 +2,29 @@
 # March 8, 2016
 # Script file to run isopod example without GUI
 
-########################################################################################
-# Cladocera example (22 fatty acids, run each consumer individually as fixed effect)
+################################################################################
+# Isopod example (8 fatty acids, "Site" as random effect)
 
-# The Cladocera Example is from Galloway et al. (2014) and demonstrates MixSIAR applied
-# to a 22-dimensional fatty acid dataset. Here the 14 mixture datapoints are Cladocera (wa-
-# ter flea) fatty acid profiles from 6 lakes in Finland over 2 seasons. Besides the high di-
-# mensionality, the other difference with this analysis is that we fit each mixture datapoint
-# individually, because there is no clear covariate structure (some sites have 2 seasons, some
-# have 1, some sites in the same lake). We do this by creating an “id” column and treating
-# “id” as a fixed effect.
+# The Isopod Example is from Galloway et al. 2014 and demonstrates MixSIAR applied
+# to an 8-dimensional fatty acid dataset. Here the mixture data are isopod
+# polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites
+# in Puget Sound, WA:
+#   - 8 biotracers (carbon 16.4w3, 18.2w6, 18.3w3, 18.4w3, 20.4w6, 20.5w3, 22.5w3, 22.6w3)
+#   - 1 random effect (Site)
+#   - source data as means and SDs
 
-# • 22 biotracers (carbon 14.0, 16.0, 16.1ω9, 16.1ω7, 16.2ω4, 16.3ω3, 16.4ω3, 17.0, 18.0,
-# 18.1ω9, 18.1ω7, 18.2ω6, 18.3ω6, 18.3ω3, 18.4ω3, 18.5ω3, 20.0, 22.0, 20.4ω6, 20.5ω3,
-# 22.6ω3, BrFA)
-# 43• Mix datapoints fit independently
-# • Source data as means and SDs
-# Fatty acid data greatly increase the number of biotracers beyond the typical 2 stable iso-
-# topes, δ 13 C and δ 15 N, which gives the mixing model power to resolve more sources. We
-# caution, however, that it is not only a matter of # biotracers > # sources + 1. As the num-
-# ber of sources increases, the “uninformative” prior α = 1 has greater influence, illus-
-# trated in Figure 22.
+# Here we treat Site as a random effect. This makes sense if we are interested in
+# the overall population and think of Site as a nuisance factor. Fitting Site as
+# a fixed effect would make more sense if we were interested specifically in the
+# diet at each Site, as opposed to the overall population diet and variability
+# between Sites. This differs from the analysis in Galloway et al. 2014.
+
+# Fatty acid data greatly increase the number of biotracers beyond the typical 2
+# stable isotopes, d13C and d15N, which gives the mixing model power to resolve
+# more sources. We caution, however, that using fatty acid data is not a panacea
+# for the "underdetermined" problem (# sources > # biotracers + 1). As the number
+# of sources increases, the "uninformative" prior alpha = 1 has greater influence,
+# illustrated in the Cladocera Example, Figure 22 in the Manual.
 
 library(MixSIAR)
 
@@ -63,12 +65,10 @@ process_err <- FALSE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("test" first, then "normal")
-jags.1 <- run_model(run="test", mix, source, discr, model_filename,
-	                alpha.prior=1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename,alpha.prior=1, resid_err, process_err)
 
 ## "normal" took my laptop ~60 minutes to run
-#jags.1 <- run_model(run="normal", mix, source, discr, model_filename,
-#	                alpha.prior=1, resid_err, process_err)
+#jags.1 <- run_model(run="normal", mix, source, discr, model_filename,alpha.prior=1, resid_err, process_err)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.1, mix, source)

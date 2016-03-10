@@ -92,7 +92,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
     if(!is.na(source$by_factor)){ # sources by factor, want to color the sources by factor1
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
         ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values), # Factor.1
-                       shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +   # Factor.2
+                       shape = factor(mix$FAC[[2]]$values)), size=2.5, show.legend=T) +   # Factor.2
         ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +  # factor1_names
         ggplot2::scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
@@ -100,14 +100,14 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
                         ggplot2::aes(ymin=ymin,ymax=ymax,colour=scolour),
                         size=1,
                         linetype=source_linetype,
-                        show_guide=F) +
+                        show.legend=F) +
         ggplot2::geom_errorbarh(data=df_sources,
                        ggplot2::aes(xmin=xmin,xmax=xmax,colour=scolour),
                        size=1,
                        height=0,
                        linetype=source_linetype,
-                       show_guide=F) +
-        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+                       show.legend=F) +
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show.legend=F) +
         ggplot2::ylab(y_label) +
         ggplot2::xlab(x_label) +
         ggplot2::theme_bw() +
@@ -116,7 +116,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
     } else { # sources not by factor (make the sources black)
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
         ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values),   # Factor.1
-                       shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +  # Factor.2
+                       shape = factor(mix$FAC[[2]]$values)), size=2.5, show.legend=T) +  # Factor.2
         ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +    # factor1_names
         ggplot2::scale_shape_manual(values=shapes, labels=mix$FAC[[2]]$labels) +  # factor2_names
@@ -124,14 +124,14 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
                         ggplot2::aes(ymin=ymin,ymax=ymax),
                         size=1,
                         linetype=source_linetype,
-                        show_guide=F) +
+                        show.legend=F) +
         ggplot2::geom_errorbarh(data=df_sources,
                        ggplot2::aes(xmin=xmin,xmax=xmax),
                        size=1,
                        height=0,
                        linetype=source_linetype,
-                       show_guide=F) +
-        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+                       show.legend=F) +
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show.legend=F) +
         ggplot2::ylab(y_label) +
         ggplot2::xlab(x_label) +
         ggplot2::theme_bw() +
@@ -143,21 +143,21 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
   if(mix$n.effects==1){
     if(!is.na(source$by_factor)){ # sources by factor, want to color the sources by factor1
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
-        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show.legend=T) +  # Factor.1
         ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),    # Factor.1
                               labels = mix$FAC[[1]]$labels) +  # factor1_names
         ggplot2::geom_pointrange(data=df_sources,
                         ggplot2::aes(ymin=ymin,ymax=ymax,colour=scolour),
                         size=1,
                         linetype=source_linetype,
-                        show_guide=F) +
+                        show.legend=F) +
         ggplot2::geom_errorbarh(data=df_sources,
                        ggplot2::aes(xmin=xmin,xmax=xmax,colour=scolour),
                        size=1,
                        height=0,
                        linetype=source_linetype,
-                       show_guide=F) +
-        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+                       show.legend=F) +
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show.legend=F) +
         ggplot2::ylab(y_label) +
         ggplot2::xlab(x_label) +
         ggplot2::theme_bw() +
@@ -165,21 +165,21 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
       print(g)
     } else { # sources not by factor (make the sources black)
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
-        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
+        ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show.legend=T) +  # Factor.1
         ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),  # Factor.1
                               labels = mix$FAC[[1]]$labels) +    # factor1_names
         ggplot2::geom_pointrange(data=df_sources,
                         ggplot2::aes(ymin=ymin,ymax=ymax),
                         size=1,
                         linetype=source_linetype,
-                        show_guide=F) +
+                        show.legend=F) +
         ggplot2::geom_errorbarh(data=df_sources,
                        ggplot2::aes(xmin=xmin,xmax=xmax),
                        size=1,
                        height=0,
                        linetype=source_linetype,
-                       show_guide=F) +
-        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+                       show.legend=F) +
+        ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show.legend=F) +
         ggplot2::ylab(y_label) +
         ggplot2::xlab(x_label) +
         ggplot2::theme_bw() +
@@ -194,14 +194,14 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
                       ggplot2::aes(ymin=ymin,ymax=ymax),
                       size=1,
                       linetype=source_linetype,
-                      show_guide=F) +
+                      show.legend=F) +
       ggplot2::geom_errorbarh(data=df_sources,
                      ggplot2::aes(xmin=xmin,xmax=xmax),
                      size=1,
                      height=0,
                      linetype=source_linetype,
-                     show_guide=F) +
-      ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show_guide=F) +
+                     show.legend=F) +
+      ggplot2::geom_text(data=source.labels, ggplot2::aes(x=x,y=y,label=label), show.legend=F) +
       ggplot2::ylab(y_label) +
       ggplot2::xlab(x_label) +
       ggplot2::theme_bw()

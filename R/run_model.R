@@ -67,12 +67,12 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
       Instead, set = 0.01.***",sep=""))}
 
   # Cannot set informative prior on fixed effects (no p.global)
-  if(unique(alpha.prior)!=1 & mix$n.fe>0){
+  if(!identical(unique(alpha),1) & mix$n.fe>0){
   stop(paste("Cannot set an informative prior with a fixed effect,
   since there is no global/overall population. You can set an
   informative prior on p.global with a random effect.
   To set a prior on each level of a fixed effect you will have to
-  modify the code yourself!",sep=""))}
+  modify 'write_JAGS_model.R'",sep=""))}
 
   # Set mcmc parameters
   if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
