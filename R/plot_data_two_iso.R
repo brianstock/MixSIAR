@@ -89,7 +89,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
     # ggplot2 will only make 6 different shapes, so force it to use enough for Factor.2
     shapes <- c(16,17,15,3,7,8,1,6,35,36,37,4,18,14,11,9,13)
     shapes <- shapes[1:mix$FAC[[2]]$levels]  # 1:factor2_levels
-    if(source$by_factor){ # sources by factor, want to color the sources by factor1
+    if(!is.na(source$by_factor)){ # sources by factor, want to color the sources by factor1
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
         ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values), # Factor.1
                        shape = factor(mix$FAC[[2]]$values)), size=2.5, show_guide=T) +   # Factor.2
@@ -141,7 +141,7 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
 
   } # end n.effects==2
   if(mix$n.effects==1){
-    if(source$by_factor){ # sources by factor, want to color the sources by factor1
+    if(!is.na(source$by_factor)){ # sources by factor, want to color the sources by factor1
       g <- ggplot2::ggplot(data = df,ggplot2::aes(x = x,y = y),environment=.e) +
         ggplot2::geom_point(ggplot2::aes(colour = factor(mix$FAC[[1]]$values)), show_guide=T) +  # Factor.1
         ggplot2::scale_colour_discrete(breaks = levels(factor(mix$FAC[[1]]$values)),    # Factor.1

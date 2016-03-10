@@ -9,11 +9,21 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install.
+Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install:
+```{r}
+library(MixSIAR)
+mixsiar.dir <- find.package("MixSIAR")
+paste0(mixsiar.dir,"/example_scripts")
+```
+
+You can run the wolves example script with:
+```{r, eval=FALSE}
+source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_wolves.R"))
+```
 
 While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:
 
-1. *Repeatability*: You can run different models and have a record of the commands that created each one. There are many reasons you'd want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, etc.
+1. *Repeatability*: You can run different models and have a record of the commands that created each one. There are many reasons you'd want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, different MCMC run lengths, etc.
 
 2. *Speed*: Clicking through the GUI buttons can get onerous after a while.
 

@@ -985,7 +985,6 @@ devtools::install_github("brianstock/MixSIAR",
 status open
 
 \begin_layout Plain Layout
-
 start=7
 \end_layout
 
@@ -1277,7 +1276,6 @@ devtools::install_github("brianstock/MixSIAR",
 status open
 
 \begin_layout Plain Layout
-
 start=10
 \end_layout
 
@@ -1536,7 +1534,6 @@ devtools::install_github("brianstock/MixSIAR",
 status open
 
 \begin_layout Plain Layout
-
 start=6
 \end_layout
 
@@ -11050,7 +11047,7 @@ mixsiar.dir <- find.package("MixSIAR")
 
 \begin_layout Plain Layout
 
-paste0(mixsiar.dir,"/example_scripts"
+paste0(mixsiar.dir,"/example_scripts")
 \end_layout
 
 \begin_layout Plain Layout
