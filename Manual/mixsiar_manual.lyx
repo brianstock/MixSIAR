@@ -24,6 +24,7 @@
 \begin_modules
 knitr
 logicalmkup
+enumitem
 \end_modules
 \maintain_unincluded_children false
 \language english
@@ -113,7 +114,7 @@ Brian Stock and Brice Semmens
 \end_layout
 
 \begin_layout Date
-October 2015
+March 2016
 \end_layout
 
 \begin_layout Standard
@@ -666,51 +667,72 @@ Installation
 \end_layout
 
 \begin_layout Standard
-First, install the devtools package from CRAN
+The MixSIAR package can be run as a GUI with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+mixsiar_gui()
 \end_layout
 
-\begin_layout Standard
-# Install and load devtools package install.packages("devtools") library("devtool
-s")
+\end_inset
+
+, or as a sequence of R commands (
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+.R
 \end_layout
 
-\begin_layout Standard
-Second, please install the following:
+\end_inset
+
+ script).
+ The GUI depends on the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+gWidgetsRGtk2
 \end_layout
 
-\begin_layout Standard
-TMB (Template Model Builder): https://github.com/kaskr/adcomp INLA (integrated
- nested Laplace approximations): http://www.r-inla.org/download
+\end_inset
+
+ package in R.
+ MixSIAR GUI has been tested and runs on Windows (8), Mac OS X (Lion), and
+ Linux (Ubuntu 14.04).
+ The most common install problem is getting GTK+ configured on Mac OS X.
+ If all else fails, the script version should always work! If you have install
+ issues, feel free to contact the authors at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/brianstock/MixSIAR/issues
 \end_layout
 
-\begin_layout Standard
-Note: at the moment, TMB and INLA can be installed using the commands
-\end_layout
+\end_inset
 
-\begin_layout Standard
-# devtools command to get TMB from GitHub install_github("kaskr/adcomp/TMB")
- # source script to get INLA from the web source("http://www.math.ntnu.no/inla/give
-meINLA.R") 
-\end_layout
-
-\begin_layout Standard
-Next, please install the geostatistical_delta-GLMM package from this GitHub
- repository using a function in the "devtools" package:
-\end_layout
-
-\begin_layout Standard
-# Install package devtools::install_github(build_vignettes = TRUE) # Load
- package library(SpatialDeltaGLMM) 
-\end_layout
-
-\begin_layout Standard
-MixSIAR is available in both GUI and script versions.
- The GUI depends on 
+.
 \end_layout
 
 \begin_layout Standard
 While the GUI may be convenient for users less familiar with R, we advise
- using the script version of MixSIAR for several reasons:
+ using the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[sub:scriptversion]{script version}
+\end_layout
+
+\end_inset
+
+ of MixSIAR for several reasons:
 \end_layout
 
 \begin_layout Enumerate
@@ -734,6 +756,26 @@ Repeatability
 Speed
 \emph default
 : Clicking through the GUI buttons can get onerous after a while.
+ You can modify the included example .R files and run your entire analysis
+ with 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+source(
+\begin_inset Quotes eld
+\end_inset
+
+your_file.R
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -745,57 +787,6 @@ Installation ease
  on (more issues on Mac).
  It may be worth figuring out the script version (R skills!) instead of
  figuring out how to get GTK+ installed.
- 
-\end_layout
-
-\begin_layout Standard
-The MixSIAR GUI depends on the 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-gWidgetsRGtk2
-\end_layout
-
-\end_inset
-
- package in R.
- We think 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-gWidgetsRGtk2
-\end_layout
-
-\end_inset
-
- is a pretty nifty, fairly painless way to create cross-platform GUIs in
- R---many thanks to John Verzani and other contributors.
- MixSIAR GUI has been tested and runs on Windows (8), Mac OS X (Lion), and
- Linux (Ubuntu 14.04).
- The most common install problem is getting GTK+ configured on Mac OS X.
- If all else fails, the script version should always work! If you have install
- issues, obviously try to resolve them yourself first, but feel free to
- contact the authors at 
-\begin_inset CommandInset href
-LatexCommand href
-name "b1stock@ucsd.edu"
-target "b1stock@ucsd.edu"
-type "mailto:"
-
-\end_inset
-
- or 
-\begin_inset CommandInset href
-LatexCommand href
-name "semmens@ucsd.edu"
-target "semmens@ucsd.edu"
-type "mailto:"
-
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Subsection
@@ -805,7 +796,7 @@ Windows
 \begin_layout Enumerate
 
 \emph on
-Check to make sure you have the most recent version of R (3.2.2 at time of
+Check to make sure you have the most recent version of R (3.2.3 at time of
  writing)
 \emph default
 .
@@ -862,7 +853,7 @@ r-package/
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (4.0.0 at time of writing)
+Download and install JAGS (4.1.0 at time of writing)
 \emph default
 .
  You can download JAGS from 
@@ -882,126 +873,18 @@ http://mcmc-jags.sourceforge.net/
 \begin_layout Enumerate
 
 \emph on
-Download all of the MixSIAR files
+Open R (or R Studio)
 \emph default
-.
- MixSIAR is currently hosted on GitHub: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/brianstock/MixSIAR/releases
-\end_layout
-
-\end_inset
-
-.
- Download the .zip or .tar.gz and extract the files.
- You should see a bunch of .r and .csv files (
-\begin_inset Quotes eld
-\end_inset
-
-build_mix_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-build_source_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, etc.) in a sub-directory called 
-\begin_inset Quotes eld
-\end_inset
-
-R
-\begin_inset Quotes erd
-\end_inset
-
 .
 \end_layout
 
 \begin_layout Enumerate
 
 \emph on
-Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
+Install the necessary R packages
 \emph default
 .
- The easiest way to do this is simply double-click on the R Workspace in
- the unzipped MixSIAR folder (.RData file with no name).
- You can check what your current working directory is with 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-getwd()
-\end_layout
-
-\end_inset
-
-.
- Another useful command is 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-list.files()
-\end_layout
-
-\end_inset
-
-, which prints a list of all files in your working directory.
- If using R Studio, you can also change your working directory by clicking
- Session --> Set Working Directory --> Choose Directory.
- Find where you downloaded MixSIAR and navigate to the R sub-directory.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-
-\emph on
-source("mixsiar_gui.r")
-\end_layout
-
-\end_inset
-
-
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-
-\emph on
-mixsiar_gui()
-\end_layout
-
-\end_inset
-
-
-\emph default
-.
- This should install and load the necessary R packages.
- The first time you run the code to install the RGtk2 package, you will
- be prompted to install GTK+.
+ You will be prompted to install GTK+.
  
 \series bold
 Follow the automatic prompts and do not interrupt the GTK+ installation!
@@ -1009,23 +892,146 @@ Follow the automatic prompts and do not interrupt the GTK+ installation!
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Enumerate
 
 \emph on
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+\emph off
+start=5
+\end_layout
+
+\end_inset
+
 Restart R.
 \end_layout
 
 \begin_layout Enumerate
 
 \emph on
-Enter 
-\begin_inset Flex Code
+Install MixSIAR package:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(devtools)
+\end_layout
+
+\begin_layout Plain Layout
+
+devtools::install_github("brianstock/MixSIAR",
+\end_layout
+
+\begin_layout Plain Layout
+
+                         dependencies = TRUE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                         build_vignettes = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
 \emph on
-source("mixsiar_gui.r")
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+start=7
+\end_layout
+
+\end_inset
+
+Load MixSIAR and run GUI:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(MixSIAR)
+\end_layout
+
+\begin_layout Plain Layout
+
+mixsiar_gui()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The MixSIAR GUI should then appear as a separate window! If you have problems
+ installing GTK+, search your computer for all listings of “GTK” and delete/unin
+stall them (including the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+RGtk2
 \end_layout
 
 \end_inset
@@ -1035,21 +1041,12 @@ source("mixsiar_gui.r")
 status open
 
 \begin_layout Plain Layout
-
-\emph on
-mixsiar_gui()
+gWidgetsRGtk2
 \end_layout
 
 \end_inset
 
- again.
-
-\emph default
- If JAGS, GTK+, and the required R packages are installed properly, the
- MixSIAR GUI will then appear as a separate window! If you have problems
- installing GTK+, search your computer for all listings of “GTK” and delete/unin
-stall them (including the RGtk2 and gWidgetsRGtk2 package libraries in your
- R folder), then try again.
+ package libraries in your R folder), then try again.
  You can also download GTK+ directly from 
 \begin_inset Flex URL
 status open
@@ -1077,7 +1074,7 @@ We have had reports in the past of installation issues on Mac, but the following
 \begin_layout Enumerate
 
 \emph on
-Check to make sure you have the most recent version of R (3.2.2 at time of
+Check to make sure you have the most recent version of R (3.2.3 at time of
  writing)
 \emph default
 .
@@ -1110,7 +1107,7 @@ sessionInfo()
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (4.0.0 at time of writing)
+Download and install JAGS (4.1.0 at time of writing)
 \emph default
 .
  You can download JAGS from 
@@ -1130,14 +1127,34 @@ http://mcmc-jags.sourceforge.net/
 \begin_layout Enumerate
 
 \emph on
-Open R and run the following command
+Open R (or R Studio)
 \emph default
-: 
-\begin_inset Flex Code
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Install the necessary R packages:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
 install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
 \end_layout
 
 \end_inset
@@ -1148,6 +1165,17 @@ install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
 \begin_layout Enumerate
 
 \emph on
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+\emph off
+start=5
+\end_layout
+
+\end_inset
+
 Close R.
 \end_layout
 
@@ -1192,163 +1220,104 @@ http://xquartz.macosforge.org/landing/
 \begin_layout Enumerate
 
 \emph on
-Download all of the MixSIAR files
+Open R (or R Studio)
 \emph default
-.
- MixSIAR is currently hosted on GitHub: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/brianstock/MixSIAR/releases
-\end_layout
-
-\end_inset
-
-.
- Download the .zip or .tar.gz and extract the files.
- You should see a bunch of .r and .csv files (
-\begin_inset Quotes eld
-\end_inset
-
-build_mix_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-build_source_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, etc.) in a sub-directory called 
-\begin_inset Quotes eld
-\end_inset
-
-R
-\begin_inset Quotes erd
-\end_inset
-
 .
 \end_layout
 
 \begin_layout Enumerate
 
 \emph on
-Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
-\emph default
-.
- One way to do this is simply double-click on the R Workspace in the unzipped
- MixSIAR folder (.RData file with no name).
- You can check what your current working directory is with 
-\begin_inset Flex Code
+Install MixSIAR package:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-getwd()
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(devtools)
+\end_layout
+
+\begin_layout Plain Layout
+
+devtools::install_github("brianstock/MixSIAR",
+\end_layout
+
+\begin_layout Plain Layout
+
+                         dependencies = TRUE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                         build_vignettes = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
 \end_layout
 
 \end_inset
 
-.
- Another useful command is 
-\begin_inset Flex Code
-status open
 
-\begin_layout Plain Layout
-list.files()
-\end_layout
-
-\end_inset
-
-, which prints a list of all files in your working directory.
- If using R Studio, you can also change your working directory by clicking
- Session --> Set Working Directory --> Choose Directory.
- Find where you downloaded MixSIAR and navigate to the R sub-directory.
 \end_layout
 
 \begin_layout Enumerate
 
 \emph on
-Enter 
-\begin_inset Flex Code
+\begin_inset Argument 1
 status open
 
 \begin_layout Plain Layout
 
-\emph on
-source("mixsiar_gui.r")
+start=10
 \end_layout
 
 \end_inset
 
-
-\emph default
-.
- 
+Load MixSIAR and run GUI:
 \end_layout
 
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-\emph on
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(MixSIAR)
+\end_layout
+
+\begin_layout Plain Layout
+
 mixsiar_gui()
 \end_layout
 
-\end_inset
-
-
-\emph default
-.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Restart R.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
-status open
-
 \begin_layout Plain Layout
 
-\emph on
-source("mixsiar_gui.r")
+@
 \end_layout
 
 \end_inset
 
- and 
-\begin_inset Flex Code
-status open
 
-\begin_layout Plain Layout
-
-\emph on
-mixsiar_gui()
 \end_layout
 
-\end_inset
-
- again.
-
-\emph default
- If JAGS, GTK+, and the required R packages are installed properly, the
- MixSIAR GUI will then appear as a separate window!
+\begin_layout Standard
+If JAGS, GTK+, and the required R packages are installed properly, the MixSIAR
+ GUI will then appear as a separate window!
 \end_layout
 
 \begin_layout Subsection
@@ -1362,7 +1331,7 @@ Installing on Ubuntu 14.04 shouldn't be too hard:
 \begin_layout Enumerate
 
 \emph on
-Check to make sure you have the most recent version of R (3.2.2 at time of
+Check to make sure you have the most recent version of R (3.2.3 at time of
  writing)
 \emph default
 .
@@ -1395,7 +1364,7 @@ sessionInfo()
 \begin_layout Enumerate
 
 \emph on
-Download and install JAGS (4.0.0 at time of writing) and rjags
+Download and install JAGS (4.1.0 at time of writing) and rjags
 \emph default
 .
  You can download JAGS from 
@@ -1413,8 +1382,8 @@ http://mcmc-jags.sourceforge.net/
  However, taking JAGS and rjags direct from the Ubuntu repos should help
  to ensure that the versions of JAGS and rjags are in sync, which is a good
  thing.
- On recent versions of Ubuntu, assuming that R is already installed, the
- simplest way to install JAGS and rjags is using the command: 
+ On recent versions of Ubuntu, the simplest way to install JAGS and rjags
+ is using the command: 
 \begin_inset Flex Code
 status open
 
@@ -1465,24 +1434,33 @@ http://www.gtk.org/download/index.php
 Check if GTK+ is installed correctly
 \emph default
 .
- Open R, install and load the RGtk2 package with 
-\begin_inset Flex Code
+ Open R, install and load the RGtk2 package with:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
 install.packages("RGtk2")
 \end_layout
 
-\end_inset
-
- and 
-\begin_inset Flex Code
-status open
-
 \begin_layout Plain Layout
+
 library(RGtk2)
 \end_layout
 
+\begin_layout Plain Layout
+
+@
+\end_layout
+
 \end_inset
 
 
@@ -1491,162 +1469,114 @@ library(RGtk2)
 \begin_layout Enumerate
 
 \emph on
-Download all of the MixSIAR files
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+\emph off
+start=5
+\end_layout
+
+\end_inset
+
+Install and load devtools, then install MixSIAR
 \emph default
-.
- MixSIAR is currently hosted on GitHub: 
-\begin_inset Flex URL
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-https://github.com/brianstock/MixSIAR/releases
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+install.packages("devtools")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(devtools)
+\end_layout
+
+\begin_layout Plain Layout
+
+devtools::install_github("brianstock/MixSIAR",
+\end_layout
+
+\begin_layout Plain Layout
+
+                         dependencies = TRUE, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                         build_vignettes = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
 \end_layout
 
 \end_inset
 
-.
- Download the .zip or .tar.gz and extract the files.
- You should see a bunch of .r and .csv files (
-\begin_inset Quotes eld
-\end_inset
 
-build_mix_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-build_source_win.r
-\begin_inset Quotes erd
-\end_inset
-
-, etc.) in a sub-directory called 
-\begin_inset Quotes eld
-\end_inset
-
-R
-\begin_inset Quotes erd
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Enumerate
 
 \emph on
-Open R (or R Studio) and navigate to the MixSIAR folder with the .r files
-\emph default
-.
- You can check what your current working directory is with 
-\begin_inset Flex Code
+\begin_inset Argument 1
 status open
 
 \begin_layout Plain Layout
-getwd()
+
+start=6
 \end_layout
 
 \end_inset
 
-.
- Another useful command is 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-list.files()
+Load MixSIAR and run GUI:
 \end_layout
 
-\end_inset
-
-, which prints a list of all files in your working directory.
- If using R Studio, you can also change your working directory by clicking
- Session --> Set Working Directory --> Choose Directory.
- Find where you downloaded MixSIAR and navigate to the R sub-directory.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-\emph on
-source("mixsiar_gui.r")
+<<eval=FALSE>>=
 \end_layout
-
-\end_inset
-
-
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
-status open
 
 \begin_layout Plain Layout
 
-\emph on
+library(MixSIAR)
+\end_layout
+
+\begin_layout Plain Layout
+
 mixsiar_gui()
 \end_layout
 
-\end_inset
-
-
-\emph default
-.
- This should install and load the other necessary R packages.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Restart R.
-\end_layout
-
-\begin_layout Enumerate
-
-\emph on
-Enter 
-\begin_inset Flex Code
-status open
-
 \begin_layout Plain Layout
 
-\emph on
-source("mixsiar_gui.r")
+@
 \end_layout
 
 \end_inset
 
- and 
-\begin_inset Flex Code
-status open
 
-\begin_layout Plain Layout
-
-\emph on
-mixsiar_gui()
 \end_layout
 
-\end_inset
-
- again.
-
-\emph default
- If JAGS, GTK+, and the required R packages are installed properly, the
- MixSIAR GUI will then appear as a separate window!
+\begin_layout Standard
+If JAGS, GTK+, and the required R packages are installed properly, the MixSIAR
+ GUI will then appear as a separate window!
 \end_layout
 
 \begin_layout Section
@@ -11021,51 +10951,77 @@ name "sub:scriptversion"
 
 \begin_layout Standard
 If you are familiar with R, you can use the script version of MixSIAR instead
- of the GUI---see 
-\begin_inset Quotes eld
-\end_inset
+ of the GUI.
+ The script version has a couple advantages:
+\end_layout
 
+\begin_layout Enumerate
 
+\emph on
+Repeatability
+\emph default
+: You can run different models and have a record of the commands that created
+ each one.
+ There are many reasons you’d want to do this.
+ For example, you may want to compare model results with an uninformative
+ prior vs.
+ an informative prior, one error term option vs.
+ another, grouping sources a priori vs.
+ a posteriori, etc.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Speed
+\emph default
+: Clicking through the GUI buttons can get onerous after a while.
+ You can modify the example .R files and run your entire analysis with 
 \begin_inset Flex Code
 status open
 
 \begin_layout Plain Layout
-mixsiar_script.r
-\end_layout
-
+source(
+\begin_inset Quotes eld
 \end_inset
 
-
+your_file.R
 \begin_inset Quotes erd
 \end_inset
 
-.
- The script has a couple advantages:
-\end_layout
-
-\begin_layout Enumerate
-Time---no repetitive clicking GUI buttons
-\end_layout
-
-\begin_layout Enumerate
-Reproducibility---can save different script files for different model variations
-\end_layout
-
-\begin_layout Standard
-By default, the 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[sub:wolves]{Wolves Example}
+)
 \end_layout
 
 \end_inset
 
- is uncommented and can be run with:
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Installation ease
+\emph default
+: Some users aren’t able to install the GTK+ software that the GUI depends
+ on (more issues on Mac).
+ It may be worth figuring out the script version (R skills!) instead of
+ figuring out how to get GTK+ installed.
+\end_layout
+
+\begin_layout Standard
+We have included clean, runnable .R scripts for all the working examples
+ in the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+example_scripts
+\end_layout
+
+\end_inset
+
+ folder of the MixSIAR package install.
+ You can locate these scripts with:
 \end_layout
 
 \begin_layout Standard
@@ -11079,7 +11035,32 @@ status open
 
 \begin_layout Plain Layout
 
-source("mixsiar_script.r")
+# find MixSIAR directory
+\end_layout
+
+\begin_layout Plain Layout
+
+mixsiar.dir <- find.package("MixSIAR")
+\end_layout
+
+\begin_layout Plain Layout
+
+# folder with script files
+\end_layout
+
+\begin_layout Plain Layout
+
+paste0(mixsiar.dir,"/example_scripts"
+\end_layout
+
+\begin_layout Plain Layout
+
+# run Geese example
+\end_layout
+
+\begin_layout Plain Layout
+
+source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_geese.R"))
 \end_layout
 
 \begin_layout Plain Layout
@@ -11093,9 +11074,7 @@ source("mixsiar_script.r")
 \end_layout
 
 \begin_layout Standard
-To run the other examples, simply comment the Wolves Example lines and uncomment
- the example you'd like to run.
- The script is largely the same as the GUI, with only a couple differences
+The script is largely the same as the GUI, with only a couple differences
  detailed below (using the Geese Example).
 \end_layout
 
@@ -11104,42 +11083,7 @@ Load mix data
 \end_layout
 
 \begin_layout Standard
-Uses 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-load_mix_data_script
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- instead of 
-\begin_inset Flex Code
-status open
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-load_mix_data
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-.
- Fixed and random effects are both entered as 
+Fixed and random effects are both entered as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -11207,7 +11151,12 @@ status open
 
 \begin_layout Plain Layout
 
-mix <- load_mix_data_script(filename="geese_consumer.csv", 
+?load_mix_data
+\end_layout
+
+\begin_layout Plain Layout
+
+mix <- load_mix_data(filename="geese_consumer.csv", 
 \end_layout
 
 \begin_layout Plain Layout
@@ -11256,6 +11205,11 @@ status open
 \begin_layout Plain Layout
 
 <<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+?load_source_data
 \end_layout
 
 \begin_layout Plain Layout
@@ -11392,6 +11346,11 @@ status open
 \begin_layout Plain Layout
 
 <<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+?plot_data
 \end_layout
 
 \begin_layout Plain Layout
@@ -11597,6 +11556,11 @@ status open
 
 \begin_layout Plain Layout
 
+?write_JAGS_model
+\end_layout
+
+\begin_layout Plain Layout
+
 model_filename <- "MixSIAR_model.txt"   
 \end_layout
 
@@ -11731,6 +11695,11 @@ status open
 
 \begin_layout Plain Layout
 
+?run_model
+\end_layout
+
+\begin_layout Plain Layout
+
 jags.1 <- run_model(run="test",mix,source,discr,model_filename,
 \end_layout
 
@@ -11760,6 +11729,11 @@ status open
 \begin_layout Plain Layout
 
 <<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+?output_JAGS
 \end_layout
 
 \begin_layout Plain Layout
@@ -11863,8 +11837,8 @@ Stock, B.
  C.
  and B.
  X.
- Semmens (2015).
- MixSIAR User Manual, version 3.0.
+ Semmens (2016).
+ MixSIAR User Manual, version 3.1.
  https://github.com/brianstock/MixSIAR/.
 \end_layout
 
