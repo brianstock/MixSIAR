@@ -9,60 +9,29 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf). If this is your first working example, you may want to see [Wolves Example](), as it provides more commentary and explanation.
+Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
 
-For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install:
+For a clean, runnable `.R` script, look at `mixsiar_script_geese.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r}
 library(MixSIAR)
 mixsiar.dir <- find.package("MixSIAR")
 paste0(mixsiar.dir,"/example_scripts")
 ```
 
-You can run the wolves example script with:
+You can run the geese example script directly with:
 ```{r, eval=FALSE}
-source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_wolves.R"))
+source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_geese.R"))
 ```
 
-While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:
+## Geese Example
 
-1. *Repeatability*: You can run different models and have a record of the commands that created each one. There are many reasons you'd want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, different MCMC run lengths, etc.
-
-2. *Speed*: Clicking through the GUI buttons can get onerous after a while.
-
-3. *Installation ease*: Some users aren't able to install the GTK+ software that the GUI depends on (more issues on Mac). It may be worth figuring out the script version (R skills!) instead of figuring out how to get GTK+ installed.
-
-The basic MixSIAR workflow is the same using a script or the GUI:
-
-1. Load data files:
-    + Mixture (["load_mix_data"](#load-mixture-data))
-    + Sources (["load_source_data"](#load-source-data))
-    + Discrimination (TDF) (["load_discr_data"](#load-discrimination-data))
-    
-2. Pre-model checks
-    + Plot your data (["plot_data"](#plot-data))
-    + Calculate convex hull area (["calc_area"](#calculate-convex-hull-area))
-    + Plot your prior (["plot_prior"](#plot-prior))
-
-3. Choose model structure options
-    + Write JAGS model file (["write_JAGS_model"](#write-JAGS-model-file))
-    
-4. Run model
-    + Run the JAGS model (["run_model"](#run-model))
-
-5. Use diagnostics to decide if the model has converged
-    + Check diagnostics (["output_JAGS"](#analyze-diagnostics-and-output))
-
-6. Analyze output
-    + Check summary statistics and posterior density plots (["output_JAGS"](#analyze-diagnostics-and-output))
-
-## Wolves Example
-
-The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
+The "Geese Example" uses data from [Inger et al. (2006)](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full) of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in [Parnell et al. (2013)](http://onlinelibrary.wiley.com/doi/10.1002/env.2221/full):
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
-+ 2 random effects (Region and Pack), where Pack is nested within Region
-+ Source data as means and SDs (by Region)
-+ Resid * Process error
++ 1 fixed effect (Group)
++ Source data as means and SDs
++ Concentration dependence
++ Residual only error
 
 ### Load MixSIAR package
 
@@ -72,81 +41,47 @@ library(MixSIAR)
 
 ### Load mixture data
 
-Load the mixture data, i.e. your:
+See ?load_mix_data for details.
 
-+ Consumer isotope values (trophic ecology / diet)
-+ Mixed sediment/water tracer values (sediment/hydrology fingerprinting)
-
-  `filename`: name of the CSV file with mix/consumer data
-  
-  `iso_names`: column headings of the tracers/isotopes you'd like to use
-  
-  `factors`: vector of random/fixed effect column headings in 'filename'. NULL if no factors.
-  
-  `fac_random`: vector of TRUE/FALSE, TRUE if factor is random effect, FALSE if fixed effect. NULL if no factors.
-  
-  `fac_nested`: vector of TRUE/FALSE, TRUE if factor is nested within the other. Only applies if 2 factors. NULL otherwise.
-  
-  `cont_effects`: column headings of any continuous effects
-  
-The wolves consumer data has 2 covariates: Region and Pack, where Pack is nested within Region (`fac_nested=c(FALSE,TRUE)`). By "nested", we mean that all wolves in a given pack are in the same region - each pack is entirely within one region. This is an excellent example of [hierarchical structure](https://github.com/brianstock/MixSIAR/blob/master/Manual/wolf_model.png), fit with 2 random effects (`fac_random=c(TRUE,TRUE)`).
+The geese consumer data has 1 covariate (`factors="Group"`), which we fit as a fixed effect (`fac_random=FALSE`). We choose to treat Group as a fixed effect instead of a random effect here because we are interested in the diet of each group separately and NOT in the overall diet. "Group" is not nested within another factor (`fac_nested=FALSE`). There are no continuous effects (`cont_effects=NULL`).
 
 ```{r}
 # Replace the system.file call with the path to your file
-mix.filename <- system.file("extdata", "wolves_consumer.csv", package = "MixSIAR")
+mix.filename <- system.file("extdata", "geese_consumer.csv", package = "MixSIAR")
 
-# Load the mixture/consumer data
-mix <- load_mix_data(filename=mix.filename, 
-                     iso_names=c("d13C","d15N"), 
-                     factors=c("Region","Pack"), 
-                     fac_random=c(TRUE,TRUE), 
-                     fac_nested=c(FALSE,TRUE), 
-                     cont_effects=NULL)
+mix <- load_mix_data(filename=mix.filename,
+					 iso_names=c("d13C","d15N"),
+					 factors="Group",
+					 fac_random=FALSE,
+					 fac_nested=FALSE,
+					 cont_effects=NULL)
 ```
 
 ### Load source data
 
-Load the source data, i.e. your:
+See ?load_source_data for details.
 
-+ Source isotope values (trophic ecology / diet)
-+ Sediment/water source tracer values (sediment/hydrology fingerprinting)
-
-  `filename`: name of the CSV file with source data
-  
-  `source_factors`: column headings of random/fixed effects you have source data by
-  
-  `conc_dep`: TRUE or FALSE, do you have concentration dependence data in the file?
-  
-  `data_type`: "means" or "raw", is your source data as means+SD, or do you have raw data?
-
-If you look at `wolves_sources.csv`, you will see that each Region has different isotope values - this is specified with `source_factors="Region"`. We do not have concentration dependence data here, so `conc_dep=FALSE`. We only have source summary statistics (Mean, SD, and sample size), not the original "raw"" data, so `data_type="means"`. *Note that `wolves_sources.csv` has a column titled "n"" with the sample size of each source estimate. This must be in your source data file when you run your data!*
+If you look at `geese_sources.csv`, you will see that our geese source data are not by Group (`source_factors=NULL`), but we DO have concentration dependence data (`conc_dep=TRUE`). We only have source means, SD, and sample size---not the original "raw" (`data_type="means"`).
 
 ```{r}
 # Replace the system.file call with the path to your file
-source.filename <- system.file("extdata", "wolves_sources.csv", package = "MixSIAR")
+source.filename <- system.file("extdata", "geese_sources.csv", package = "MixSIAR")
 
-# Load the source data
 source <- load_source_data(filename=source.filename,
-                           source_factors="Region", 
-                           conc_dep=FALSE, 
-                           data_type="means", 
-                           mix)
+						   source_factors=NULL,
+						   conc_dep=TRUE,
+						   data_type="means",
+						   mix)
 ```
 
 ### Load discrimination data
 
-Load the discrimination data, i.e. your:
-
-+ Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology/diet)
-+ xxxxxxxx (sediment/hydrology fingerprinting)
-
-  `filename`: name of the CSV file with discrimination data
+See ?load_discr_data for details.
 
 ```{r}
 # Replace the system.file call with the path to your file
-discr.filename <- system.file("extdata", "wolves_discrimination.csv", package = "MixSIAR")
+discr.filename <- system.file("extdata", "geese_discrimination.csv", package = "MixSIAR")
 
-# Load the discrimination/TDF data
 discr <- load_discr_data(filename=discr.filename, mix)
 ```
 
@@ -158,16 +93,6 @@ This is your chance to check:
 + Is your mixture data in the source polygon?
 + Are one or more of your sources confounded/hidden?
 
-  `filename`: name you'd like MixSIAR to save the isospace plot as (extension will be added automatically)
-  
-  `plot_save_pdf`: TRUE or FALSE, should MixSIAR save the plot as a .pdf?
-  
-  `plot_save_png`: TRUE or FALSE, should MixSIAR save the plot as a .png?
-
-You should *always* look at the isospace plot---this is a good check that the data is loaded correctly, and that the isospace geometry makes sense. If the mixture data are well outside the source polygon, you have a serious violation of mixing model assumptions, and it must be true that either 1) You're missing a source, or 2) You're using an incorrect discrimination factor. MixSIAR, like SIAR, fits a residual error term, and thus will always find a solution *even if it is nonsensical.*
-
-Also note that the MixSIAR isospace plot adds the discrimination means *AND SDs* to the raw source values. This is because model uses the source + discrimination values to fit the mixture data, calculated as $\sqrt{\sigma^2_{source} + \sigma^2_{discr}}$, under the assumption of independence. Error bars indicate $\pm$ 1 SD.
-
 ```{r, eval=FALSE}
 # Make an isospace plot
 plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
@@ -175,11 +100,9 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 
 ### Calculate convex hull area
 
-If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](http://www.int-res.com/articles/suppl/m514p001_supp.pdf).
+Calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](http://www.int-res.com/articles/suppl/m514p001_supp.pdf).
 
 **Note 1:** discrimination SD is added to the source SD (see ?calc_area for details)
-
-**Note 2:** If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)
 
 ```{r}
 # Calculate the convex hull area, standardized by source variance
@@ -194,10 +117,6 @@ Define your prior, and then plot using "plot_prior"
 + DARK GREY = "uninformative"/generalist (alpha = 1)
 + LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
 
-Bayesian analyses require priors, and MixSIAR includes a `plot_prior` function to plot the prior on the mixture (diet) proportions (at the highest hierarchical level, p.global). The prior represents our knowledge about the proportions before we consider the biotracer data. A natural tendency is to want a flat/"uninformative" prior, where all values between 0 and 1 are equally likely. However, because proportions are not independent, there is no truly uninformative prior (e.g. the histograms are not flat). The best we can do with the Dirichlet distribution is set $\alpha$ = c(1,1,1), which is uninformative on the simplex. In other words, all combinations of the proportions are equally likely. See the section titled "Constructing informative Bayesian priors" in the forthcoming MixSIAR paper.
-
-Because the mean of the "uninformative" prior, $\alpha$ = c(1,1,1), is $\frac{1}{n.sources}$, we also call it the generalist prior. This reflects two facts: 1) it is not really uninformative, and 2) for weakly informative data it shifts the posterior towards a generalist diet, $p_1 = p_2 = p_3 = \frac{1}{3}$. The amount of shift depends on the informativeness (quality and quantity) of the data.
-
 ```{r, eval=FALSE}
 # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
 plot_prior(alpha.prior=1,source)
@@ -205,23 +124,13 @@ plot_prior(alpha.prior=1,source)
 
 ### Write JAGS model file
     
-Write the JAGS model file (define model structure). The model will be saved as `model_filename` ("MixSIAR_model.txt" is default, but you may want to change if you create many different models).
-
-There are 3 error term options available:
-
-1. Residual * Process (`resid_err = TRUE`, `process_err = TRUE`)
-2. Residual only (`resid_err = TRUE`, `process_err = FALSE`)
-3. Process only (`resid_err = FALSE`, `process_err = TRUE`)
-
-In the Wolves Example we want the "Residual * Process" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in Stock and Semmens (in revision).
-
-**Note:** If you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same behavior as `siarsolo` in SIAR.
+In the Geese Example we demo the "Residual only" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in Stock and Semmens (in revision).
 
 ```{r, eval=FALSE}
 # Write the JAGS model file
-model_filename <- "MixSIAR_model.txt"   # Name of the JAGS model file
+model_filename <- "MixSIAR_model.txt"
 resid_err <- TRUE
-process_err <- TRUE
+process_err <- FALSE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 ```
 
@@ -239,53 +148,24 @@ Choose one of the MCMC run options:
 | "very long" | 1,000,000 | 500,000 | 500 | 3 |
 | "extreme" | 3,000,000 | 1,500,000 | 500 | 3 |
 
-You can also set custom MCMC parameters, e.g:
-```{r, eval=FALSE}
-run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
-```
-
-Good idea to use `run = "test"` first to check if 1) the data are loaded correctly and 2) the model is specified correctly:
+First use `run = "test"` to check if 1) the data are loaded correctly and 2) the model is specified correctly:
 ```{r, eval=FALSE}
 jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
                     alpha.prior = 1, resid_err, process_err)
 ```
 
-After a test run works, increase the MCMC run to a value that may converge
+After a test run works, increase the MCMC run to a value that may converge:
 ```{r, eval=FALSE}
-jags.1 <- run_model(run="normal", mix, source, discr, model_filename, 
-                    # alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="short", mix, source, discr, model_filename,
+                    alpha.prior = 1, resid_err, process_err)
 ```
-
-`jags.1` will be an `rjags` object where you can access the MCMC chains for plotting, aggregating sources a posteriori, etc.
 
 ### Analyze diagnostics and output
 
-First you can set output options like file names, plot file types, etc. (see ?output_JAGS for details).
+See ?output_JAGS for details.
 
-```{r, eval=FALSE}
-output_options <- list(summary_save = TRUE,
-                       summary_name = "summary_statistics",
-                       sup_post = FALSE,
-                       plot_post_save_pdf = TRUE,
-                       plot_post_name = "posterior_density",
-                       sup_pairs = FALSE,
-                       plot_pairs_save_pdf = TRUE,
-                       plot_pairs_name = "pairs_plot",
-                       sup_xy = TRUE,
-                       plot_xy_save_pdf = FALSE,
-                       plot_xy_name = "xy_plot",
-                       gelman = TRUE,
-                       heidel = FALSE,
-                       geweke = TRUE,
-                       diag_save = TRUE,
-                       diag_name = "diagnostics",
-                       indiv_effect = FALSE,
-                       plot_post_save_png = FALSE,
-                       plot_pairs_save_png = FALSE,
-                       plot_xy_save_png = FALSE)
-```
-
-Then you can call `output_JAGS` to process diagnostics, summary statistics, and create posterior density plots:
 ```{r, eval=FALSE}
 output_JAGS(jags.1, mix, source, output_options)
 ```
+
+Note that there is no global/overall estimated diet---this is because we fit Group as a fixed effect instead of a random effect.

@@ -75,59 +75,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 
 
-<p>Here we step through the Geese Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf">MixSIAR Manual</a>. If this is your first working example, you may want to see <a href>Wolves Example</a>, as it provides more commentary and explanation.</p>
-<p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_wolves.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
+<p>Here we step through the Geese Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
+<p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_geese.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixSIAR)
 mixsiar.dir &lt;-<span class="st"> </span><span class="kw">find.package</span>(<span class="st">&quot;MixSIAR&quot;</span>)
 <span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;/home/brian/R/x86_64-pc-linux-gnu-library/3.2/MixSIAR/example_scripts&quot;</code></pre>
-<p>You can run the wolves example script with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts/mixsiar_script_wolves.R&quot;</span>))</code></pre></div>
-<p>While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:</p>
-<ol style="list-style-type: decimal">
-<li><p><em>Repeatability</em>: You can run different models and have a record of the commands that created each one. There are many reasons you’d want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, different MCMC run lengths, etc.</p></li>
-<li><p><em>Speed</em>: Clicking through the GUI buttons can get onerous after a while.</p></li>
-<li><p><em>Installation ease</em>: Some users aren’t able to install the GTK+ software that the GUI depends on (more issues on Mac). It may be worth figuring out the script version (R skills!) instead of figuring out how to get GTK+ installed.</p></li>
-</ol>
-<p>The basic MixSIAR workflow is the same using a script or the GUI:</p>
-<ol style="list-style-type: decimal">
-<li>Load data files:
-<ul>
-<li>Mixture (<a href="#load-mixture-data">“load_mix_data”</a>)</li>
-<li>Sources (<a href="#load-source-data">“load_source_data”</a>)</li>
-<li>Discrimination (TDF) (<a href="#load-discrimination-data">“load_discr_data”</a>)</li>
-</ul></li>
-<li>Pre-model checks
-<ul>
-<li>Plot your data (<a href="#plot-data">“plot_data”</a>)</li>
-<li>Calculate convex hull area (<a href="#calculate-convex-hull-area">“calc_area”</a>)</li>
-<li>Plot your prior (<a href="#plot-prior">“plot_prior”</a>)</li>
-</ul></li>
-<li>Choose model structure options
-<ul>
-<li>Write JAGS model file (<a href="#write-JAGS-model-file">“write_JAGS_model”</a>)</li>
-</ul></li>
-<li>Run model
-<ul>
-<li>Run the JAGS model (<a href="#run-model">“run_model”</a>)</li>
-</ul></li>
-<li>Use diagnostics to decide if the model has converged
-<ul>
-<li>Check diagnostics (<a href="#analyze-diagnostics-and-output">“output_JAGS”</a>)</li>
-</ul></li>
-<li>Analyze output
-<ul>
-<li>Check summary statistics and posterior density plots (<a href="#analyze-diagnostics-and-output">“output_JAGS”</a>)</li>
-</ul></li>
-</ol>
-<div id="wolves-example" class="section level2">
-<h2>Wolves Example</h2>
-<p>The “Wolves Example” uses data reconstructed from (not identical to) <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187">Semmens et al. 2009</a>. Here, we investigate the diet of 66 wolves in British Columbia with:</p>
+<p>You can run the geese example script directly with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts/mixsiar_script_geese.R&quot;</span>))</code></pre></div>
+<div id="geese-example" class="section level2">
+<h2>Geese Example</h2>
+<p>The “Geese Example” uses data from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full">Inger et al. (2006)</a> of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in <a href="http://onlinelibrary.wiley.com/doi/10.1002/env.2221/full">Parnell et al. (2013)</a>:</p>
 <ul>
 <li>2 biotracers (<span class="math inline">\(\delta^{13}\)</span>C, <span class="math inline">\(\delta^{15}\)</span>N)</li>
-<li>2 random effects (Region and Pack), where Pack is nested within Region</li>
-<li>Source data as means and SDs (by Region)</li>
-<li>Resid * Process error</li>
+<li>1 fixed effect (Group)</li>
+<li>Source data as means and SDs</li>
+<li>Concentration dependence</li>
+<li>Residual only error</li>
 </ul>
 <div id="load-mixsiar-package" class="section level3">
 <h3>Load MixSIAR package</h3>
@@ -135,63 +99,37 @@ mixsiar.dir &lt;-<span class="st"> </span><span class="kw">find.package</span>(<
 </div>
 <div id="load-mixture-data" class="section level3">
 <h3>Load mixture data</h3>
-<p>Load the mixture data, i.e. your:</p>
-<ul>
-<li>Consumer isotope values (trophic ecology / diet)</li>
-<li>Mixed sediment/water tracer values (sediment/hydrology fingerprinting)</li>
-</ul>
-<p><code>filename</code>: name of the CSV file with mix/consumer data</p>
-<p><code>iso_names</code>: column headings of the tracers/isotopes you’d like to use</p>
-<p><code>factors</code>: vector of random/fixed effect column headings in ‘filename’. NULL if no factors.</p>
-<p><code>fac_random</code>: vector of TRUE/FALSE, TRUE if factor is random effect, FALSE if fixed effect. NULL if no factors.</p>
-<p><code>fac_nested</code>: vector of TRUE/FALSE, TRUE if factor is nested within the other. Only applies if 2 factors. NULL otherwise.</p>
-<p><code>cont_effects</code>: column headings of any continuous effects</p>
-<p>The wolves consumer data has 2 covariates: Region and Pack, where Pack is nested within Region (<code>fac_nested=c(FALSE,TRUE)</code>). By “nested”, we mean that all wolves in a given pack are in the same region - each pack is entirely within one region. This is an excellent example of <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/wolf_model.png">hierarchical structure</a>, fit with 2 random effects (<code>fac_random=c(TRUE,TRUE)</code>).</p>
+<p>See ?load_mix_data for details.</p>
+<p>The geese consumer data has 1 covariate (<code>factors=&quot;Group&quot;</code>), which we fit as a fixed effect (<code>fac_random=FALSE</code>). We choose to treat Group as a fixed effect instead of a random effect here because we are interested in the diet of each group separately and NOT in the overall diet. “Group” is not nested within another factor (<code>fac_nested=FALSE</code>). There are no continuous effects (<code>cont_effects=NULL</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-mix.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wolves_consumer.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+mix.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_consumer.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
-<span class="co"># Load the mixture/consumer data</span>
-mix &lt;-<span class="st"> </span><span class="kw">load_mix_data</span>(<span class="dt">filename=</span>mix.filename, 
-                     <span class="dt">iso_names=</span><span class="kw">c</span>(<span class="st">&quot;d13C&quot;</span>,<span class="st">&quot;d15N&quot;</span>), 
-                     <span class="dt">factors=</span><span class="kw">c</span>(<span class="st">&quot;Region&quot;</span>,<span class="st">&quot;Pack&quot;</span>), 
-                     <span class="dt">fac_random=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>), 
-                     <span class="dt">fac_nested=</span><span class="kw">c</span>(<span class="ot">FALSE</span>,<span class="ot">TRUE</span>), 
+mix &lt;-<span class="st"> </span><span class="kw">load_mix_data</span>(<span class="dt">filename=</span>mix.filename,
+                     <span class="dt">iso_names=</span><span class="kw">c</span>(<span class="st">&quot;d13C&quot;</span>,<span class="st">&quot;d15N&quot;</span>),
+                     <span class="dt">factors=</span><span class="st">&quot;Group&quot;</span>,
+                     <span class="dt">fac_random=</span><span class="ot">FALSE</span>,
+                     <span class="dt">fac_nested=</span><span class="ot">FALSE</span>,
                      <span class="dt">cont_effects=</span><span class="ot">NULL</span>)</code></pre></div>
 </div>
 <div id="load-source-data" class="section level3">
 <h3>Load source data</h3>
-<p>Load the source data, i.e. your:</p>
-<ul>
-<li>Source isotope values (trophic ecology / diet)</li>
-<li>Sediment/water source tracer values (sediment/hydrology fingerprinting)</li>
-</ul>
-<p><code>filename</code>: name of the CSV file with source data</p>
-<p><code>source_factors</code>: column headings of random/fixed effects you have source data by</p>
-<p><code>conc_dep</code>: TRUE or FALSE, do you have concentration dependence data in the file?</p>
-<p><code>data_type</code>: “means” or “raw”, is your source data as means+SD, or do you have raw data?</p>
-<p>If you look at <code>wolves_sources.csv</code>, you will see that each Region has different isotope values - this is specified with <code>source_factors=&quot;Region&quot;</code>. We do not have concentration dependence data here, so <code>conc_dep=FALSE</code>. We only have source summary statistics (Mean, SD, and sample size), not the original “raw”&quot; data, so <code>data_type=&quot;means&quot;</code>. <em>Note that <code>wolves_sources.csv</code> has a column titled “n”&quot; with the sample size of each source estimate. This must be in your source data file when you run your data!</em></p>
+<p>See ?load_source_data for details.</p>
+<p>If you look at <code>geese_sources.csv</code>, you will see that our geese source data are not by Group (<code>source_factors=NULL</code>), but we DO have concentration dependence data (<code>conc_dep=TRUE</code>). We only have source means, SD, and sample size—not the original “raw” (<code>data_type=&quot;means&quot;</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-source.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wolves_sources.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+source.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_sources.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
-<span class="co"># Load the source data</span>
 source &lt;-<span class="st"> </span><span class="kw">load_source_data</span>(<span class="dt">filename=</span>source.filename,
-                           <span class="dt">source_factors=</span><span class="st">&quot;Region&quot;</span>, 
-                           <span class="dt">conc_dep=</span><span class="ot">FALSE</span>, 
-                           <span class="dt">data_type=</span><span class="st">&quot;means&quot;</span>, 
+                           <span class="dt">source_factors=</span><span class="ot">NULL</span>,
+                           <span class="dt">conc_dep=</span><span class="ot">TRUE</span>,
+                           <span class="dt">data_type=</span><span class="st">&quot;means&quot;</span>,
                            mix)</code></pre></div>
 </div>
 <div id="load-discrimination-data" class="section level3">
 <h3>Load discrimination data</h3>
-<p>Load the discrimination data, i.e. your:</p>
-<ul>
-<li>Trophic Enrichment Factor (TEF) / fractionation values (trophic ecology/diet)</li>
-<li>xxxxxxxx (sediment/hydrology fingerprinting)</li>
-</ul>
-<p><code>filename</code>: name of the CSV file with discrimination data</p>
+<p>See ?load_discr_data for details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-discr.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wolves_discrimination.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+discr.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_discrimination.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
-<span class="co"># Load the discrimination/TDF data</span>
 discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<span class="dt">filename=</span>discr.filename, mix)</code></pre></div>
 </div>
 <div id="plot-data" class="section level3">
@@ -202,22 +140,16 @@ discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<spa
 <li>Is your mixture data in the source polygon?</li>
 <li>Are one or more of your sources confounded/hidden?</li>
 </ul>
-<p><code>filename</code>: name you’d like MixSIAR to save the isospace plot as (extension will be added automatically)</p>
-<p><code>plot_save_pdf</code>: TRUE or FALSE, should MixSIAR save the plot as a .pdf?</p>
-<p><code>plot_save_png</code>: TRUE or FALSE, should MixSIAR save the plot as a .png?</p>
-<p>You should <em>always</em> look at the isospace plot—this is a good check that the data is loaded correctly, and that the isospace geometry makes sense. If the mixture data are well outside the source polygon, you have a serious violation of mixing model assumptions, and it must be true that either 1) You’re missing a source, or 2) You’re using an incorrect discrimination factor. MixSIAR, like SIAR, fits a residual error term, and thus will always find a solution <em>even if it is nonsensical.</em></p>
-<p>Also note that the MixSIAR isospace plot adds the discrimination means <em>AND SDs</em> to the raw source values. This is because model uses the source + discrimination values to fit the mixture data, calculated as <span class="math inline">\(\sqrt{\sigma^2_{source} + \sigma^2_{discr}}\)</span>, under the assumption of independence. Error bars indicate <span class="math inline">\(\pm\)</span> 1 SD.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make an isospace plot</span>
 <span class="kw">plot_data</span>(<span class="dt">filename=</span><span class="st">&quot;isospace_plot&quot;</span>, <span class="dt">plot_save_pdf=</span><span class="ot">TRUE</span>, <span class="dt">plot_save_png=</span><span class="ot">FALSE</span>, mix,source,discr)</code></pre></div>
 </div>
 <div id="calculate-convex-hull-area" class="section level3">
 <h3>Calculate convex hull area</h3>
-<p>If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s) as in <a href="http://www.int-res.com/articles/suppl/m514p001_supp.pdf">Brett (2014)</a>.</p>
+<p>Calculate normalized surface area of the convex hull polygon(s) as in <a href="http://www.int-res.com/articles/suppl/m514p001_supp.pdf">Brett (2014)</a>.</p>
 <p><strong>Note 1:</strong> discrimination SD is added to the source SD (see ?calc_area for details)</p>
-<p><strong>Note 2:</strong> If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate the convex hull area, standardized by source variance</span>
 <span class="kw">calc_area</span>(<span class="dt">source=</span>source,<span class="dt">mix=</span>mix,<span class="dt">discr=</span>discr)</code></pre></div>
-<pre><code>## [1]  0.8750158 13.9726701 13.6440547</code></pre>
+<pre><code>## [1] 20.27097</code></pre>
 </div>
 <div id="plot-prior" class="section level3">
 <h3>Plot prior</h3>
@@ -227,26 +159,16 @@ discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<spa
 <li>DARK GREY = “uninformative”/generalist (alpha = 1)</li>
 <li>LIGHT GREY = “uninformative” Jeffrey’s prior (alpha = 1/n.sources)</li>
 </ul>
-<p>Bayesian analyses require priors, and MixSIAR includes a <code>plot_prior</code> function to plot the prior on the mixture (diet) proportions (at the highest hierarchical level, p.global). The prior represents our knowledge about the proportions before we consider the biotracer data. A natural tendency is to want a flat/“uninformative” prior, where all values between 0 and 1 are equally likely. However, because proportions are not independent, there is no truly uninformative prior (e.g. the histograms are not flat). The best we can do with the Dirichlet distribution is set <span class="math inline">\(\alpha\)</span> = c(1,1,1), which is uninformative on the simplex. In other words, all combinations of the proportions are equally likely. See the section titled “Constructing informative Bayesian priors” in the forthcoming MixSIAR paper.</p>
-<p>Because the mean of the “uninformative” prior, <span class="math inline">\(\alpha\)</span> = c(1,1,1), is <span class="math inline">\(\frac{1}{n.sources}\)</span>, we also call it the generalist prior. This reflects two facts: 1) it is not really uninformative, and 2) for weakly informative data it shifts the posterior towards a generalist diet, <span class="math inline">\(p_1 = p_2 = p_3 = \frac{1}{3}\)</span>. The amount of shift depends on the informativeness (quality and quantity) of the data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># default &quot;UNINFORMATIVE&quot; / GENERALIST prior (alpha = 1)</span>
 <span class="kw">plot_prior</span>(<span class="dt">alpha.prior=</span><span class="dv">1</span>,source)</code></pre></div>
 </div>
 <div id="write-jags-model-file" class="section level3">
 <h3>Write JAGS model file</h3>
-<p>Write the JAGS model file (define model structure). The model will be saved as <code>model_filename</code> (“MixSIAR_model.txt” is default, but you may want to change if you create many different models).</p>
-<p>There are 3 error term options available:</p>
-<ol style="list-style-type: decimal">
-<li>Residual * Process (<code>resid_err = TRUE</code>, <code>process_err = TRUE</code>)</li>
-<li>Residual only (<code>resid_err = TRUE</code>, <code>process_err = FALSE</code>)</li>
-<li>Process only (<code>resid_err = FALSE</code>, <code>process_err = TRUE</code>)</li>
-</ol>
-<p>In the Wolves Example we want the “Residual * Process” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
-<p><strong>Note:</strong> If you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same behavior as <code>siarsolo</code> in SIAR.</p>
+<p>In the Geese Example we demo the “Residual only” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write the JAGS model file</span>
-model_filename &lt;-<span class="st"> &quot;MixSIAR_model.txt&quot;</span>   <span class="co"># Name of the JAGS model file</span>
+model_filename &lt;-<span class="st"> &quot;MixSIAR_model.txt&quot;</span>
 resid_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-process_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+process_err &lt;-<span class="st"> </span><span class="ot">FALSE</span>
 <span class="kw">write_JAGS_model</span>(model_filename, resid_err, process_err, mix, source)</code></pre></div>
 </div>
 <div id="run-model" class="section level3">
@@ -314,41 +236,18 @@ process_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
 </tr>
 </tbody>
 </table>
-<p>You can also set custom MCMC parameters, e.g:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">run &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">chainLength=</span><span class="dv">200000</span>, <span class="dt">burn=</span><span class="dv">150000</span>, <span class="dt">thin=</span><span class="dv">50</span>, <span class="dt">chains=</span><span class="dv">3</span>, <span class="dt">calcDIC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p>Good idea to use <code>run = &quot;test&quot;</code> first to check if 1) the data are loaded correctly and 2) the model is specified correctly:</p>
+<p>First use <code>run = &quot;test&quot;</code> to check if 1) the data are loaded correctly and 2) the model is specified correctly:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;test&quot;</span>, mix, source, discr, model_filename, 
                     <span class="dt">alpha.prior =</span> <span class="dv">1</span>, resid_err, process_err)</code></pre></div>
-<p>After a test run works, increase the MCMC run to a value that may converge</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;normal&quot;</span>, mix, source, discr, model_filename, 
-                    <span class="co"># alpha.prior = 1, resid_err, process_err)</span></code></pre></div>
-<p><code>jags.1</code> will be an <code>rjags</code> object where you can access the MCMC chains for plotting, aggregating sources a posteriori, etc.</p>
+<p>After a test run works, increase the MCMC run to a value that may converge:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;short&quot;</span>, mix, source, discr, model_filename,
+                    <span class="dt">alpha.prior =</span> <span class="dv">1</span>, resid_err, process_err)</code></pre></div>
 </div>
 <div id="analyze-diagnostics-and-output" class="section level3">
 <h3>Analyze diagnostics and output</h3>
-<p>First you can set output options like file names, plot file types, etc. (see ?output_JAGS for details).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">summary_save =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">summary_name =</span> <span class="st">&quot;summary_statistics&quot;</span>,
-                       <span class="dt">sup_post =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_post_save_pdf =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">plot_post_name =</span> <span class="st">&quot;posterior_density&quot;</span>,
-                       <span class="dt">sup_pairs =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_pairs_save_pdf =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">plot_pairs_name =</span> <span class="st">&quot;pairs_plot&quot;</span>,
-                       <span class="dt">sup_xy =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">plot_xy_save_pdf =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_xy_name =</span> <span class="st">&quot;xy_plot&quot;</span>,
-                       <span class="dt">gelman =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">heidel =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">geweke =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">diag_save =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">diag_name =</span> <span class="st">&quot;diagnostics&quot;</span>,
-                       <span class="dt">indiv_effect =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_post_save_png =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_pairs_save_png =</span> <span class="ot">FALSE</span>,
-                       <span class="dt">plot_xy_save_png =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p>Then you can call <code>output_JAGS</code> to process diagnostics, summary statistics, and create posterior density plots:</p>
+<p>See ?output_JAGS for details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">output_JAGS</span>(jags<span class="fl">.1</span>, mix, source, output_options)</code></pre></div>
+<p>Note that there is no global/overall estimated diet—this is because we fit Group as a fixed effect instead of a random effect.</p>
 </div>
 </div>
 
