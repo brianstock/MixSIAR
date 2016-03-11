@@ -20,35 +20,36 @@ MixSIAR incorporates several years of advances in Bayesian mixing model theory s
 
 The MixSIAR package can be run as a GUI with `mixsiar_gui()`, or as a sequence of R commands (`.R` script). The GUI depends on the `gWidgetsRGtk2` package in R. MixSIAR GUI has been tested and runs on [Windows](#windows), [Mac OS X](#mac-os-x), and [Linux](#linux).
 
-If you want to build the vignettes, you'll need to install "pandoc". [R Studio] comes bundled with pandoc, or you can visit http://pandoc.org/installing.html.
+If you want to build the vignettes, you'll need to install [pandoc]. Alternatively, [R Studio] comes bundled with pandoc.
 
 #### Windows
 
 1. Download and install/update [R].
 2. Download and install [JAGS].
-3. Open R. 
-4. Install GTK+ dependent packages:
+3. (Optional) If you want to build the vignettes, install [pandoc] or [R Studio].
+4. Open R. 
+5. Install GTK+ dependent packages:
 
     ```
     install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
     ```
 
-5. Load `RGtk2`. You will be prompted to install GTK+. **Follow the automatic prompts and do not interrupt the GTK+ installation!**:
+6. Load `RGtk2`. You will be prompted to install GTK+. **Follow the automatic prompts and do not interrupt the GTK+ installation!**:
 
     ```
     library(RGtk2)
     ```
 
-6. Restart R and run:
+7. Restart R and run:
 
     ```
     library(devtools)
     devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
-                             build_vignettes = TRUE) # FALSE if no pandoc
+                             build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
 
-7. Load MixSIAR and run GUI:
+8. Load MixSIAR and run GUI:
 
     ```
     library(MixSIAR)
@@ -59,25 +60,26 @@ If you want to build the vignettes, you'll need to install "pandoc". [R Studio] 
 
 1. Download and install/update [R].
 2. Download and install [JAGS].
-3. Open R. 
-4. Install GTK+ dependent R packages:
+3. (Optional) If you want to build the vignettes, install [pandoc] or [R Studio].
+4. Open R. 
+5. Install GTK+ dependent R packages:
 
     ```
     install.packages(c("gWidgets", "RGtk2", "gWidgetsRGtk2", "devtools"))
     ```
 
-5. Close R.
-6. Download and install the newest [GTK+ framework].
-7. Install the latest X11 application, [xQuartz].
-8. Open R and run:
+6. Close R.
+7. Download and install the newest [GTK+ framework].
+8. Install the latest X11 application, [xQuartz].
+9. Open R and run:
 
     ```
     library(devtools)
     devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
-                             build_vignettes = TRUE) # FALSE if no pandoc
+                             build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
-9. Load MixSIAR and run GUI:
+10. Load MixSIAR and run GUI:
 
     ```
     library(MixSIAR)
@@ -89,24 +91,25 @@ If you want to build the vignettes, you'll need to install "pandoc". [R Studio] 
 1. Download and install/update [R].
 2. Download and install [JAGS]. Or, from the terminal: `sudo apt-get install jags r-cran-rjags`.
 3. Download and install [GTK+ framework]. From the terminal: `sudo apt-get install libgtk2.0-dev`.
-4. Check if GTK+ is installed correctly. Open R, install and load the `RGtk2` package with:
+4. (Optional) If you want to build the vignettes, install [pandoc] or [R Studio].
+5. Check if GTK+ is installed correctly. Open R, install and load the `RGtk2` package with:
 
     ```
     install.packages("RGtk2")
     library(RGtk2)
     ```
 
-5. Install and load devtools, then install MixSIAR:
+6. Install and load devtools, then install MixSIAR:
 
     ```
     install.packages("devtools")
     library(devtools)
     devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
-                             build_vignettes = TRUE) # FALSE if no pandoc
+                             build_vignettes = TRUE) # FALSE if no pandoc and pandoc-citeproc
     ```
 
-6. Load MixSIAR and run GUI:
+7. Load MixSIAR and run GUI:
 
     ```
     library(MixSIAR)
@@ -149,6 +152,7 @@ For a detailed description of the math underlying these models, see:
 
 Finally... yes, a paper introducing MixSIAR is in the works and will be forthcoming shortly.
 
+[pandoc]:https://github.com/jgm/pandoc/releases/
 [GTK+ framework]:http://r.research.att.com/#other
 [xQuartz]:http://xquartz.macosforge.org/landing/
 [R Studio]:https://www.rstudio.com/products/rstudio/download/
