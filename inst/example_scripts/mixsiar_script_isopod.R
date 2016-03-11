@@ -33,7 +33,7 @@ mix.filename <- system.file("extdata", "isopod_consumer.csv", package = "MixSIAR
 mix <- load_mix_data(filename=mix.filename,
 					 iso_names=c("c16.4w3","c18.2w6","c18.3w3","c18.4w3","c20.4w6","c20.5w3","c22.5w3","c22.6w3"),
 					 factors="Site",
-					 fac_random=FALSE,
+					 fac_random=TRUE,
 					 fac_nested=FALSE,
 					 cont_effects=NULL)
 

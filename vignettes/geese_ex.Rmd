@@ -28,9 +28,9 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_geese.R"))
 The "Geese Example" uses data from [Inger et al. (2006)](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full) of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in [Parnell et al. (2013)](http://onlinelibrary.wiley.com/doi/10.1002/env.2221/full):
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
-+ 1 fixed effect (Group)
++ 1 **fixed effect** (Group)
 + Source data as means and SDs
-+ Concentration dependence
++ **Concentration dependence**
 + Residual only error
 
 ### Load MixSIAR package

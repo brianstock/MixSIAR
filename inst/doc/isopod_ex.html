@@ -13,7 +13,7 @@
 
 <meta name="date" content="2016-03-10" />
 
-<title>MixSIAR Script Example (Geese)</title>
+<title>MixSIAR Script Example (Isopod)</title>
 
 
 
@@ -68,31 +68,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">MixSIAR Script Example (Geese)</h1>
+<h1 class="title">MixSIAR Script Example (Isopod)</h1>
 <h4 class="author"><em>Brian Stock</em></h4>
 <h4 class="date"><em>March 10, 2016</em></h4>
 
 </div>
 
 
-<p>Here we step through the Geese Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
-<p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_geese.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
+<p>Here we step through the Isopod Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
+<p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_isopod.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixSIAR)
 mixsiar.dir &lt;-<span class="st"> </span><span class="kw">find.package</span>(<span class="st">&quot;MixSIAR&quot;</span>)
 <span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;/home/brian/R/x86_64-pc-linux-gnu-library/3.2/MixSIAR/example_scripts&quot;</code></pre>
-<p>You can run the geese example script directly with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts/mixsiar_script_geese.R&quot;</span>))</code></pre></div>
-<div id="geese-example" class="section level2">
-<h2>Geese Example</h2>
-<p>The “Geese Example” uses data from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full">Inger et al. (2006)</a> of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in <a href="http://onlinelibrary.wiley.com/doi/10.1002/env.2221/full">Parnell et al. (2013)</a>:</p>
+<p>You can run the isopod example script directly with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts/mixsiar_script_isopod.R&quot;</span>))</code></pre></div>
+<div id="isopod-example" class="section level2">
+<h2>Isopod Example</h2>
+<p>The Isopod Example is from <a href="http://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> and demonstrates MixSIAR applied to an <strong>8-dimensional fatty acid dataset</strong>. Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites in Puget Sound, WA:</p>
 <ul>
-<li>2 biotracers (<span class="math inline">\(\delta^{13}\)</span>C, <span class="math inline">\(\delta^{15}\)</span>N)</li>
-<li>1 <strong>fixed effect</strong> (Group)</li>
-<li>Source data as means and SDs</li>
-<li><strong>Concentration dependence</strong></li>
-<li>Residual only error</li>
+<li><strong>8 biotracers</strong> (carbon 16.4w3, 18.2w6, 18.3w3, 18.4w3, 20.4w6, 20.5w3, 22.5w3, 22.6w3)</li>
+<li>1 random effect (Site)</li>
+<li>source data as means and SDs</li>
 </ul>
+<p>Here we treat Site as a random effect. This makes sense if we are interested in the overall population and think of Site as a nuisance factor. Fitting Site as a fixed effect would make more sense if we were interested specifically in the diet at each Site, as opposed to the overall population diet and variability between Sites. This differs from the analysis in Galloway et al. 2014.</p>
+<p>Fatty acid data greatly increase the number of biotracers beyond the typical 2 stable isotopes, d13C and d15N, which gives the mixing model power to resolve more sources. We caution, however, that using fatty acid data is not a panacea for the “underdetermined” problem (# sources &gt; # biotracers + 1). As the number of sources increases, the “uninformative” prior <span class="math inline">\((\alpha=1)\)</span> has greater influence, even if there are many more biotracers than sources. See the <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/cladocera_prior_plot.pdf">Cladocera Example prior</a> with 7 sources and 22 biotracers.</p>
 <div id="load-mixsiar-package" class="section level3">
 <h3>Load MixSIAR package</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixSIAR)</code></pre></div>
@@ -100,35 +100,36 @@ mixsiar.dir &lt;-<span class="st"> </span><span class="kw">find.package</span>(<
 <div id="load-mixture-data" class="section level3">
 <h3>Load mixture data</h3>
 <p>See ?load_mix_data for details.</p>
-<p>The geese consumer data has 1 covariate (<code>factors=&quot;Group&quot;</code>), which we fit as a fixed effect (<code>fac_random=FALSE</code>). We choose to treat Group as a fixed effect instead of a random effect here because we are interested in the diet of each group separately and NOT in the overall diet. “Group” is not nested within another factor (<code>fac_nested=FALSE</code>). There are no continuous effects (<code>cont_effects=NULL</code>).</p>
+<p>The isopod consumer data has 1 covariate (<code>factors=&quot;Site&quot;</code>), which we fit as a random effect (<code>fac_random=TRUE</code>). “Site” is not nested within another factor (<code>fac_nested=FALSE</code>). There are no continuous effects (<code>cont_effects=NULL</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-mix.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_consumer.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+mix.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;isopod_consumer.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
 mix &lt;-<span class="st"> </span><span class="kw">load_mix_data</span>(<span class="dt">filename=</span>mix.filename,
-                     <span class="dt">iso_names=</span><span class="kw">c</span>(<span class="st">&quot;d13C&quot;</span>,<span class="st">&quot;d15N&quot;</span>),
-                     <span class="dt">factors=</span><span class="st">&quot;Group&quot;</span>,
-                     <span class="dt">fac_random=</span><span class="ot">FALSE</span>,
+                     <span class="dt">iso_names=</span><span class="kw">c</span>(<span class="st">&quot;c16.4w3&quot;</span>,<span class="st">&quot;c18.2w6&quot;</span>,<span class="st">&quot;c18.3w3&quot;</span>,<span class="st">&quot;c18.4w3&quot;</span>,<span class="st">&quot;c20.4w6&quot;</span>,<span class="st">&quot;c20.5w3&quot;</span>,<span class="st">&quot;c22.5w3&quot;</span>,<span class="st">&quot;c22.6w3&quot;</span>),
+                     <span class="dt">factors=</span><span class="st">&quot;Site&quot;</span>,
+                     <span class="dt">fac_random=</span><span class="ot">TRUE</span>,
                      <span class="dt">fac_nested=</span><span class="ot">FALSE</span>,
                      <span class="dt">cont_effects=</span><span class="ot">NULL</span>)</code></pre></div>
 </div>
 <div id="load-source-data" class="section level3">
 <h3>Load source data</h3>
 <p>See ?load_source_data for details.</p>
-<p>If you look at <code>geese_sources.csv</code>, you will see that our geese source data are not by Group (<code>source_factors=NULL</code>), but we DO have concentration dependence data (<code>conc_dep=TRUE</code>). We only have source means, SD, and sample size—not the original “raw” (<code>data_type=&quot;means&quot;</code>).</p>
+<p>We do not have any fixed/random/continuous effects or concentration dependence in the source data (<code>source_factors=NULL</code>, <code>conc_dep=FALSE</code>). We only have source means, SD, and sample size—not the original “raw” data (<code>data_type=&quot;means&quot;</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-source.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_sources.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+source.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;isopod_sources.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
 source &lt;-<span class="st"> </span><span class="kw">load_source_data</span>(<span class="dt">filename=</span>source.filename,
                            <span class="dt">source_factors=</span><span class="ot">NULL</span>,
-                           <span class="dt">conc_dep=</span><span class="ot">TRUE</span>,
+                           <span class="dt">conc_dep=</span><span class="ot">FALSE</span>,
                            <span class="dt">data_type=</span><span class="st">&quot;means&quot;</span>,
                            mix)</code></pre></div>
 </div>
 <div id="load-discrimination-data" class="section level3">
 <h3>Load discrimination data</h3>
 <p>See ?load_discr_data for details.</p>
+<p>Note that <a href="http://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the system.file call with the path to your file</span>
-discr.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;geese_discrimination.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
+discr.filename &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;isopod_discrimination.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;MixSIAR&quot;</span>)
 
 discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<span class="dt">filename=</span>discr.filename, mix)</code></pre></div>
 </div>
@@ -140,16 +141,9 @@ discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<spa
 <li>Is your mixture data in the source polygon?</li>
 <li>Are one or more of your sources confounded/hidden?</li>
 </ul>
+<p>When there are more than 2 biotracers, MixSIAR currently plots every pairwise combination. Here, that means <span class="math inline">\({8 \choose 2} = 28\)</span> plots are produced. In the future, MixSIAR will offer non-metric multidimensional scaling (NMDS) plots for these cases.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make an isospace plot</span>
 <span class="kw">plot_data</span>(<span class="dt">filename=</span><span class="st">&quot;isospace_plot&quot;</span>, <span class="dt">plot_save_pdf=</span><span class="ot">TRUE</span>, <span class="dt">plot_save_png=</span><span class="ot">FALSE</span>, mix,source,discr)</code></pre></div>
-</div>
-<div id="calculate-convex-hull-area" class="section level3">
-<h3>Calculate convex hull area</h3>
-<p>Calculate normalized surface area of the convex hull polygon(s) as in <a href="http://www.int-res.com/articles/suppl/m514p001_supp.pdf">Brett (2014)</a>.</p>
-<p><strong>Note 1:</strong> discrimination SD is added to the source SD (see ?calc_area for details)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate the convex hull area, standardized by source variance</span>
-<span class="kw">calc_area</span>(<span class="dt">source=</span>source,<span class="dt">mix=</span>mix,<span class="dt">discr=</span>discr)</code></pre></div>
-<pre><code>## [1] 20.27097</code></pre>
 </div>
 <div id="plot-prior" class="section level3">
 <h3>Plot prior</h3>
@@ -164,7 +158,7 @@ discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<spa
 </div>
 <div id="write-jags-model-file" class="section level3">
 <h3>Write JAGS model file</h3>
-<p>In the Geese Example we demo the “Residual only” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
+<p>In the Isopod Example we demo the “Residual only” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write the JAGS model file</span>
 model_filename &lt;-<span class="st"> &quot;MixSIAR_model.txt&quot;</span>
 resid_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
@@ -173,81 +167,18 @@ process_err &lt;-<span class="st"> </span><span class="ot">FALSE</span>
 </div>
 <div id="run-model" class="section level3">
 <h3>Run model</h3>
-<p>Choose one of the MCMC run options:</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">run ==</th>
-<th align="left">Chain Length</th>
-<th align="left">Burn-in</th>
-<th align="left">Thin</th>
-<th align="left"># Chains</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">“test”</td>
-<td align="left">1,000</td>
-<td align="left">500</td>
-<td align="left">1</td>
-<td align="left">3</td>
-</tr>
-<tr class="even">
-<td align="left">“very short”</td>
-<td align="left">10,000</td>
-<td align="left">5,000</td>
-<td align="left">5</td>
-<td align="left">3</td>
-</tr>
-<tr class="odd">
-<td align="left">“short”</td>
-<td align="left">50,000</td>
-<td align="left">25,000</td>
-<td align="left">25</td>
-<td align="left">3</td>
-</tr>
-<tr class="even">
-<td align="left">“normal”</td>
-<td align="left">100,000</td>
-<td align="left">50,000</td>
-<td align="left">50</td>
-<td align="left">3</td>
-</tr>
-<tr class="odd">
-<td align="left">“long”</td>
-<td align="left">300,000</td>
-<td align="left">200,000</td>
-<td align="left">100</td>
-<td align="left">3</td>
-</tr>
-<tr class="even">
-<td align="left">“very long”</td>
-<td align="left">1,000,000</td>
-<td align="left">500,000</td>
-<td align="left">500</td>
-<td align="left">3</td>
-</tr>
-<tr class="odd">
-<td align="left">“extreme”</td>
-<td align="left">3,000,000</td>
-<td align="left">1,500,000</td>
-<td align="left">500</td>
-<td align="left">3</td>
-</tr>
-</tbody>
-</table>
 <p>First use <code>run = &quot;test&quot;</code> to check if 1) the data are loaded correctly and 2) the model is specified correctly:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;test&quot;</span>, mix, source, discr, model_filename, 
                     <span class="dt">alpha.prior =</span> <span class="dv">1</span>, resid_err, process_err)</code></pre></div>
 <p>After a test run works, increase the MCMC run to a value that may converge:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;short&quot;</span>, mix, source, discr, model_filename,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jags<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">run_model</span>(<span class="dt">run=</span><span class="st">&quot;normal&quot;</span>, mix, source, discr, model_filename,
                     <span class="dt">alpha.prior =</span> <span class="dv">1</span>, resid_err, process_err)</code></pre></div>
 </div>
 <div id="analyze-diagnostics-and-output" class="section level3">
 <h3>Analyze diagnostics and output</h3>
 <p>See ?output_JAGS for details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">output_JAGS</span>(jags<span class="fl">.1</span>, mix, source, output_options)</code></pre></div>
-<p>Note that there is no global/overall estimated diet—this is because we fit Group as a fixed effect instead of a random effect.</p>
+<p>Since we fit Site as a random effect, we can make inference on diet at the overall population level (<code>p.global</code>, <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/isopod_posterior_density_diet_p_global.pdf">posterior plot</a>) as well as at individual sites (Site CP, <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/isopod_posterior_density_diet_p_CP.pdf">posterior plot</a>).</p>
 </div>
 </div>
 

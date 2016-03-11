@@ -1,0 +1,89 @@
+## ------------------------------------------------------------------------
+library(MixSIAR)
+mixsiar.dir <- find.package("MixSIAR")
+paste0(mixsiar.dir,"/example_scripts")
+
+## ---- eval=FALSE---------------------------------------------------------
+#  source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_killerwhale.R"))
+
+## ------------------------------------------------------------------------
+library(MixSIAR)
+
+## ------------------------------------------------------------------------
+# Replace the system.file call with the path to your file
+mix.filename <- system.file("extdata", "killerwhale_consumer.csv", package = "MixSIAR")
+
+mix <- load_mix_data(filename=mix.filename,
+					 iso_names=c("d13C","d15N"),
+					 factors=NULL,
+					 fac_random=NULL,
+					 fac_nested=NULL,
+					 cont_effects=NULL)
+
+## ------------------------------------------------------------------------
+# Replace the system.file call with the path to your file
+source.filename <- system.file("extdata", "killerwhale_sources.csv", package = "MixSIAR")
+
+source <- load_source_data(filename=source.filename,
+						   source_factors=NULL,
+						   conc_dep=FALSE,
+						   data_type="means",
+						   mix)
+
+## ------------------------------------------------------------------------
+# Replace the system.file call with the path to your file
+discr.filename <- system.file("extdata", "killerwhale_discrimination.csv", package = "MixSIAR")
+
+discr <- load_discr_data(filename=discr.filename, mix)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # Make an isospace plot
+#  plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix,source,discr)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # Plot uninformative prior
+#  plot_prior(alpha.prior=1, source, filename = "prior_plot_kw_uninf")
+#  
+#  # Define model structure and write JAGS model file
+#  model_filename <- "MixSIAR_model_kw_uninf.txt"   # Name of the JAGS model file
+#  resid_err <- TRUE
+#  process_err <- TRUE
+#  write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+#  
+#  # Run the JAGS model ("very long" took ~5 min)
+#  jags.uninf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
+#  # jags.uninf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
+#  
+#  # Process diagnostics, summary stats, and posterior plots
+#  output_JAGS(jags.uninf, mix, source)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # Our 14 fecal samples were 10, 1, 0, 0, 3
+#  kw.alpha <- c(10,1,0,0,3)
+#  
+#  # Generate alpha hyperparameters scaling sum(alpha)=n.sources
+#  kw.alpha <- kw.alpha*length(kw.alpha)/sum(kw.alpha)
+#  
+#  # the Dirichlet hyperparameters for the alpha.prior cannot be 0 (but can set = .01)
+#  kw.alpha[which(kw.alpha==0)] <- 0.01
+#  
+#  # Plot your informative prior
+#  plot_prior(alpha.prior=kw.alpha,
+#  		   source=source,
+#  		   plot_save_pdf=TRUE,
+#  		   plot_save_png=FALSE,
+#  		   filename="prior_plot_kw_inf")
+#  
+#  # Define model structure and write JAGS model file
+#  model_filename <- "MixSIAR_model_kw_inf.txt"   # Name of the JAGS model file
+#  resid_err <- TRUE
+#  process_err <- TRUE
+#  write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+#  
+#  # Run the JAGS model ("very long" took ~5 min)
+#  jags.inf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
+#  # jags.inf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
+#  
+#  # Process diagnostics, summary stats, and posterior plots
+#  output_JAGS(jags.inf, mix, source)
+
