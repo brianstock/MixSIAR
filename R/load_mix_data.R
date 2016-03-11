@@ -5,8 +5,12 @@
 #'
 #' @param filename csv file with the mixture/consumer data
 #' @param iso_names vector of isotope column headings in 'filename'
-#' @param random_effects vector of random effect column headings in 'filename'
-#' @param fixed_effects vector of fixed effect column headings in 'filename',
+#' @param factors vector of random/fixed effect column headings in 'filename'.
+#'          NULL if no factors.
+#' @param fac_random vector of TRUE/FALSE, TRUE if factor is random effect, FALSE
+#'          if fixed effect. NULL if no factors.
+#' @param fac_nested vector of TRUE/FALSE, TRUE if factor is nested within the
+#'          other. Only applies if 2 factors. NULL otherwise.
 #' @param cont_effects vector of continuous effect column headings in 'filename'
 #'
 #' @return \code{mix}, a list including:

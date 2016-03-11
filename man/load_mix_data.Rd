@@ -12,11 +12,16 @@ load_mix_data(filename, iso_names, factors, fac_random, fac_nested,
 
 \item{iso_names}{vector of isotope column headings in 'filename'}
 
+\item{factors}{vector of random/fixed effect column headings in 'filename'.
+NULL if no factors.}
+
+\item{fac_random}{vector of TRUE/FALSE, TRUE if factor is random effect, FALSE
+if fixed effect. NULL if no factors.}
+
+\item{fac_nested}{vector of TRUE/FALSE, TRUE if factor is nested within the
+other. Only applies if 2 factors. NULL otherwise.}
+
 \item{cont_effects}{vector of continuous effect column headings in 'filename'}
-
-\item{random_effects}{vector of random effect column headings in 'filename'}
-
-\item{fixed_effects}{vector of fixed effect column headings in 'filename',}
 }
 \value{
 \code{mix}, a list including:
