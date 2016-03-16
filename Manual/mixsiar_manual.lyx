@@ -106,7 +106,7 @@ enumitem
 \begin_body
 
 \begin_layout Title
-MixSIAR User Manual v3.1
+MixSIAR GUI User Manual v3.1
 \end_layout
 
 \begin_layout Author
@@ -219,18 +219,15 @@ key "Plummer2003"
 
 \end_inset
 
-, are freely available online (
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/brianstock/MixSIAR
-\end_layout
+, are freely 
+\begin_inset CommandInset href
+LatexCommand href
+name "available online"
+target "https://github.com/brianstock/MixSIAR"
 
 \end_inset
 
-), and can be installed on machines running Mac OS X, Microsoft Windows,
+, and can be installed on machines running Mac OS X, Microsoft Windows,
  and Linux.
 \end_layout
 
@@ -1011,7 +1008,7 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR",
+devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
 \end_layout
 
 \begin_layout Plain Layout
@@ -1306,7 +1303,7 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR",
+devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
 \end_layout
 
 \begin_layout Plain Layout
@@ -1571,7 +1568,7 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR",
+devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
 \end_layout
 
 \begin_layout Plain Layout
@@ -1581,8 +1578,8 @@ devtools::install_github("brianstock/MixSIAR",
 
 \begin_layout Plain Layout
 
-                         build_vignettes = TRUE) # FALSE if no pandoc/R
- Studio
+                         build_vignettes = TRUE) # FALSE if no pandoc and
+ pandoc-citeproc
 \end_layout
 
 \begin_layout Plain Layout
@@ -11112,7 +11109,7 @@ your_file.R
 Installation ease
 \emph default
 : Some users aren’t able to install the GTK+ software that the GUI depends
- on (more issues on Mac).
+ on.
  It may be worth figuring out the script version (R skills!) instead of
  figuring out how to get GTK+ installed.
 \end_layout
@@ -11974,8 +11971,9 @@ Stock, B.
  C.
  and B.
  X.
- Semmens (2016).
- MixSIAR User Manual, version 3.1.
+ Semmens (2013).
+ MixSIAR GUI User Manual.
+ Version ##.
  https://github.com/brianstock/MixSIAR/.
 \end_layout
 

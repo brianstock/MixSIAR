@@ -44,7 +44,7 @@ If you want to build the vignettes, you'll need to install [pandoc]. Alternative
 
     ```
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR",
+    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
@@ -75,7 +75,7 @@ If you want to build the vignettes, you'll need to install [pandoc]. Alternative
 
     ```
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR",
+    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
@@ -104,7 +104,7 @@ If you want to build the vignettes, you'll need to install [pandoc]. Alternative
     ```
     install.packages("devtools")
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR",
+    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc and pandoc-citeproc
     ```
@@ -122,9 +122,9 @@ This software has been improved by the questions, suggestions, and bug reports o
 
 ### ON CITING MixSIAR:
 
-If you use MixSIAR GUI results in publications, please cite the MixSIAR GUI manual as (similar to how you cite R):
+If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):
 
->B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual, version ##. https://github.com/brianstock/MixSIAR.
+>B. C. Stock and B. X. Semmens (2013). MixSIAR User Manual. Version ##. https://github.com/brianstock/MixSIAR.
 
 The primary citation for _Bayesian mixing models_ (MixSIR):
 
