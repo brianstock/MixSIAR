@@ -124,7 +124,7 @@ This software has been improved by the questions, suggestions, and bug reports o
 
 If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):
 
->B. C. Stock and B. X. Semmens (2013). MixSIAR User Manual. Version ##. https://github.com/brianstock/MixSIAR.
+>B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual. Version ##. https://github.com/brianstock/MixSIAR.
 
 The primary citation for _Bayesian mixing models_ (MixSIR):
 
