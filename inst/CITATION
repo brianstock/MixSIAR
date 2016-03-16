@@ -1,17 +1,19 @@
 citHeader("To cite MixSIAR in publications use:")
 
-citEntry(entry = "manual",
+citEntry(entry = "misc",
   title        = "{MixSIAR} GUI User Manual",
   author       = personList(as.person("Brian C. Stock"),
                    as.person("Brice X. Semmens")),
   year         = "2013",
   note         = "Version 3.1",
+  doi          = {10.5281/zenodo.47719},
   url          = "https://github.com/brianstock/MixSIAR",
 
   textVersion  =
   paste("B.C. Stock and B.X. Semmens (2013).",
-        "MixSIAR GUI User Manual. Version ##.",
-        "https://github.com/brianstock/MixSIAR.")
+        "MixSIAR GUI User Manual. Version 3.1.",
+        "https://github.com/brianstock/MixSIAR.",
+        "doi:10.5281/zenodo.47719.")
 )
 
 citFooter(paste("The primary citation for Bayesian mixing models (MixSIR):",

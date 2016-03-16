@@ -1,6 +1,8 @@
 MixSIAR
 =============
 
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.47719.svg)](http://dx.doi.org/10.5281/zenodo.47719)
+
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. 
 
 MixSIAR represents a collaborative coding project between the investigators behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, Andrew Jackson, Jon Moore, Stuart Bearhop, and Richard Inger.
@@ -124,7 +126,7 @@ This software has been improved by the questions, suggestions, and bug reports o
 
 If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):
 
->B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual. Version ##. https://github.com/brianstock/MixSIAR.
+>B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual. Version 3.1. https://github.com/brianstock/MixSIAR. doi:10.5281/zenodo.47719.
 
 The primary citation for _Bayesian mixing models_ (MixSIR):
 
