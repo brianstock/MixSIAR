@@ -75,14 +75,15 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   modify 'write_JAGS_model.R'",sep=""))}
 
   # Set mcmc parameters
-  if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
-  if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
-  if(run=="short") mcmc <- list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
-  if(run=="normal") mcmc <- list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
-  if(run=="long") mcmc <- list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
-  if(run=="very long") mcmc <- list(chainLength=1000000, burn=500000, thin=500, chains=3, calcDIC=TRUE)
-  if(run=="extreme") mcmc <- list(chainLength=3000000, burn=1500000, thin=500, chains=3, calcDIC=TRUE)
-  if(!exists("mcmc")) mcmc <- run   # if the user has entered custom mcmc parameters, use them
+  if(is.list(run)){mcmc <- run} else { # if the user has entered custom mcmc parameters, use them
+    if(run=="test") mcmc <- list(chainLength=1000, burn=500, thin=1, chains=3, calcDIC=TRUE)
+    if(run=="very short") mcmc <- list(chainLength=10000, burn=5000, thin=5, chains=3, calcDIC=TRUE)
+    if(run=="short") mcmc <- list(chainLength=50000, burn=25000, thin=25, chains=3, calcDIC=TRUE)
+    if(run=="normal") mcmc <- list(chainLength=100000, burn=50000, thin=50, chains=3, calcDIC=TRUE)
+    if(run=="long") mcmc <- list(chainLength=300000, burn=200000, thin=100, chains=3, calcDIC=TRUE)
+    if(run=="very long") mcmc <- list(chainLength=1000000, burn=500000, thin=500, chains=3, calcDIC=TRUE)
+    if(run=="extreme") mcmc <- list(chainLength=3000000, burn=1500000, thin=500, chains=3, calcDIC=TRUE)
+  }
 
   n.sources <- source$n.sources
   N <- mix$N

@@ -77,7 +77,7 @@ load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_
   if(n.iso == 0){
   stop(paste("*** Error: No isotopes/tracers selected. Please select 1 or more
         isotopes/tracers, and then load your consumer/mixture data again. ***",sep=""))}
-  if(length(fac_random) < length(factors)){
+  if(length(fac_random) != length(factors)){
   stop(paste("*** Error: You have specified factors to include without saying
         if they are random or fixed effects (length of fac_random should
         match length of factors). Please check your load_mix_data line and try again. ***",sep=""))}
@@ -111,6 +111,20 @@ load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_
   stop(paste("*** Error: More than 1 continuous effect selected (MixSIAR can only
         currently handle 0 or 1 continuous effects). Please choose 0 or 1
         continuous effects and then load your consumer/mixture data again. ***",sep=""))}
+
+  # check that iso_names, factors, and cont_effects are in colnames(X)
+  if(sum(is.na(match(iso_names,colnames(X)))) > 0){
+  stop(paste("*** Error: Your 'iso_names' do not match column names in your
+        mixture data file (case sensitive). Please check your mix .csv data 
+        file and load_mix_data line, then try again. ***",sep=""))}
+  if(sum(is.na(match(factors,colnames(X)))) > 0){
+  stop(paste("*** Error: Your 'factors' do not match column names in your
+        mixture data file (case sensitive). Please check your mix .csv data
+        file and load_mix_data line, then try again. ***",sep=""))}
+  if(sum(is.na(match(cont_effects,colnames(X)))) > 0){
+  stop(paste("*** Error: Your 'cont_effects' do not match column names in your
+        mixture data file (case sensitive). Please check your mix .csv data 
+        file and load_mix_data line, then try again. ***",sep=""))}
 
   N <- dim(X)[1]                  # number of consumer data points
   X_iso_cols <- match(iso_names,colnames(X))   # find the column indicies of the user-selected isotopes in X

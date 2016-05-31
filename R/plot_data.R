@@ -33,6 +33,14 @@
 #'
 #' @seealso \code{\link{plot_data_two_iso}}, \code{\link{plot_data_one_iso}}
 plot_data <- function(filename,plot_save_pdf,plot_save_png,mix,source,discr){
+  # check that discr rownames match source_names
+  if(!identical(rownames(discr$mu),source$source_names)){
+    stop(paste("*** Error: Source names do not match in source and discr
+    data files. Please check your source and discr data file row names.",sep=""))}
+  if(!identical(rownames(discr$sig2),source$source_names)){
+    stop(paste("*** Error: Source names do not match in source and discr
+    data files. Please check your source and discr data file row names.",sep=""))}
+
   if(mix$n.iso==1){
     plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png)
   } else {

@@ -21,6 +21,18 @@ load_discr_data <- function(filename,mix){
   DISCR <- DISCR[order(rownames(DISCR)),]  # rearrange DISCR so sources are in alphabetical order
 
   # Make sure the iso columns of discr_mu and discr_sig2 are in the same order as S_MU and S_SIG
+  # check that MU_names and SIG_names are in colnames(DISCR)
+  if(sum(is.na(match(mix$MU_names,colnames(DISCR)))) > 0){
+    stop(paste("*** Error: Discrimination mean column names mislabeled.
+    Should be 'Mean' + iso_names from mix data file, e.g. 'Meand13C' if
+    mix$iso_names = 'd13C'. Please ensure headings in discr data file match
+    this format and try again.",sep=""))}
+  if(sum(is.na(match(mix$SIG_names,colnames(DISCR)))) > 0){
+    stop(paste("*** Error: Discrimination SD column names mislabeled.
+    Should be 'SD' + iso_names from mix data file, e.g. 'SDd13C' if
+    mix$iso_names = 'd13C'. Please ensure headings in discr data file match
+    this format and try again.",sep=""))}
+
   discr_mu_cols <- match(mix$MU_names,colnames(DISCR))   # get the column numbers of DISCR that correspond to the means
   discr_sig_cols <- match(mix$SIG_names,colnames(DISCR))   # get the column numbers of DISCR that correspond to the SDs
   discr_mu <- as.matrix(DISCR[,discr_mu_cols])                            # DISCR means

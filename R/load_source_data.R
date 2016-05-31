@@ -64,13 +64,20 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     MixSIAR can only fit source data by up to ONE factor.
     Please specify 0 or 1 source factor and try again.",sep=""))
   }
+  # source factor must be in colnames(SOURCE)
+  if(sum(is.na(match(source_factors,colnames(SOURCE)))) > 0){
+    stop(paste("*** Error: Your 'source_factors' do not match column names in your
+        source data file (case sensitive). Please check your source .csv data
+        file and load_source_data line, then try again. ***",sep=""))
+  }
   test_fac <- match(source_factors,mix$factors)
   if(source.fac==1 && (length(test_fac)==0 || is.na(test_fac))){
     stop(paste("*** Error: source factor not in mix$factors.
     You cannot model a source random effect that is not included
-    as a random/fixed effect for the mixture/consumer. Either 1) remove the source
-    factor (reload source data), or 2) include the random/fixed effect
-    in the mixture (reload mix data).",sep=""))
+    as a random/fixed effect for the mixture/consumer. Either
+     1) remove the source factor (reload source data), or
+     2) include the random/fixed effect in the mixture (reload mix data).
+    Could be a mismatch between column headings in the mix and source data files.",sep=""))
   }
   if(source.fac==0) by_factor <- NA else by_factor <- match(source_factors, mix$factors)
 
@@ -90,6 +97,14 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   # Concentration Dependence section (must be after SOURCE is sorted)
   if(conc_dep){   # if we have concentration dependence data
     CONC_names <- paste("Conc",mix$iso_names,sep="")
+    # check that CONC_names are in colnames(SOURCE)
+    if(sum(is.na(match(CONC_names,colnames(SOURCE)))) > 0){
+    stop(paste("*** Error: Concentration dependence column names mislabeled.
+    Should be 'Conc' + iso_names, e.g. 'Concd13C' if iso_names = 'd13C'.
+    Please ensure Conc headings in source data file match iso_names
+    in mix data file and try again. Alternatively, you may have set conc_dep=T
+    by mistake.",sep=""))}
+
     CONC_iso_cols <- match(CONC_names,colnames(SOURCE))
     conc <- do.call(rbind,lapply(split(SOURCE[,CONC_iso_cols],list(SOURCE[,1])),colMeans))  # calculate conc means for each [src,iso]
   } else conc <- NULL
@@ -103,6 +118,10 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   }
 
   if(data_type=="raw"){
+    if(sum(is.na(match(mix$iso_names,colnames(SOURCE)))) > 0){
+      stop(paste("*** Error: With raw source data, the iso_names in mix data
+        file must be in the column headings of source data file. Please check
+        your source and mix .csv data files and try again. ***",sep=""))}
     S_iso_cols <- match(mix$iso_names,colnames(SOURCE))   # find the column numbers of the user-selected isotopes
     # Create S_MU and S_SIG - the source means and sds by isotopes and fac1 (if source data are by factor)
     if(!is.na(by_factor)){  # if we have raw source data BY FACTOR
@@ -174,13 +193,27 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   } # end RAW data loading
 
   if(data_type=="means"){
+    # check that MU_names and SIG_names are in colnames(SOURCE)
+    if(sum(is.na(match(mix$MU_names,colnames(SOURCE)))) > 0){
+      stop(paste("*** Error: Source mean column names mislabeled.
+    Should be 'Mean' + iso_names from mix data file, e.g. 'Meand13C' if
+    mix$iso_names = 'd13C'. Please ensure headings in source data file match
+    this format and try again. Alternatively, if you have raw source data,
+    you should set data_type='raw'.",sep=""))}
+    if(sum(is.na(match(mix$SIG_names,colnames(SOURCE)))) > 0){
+      stop(paste("*** Error: Source SD column names mislabeled.
+    Should be 'SD' + iso_names from mix data file, e.g. 'SDd13C' if
+    mix$iso_names = 'd13C'. Please ensure headings in source data file match
+    this format and try again. Alternatively, if you have raw source data,
+    you should set data_type='raw'.",sep=""))}
+
     S_MU_iso_cols <- match(mix$MU_names,colnames(SOURCE))             # get the S_MU column numbers of the user-selected isotopes
     S_SIG_iso_cols <- match(mix$SIG_names,colnames(SOURCE))             # get the S_MU column numbers of the user-selected isotopes
 
     sample_size_col <- match("n",colnames(SOURCE))    # Find the column titled "n" be in the source means file, where n is the sample size for each source
     if(is.na(sample_size_col)){
       stop(paste("*** Error: Source sample sizes missing or entered incorrectly.
-        Check your sources.csv data file to be sure you have a column
+        Check your sources .csv data file to be sure you have a column
         titled \"n\" with the sample sizes for each source isotope estimate.",sep=""))
     }
     S_sample_size <- SOURCE[,sample_size_col]         # Get the sample sizes

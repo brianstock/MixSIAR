@@ -21,7 +21,7 @@ Description: MixSIAR creates and runs Bayesian mixing models to analyze biotrace
     several years of advances since MixSIR and SIAR, and includes both GUI
     (graphical user interface) and script versions.
 Depends: R (>= 3.2.3)
-Imports:
+Imports: 
     ggplot2 (>= 1.0.1),
     rjags (>= 4-4),
     R2jags (>= 0.5-7),
@@ -31,11 +31,12 @@ Imports:
     lattice (>= 0.20),
     compositions (>= 1.40),
     ggmcmc (>= 0.7.2)
-Suggests:
+Suggests: 
     gWidgetsRGtk2 (>= 0.0-83),
     splancs (>= 2.01-38),
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 SystemRequirements: JAGS (>= 4.1) for the script version, both JAGS and GTK+ for
     the GUI version. For install instructions, see manual at
     <https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf>
