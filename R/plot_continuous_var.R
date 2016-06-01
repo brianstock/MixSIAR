@@ -19,6 +19,8 @@
 #'
 #' @seealso Francis et al. 2011
 plot_continuous_var <- function(jags.1, mix, source, output_options){
+# added only to pass R CMD check
+ilr.global <- x <- p.global <- p.ind <- sources <- ..scaled.. <- NULL
 R2jags::attach.jags(jags.1)
 n.sources <- source$n.sources
 source_names <- source$source_names

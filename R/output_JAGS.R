@@ -69,9 +69,11 @@ if(n.re==2){
 }
 n.sources <- source$n.sources
 source_names <- source$source_names
+p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
+ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
 R2jags::attach.jags(jags.1)
 jags1.mcmc <- coda::as.mcmc(jags.1)
-n.draws <- length(p.global[,1])
+n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])
 
 # Post-processing for 2 FE or 1FE + 1RE
 #   calculate p.both = ilr.global + ilr.fac1 + ilr.fac2
@@ -113,7 +115,7 @@ if(mix$fere){
 if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   # XY plot for p.global
   dev.new()
-  print(lattice::xyplot(coda::as.mcmc(p.global),strip=lattice::strip.custom(factor.levels=source_names)))
+  print(lattice::xyplot(coda::as.mcmc(jags.1$BUGSoutput$sims.list$p.global),strip=lattice::strip.custom(factor.levels=source_names)))
 
   # Save the xy p.global plot to file
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
@@ -204,7 +206,7 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
     z <- MASS::kde2d(x,y)   # calculates the 2D kernel density that the contour function needs
     contour(z, drawlabels=FALSE, nlevels=n.lines, col=my.cols, add=TRUE)
   }
-  pairs(p.global, labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
+  pairs(jags.1$BUGSoutput$sims.list$p.global, labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
 
   # Save the plot to file
   if(output_options[[7]]){ # svalue(plot_pairs_save_pdf)
@@ -221,13 +223,13 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
 # Posterior density plots
 ######################################################################
 if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
-  n.draws <- length(p.global[,1])   # number of posterior draws
+  n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])   # number of posterior draws
   if(mix$n.fe == 0){ # only if there are no fixed effects, otherwise p.global is meaningless
     # Posterior density plot for p.global
     dev.new()
     df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
     for(i in 1:n.sources){
-      df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(p.global[,i]) # fill in the p.global[i] values
+      df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(jags.1$BUGSoutput$sims.list$p.global[,i]) # fill in the p.global[i] values
       df$sources[seq(1+n.draws*(i-1),i*n.draws)] <- rep(source_names[i],n.draws)  # fill in the source names
     }
     my.title <- "Overall Population"
@@ -406,8 +408,8 @@ sig_labels <- NULL
 # print(mix)
 # print(mix$n.fe)
 if(mix$n.fe == 0){
-  global_quants <- t(round(apply(p.global,2,getQuant),3))
-  global_means <- getMeanSD(p.global)
+  global_quants <- t(round(apply(jags.1$BUGSoutput$sims.list$p.global,2,getQuant),3))
+  global_means <- getMeanSD(jags.1$BUGSoutput$sims.list$p.global)
   stats <- cbind(global_means, global_quants)
   global_labels <- rep(NA,n.sources)
   for(src in 1:n.sources){

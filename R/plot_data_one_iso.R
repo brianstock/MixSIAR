@@ -24,6 +24,9 @@
 #'
 #' @seealso \code{\link{plot_data}}
 plot_data_one_iso <- function(mix,source,discr,filename,plot_save_pdf,plot_save_png){
+  # added only to pass R CMD check
+  x <- position_jitter <- scolour <- xmin <- xmax <- label <- NULL
+
   # Look in the isotope column headers for 'C', 'N', 'S', and 'O'
   # Make the x and y labels for the isospace plot
   if(length(grep("C",mix$iso_names))==1) x_label <- expression(paste(delta^13, "C (\u2030)",sep=""))

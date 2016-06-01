@@ -25,6 +25,9 @@
 #'
 #' @seealso \code{\link{plot_data}}
 plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,plot_save_png){
+  # added only to pass R CMD check
+  x <- y <- ymin <- ymax <- scolour <- xmin <- xmax <- label <- NULL
+
   # Plot the 2 input isotopes (iso1 on x-axis, iso2 on y-axis)
   df <- data.frame(x = mix$data_iso[,isotopes[1]], y = mix$data_iso[,isotopes[2]])
   # Look in the isotope column headers for 'C', 'N', 'S', and 'O'
