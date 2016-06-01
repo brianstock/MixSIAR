@@ -19,6 +19,13 @@ test_that("calc_area returns numeric",{
 })
 
 test_that("calc_area throws error for != 2 iso",{
+  mix.filename <- system.file("extdata", "wolves_consumer.csv", package = "MixSIAR")
+  mix <- load_mix_data(filename=mix.filename,
+                       iso_names=c("d13C","d15N"),
+                       factors=c("Region","Pack"),
+                       fac_random=c(TRUE,TRUE),
+                       fac_nested=c(FALSE,TRUE),
+                       cont_effects=NULL)
   mix$n.iso <- 3
   expect_error(calc_area(source,mix,discr))
 

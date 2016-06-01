@@ -14,7 +14,7 @@
 #'
 #' If \code{mix} does not yet exist, a WARNING appears.
 #'
-#' A green check appears if the source data is successfully loaded, or a red x
+#' A green check appears if the source data is successfully loaded, or a red_x
 #' if not.
 #'
 #' @seealso \code{\link{load_source_data}}, which is run when the "Load source data"
@@ -68,13 +68,13 @@ build_source_win <- function(){
             {
             data_frame_name <- make.names("SOURCE")
             the_data <- do.call(h$action, list(h$file, header=T))
-            gWidgets::assign(data_frame_name, the_data, envir = mixsiar)
+            assign(data_frame_name, the_data, envir = mixsiar)
             gWidgets::add(grp_raw,gWidgets::gimage(system.file("extdata", "check.png", package = "MixSIAR")))
             source_filename <- h$file; assign("source_filename",source_filename,envir=mixsiar)
             },
             error = function(e){
               gWidgets::svalue(mixsiar$status_bar) <- "Could not load data"
-              gWidgets::add(grp_raw,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+              gWidgets::add(grp_raw,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
             }
           )
         }
@@ -82,7 +82,7 @@ build_source_win <- function(){
       source_random_effects <- character(0)  # vector of the names of any source random effects, e.g. "Region" or "character(0)" or ("Region", "Pack")
       if(n.effects > 0){    # if we have random/fixed effects in the mix data
         for(i in 1:n.effects){  # for each random/fixed effect
-          if(svalue(mixsiar$re_list[[i]])=="Yes"){   # if random/fixed effect[i] is selected by the user, add it to source_random_effects
+          if(gWidgets::svalue(mixsiar$re_list[[i]])=="Yes"){   # if random/fixed effect[i] is selected by the user, add it to source_random_effects
             source_random_effects <- c(source_random_effects,mix$FAC[[i]]$name)
           }
         }
@@ -117,7 +117,7 @@ build_source_win <- function(){
             },
             error = function(e){
               gWidgets::svalue(mixsiar$status_bar) <- "Could not load data"
-              gWidgets::add(grp_means_sds,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+              gWidgets::add(grp_means_sds,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
             }
           )
         }
@@ -151,7 +151,7 @@ build_source_win <- function(){
         gWidgets::svalue(mixsiar$status_bar) <- "Source data successfully loaded"
       } else {
         gWidgets::svalue(mixsiar$status_bar) <- "Could not load source data"
-        gWidgets::add(mixsiar$grp_source,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+        gWidgets::add(mixsiar$grp_source,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
       }
     }
   )

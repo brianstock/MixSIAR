@@ -43,6 +43,7 @@
 mixsiar_gui <- function(){
   # only run if RGtk2 can be loaded (suggested dependency)
   if(requireNamespace("gWidgetsRGtk2", quietly=TRUE)) {
+  if(requireNamespace("gWidgets", quitely=TRUE)){
     runif(1)
     old <- options("guiToolkit"="RGtk2")
     on.exit(options(old), add = TRUE)
@@ -98,7 +99,7 @@ mixsiar_gui <- function(){
               },
               error = function(e){
                 gWidgets::svalue(mixsiar$status_bar) <- "Could not load data"
-                gWidgets::add(grp_frac,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+                gWidgets::add(grp_frac,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
               }
             )
           }
@@ -149,7 +150,7 @@ mixsiar_gui <- function(){
       cont = grp_plot,
       expand = TRUE,
       handler = function(h, ...){
-        plot_data(svalue(mixsiar$plot_filename), svalue(mixsiar$plot_save_pdf), svalue(mixsiar$plot_save_png), mixsiar$mix,mixsiar$source,mixsiar$discr)
+        plot_data(gWidgets::svalue(mixsiar$plot_filename), gWidgets::svalue(mixsiar$plot_save_pdf), gWidgets::svalue(mixsiar$plot_save_png), mixsiar$mix,mixsiar$source,mixsiar$discr)
         gWidgets::svalue(mixsiar$status_bar) <- "If isospace plot looks good, you can now click 'RUN MODEL' at bottom"
       }
     )
@@ -176,7 +177,7 @@ mixsiar_gui <- function(){
         if(gWidgets::svalue(mixsiar$prior_option) == "\"Uninformative\"/Generalist"){
           alpha.prior <- rep(1,mixsiar$source$n.sources)
         } else { # prior_option = "Informative"
-          alpha.prior <- eval(parse(text=svalue(mixsiar$inf_prior)))
+          alpha.prior <- eval(parse(text=gWidgets::svalue(mixsiar$inf_prior)))
         }
         if(!is.numeric(alpha.prior)){
           stop(paste("*** Error: Your prior is not a numeric vector of length(n.sources).
@@ -295,7 +296,7 @@ mixsiar_gui <- function(){
     output_button <- gWidgets::gbutton(text="Process output", cont=grp_output, expand=TRUE,
                                        handler = function(h, ...){
                                          output_options <- list(gWidgets::svalue(mixsiar$summary_save),     # Save the summary statistics as a txt file?
-                                                                gWidgets::       svalue(mixsiar$summary_name),            # If yes, specify the base file name (.txt will be appended later)
+                                                                gWidgets::svalue(mixsiar$summary_name),            # If yes, specify the base file name (.txt will be appended later)
                                                                 # svalue(mixsiar$sup_post),                # Suppress posterior density plot output in R?
                                                                 FALSE,
                                                                 gWidgets::svalue(mixsiar$plot_post_save_pdf),      # Save posterior density plots as pdfs?
@@ -325,6 +326,7 @@ mixsiar_gui <- function(){
 
     # Show the GUI once all the code has run
     gWidgets::visible(win) <- TRUE
+  }
   } else {
     stop(paste("*** gWidgetsRGtk2 package not able to be loaded. ***
         If 'library('gWidgetsRGtk2')' does not work, MixSIAR GUI will not run.

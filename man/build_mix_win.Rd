@@ -33,7 +33,7 @@ If 2 Fixed/Random Effects are selected, a separate gwindow asks the user if
 the effects are hierarchical/nested.
 
 Finally, the function adds a green check image if the data is successfully
-loaded, or a red x image if not.
+loaded, or a red_x image if not.
 }
 \seealso{
 \code{\link{load_mix_data}}, which is run when the "Load MIX data"

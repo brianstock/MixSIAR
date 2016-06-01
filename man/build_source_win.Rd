@@ -22,7 +22,7 @@ The "Load source data" window contains:
 
 If \code{mix} does not yet exist, a WARNING appears.
 
-A green check appears if the source data is successfully loaded, or a red x
+A green check appears if the source data is successfully loaded, or a red_x
 if not.
 }
 \seealso{

@@ -25,7 +25,7 @@
 #' the effects are hierarchical/nested.
 #'
 #' Finally, the function adds a green check image if the data is successfully
-#' loaded, or a red x image if not.
+#' loaded, or a red_x image if not.
 #'
 #' @seealso \code{\link{load_mix_data}}, which is run when the "Load MIX data"
 #'          window is closed by clicking the "I'm finished" button.
@@ -58,7 +58,7 @@ mix_btn_cons <- gWidgets::gbutton(
         },
         error = function(e){
           gWidgets::svalue(mix_status_bar) <- "Could not load data"
-          gWidgets::add(mix_grp_cons,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+          gWidgets::add(mix_grp_cons,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
         }
         )
       }
@@ -233,7 +233,7 @@ btn_close <- gWidgets::gbutton(
       gWidgets::svalue(mixsiar$status_bar) <- "Mixture data successfully loaded"
     } else {
       gWidgets::svalue(mixsiar$status_bar) <- "Could not load mixture data"
-      gWidgets::add(mixsiar$grp_cons,gWidgets::gimage(system.file("extdata", "red x.png", package = "MixSIAR")))
+      gWidgets::add(mixsiar$grp_cons,gWidgets::gimage(system.file("extdata", "red_x.png", package = "MixSIAR")))
     }
   } # end "I'm finished" button handler/actions
 ) # end "I'm finished" button

@@ -90,7 +90,7 @@ Note that [Galloway et al. 2014](http://onlinelibrary.wiley.com/doi/10.1111/fwb.
 
 ```{r}
 # Replace the system.file call with the path to your file
-discr.filename <- system.file("extdata", "isopod_discrimination.csv", package = "MixSIAR")
+discr.filename <- system.file("extdata", "cladocera_discrimination.csv", package = "MixSIAR")
 
 discr <- load_discr_data(filename=discr.filename, mix)
 ```
