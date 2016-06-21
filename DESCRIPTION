@@ -12,15 +12,16 @@ Authors@R: as.person(c(
     "Stuart Bearhop [ctb]",
     "Richard Inger [ctb]"
   ))
-Description: MixSIAR creates and runs Bayesian mixing models to analyze biotracer
-    data (i.e. stable isotopes, fatty acids), which estimate the proportions of
-    source (prey) contributions to a mixture (consumer). MixSIAR is not one
-    model, but a framework that allows a user to create a mixing model based on
-    their data structure and research questions, via options for fixed/random
-    effects, source data types, priors, and error terms. MixSIAR incorporates
+Description: MixSIAR creates and runs Bayesian mixing models to analyze
+    biotracer data (i.e. stable isotopes, fatty acids), which estimate the
+    proportions of source (prey) contributions to a mixture (consumer). MixSIAR
+    is not one model, but a framework that allows a user to create a mixing model
+    based on their data structure and research questions, via options for fixed/
+    random effects, source data types, priors, and error terms. MixSIAR incorporates
     several years of advances since MixSIR and SIAR, and includes both GUI
     (graphical user interface) and script versions.
-Depends: R (>= 3.2.3)
+Depends:
+    R (>= 3.2.3)
 Imports:
     ggplot2 (>= 1.0.1),
     rjags (>= 4-4),
@@ -48,3 +49,4 @@ BugReports: <https://github.com/brianstock/MixSIAR/issues>
 License: GPL-3
 LazyData: true
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

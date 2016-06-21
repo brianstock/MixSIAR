@@ -69,8 +69,8 @@ if(n.re==2){
 }
 n.sources <- source$n.sources
 source_names <- source$source_names
-p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
-ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
+# p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
+# ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
 R2jags::attach.jags(jags.1)
 jags1.mcmc <- coda::as.mcmc(jags.1)
 n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])

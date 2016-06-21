@@ -11,6 +11,7 @@ paste0(mixsiar.dir,"/example_scripts")
 
 # run Wolves example
 source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_wolves.R"))
+graphics.off()
 
 # run Geese example
 source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_geese.R"))
@@ -31,8 +32,10 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_snail.R"))
 source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_stormpetrel.R"))
 
 # run Cladocera example
+graphics.off()
 source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_cladocera.R"))
 
 # run Isopod example
+graphics.off()
 source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_isopod.R"))
 
