@@ -71,7 +71,7 @@ grp_data_col <- gWidgets::gframe(text="Data Columns", container=grp_middle, expa
 tbl_data_col <- gWidgets::gtable(character(0), container=grp_data_col, multiple=T, expand=T)
 
 grp_right <- gWidgets::ggroup(container=grp_middle, horizontal=F, expand=T)
-grp_iso <- gWidgets::gframe(text="Isotopes", container=grp_right, horizontal=T, expand=T)
+grp_iso <- gWidgets::gframe(text="Tracers", container=grp_right, horizontal=T, expand=T)
 grp_iso_btns <- gWidgets::ggroup(container=grp_iso, horizontal=F)
 add_iso <- gWidgets::gbutton(
               text = ">>",
