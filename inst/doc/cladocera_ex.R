@@ -36,7 +36,7 @@ source <- load_source_data(filename=source.filename,
 
 ## ------------------------------------------------------------------------
 # Replace the system.file call with the path to your file
-discr.filename <- system.file("extdata", "isopod_discrimination.csv", package = "MixSIAR")
+discr.filename <- system.file("extdata", "cladocera_discrimination.csv", package = "MixSIAR")
 
 discr <- load_discr_data(filename=discr.filename, mix)
 

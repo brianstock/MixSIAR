@@ -6,7 +6,7 @@ citEntry(entry = "misc",
                    as.person("Brice X. Semmens")),
   year         = "2013",
   note         = "Version 3.1",
-  doi          = "{10.5281/zenodo.56159}",
+  doi          = "10.5281/zenodo.56159",
   url          = "https://github.com/brianstock/MixSIAR",
 
   textVersion  =

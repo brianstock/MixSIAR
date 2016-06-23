@@ -22,7 +22,7 @@ R objects that you can access from the console:
 \details{
 \emph{Before running this function}, a new user will need to install JAGS
 and GTK+. See Section 2 of the manual for install instructions:
-\url{https://github.com/brianstock/MixSIAR/blob/master/mixsiar_manual_3.0.pdf}
+\url{https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf}
 
 \code{mixsiar_gui} calls most of the other \code{MixSIAR} functions:
  \itemize{
