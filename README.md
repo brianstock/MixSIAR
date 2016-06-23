@@ -1,7 +1,7 @@
 MixSIAR
 =============
 
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.47719.svg)](http://dx.doi.org/10.5281/zenodo.47719)
+[![DOI](https://zenodo.org/badge/20929/brianstock/MixSIAR.svg)](https://zenodo.org/badge/latestdoi/20929/brianstock/MixSIAR)
 
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. 
 
