@@ -1,4 +1,4 @@
-^.*\.Rproj$ 			# RStudio project file
-^\.Rproj\.user$ 		# RStudio temporary files
-^Manual$ 				# Source files to build PDF manual
-^cran-comments\.md$ 	# Comments for CRAN submission
+^.*\.Rproj$
+^\.Rproj\.user$
+^Manual$
+^cran-comments\.md$
