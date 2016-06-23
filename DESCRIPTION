@@ -11,7 +11,7 @@ Authors@R: c(
     person("Jon", "Moore", role = "ctb"),
     person("Stuart", "Bearhop", role = "ctb"),
     person("Richard", "Inger", role = "ctb"))
-Description: MixSIAR creates and runs Bayesian mixing models to analyze
+Description: Creates and runs Bayesian mixing models to analyze
     biotracer data (i.e. stable isotopes, fatty acids), which estimate the
     proportions of source (prey) contributions to a mixture (consumer). MixSIAR
     is not one model, but a framework that allows a user to create a mixing model
