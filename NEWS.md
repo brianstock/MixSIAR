@@ -1,10 +1,11 @@
-MixSIAR 3.1.6 (2016-06-22)
+MixSIAR 3.1.6 (2016-06-24)
 =========================
 
 ## VERY MINOR IMPROVEMENTS
 
+* CRAN submission
 * added files for CRAN submission (cran-comments.md, NEWS.md)
-* tested on R-devel for CRAN submission
+* fixed broken links found when checking for CRAN submission
 
 MixSIAR 3.1.5 (2016-06-21)
 =========================
