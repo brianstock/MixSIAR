@@ -17,8 +17,9 @@ There was 1 NOTE:
     SIAR (20:48)
     biotracer (15:5)
 
-"MixSIAR" is name of package
-"MixSIR" and "SIAR" are names of existing software packages most users will be familiar with
+Added single quotes around 'MixSIAR', 'MixSIR', and 'SIAR'
+'MixSIAR' is name of package
+'MixSIR' and 'SIAR' are names of existing software packages most users will be familiar with
 "biotracer" is short for "biological tracer", in common use in our field
 
 ## Downstream dependencies
