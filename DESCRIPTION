@@ -13,11 +13,11 @@ Authors@R: c(
     person("Richard", "Inger", role = "ctb"))
 Description: Creates and runs Bayesian mixing models to analyze
     biotracer data (i.e. stable isotopes, fatty acids), which estimate the
-    proportions of source (prey) contributions to a mixture (consumer). MixSIAR
+    proportions of source (prey) contributions to a mixture (consumer). 'MixSIAR'
     is not one model, but a framework that allows a user to create a mixing model
     based on their data structure and research questions, via options for fixed/
-    random effects, source data types, priors, and error terms. MixSIAR incorporates
-    several years of advances since MixSIR and SIAR, and includes both GUI
+    random effects, source data types, priors, and error terms. 'MixSIAR' incorporates
+    several years of advances since 'MixSIR' and 'SIAR', and includes both GUI
     (graphical user interface) and script versions.
 Depends:
     R (>= 3.2.3)
