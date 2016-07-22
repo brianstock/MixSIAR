@@ -85,7 +85,7 @@ find.package("MixSIAR")
 ```
 Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
 
-#### Mac OS X (GitHub)
+#### Mac OS X
 
 1. Download and install/update [R].
 2. Download and install [JAGS].
@@ -117,7 +117,7 @@ find.package("MixSIAR")
 ```
 Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
 
-#### Linux (GitHub)
+#### Linux
 
 1. Download and install/update [R].
 2. Download and install [JAGS]. Or, from the terminal: `sudo apt-get install jags r-cran-rjags`.
