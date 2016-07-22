@@ -47,8 +47,8 @@ discr <- load_discr_data(filename=discr.filename, mix)
 ## ---- eval=FALSE---------------------------------------------------------
 #  # Write the JAGS model file
 #  model_filename <- "MixSIAR_model.txt"
-#  resid_err <- TRUE
-#  process_err <- FALSE
+#  resid_err <- FALSE
+#  process_err <- TRUE
 #  write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 ## ---- eval=FALSE---------------------------------------------------------

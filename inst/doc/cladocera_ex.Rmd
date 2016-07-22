@@ -121,8 +121,8 @@ Here we fit the **"Process only" error** model of MixSIR, which we MUST do when 
 ```{r, eval=FALSE}
 # Write the JAGS model file
 model_filename <- "MixSIAR_model.txt"
-resid_err <- TRUE
-process_err <- FALSE
+resid_err <- FALSE
+process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 ```
 

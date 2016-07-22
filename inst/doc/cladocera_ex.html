@@ -79,7 +79,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixSIAR)
 mixsiar.dir &lt;-<span class="st"> </span><span class="kw">find.package</span>(<span class="st">&quot;MixSIAR&quot;</span>)
 <span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;/home/brian/Documents/MixSIAR/example_scripts&quot;</code></pre>
+<pre><code>## [1] &quot;/home/brian/R/x86_64-pc-linux-gnu-library/3.3/MixSIAR/example_scripts&quot;</code></pre>
 <p>You can run the Cladocera Example script directly with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="kw">paste0</span>(mixsiar.dir,<span class="st">&quot;/example_scripts/mixsiar_script_cladocera.R&quot;</span>))</code></pre></div>
 <div id="cladocera-example" class="section level2">
@@ -158,8 +158,8 @@ discr &lt;-<span class="st"> </span><span class="kw">load_discr_data</span>(<spa
 <p>Here we fit the <strong>“Process only” error</strong> model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write the JAGS model file</span>
 model_filename &lt;-<span class="st"> &quot;MixSIAR_model.txt&quot;</span>
-resid_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-process_err &lt;-<span class="st"> </span><span class="ot">FALSE</span>
+resid_err &lt;-<span class="st"> </span><span class="ot">FALSE</span>
+process_err &lt;-<span class="st"> </span><span class="ot">TRUE</span>
 <span class="kw">write_JAGS_model</span>(model_filename, resid_err, process_err, mix, source)</code></pre></div>
 </div>
 <div id="run-model" class="section level3">

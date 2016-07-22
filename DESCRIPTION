@@ -41,8 +41,7 @@ Suggests:
     rmarkdown,
     testthat
 SystemRequirements: JAGS (>= 4.1) for the script version, both JAGS and GTK+ for
-    the GUI version. For install instructions, see manual at
-    <https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf>
+    the GUI version. For install instructions, see README file.
 URL: https://github.com/brianstock/MixSIAR
 BugReports: https://github.com/brianstock/MixSIAR/issues
 License: GPL-3
