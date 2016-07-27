@@ -82,10 +82,11 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   if(source.fac==0) by_factor <- NA else by_factor <- match(source_factors, mix$factors)
 
   # turn source names into numbers
-  source_names <- levels(SOURCE[,1])   # first save the source names in source_names
+  src <- as.factor(SOURCE[,1])
+  source_names <- levels(src)   # first save the source names in source_names
   n.sources <- length(source_names)    # n.sources is the number of sources, which is the length of the source names vector
-  levels(SOURCE[,1]) <- 1:n.sources    # convert the source names in SOURCE into numbers
-  SOURCE[,1] <- as.numeric(SOURCE[,1])
+  levels(src) <- 1:n.sources    # convert the source names in SOURCE into numbers
+  SOURCE[,1] <- as.numeric(src)
   # sorts SOURCE by source name, then by the source factors (if present)
   source_factor_cols <- match(source_factors,colnames(SOURCE)) # the column number(s) of the user-selected random effects
   S_factor_levels <- rep(0,length(source_factor_cols))                # the number of levels of each source random effect
