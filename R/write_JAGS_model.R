@@ -611,7 +611,7 @@ if(err=="mult"){
   cat("
     # Multiplicative residual error
     for(iso in 1:n.iso){
-      resid.prop[iso] ~ dchisqr(3);
+      resid.prop[iso] ~ dunif(0,20);
     }
 ", file=filename, append=T)
 
