@@ -1,0 +1,142 @@
+# source$data_type: means
+# source$by_factor: 1
+# random effects: 2
+# fixed effects: 0
+# nested factors: FALSE TRUE
+# factors: Region Pack
+# continuous effects: 0
+# error structure: Residual * Process
+# source$conc_dep: FALSE
+
+model{
+  for(src in 1:n.sources){
+    for(f1 in 1:source_factor_levels){
+      for(iso in 1:n.iso){
+        src_mu[src,iso,f1] ~ dnorm(MU_array[src,iso,f1], n_array[src,f1]/SIG2_array[src,iso,f1]);  # Eqn 3.8 but with precision instead of variance
+        tmp.X[src,iso,f1] ~ dchisqr(n_array[src,f1]);
+        src_tau[src,iso,f1] <- tmp.X[src,iso,f1]/(SIG2_array[src,iso,f1]*(n_array[src,f1] - 1));   # Eqn 3.9, following the simulation on p.580
+      }
+    }
+  }
+
+    # draw p.global (global proportion means) from an uninformative Dirichlet,
+    # then ilr.global is the ILR-transform of p.global
+    p.global[1:n.sources] ~ ddirch(alpha[1:n.sources]);
+    for(src in 1:(n.sources-1)){
+      gmean[src] <- prod(p.global[1:src])^(1/src);
+      ilr.global[src] <- sqrt(src/(src+1))*log(gmean[src]/p.global[src+1]); # page 296, Egozcue 2003
+    }
+
+   fac1.sig ~ dunif(0,20);
+   fac1.invSig2 <- 1/(fac1.sig*fac1.sig);
+   # draw the fac1 (region) specific ILR terms (random effect)
+   for(f1 in 1:factor1_levels) {
+      for(src in 1:(n.sources-1)) {
+          ilr.fac1[f1,src] ~ dnorm(0,fac1.invSig2);
+      }
+   }
+
+   fac2.sig ~ dunif(0,20);
+   fac2.invSig2 <- 1/(fac2.sig*fac2.sig);
+   # draw the fac2-specific ILR terms (random effect)
+   for(f2 in 1:factor2_levels){
+      for(src in 1:(n.sources-1)){
+          ilr.fac2[f2,src] ~ dnorm(0,fac2.invSig2);
+      }
+   }
+
+   # DON'T generate individual deviates from the global/region/pack mean (but keep same model structure)
+   for(i in 1:N) {
+      for(src in 1:(n.sources-1)) {
+         ilr.ind[i,src] <- 0;
+         ilr.tot[i,src] <- ilr.global[src] + ilr.fac1[Factor.1[i],src] + ilr.fac2[Factor.2[i],src] + ilr.ind[i,src]; # add all effects together for each individual (in ilr-space)
+      }
+   }
+
+   # Inverse ILR math (equation 24, page 294, Egozcue 2003)
+   for(i in 1:N){
+      for(j in 1:(n.sources-1)){
+        cross[i,,j] <- (e[,j]^ilr.tot[i,j])/sum(e[,j]^ilr.tot[i,j]);
+      }
+      for(src in 1:n.sources){
+        tmp.p[i,src] <- prod(cross[i,src,]);
+      }
+      for(src in 1:n.sources){
+        p.ind[i,src] <- tmp.p[i,src]/sum(tmp.p[i,]);
+      }
+   }
+
+   for(src in 1:n.sources) {
+      for(i in 1:N){
+         # these are weights for variances
+         p2[i,src] <- p.ind[i,src]*p.ind[i,src];
+      }
+   }
+
+   # Transform ilr.fac1 into p.fac1 (fac1 not nested within fac2)
+   for(f1 in 1:factor1_levels) {
+      for(src in 1:(n.sources-1)) {
+        ilr.fac1.tot[f1,src] <- ilr.global[src] + ilr.fac1[f1,src];
+        cross.fac1[f1,,src] <- (e[,src]^ilr.fac1.tot[f1,src])/sum(e[,src]^ilr.fac1.tot[f1,src]);
+      }
+      for(src in 1:n.sources) {
+        tmp.p.fac1[f1,src] <- prod(cross.fac1[f1,src,]);
+      }
+      for(src in 1:n.sources){
+        p.fac1[f1,src] <- tmp.p.fac1[f1,src]/sum(tmp.p.fac1[f1,]);
+      }
+   }
+
+     # Transform ilr.fac2 into p.fac2 (fac2 nested within fac1)
+      for(f2 in 1:factor2_levels){
+        for(src in 1:(n.sources-1)){
+            ilr.fac2.tot[f2,src] <- ilr.global[src] + ilr.fac1[factor1_lookup[f2],src] + ilr.fac2[f2,src];
+            cross.fac2[f2,,src] <- (e[,src]^ilr.fac2.tot[f2,src])/sum(e[,src]^ilr.fac2.tot[f2,src]);
+        }
+        for(src in 1:n.sources) {
+          tmp.p.fac2[f2,src] <- prod(cross.fac2[f2,src,]);
+        }
+        for(src in 1:n.sources){
+          p.fac2[f2,src] <- tmp.p.fac2[f2,src]/sum(tmp.p.fac2[f2,]);
+        }
+      }
+  
+
+   # for each isotope and population, calculate the predicted mixtures
+   for(iso in 1:n.iso) {
+      for(i in 1:N) {
+
+         mix.mu[iso,i] <- inprod(src_mu[,iso,Factor.1[i]],p.ind[i,]) + inprod(frac_mu[,iso],p.ind[i,]);
+      }
+   }
+
+    # Multiplicative residual error
+    for(iso in 1:n.iso){
+      resid.prop[iso] ~ dunif(0,20);
+    }
+
+
+   # Calculate process variance for each isotope and population
+   for(iso in 1:n.iso) {
+      for(i in 1:N) {
+
+         process.var[iso,i] <- inprod(1/src_tau[,iso,Factor.1[i]],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);
+      }
+   }
+
+   # Construct Sigma, the mixture precision matrix
+   for(ind in 1:N){
+      for(i in 1:n.iso){
+        for(j in 1:n.iso){
+          Sigma.ind[ind,i,j] <- equals(i,j)/(process.var[i,ind]*resid.prop[i]);
+        }
+      }
+   }
+
+   # Likelihood
+   for(i in 1:N) {
+
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+   }
+} # end model
+
