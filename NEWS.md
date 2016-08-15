@@ -1,9 +1,10 @@
-MixSIAR 3.1.7 (2016-07-22)
+MixSIAR 3.1.7 (2016-08-15)
 =========================
 
 ## MINOR IMPROVEMENTS
 
 * Changed resid.prop prior from dchisqr(3) to dunif(0,20)
+* Chains now run in parallel via `R2jags::jags.parallel()`
 
 ## VERY MINOR IMPROVEMENTS
 

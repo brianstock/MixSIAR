@@ -216,7 +216,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #############################################################################
   # Call JAGS
   #############################################################################
-  # jags.1 <- R2jags::jags.parallel(jags.data, 
+  # jags.1 <- R2jags::jags(jags.data, 
   #                                 inits=jags.inits, 
   #                                 parameters.to.save = jags.params, 
   #                                 model.file = model_filename,
