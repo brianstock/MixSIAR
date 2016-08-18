@@ -226,20 +226,20 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #                                 n.iter = mcmc$chainLength, 
   #                                 DIC = mcmc$calcDIC)
 
-  # mcmc$chains <- 2
-  
-  jags.1 <- do.call(R2jags::jags.parallel, 
+  jags.1 <- do.call(R2jags::jags.parallel,
                     list(data = jags.data,
-                         inits = jags.inits, 
-                         parameters.to.save = jags.params, 
+                         inits = jags.inits,
+                         parameters.to.save = jags.params,
                          model.file = model_filename,
-                         n.chains = mcmc$chains, 
-                         n.burnin = mcmc$burn, 
+                         n.chains = mcmc$chains,
+                         n.burnin = mcmc$burn,
                          n.thin = mcmc$thin,
-                         n.iter = mcmc$chainLength, 
+                         n.iter = mcmc$chainLength,
                          DIC = mcmc$calcDIC)
                     ) # end do.call
-  
+
+
+
   return(jags.1)
 } # end run_model function
 
