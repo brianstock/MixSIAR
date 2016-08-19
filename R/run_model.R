@@ -214,7 +214,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   jags.inits <- function(){list(p.global=as.vector(compositions::rDirichlet.rcomp(1,alpha)))}
 
   #############################################################################
-  # Call JAGS
+  # Call JAGS -- returns object of rjags class
   #############################################################################
   jags.1 <- R2jags::jags(jags.data,
                                   inits=jags.inits,
@@ -225,7 +225,14 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
                                   n.thin = mcmc$thin,
                                   n.iter = mcmc$chainLength,
                                   DIC = mcmc$calcDIC)
-
+  # This block works for fitting model in rjags
+  # function to create named list from char vector
+  #my.return <- function (vector.of.variable.names) { 
+  #  sapply(vector.of.variable.names, function(x) list(get(x))) 
+  #} 
+  #jags.data = my.return(jags.data) 
+  #jags.1 = rjags::jags.model(file = model_filename, data=jags.data, inits = jags.inits, n.chains = mcmc$chains, n.adapt=5000, quiet=FALSE)
+  #jags.1 = rjags::jags.samples(model=jags.1, variable.names = jags.params, n.iter = mcmc$chainLength, thin = mcmc$thin)
   
   return(jags.1)
 } # end run_model function
