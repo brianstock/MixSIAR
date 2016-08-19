@@ -243,7 +243,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #  n.thin = mcmc$thin)
   #jags.1 <- list(model = model.init, BUGSoutput = fit, parameters.to.save = jags.params, 
   #  model.file = model_filename, n.iter = mcmc$chainLength, DIC = FALSE)
-  #return(jags.1)
+  return(jags.1)
   
 } # end run_model function
 
