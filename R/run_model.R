@@ -231,9 +231,19 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #  sapply(vector.of.variable.names, function(x) list(get(x))) 
   #} 
   #jags.data = my.return(jags.data) 
-  #jags.1 = rjags::jags.model(file = model_filename, data=jags.data, inits = jags.inits, n.chains = mcmc$chains, n.adapt=5000, quiet=FALSE)
-  #jags.1 = rjags::jags.samples(model=jags.1, variable.names = jags.params, n.iter = mcmc$chainLength, thin = mcmc$thin)
+  #initialization -- this is what R2jags does
+  #model.init = rjags::jags.model(file = model_filename, data=jags.data, inits = jags.inits, n.chains = mcmc$chains, n.adapt=0, quiet=FALSE)
+  #adaptation phase - like R2jags, adaptation phase = burn in
+  #rjags::adapt(model.init, n.iter = mcmc$burn, end.adaptation = TRUE)
+  #sampling phase -- coda.samples() is a wrapper for jags.samples, outputs mcmc.list
+  #samples = rjags::coda.samples(model=jags.1, variable.names = jags.params, n.iter = mcmc$chainLength, thin = mcmc$thin)
+  # to implement DIC = true here, we need to add 'deviance' to monitored params above
+  #fit <- mcmc2bugs(samples, model.file = model_filename, program = "jags", 
+  #  DIC = FALSE, DICOutput = NULL, n.iter = mcmc$chainLength, n.burnin = mcmc$burn, 
+  #  n.thin = mcmc$thin)
+  #jags.1 <- list(model = model.init, BUGSoutput = fit, parameters.to.save = jags.params, 
+  #  model.file = model_filename, n.iter = mcmc$chainLength, DIC = FALSE)
+  #return(jags.1)
   
-  return(jags.1)
 } # end run_model function
 
