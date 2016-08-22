@@ -1,6 +1,6 @@
 MixSIAR
 =============
-[![cran version](https://www.r-pkg.org/badges/version/MixSIAR/)]( https://cran.r-project.org/package=MixSIAR)
+[![cran version](http://www.r-pkg.org/badges/version/MixSIAR)](https://cran.r-project.org/package=MixSIAR)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/metacran/cranlogs.app)
 [![DOI](https://zenodo.org/badge/20929/brianstock/MixSIAR.svg)](https://zenodo.org/badge/latestdoi/20929/brianstock/MixSIAR)
 
