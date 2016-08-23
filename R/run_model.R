@@ -216,34 +216,38 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #############################################################################
   # Call JAGS -- returns object of rjags class
   #############################################################################
-  jags.1 <- R2jags::jags(jags.data,
-                                  inits=jags.inits,
-                                  parameters.to.save = jags.params,
-                                  model.file = model_filename,
-                                  n.chains = mcmc$chains,
-                                  n.burnin = mcmc$burn,
-                                  n.thin = mcmc$thin,
-                                  n.iter = mcmc$chainLength,
-                                  DIC = mcmc$calcDIC)
+  #jags.1 <- R2jags::jags(jags.data,
+  #                                inits=jags.inits,
+  #                                parameters.to.save = jags.params,
+  #                                model.file = model_filename,
+  #                                n.chains = mcmc$chains,
+  #                                n.burnin = mcmc$burn,
+  #                                n.thin = mcmc$thin,
+  #                                n.iter = mcmc$chainLength,
+  #                                DIC = mcmc$calcDIC)
   # This block works for fitting model in rjags
   # function to create named list from char vector
-  #my.return <- function (vector.of.variable.names) { 
-  #  sapply(vector.of.variable.names, function(x) list(get(x))) 
-  #} 
-  #jags.data = my.return(jags.data) 
+  my.return <- function (vector.of.variable.names) { 
+    sapply(vector.of.variable.names, function(x) list(get(x))) 
+  } 
+  jags.data = my.return(jags.data) 
   #initialization -- this is what R2jags does
-  #model.init = rjags::jags.model(file = model_filename, data=jags.data, inits = jags.inits, n.chains = mcmc$chains, n.adapt=0, quiet=FALSE)
-  #adaptation phase - like R2jags, adaptation phase = burn in
-  #rjags::adapt(model.init, n.iter = mcmc$burn, end.adaptation = TRUE)
+  load.module("dic", quiet=TRUE)
+  load.module("glm", quiet=TRUE)
+  model.init = rjags::jags.model(file = model_filename, data=jags.data, 
+    inits = jags.inits, n.chains = mcmc$chains, n.adapt=0, quiet=FALSE)
+  #adaptation phase - in R2jags, adaptation phase = burn in
+  rjags::adapt(model.init, n.iter = mcmc$burn, end.adaptation = TRUE)
+  #burn phase -- coda.samples() is a wrapper for jags.samples, outputs mcmc.list
+  jags.params = c(jags.params, "deviance")
+  burn = rjags::coda.samples(model=model.init, variable.names = jags.params, 
+    n.iter = mcmc$burn, thin = mcmc$thin)
+
   #sampling phase -- coda.samples() is a wrapper for jags.samples, outputs mcmc.list
-  #samples = rjags::coda.samples(model=jags.1, variable.names = jags.params, n.iter = mcmc$chainLength, thin = mcmc$thin)
-  # to implement DIC = true here, we need to add 'deviance' to monitored params above
-  #fit <- mcmc2bugs(samples, model.file = model_filename, program = "jags", 
-  #  DIC = FALSE, DICOutput = NULL, n.iter = mcmc$chainLength, n.burnin = mcmc$burn, 
-  #  n.thin = mcmc$thin)
-  #jags.1 <- list(model = model.init, BUGSoutput = fit, parameters.to.save = jags.params, 
-  #  model.file = model_filename, n.iter = mcmc$chainLength, DIC = FALSE)
-  return(jags.1)
+  samples = rjags::coda.samples(model=model.init, variable.names = jags.params, 
+    n.iter = mcmc$chainLength, thin = mcmc$thin)
+
+  return(samples)
   
 } # end run_model function
 
