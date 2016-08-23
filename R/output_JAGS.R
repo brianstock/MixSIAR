@@ -57,7 +57,8 @@ output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
                                                   plot_pairs_save_png = FALSE,            # Save pairs plot as png?
                                                   plot_xy_save_png = FALSE)){             # Save xy/trace plot as png?){
-mcmc.chains <- jags.1$BUGSoutput$n.chains
+mcmc.chains <- length(jags.1)
+parNames = colnames(jags.1[[1]])
 N <- mix$N
 n.re <- mix$n.re
 n.effects <- mix$n.effects
@@ -71,13 +72,32 @@ n.sources <- source$n.sources
 source_names <- source$source_names
 # p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
 # ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
-R2jags::attach.jags(jags.1)
-jags1.mcmc <- coda::as.mcmc(jags.1)
-n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])
+#R2jags::attach.jags(jags.1)
+
+#jags1.mcmc <- coda::as.mcmc(jags.1)
+n.draws <- nrow(jags.1[[1]])
 
 # Post-processing for 2 FE or 1FE + 1RE
 #   calculate p.both = ilr.global + ilr.fac1 + ilr.fac2
 if(mix$fere){
+
+  ilr.fac1 = array(NA, dim=c(n.draws, mix$FAC[[1]]$levels, n.sources))
+  for(f1 in 1:mix$FAC[[1]]$levels) {
+    for(src in 1:n.sources) {
+      ilr.fac1[,f1,src] = c(as.matrix(jags.1[,which(parNames==paste0("ilr.fac1[",f1,",",src,"]")),drop=FALSE]))
+    }
+  }      
+  ilr.fac2 = array(NA, dim=c(n.draws, mix$FAC[[2]]$levels, n.sources))
+  for(f2 in 1:mix$FAC[[2]]$levels) {
+    for(src in 1:n.sources) {
+      ilr.fac2[,f2,src] = c(as.matrix(jags.1[,which(parNames==paste0("ilr.fac2[",f2,",",src,"]")),drop=FALSE]))
+    }
+  }    
+  ilr.global = array(NA, dim=c(n.draws, n.sources))
+  for(src in 1:n.sources) {
+    ilr.global[,src] = c(as.matrix(jags.1[,which(parNames==paste0("ilr.global[",src,"]")),drop=FALSE]))
+  }  
+  
   fac2_lookup <- list()
   for(f1 in 1:mix$FAC[[1]]$levels){
     fac2_lookup[[f1]] <- unique(mix$FAC[[2]]$values[which(mix$FAC[[1]]$values==f1)])
@@ -115,7 +135,7 @@ if(mix$fere){
 if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
   # XY plot for p.global
   dev.new()
-  print(lattice::xyplot(coda::as.mcmc(jags.1$BUGSoutput$sims.list$p.global),strip=lattice::strip.custom(factor.levels=source_names)))
+  print(lattice::xyplot(jags.1[,grep("p.global",parNames),drop=FALSE],strip=lattice::strip.custom(factor.levels=source_names)))
 
   # Save the xy p.global plot to file
   if(output_options[[10]]){ # svalue(plot_xy_save_pdf)
@@ -137,26 +157,27 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       }
     }
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
-    if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+
+    if(n.re==2) print(lattice::xyplot(jags.1[,parNames%in%c("fac1.sig","fac2.sig","ind.sig"),drop=FALSE], strip=lattice::strip.custom(factor.levels=traceplot_labels)))
     if(n.re==1){
       if(mix$FAC[[1]]$re){
-        print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(jags.1[,parNames%in%c("fac1.sig","ind.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       } else { # FAC 2 is the 1 random effect
-        print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(jags.1[,parNames%in%c("fac2.sig","ind.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       }
     }
-    if(n.re==0) print(lattice::xyplot(coda::as.mcmc(ind.sig),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==0) print(lattice::xyplot(jags.1[,parNames%in%c("ind.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
       dev.new()
       traceplot_labels <- rep("",length(random_effects))
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
-      if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==2) print(lattice::xyplot(jags.1[,parNames%in%c("fac1.sig","fac2.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       if(n.re==1){
         if(mix$FAC[[1]]$re){
-          print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(jags.1[,parNames%in%c("fac1.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         } else { # FAC 2 is the 1 random effect
-          print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(jags.1[,parNames%in%c("fac2.sig"),drop=FALSE],strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         }
       }
     }
@@ -206,7 +227,7 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
     z <- MASS::kde2d(x,y)   # calculates the 2D kernel density that the contour function needs
     contour(z, drawlabels=FALSE, nlevels=n.lines, col=my.cols, add=TRUE)
   }
-  pairs(jags.1$BUGSoutput$sims.list$p.global, labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
+  pairs(as.data.frame(as.matrix(jags.1[,grep("p.global",parNames),drop=FALSE])), labels=source_names, diag.panel=panel.hist, lower.panel=panel.cor, upper.panel=panel.contour)
 
   # Save the plot to file
   if(output_options[[7]]){ # svalue(plot_pairs_save_pdf)
@@ -223,13 +244,13 @@ if(!output_options[[6]]){   # if 'suppress pairs plot' is NOT checked
 # Posterior density plots
 ######################################################################
 if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
-  n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])   # number of posterior draws
+  n.draws <- nrow(jags.1[[1]]) *  length(jags.1)   # number of posterior draws x number of chains
   if(mix$n.fe == 0){ # only if there are no fixed effects, otherwise p.global is meaningless
     # Posterior density plot for p.global
     dev.new()
     df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
     for(i in 1:n.sources){
-      df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(jags.1$BUGSoutput$sims.list$p.global[,i]) # fill in the p.global[i] values
+      df$x[seq(1+n.draws*(i-1),i*n.draws)] <- as.matrix(jags.1[,grep("p.global",parNames),drop=FALSE])[,i] # fill in the p.global[i] values
       df$sources[seq(1+n.draws*(i-1),i*n.draws)] <- rep(source_names[i],n.draws)  # fill in the source names
     }
     my.title <- "Overall Population"
@@ -254,11 +275,20 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
   }
 
   if(n.effects >= 1 & mix$n.fe != 2){
+    # convert p.fac1 to 3d array
+    p.fac1 = array(NA, dim=c(n.draws, mix$FAC[[1]]$levels, n.sources))
+    for(f1 in 1:mix$FAC[[1]]$levels) {
+      for(src in 1:n.sources) {
+        p.fac1[,f1,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.fac1[",f1,",",src,"]")),drop=FALSE]))
+      }
+    }
     # Posterior density plots for p.fac1's
     for(f1 in 1:mix$FAC[[1]]$levels){    # formerly factor1_levels
       dev.new()
       df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
+
       for(src in 1:n.sources){
+        jags.1[,grep("p.fac1",parNames),drop=FALSE]
         df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(p.fac1[,f1,src]) # fill in the p.fac1[f1] values
         df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
       }
@@ -285,6 +315,12 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     } # end p.fac1 posterior plots
 
     if(n.re==2){
+      p.fac2 = array(NA, dim=c(n.draws, mix$FAC[[2]]$levels, n.sources))
+      for(f2 in 1:mix$FAC[[2]]$levels) {
+        for(src in 1:n.sources) {
+          p.fac2[,f2,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.fac2[",f2,",",src,"]")),drop=FALSE]))
+        }
+      }      
       # Posterior density plots for p.fac2's
         for(f2 in 1:mix$FAC[[2]]$levels){  # formerly factor2_levels
           dev.new()
@@ -320,6 +356,16 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
 
   # Posterior density plots for p.both (when 2 FE or 1FE + 1RE)
   if(mix$fere){
+    
+    p.both = array(NA, dim=c(n.draws, mix$FAC[[1]]$levels, mix$FAC[[2]]$levels, n.sources))
+    for(f1 in 1:mix$FAC[[1]]$levels) {
+      for(f2 in 1:mix$FAC[[2]]$levels) {
+        for(src in 1:n.sources) {
+          p.both[,f1,f2,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.both[",f1,",",f2,",",src,"]")),drop=FALSE]))
+        }
+      }
+    }          
+    
     for(f1 in 1:mix$FAC[[1]]$levels) {
       for(f2 in fac2_lookup[[f1]]){
         dev.new()
@@ -359,19 +405,24 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     x <- c()
     if(output_options[[17]]){ # if Individual is in the model, add ind.sig to the SD plot
       level <- c(level,rep("Individual SD",n.draws))
+      ind.sig = c(as.matrix(jags.1[,which(parNames=="ind.sig"),drop=FALSE]))
       x <- c(x,ind.sig)
     }
     if(n.re==1){ # if Factor.1 is in the model, add fac1.sig to the SD plot
       if(mix$FAC[[1]]$re){
         level <- c(level,rep(paste(mix$FAC[[1]]$name," SD",sep=""),n.draws))
+        fac1.sig = c(as.matrix(jags.1[,which(parNames=="fac1.sig"),drop=FALSE]))
         x <- c(x,fac1.sig)
       } else { # FAC 2 is the random effect
         level <- c(level,rep(paste(mix$FAC[[2]]$name," SD",sep=""),n.draws))
+        fac2.sig = c(as.matrix(jags.1[,which(parNames=="fac2.sig"),drop=FALSE]))
         x <- c(x,fac2.sig)
       }
     }
     if(n.re==2){ # if Factor.2 is in the model, add fac1.sig and fac2.sig to the SD plot
       level <- c(level,rep(paste(random_effects[1]," SD",sep=""),n.draws), rep(paste(random_effects[2]," SD",sep=""),n.draws))
+      fac1.sig = c(as.matrix(jags.1[,which(parNames=="fac1.sig"),drop=FALSE]))
+      fac2.sig = c(as.matrix(jags.1[,which(parNames=="fac2.sig"),drop=FALSE]))
       x <- c(x,fac1.sig,fac2.sig)
     }
     df2 <- data.frame(level=level, x=x) # create the SD plot data frame
@@ -408,8 +459,8 @@ sig_labels <- NULL
 # print(mix)
 # print(mix$n.fe)
 if(mix$n.fe == 0){
-  global_quants <- t(round(apply(jags.1$BUGSoutput$sims.list$p.global,2,getQuant),3))
-  global_means <- getMeanSD(jags.1$BUGSoutput$sims.list$p.global)
+  global_quants <- t(round(apply(as.matrix(jags.1[,grep("p.global",parNames),drop=FALSE]),2,getQuant),3))
+  global_means <- getMeanSD(as.matrix(jags.1[,grep("p.global",parNames),drop=FALSE]))
   stats <- cbind(global_means, global_quants)
   global_labels <- rep(NA,n.sources)
   for(src in 1:n.sources){
@@ -418,6 +469,13 @@ if(mix$n.fe == 0){
   rownames(stats) <- global_labels
 }
 if(n.effects > 0 & mix$n.fe != 2){
+
+  p.fac1 = array(NA, dim=c(n.draws, mix$FAC[[1]]$levels, n.sources))
+  for(f1 in 1:mix$FAC[[1]]$levels) {
+    for(src in 1:n.sources) {
+      p.fac1[,f1,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.fac1[",f1,",",src,"]")),drop=FALSE]))
+    }
+  }    
   fac1_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac1,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   fac1_means <- cbind(reshape2::melt(round(apply(p.fac1,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac1,c(2,3),sd),3))$value)
@@ -431,11 +489,19 @@ if(n.effects > 0 & mix$n.fe != 2){
   rownames(fac1_stats) <- fac1_labels
   stats <- rbind(stats,fac1_stats)
   if(mix$FAC[[1]]$re){
+    fac1.sig = as.matrix(jags.1[,which(parNames=="fac1.sig"),drop=FALSE]) # has to be matrix
     sig_stats <- cbind(getMeanSD(fac1.sig),t(round(apply(fac1.sig,2,getQuant),3)))
     sig_labels <- paste(mix$FAC[[1]]$name,".SD",sep="")
   }
 }
 if(n.re==2){
+  p.fac2 = array(NA, dim=c(n.draws, mix$FAC[[2]]$levels, n.sources))
+  for(f2 in 1:mix$FAC[[2]]$levels) {
+    for(src in 1:n.sources) {
+      p.fac2[,f2,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.fac2[",f2,",",src,"]")),drop=FALSE]))
+    }
+  }    
+  
   fac2_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac2,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
   fac2_means <- cbind(reshape2::melt(round(apply(p.fac2,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac2,c(2,3),sd),3))$value)
@@ -449,11 +515,22 @@ if(n.re==2){
   rownames(fac2_stats) <- fac2_labels
   stats <- rbind(stats,fac2_stats)
   if(mix$FAC[[2]]$re){
+    fac2.sig = as.matrix(jags.1[,which(parNames=="fac2.sig"),drop=FALSE]) # has to be matrix
     sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
     sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
   }
 }
 if(mix$fere){
+  
+  p.both = array(NA, dim=c(n.draws, mix$FAC[[1]]$levels, mix$FAC[[2]]$levels, n.sources))
+  for(f1 in 1:mix$FAC[[1]]$levels) {
+    for(f2 in 1:mix$FAC[[2]]$levels) {
+      for(src in 1:n.sources) {
+        p.both[,f1,f2,src] = c(as.matrix(jags.1[,which(parNames==paste0("p.both[",f1,",",f2,",",src,"]")),drop=FALSE]))
+      }
+    }
+  }   
+  
   fac2_quants <- matrix(NA,nrow=n.sources*length(unlist(fac2_lookup)),ncol=7)
   fac2_means <- matrix(NA,nrow=n.sources*length(unlist(fac2_lookup)),ncol=2)
   fac2_labels <- rep(NA,n.sources*length(unlist(fac2_lookup)))
@@ -475,6 +552,7 @@ if(mix$fere){
   rownames(fac2_stats) <- fac2_labels
   stats <- rbind(stats,fac2_stats)
   if(mix$FAC[[2]]$re){
+    fac2.sig = c(as.matrix(jags.1[,which(parNames=="fac2.sig"),drop=FALSE]))
     sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
     sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
   }
@@ -522,7 +600,7 @@ colnames(stats) <- c("Mean","SD","2.5%","5%","25%","50%","75%","95%","97.5%")
 # Calulate diagnostics
 ################################################################################
 # Get number of variables in the model
-n.var <- coda::nvar(jags1.mcmc)
+n.var <- ncol(jags.1[[1]])
 # Gelman-Rubin diagnostic
 if(output_options[[12]]){  # if Gelman is checked
   if(mcmc.chains == 1){
@@ -532,12 +610,12 @@ if(output_options[[12]]){  # if Gelman is checked
     # Gelman diagnostic, for when the multivariate Gelman fails (matrix not positive definite)
     # Remove the test results for dummy/empty variables
     gelman <- matrix(NA, nrow=n.var, ncol=2)
-    for (v in 1:coda::nvar(jags1.mcmc)) {
-      gelman[v,] <- coda::gelman.diag(jags1.mcmc[,v])$psrf
+    for (v in 1:n.var) {
+      gelman[v,] <- coda::gelman.diag(jags.1[,v,drop=FALSE])$psrf
     }
     #gelman <- gelman[ind,]
     colnames(gelman) <- c("Point est.","Upper C.I.")
-    rownames(gelman) <- coda::varnames(jags1.mcmc)
+    rownames(gelman) <- parNames
     #rownames(gelman) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
     gelman.all <- gelman[which(!is.nan(gelman[,1])),] # Remove dummy variables (show up as NA)
     gelman_short <- gelman[order(gelman[,1],decreasing=T),]
@@ -549,7 +627,7 @@ if(output_options[[12]]){  # if Gelman is checked
 # Heidelberger and Welch's diagnostic
 # Remove the test results for dummy/empty variables
 if(output_options[[13]]){   # if Heidel is checked
-  heidel <- coda::heidel.diag(jags1.mcmc)
+  heidel <- coda::heidel.diag(jags.1)
   w <- which(!is.na(heidel[[1]][,"pvalue"]))  # find all the non-dummy variables
   heidel.all <- data.frame(matrix(NA,nrow=length(w),ncol=3*mcmc.chains))  # create empty data frame
   colstring <- rep(NA,mcmc.chains*3)  # vector of column names
@@ -560,7 +638,7 @@ if(output_options[[13]]){   # if Heidel is checked
   }
   #heidel.all <- heidel.all[ind,]
   #rownames(heidel.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-  rownames(heidel.all) <- coda::varnames(jags1.mcmc)
+  rownames(heidel.all) <- parNames
   colnames(heidel.all) <- colstring
   heidel.all <- round(heidel.all,3)
   heidel.all <- replace(heidel.all,heidel.all==0,"fail")  # A normal call to 'heidel.diag' prints "fail" and "pass", for some reason they turn to 0's and 1's
@@ -581,7 +659,7 @@ if(output_options[[13]]){   # if Heidel is checked
 # Geweke diagnostic
 # Remove the test results for dummy/empty variables
 if(output_options[[14]]){ # if Geweke is checked
-  geweke <- coda::geweke.diag(jags1.mcmc)
+  geweke <- coda::geweke.diag(jags.1)
   geweke.all <- data.frame(matrix(NA,nrow=n.var,ncol=mcmc.chains))    # create empty data frame
   colstring <- rep(NA,mcmc.chains)    # vector of column names
   for(i in 1:mcmc.chains){
@@ -591,7 +669,7 @@ if(output_options[[14]]){ # if Geweke is checked
   }
   #geweke.all <- geweke.all[ind,]
   #rownames(geweke.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-  rownames(geweke.all) <- coda::varnames(jags1.mcmc)
+  rownames(geweke.all) <- parNames
   colnames(geweke.all) <- colstring
   geweke.all <- round(geweke.all,3)
   w <- which(!is.nan(geweke[[1]]$z))  # find all the non-dummy variables
@@ -713,7 +791,19 @@ And here are the Geweke diagnostics for all variables:
 } # end Geweke save
 } # end Geweke printout
 
-DIC <- jags.1$BUGSoutput$DIC
+# Calculate DIC for each chain, and report mean across chains -- same
+# as implementation of R2jags and other packages
+deviance <- as.array(jags.1[, which(parNames=="deviance"), drop = FALSE])
+dim(deviance) <- dim(deviance)[1:2]
+pD <- numeric(mcmc.chains)
+DIC <- numeric(mcmc.chains)
+for (i in 1:mcmc.chains) {
+  pD[i] <- var(deviance[, i])/2
+  DIC[i] <- mean(deviance[, i]) + pD[i]
+}
+#all <- c(all, list(isDIC=TRUE, DICbyR=TRUE,  pD=mean(pD), DIC=mean(DIC)))
+DIC = mean(DIC)
+
 cat("
 ################################################################################
 # Summary Statistics
@@ -743,6 +833,6 @@ if(mix$n.ce > 0){
 
 # Use ggmcmc package to create diagnostic plots
 diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
-ggmcmc::ggmcmc(ggmcmc::ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+ggmcmc::ggmcmc(ggmcmc::ggs(jags.1),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
 
 } # end function output_JAGS
