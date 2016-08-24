@@ -238,6 +238,13 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   samples = rjags::coda.samples(model=model.init, variable.names = jags.params, 
     n.iter = mcmc$chainLength, thin = mcmc$thin)
 
+  # cl <- parallel::makePSOCKcluster(3)
+  ## load glm module
+  # tmp <- parallel::clusterEvalQ(cl, library(dclone))
+  # dclone::parLoadModule(cl, "glm")
+  # pm <- jags.parfit(cl, data = jags.data, params = jags.params, 
+  #  model = model_filename, inits = jags.inits, n.chains = 3)
+  
   return(samples)
   
 } # end run_model function
