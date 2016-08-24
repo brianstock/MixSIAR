@@ -21,7 +21,7 @@
 plot_continuous_var <- function(jags.1, mix, source, output_options){
 # added only to pass R CMD check
 # ilr.global <- x <- p.global <- p.ind <- sources <- ..scaled.. <- NULL
-R2jags::attach.jags(jags.1)
+#R2jags::attach.jags(jags.1)
 n.sources <- source$n.sources
 source_names <- source$source_names
 
@@ -34,6 +34,12 @@ for(ce in 1:mix$n.ce){
   get_low <- function(x){return(quantile(x,.025))}
   Cont1.plot <- seq(from=round(min(cont),1),to=round(max(cont),1),by=0.1)
   ilr.median <- array(NA,dim=c(length(Cont1.plot),n.sources-1))
+  
+  ilr.global = array(NA, dim=c(n.draws, n.sources))
+  for(src in 1:n.sources) {
+    ilr.global[,src] = c(as.matrix(jags.1[,which(parNames==paste0("ilr.global[",src,"]")),drop=FALSE]))
+  }  
+  
   for(src in 1:n.sources-1){
      ilr.median[,src] <- median(ilr.global[,src]) + median(ilr.cont[,src])*Cont1.plot
   }
@@ -93,7 +99,7 @@ for(ce in 1:mix$n.ce){
 
   # Posterior plot for min(Cont1), median(Cont1), and max(Cont1)
   # Page 370 in Francis et al (2011)
-  n.draws <- length(p.global[,1])
+  n.draws <- nrow(jags.1[[1]]) * length(jags.1)
   # min(Cont1)
   dev.new()
   df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
