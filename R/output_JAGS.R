@@ -72,7 +72,6 @@ n.sources <- source$n.sources
 source_names <- source$source_names
 # p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
 # ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
-#R2jags::attach.jags(jags.1)
 
 #jags1.mcmc <- coda::as.mcmc(jags.1)
 n.draws <- nrow(jags.1[[1]])
@@ -798,7 +797,7 @@ dim(deviance) <- dim(deviance)[1:2]
 pD <- numeric(mcmc.chains)
 DIC <- numeric(mcmc.chains)
 for (i in 1:mcmc.chains) {
-  pD[i] <- var(deviance[, i])/2
+  pD[i] <- stats::var(deviance[, i])/2
   DIC[i] <- mean(deviance[, i]) + pD[i]
 }
 #all <- c(all, list(isDIC=TRUE, DICbyR=TRUE,  pD=mean(pD), DIC=mean(DIC)))

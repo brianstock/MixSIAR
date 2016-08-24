@@ -28,7 +28,7 @@ test_that("Killer whale ex works",{
   invisible(capture.output(
     jags.uninf <- run_model(run,mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
   ))
-  expect_is(jags.uninf,"rjags")
+  expect_is(jags.uninf,"mcmc.list")
   file.remove(model_filename)
 
   # Test informative prior version
@@ -40,6 +40,6 @@ test_that("Killer whale ex works",{
   invisible(capture.output(
     jags.inf <- run_model(run=run,mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
   ))
-  expect_is(jags.inf,"rjags")
-  file.remove(model_filename)
+  expect_is(jags.inf,"mcmc.list")
+  #file.remove(model_filename)
 })

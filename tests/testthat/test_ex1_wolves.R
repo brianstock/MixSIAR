@@ -35,6 +35,6 @@ test_that("Wolves ex works",{
                       alpha.prior = 1, resid_err, process_err)
   ))
 
-  expect_is(jags.1,"rjags")
+  expect_is(jags.1,"mcmc.list")
   file.remove(model_filename)
 })
