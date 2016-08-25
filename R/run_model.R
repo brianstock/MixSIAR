@@ -231,8 +231,8 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   rjags::adapt(model.init, n.iter = min(mcmc$burn, 5000), end.adaptation = TRUE)
   #burn phase -- coda.samples() is a wrapper for jags.samples, outputs mcmc.list
   jags.params = c(jags.params, "deviance")
-  burn = rjags::coda.samples(model=model.init, variable.names = jags.params, 
-    n.iter = mcmc$burn, thin = mcmc$thin)
+  rjags::update(model=model.init, variable.names = jags.params, 
+    n.iter = mcmc$burn, thin = mcmc$thin, progress.bar = "none")
 
   #sampling phase -- coda.samples() is a wrapper for jags.samples, outputs mcmc.list
   samples = rjags::coda.samples(model=model.init, variable.names = jags.params, 
