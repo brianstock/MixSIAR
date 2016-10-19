@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>MixSIAR</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>MixSIAR</h1>
+
+<p><a href="https://cran.r-project.org/package=MixSIAR"><img src="http://www.r-pkg.org/badges/version/MixSIAR" alt="cran version"/></a>
+<a href="https://github.com/metacran/cranlogs.app"><img src="http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?" alt="rstudio mirror downloads"/></a>
+<a href="https://zenodo.org/badge/latestdoi/20929/brianstock/MixSIAR"><img src="https://zenodo.org/badge/20929/brianstock/MixSIAR.svg" alt="DOI"/></a></p>
+
+<p>MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. </p>
+
+<p>MixSIAR represents a collaborative coding project between the investigators behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, Andrew Jackson, Jon Moore, Stuart Bearhop, and Richard Inger.</p>
+
+<p>MixSIAR incorporates several years of advances in Bayesian mixing model theory since MixSIR and SIAR, currently:</p>
+
+<ul>
+<li>Any number of biotracers (examples with 1 isotope, 2 isotope, 8 fatty acids, and 22 fatty acids)</li>
+<li>Source data fit hierarchically within the model</li>
+<li>Source data by categorical covariate (e.g. sources by Region)</li>
+<li>Categorical covariates (up to 2, choice of modeling as random or fixed effects, either nested or independent)</li>
+<li>Continuous covariate (up to 1)</li>
+<li>Error structure options with covariance (Residual * Process, Residual only)</li>
+<li>Concentration dependence</li>
+<li>Ability to plot and include “uninformative”/generalist or informative priors</li>
+</ul>
+
+<h3>QUICK INSTALL (no GUI)</h3>
+
+<p>The script version is easier to install and better for repeated analysis. If you want the <strong>script version only</strong> (no GUI):</p>
+
+<ol>
+<li><p>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</p></li>
+<li><p>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>.</p></li>
+<li><p>Open R and run:</p>
+
+<pre><code>install.packages(&quot;MixSIAR&quot;)
+library(MixSIAR)
+</code></pre></li>
+</ol>
+
+<p>The vignettes can be accessed via:</p>
+
+<pre><code>browseVignettes(&quot;MixSIAR&quot;)
+</code></pre>
+
+<p>There is a more extensive user manual included in the package install. To find the directory location on your computer:</p>
+
+<pre><code>find.package(&quot;MixSIAR&quot;)
+</code></pre>
+
+<p>The manual is also available from the GitHub site <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf">here</a>.</p>
+
+<h3>FULL INSTALL (with GUI)</h3>
+
+<p>Getting the GUI running is more work, but can be a nice introduction to MixSIAR. The install instructions are platform-specific:</p>
+
+<h4>Windows</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>.</li>
+<li>Open R. </li>
+<li><p>Install GTK+ dependent packages:</p>
+
+<pre><code>install.packages(c(&quot;gWidgets&quot;, &quot;RGtk2&quot;, &quot;gWidgetsRGtk2&quot;))
+</code></pre></li>
+<li><p>Load <code>RGtk2</code>. You will be prompted to install GTK+. <strong>Follow the automatic prompts and do not interrupt the GTK+ installation!</strong>:</p>
+
+<pre><code>library(RGtk2)
+</code></pre></li>
+<li><p>Restart R and run:</p>
+
+<pre><code>install.packages(&quot;MixSIAR&quot;, dependencies=TRUE)
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+<p>There is an extensive user manual included in the package install. To find the directory location on your computer:</p>
+
+<pre><code>find.package(&quot;MixSIAR&quot;)
+</code></pre>
+
+<p>Alternatively, you can download the manual from the GitHub site <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf">here</a>.</p>
+
+<h4>Mac OS X</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>.</li>
+<li>Open R. </li>
+<li><p>Install GTK+ dependent R packages:</p>
+
+<pre><code>install.packages(c(&quot;gWidgets&quot;, &quot;RGtk2&quot;, &quot;gWidgetsRGtk2&quot;))
+</code></pre></li>
+<li><p>Close R.</p></li>
+<li><p>Download and install the newest <a href="http://r.research.att.com/#other">GTK+ framework</a>.</p></li>
+<li><p>Install the latest X11 application, <a href="http://xquartz.macosforge.org/landing/">xQuartz</a>.</p></li>
+<li><p>Open R and run:</p>
+
+<pre><code>install.packages(&quot;MixSIAR&quot;, dependencies=TRUE)
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+<p>There is an extensive user manual included in the package install. To find the directory location on your computer:</p>
+
+<pre><code>find.package(&quot;MixSIAR&quot;)
+</code></pre>
+
+<p>Alternatively, you can download the manual from the GitHub site <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf">here</a>.</p>
+
+<h4>Linux</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>. Or, from the terminal: <code>sudo apt-get install jags r-cran-rjags</code>.</li>
+<li>Download and install <a href="http://r.research.att.com/#other">GTK+ framework</a>. From the terminal: <code>sudo apt-get install libgtk2.0-dev</code>.</li>
+<li><p>Check if GTK+ is installed correctly. Open R, install and load the <code>RGtk2</code> package with:</p>
+
+<pre><code>install.packages(&quot;RGtk2&quot;)
+library(RGtk2)
+</code></pre></li>
+<li><p>Install MixSIAR:</p>
+
+<pre><code>install.packages(&quot;MixSIAR&quot;, dependencies=TRUE)
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+<p>There is an extensive user manual included in the package install. To find the directory location on your computer:</p>
+
+<pre><code>find.package(&quot;MixSIAR&quot;)
+</code></pre>
+
+<p>Alternatively, you can download the manual from the GitHub site <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf">here</a>.</p>
+
+<h3>FEEDBACK PLEASE!</h3>
+
+<p>This software has been improved by the questions, suggestions, and bug reports of the user community. If you have a comment, ideally use the <a href="https://github.com/brianstock/MixSIAR/issues">Issues</a> page. You can also post to the <a href="https://www.facebook.com/pages/SIAR-Stable-Isotope-Analysis-in-R/148501811896914">SIAR facebook group</a> or shoot me an email (<em><a href="mailto:b1stock@ucsd.edu">b1stock@ucsd.edu</a></em>).</p>
+
+<h3>ON CITING MixSIAR:</h3>
+
+<p>If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):</p>
+
+<blockquote>
+<p>B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual. Version 3.1. <a href="https://github.com/brianstock/MixSIAR">https://github.com/brianstock/MixSIAR</a>. doi:10.5281/zenodo.56159.</p>
+</blockquote>
+
+<p>The primary citation for <em>Bayesian mixing models</em> (MixSIR):</p>
+
+<blockquote>
+<p>Moore, J. W., &amp; Semmens, B. X. (2008). Incorporating uncertainty and prior information into stable isotope mixing models. Ecology Letters, 11(5), 470-480.</p>
+</blockquote>
+
+<p>If you are using the <em>residual error term</em> (SIAR):</p>
+
+<blockquote>
+<p>Parnell, A. C., Inger, R., Bearhop, S., &amp; Jackson, A. L. (2010). Source partitioning using stable isotopes: coping with too much variation. PLoS One, 5(3), e9672.</p>
+</blockquote>
+
+<p>If you are using a <em>hierarchical structure/random effects</em>:</p>
+
+<blockquote>
+<p>Semmens, B. X., Ward, E. J., Moore, J. W., &amp; Darimont, C. T. (2009). Quantifying inter-and intra-population niche variability using hierarchical Bayesian stable isotope mixing models. PLoS One, 4(7), e6187.</p>
+</blockquote>
+
+<p>If you are using <em>continuous effects</em>:</p>
+
+<blockquote>
+<p>Francis, T. B., Schindler, D. E., Holtgrieve, G. W., Larson, E. R., Scheuerell, M. D., Semmens, B. X., &amp; Ward, E. J. (2011). Habitat structure determines resource use by zooplankton in temperate lakes. Ecology letters, 14(4), 364-372.</p>
+</blockquote>
+
+<p>If you are using <em>source fitting</em>:</p>
+
+<blockquote>
+<p>Ward, E. J., Semmens, B. X., &amp; Schindler, D. E. (2010). Including source uncertainty and prior information in the analysis of stable isotope mixing models. Environmental science &amp; technology, 44(12), 4645-4650.</p>
+</blockquote>
+
+<p>For a detailed description of the math underlying these models, see:</p>
+
+<blockquote>
+<p>Parnell, A. C., Phillips, D. L., Bearhop, S., Semmens, B. X., Ward, E. J., Moore, J. W., Jackson, A. L., Grey, J., Kelley, D. J., &amp; Inger, R. (2013). Bayesian stable isotope mixing models. Environmetrics, 24, 387-399.</p>
+</blockquote>
+
+<p>Finally&hellip; yes, a paper introducing MixSIAR is in the works and will be forthcoming shortly.</p>
+
+<h3>INSTALLATION (GitHub):</h3>
+
+<p>If for some reason you can&#39;t install using <code>install.packages</code>, the GitHub version is another option.</p>
+
+<h4>Windows (GitHub)</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>.</li>
+<li>(Optional) If you want to build the vignettes, install <a href="https://github.com/jgm/pandoc/releases/">pandoc</a> or <a href="https://www.rstudio.com/products/rstudio/download/">R Studio</a>.</li>
+<li>Open R. </li>
+<li><p>Install GTK+ dependent packages:</p>
+
+<pre><code>install.packages(c(&quot;gWidgets&quot;, &quot;RGtk2&quot;, &quot;gWidgetsRGtk2&quot;, &quot;devtools&quot;))
+</code></pre></li>
+<li><p>Load <code>RGtk2</code>. You will be prompted to install GTK+. <strong>Follow the automatic prompts and do not interrupt the GTK+ installation!</strong>:</p>
+
+<pre><code>library(RGtk2)
+</code></pre></li>
+<li><p>Restart R and run:</p>
+
+<pre><code>library(devtools)
+devtools::install_github(&quot;brianstock/MixSIAR@*release&quot;, # gets latest release
+                         dependencies = TRUE, 
+                         build_vignettes = TRUE) # FALSE if no pandoc/R Studio
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+<h4>Mac OS X (GitHub)</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>.</li>
+<li>(Optional) If you want to build the vignettes, install <a href="https://github.com/jgm/pandoc/releases/">pandoc</a> or <a href="https://www.rstudio.com/products/rstudio/download/">R Studio</a>.</li>
+<li>Open R. </li>
+<li><p>Install GTK+ dependent R packages:</p>
+
+<pre><code>install.packages(c(&quot;gWidgets&quot;, &quot;RGtk2&quot;, &quot;gWidgetsRGtk2&quot;, &quot;devtools&quot;))
+</code></pre></li>
+<li><p>Close R.</p></li>
+<li><p>Download and install the newest <a href="http://r.research.att.com/#other">GTK+ framework</a>.</p></li>
+<li><p>Install the latest X11 application, <a href="http://xquartz.macosforge.org/landing/">xQuartz</a>.</p></li>
+<li><p>Open R and run:</p>
+
+<pre><code>library(devtools)
+devtools::install_github(&quot;brianstock/MixSIAR@*release&quot;, # gets latest release
+                         dependencies = TRUE, 
+                         build_vignettes = TRUE) # FALSE if no pandoc/R Studio
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+<h4>Linux (GitHub)</h4>
+
+<ol>
+<li>Download and install/update <a href="https://cran.r-project.org/bin/">R</a>.</li>
+<li>Download and install <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>. Or, from the terminal: <code>sudo apt-get install jags r-cran-rjags</code>.</li>
+<li>Download and install <a href="http://r.research.att.com/#other">GTK+ framework</a>. From the terminal: <code>sudo apt-get install libgtk2.0-dev</code>.</li>
+<li>(Optional) If you want to build the vignettes, install <a href="https://github.com/jgm/pandoc/releases/">pandoc</a> or <a href="https://www.rstudio.com/products/rstudio/download/">R Studio</a>.</li>
+<li><p>Check if GTK+ is installed correctly. Open R, install and load the <code>RGtk2</code> package with:</p>
+
+<pre><code>install.packages(&quot;RGtk2&quot;)
+library(RGtk2)
+</code></pre></li>
+<li><p>Install and load devtools, then install MixSIAR:</p>
+
+<pre><code>install.packages(&quot;devtools&quot;)
+library(devtools)
+devtools::install_github(&quot;brianstock/MixSIAR@*release&quot;, # gets latest release
+                         dependencies = TRUE, 
+                         build_vignettes = TRUE) # FALSE if no pandoc and pandoc-citeproc
+</code></pre></li>
+<li><p>Load MixSIAR and run GUI:</p>
+
+<pre><code>library(MixSIAR)
+mixsiar_gui()
+</code></pre></li>
+</ol>
+
+</body>
+
+</html>
