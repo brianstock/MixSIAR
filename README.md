@@ -156,7 +156,7 @@ This software has been improved by the questions, suggestions, and bug reports o
 
 If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):
 
->B. C. Stock and B. X. Semmens (2013). MixSIAR GUI User Manual. Version 3.1. https://github.com/brianstock/MixSIAR. doi:10.5281/zenodo.56159.
+>B. C. Stock and B. X. Semmens (2016). MixSIAR GUI User Manual. Version 3.1. https://github.com/brianstock/MixSIAR. doi:10.5281/zenodo.56159.
 
 The primary citation for _Bayesian mixing models_ (MixSIR):
 
@@ -181,6 +181,10 @@ If you are using _source fitting_:
 For a detailed description of the math underlying these models, see:
 
 >Parnell, A. C., Phillips, D. L., Bearhop, S., Semmens, B. X., Ward, E. J., Moore, J. W., Jackson, A. L., Grey, J., Kelley, D. J., & Inger, R. (2013). Bayesian stable isotope mixing models. Environmetrics, 24, 387-399.
+
+For an explanation of the _error structures_ ("Process only" vs. "Resid only" vs. "Process * Resid"), see:
+
+>Stock, B. C., & Semmens, B. X. (2016). Unifying error structures in commonly used biotracer mixing ­models. Ecology, 97(10), 2562–2569.
 
 Finally... yes, a paper introducing MixSIAR is in the works and will be forthcoming shortly.
 

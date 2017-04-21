@@ -1,23 +1,23 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 \usepackage{xcolor}
-\hypersetup{
-    colorlinks,
-    linkcolor={red},
-    citecolor={blue},
-    urlcolor={blue}
-}
 \usepackage{pdflscape}
 \usepackage{ragged2e}
 \usepackage{hyperref}
 \hypersetup{   
     bookmarksnumbered=true,     
     bookmarksopen=true,  
-    pdfpagemode=UseOutlines,    % this is the option you were lookin for
+    pdfpagemode=UseOutlines,
+    colorlinks=true,
+    linkcolor={red},
+    citecolor={blue},
+    urlcolor={blue}
 }
 \end_preamble
 \use_default_options true
@@ -31,16 +31,16 @@ enumitem
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman palatino
-\font_sans lmss
-\font_typewriter lmtt
-\font_math auto
+\font_roman "palatino" "default"
+\font_sans "lmss" "default"
+\font_typewriter "lmtt" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -114,7 +114,7 @@ Brian Stock and Brice Semmens
 \end_layout
 
 \begin_layout Date
-March 2016
+March 2016 – updated April 2017
 \end_layout
 
 \begin_layout Standard
@@ -287,7 +287,7 @@ Mixing models were originally developed using stable isotopes, but they
 \emph on
 biotracers
 \emph default
- throughout---can be stable isotopes, fatty acids, compound-specific stable
+ throughout—can be stable isotopes, fatty acids, compound-specific stable
  isotopes, element concentrations, or color coefficients from diffuse reflectanc
 e spectrometry (used in sediment mixing models).
 \end_layout
@@ -508,11 +508,11 @@ key "StockPrep"
 \end_layout
 
 \begin_layout Standard
-MixSIAR is not a single mixing model---it is a general framework that can
+MixSIAR is not a single mixing model—it is a general framework that can
  create many different models based on user data and choices (see 
 \begin_inset CommandInset ref
 LatexCommand nameref
-reference "sub:features"
+reference "subsec:features"
 
 \end_inset
 
@@ -537,7 +537,7 @@ Model options
 \begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:features"
+name "subsec:features"
 
 \end_inset
 
@@ -724,7 +724,7 @@ status open
 
 
 \backslash
-hyperref[sub:scriptversion]{script version}
+hyperref[subsec:scriptversion]{script version}
 \end_layout
 
 \end_inset
@@ -1659,7 +1659,7 @@ status open
 
 
 \backslash
-hyperref[sub:scriptversion]{script version}
+hyperref[subsec:scriptversion]{script version}
 \end_layout
 
 \end_inset
@@ -1704,6 +1704,10 @@ The basic MixSIAR workflow is:
 
 \begin_layout Enumerate
 Load data
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -1795,7 +1799,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="9" columns="10">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="left" valignment="middle" width="1.1in">
 <column alignment="center" valignment="top" width="1in">
 <column alignment="center" valignment="top">
@@ -1827,7 +1831,7 @@ status open
 
 
 \backslash
-hyperref[sub:wolves]{Wolves}
+hyperref[subsec:wolves]{Wolves}
 \end_layout
 
 \end_inset
@@ -1848,7 +1852,7 @@ status open
 
 
 \backslash
-hyperref[sub:geese]{Geese}
+hyperref[subsec:geese]{Geese}
 \end_layout
 
 \end_inset
@@ -1869,7 +1873,7 @@ status open
 
 
 \backslash
-hyperref[sub:lake]{Lake}
+hyperref[subsec:lake]{Lake}
 \end_layout
 
 \end_inset
@@ -1890,7 +1894,7 @@ status open
 
 
 \backslash
-hyperref[sub:palmyra]{Palmyra}
+hyperref[subsec:palmyra]{Palmyra}
 \end_layout
 
 \end_inset
@@ -1911,7 +1915,7 @@ status open
 
 
 \backslash
-hyperref[sub:killer]{Killer whale}
+hyperref[subsec:killer]{Killer whale}
 \end_layout
 
 \end_inset
@@ -1932,7 +1936,7 @@ status open
 
 
 \backslash
-hyperref[sub:petrel]{Storm-petrel}
+hyperref[subsec:petrel]{Storm-petrel}
 \end_layout
 
 \end_inset
@@ -1953,7 +1957,7 @@ status open
 
 
 \backslash
-hyperref[sub:snail]{Snail}
+hyperref[subsec:snail]{Snail}
 \end_layout
 
 \end_inset
@@ -1974,7 +1978,7 @@ status open
 
 
 \backslash
-hyperref[sub:isopod]{Isopod}
+hyperref[subsec:isopod]{Isopod}
 \end_layout
 
 \end_inset
@@ -1995,7 +1999,7 @@ status open
 
 
 \backslash
-hyperref[sub:cladocera]{Cladocera}
+hyperref[subsec:cladocera]{Cladocera}
 \end_layout
 
 \end_inset
@@ -2147,7 +2151,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2158,7 +2162,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2169,7 +2173,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2180,7 +2184,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2191,7 +2195,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2202,7 +2206,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2213,7 +2217,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2224,7 +2228,7 @@ Region, Pack (nested)
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2248,7 +2252,7 @@ Fixed effects
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2270,7 +2274,7 @@ Group
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2292,7 +2296,7 @@ Taxa
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2314,7 +2318,7 @@ Region
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2336,7 +2340,7 @@ Site
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2360,7 +2364,7 @@ Continuous effect
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2371,7 +2375,7 @@ Continuous effect
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2393,7 +2397,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2404,7 +2408,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2415,7 +2419,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2426,7 +2430,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2437,7 +2441,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2448,7 +2452,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2709,7 +2713,7 @@ Concentration dependence
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2731,7 +2735,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2742,7 +2746,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2753,7 +2757,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2764,7 +2768,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2775,7 +2779,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2786,7 +2790,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2797,7 +2801,7 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2821,7 +2825,7 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2832,7 +2836,7 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2843,7 +2847,7 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2854,7 +2858,7 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2876,7 +2880,7 @@ Fecal contents
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2887,7 +2891,7 @@ Fecal contents
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2898,7 +2902,7 @@ Fecal contents
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2909,7 +2913,7 @@ Fecal contents
 \begin_layout Plain Layout
 
 \size footnotesize
----
+—
 \end_layout
 
 \end_inset
@@ -2980,7 +2984,7 @@ end{landscape}
 Wolves Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:wolves"
+name "subsec:wolves"
 
 \end_inset
 
@@ -3113,7 +3117,7 @@ Click “Load source data”.
 
 \begin_layout Enumerate
 If you look at the source data file (“wolves_sources.csv”), you will see
- that each Region has different isotope values---Click “Yes”, source data
+ that each Region has different isotope values—Click “Yes”, source data
  vary by Region, and “No”, source data do not vary by Pack.
 \end_layout
 
@@ -3124,7 +3128,7 @@ There is no concentration dependence data in “wolves_sources.csv”, so “Do
 
 \begin_layout Enumerate
 In this example we only have source summary statistics (Mean, SD, and sample
- size), not the original “raw” data---Click “Load source means and SDs”.
+ size), not the original “raw” data—Click “Load source means and SDs”.
 \end_layout
 
 \begin_layout Enumerate
@@ -3170,7 +3174,7 @@ Choose “wolves_discrimination.csv” when prompted for the discrimination data
 Making an isospace plot
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:makeisospace"
+name "subsec:makeisospace"
 
 \end_inset
 
@@ -3280,8 +3284,8 @@ name "fig:wolvesiso"
 \end_layout
 
 \begin_layout Standard
-You should ALWAYS look at the isospace plot---this is a good check that
- the data is loaded correctly, and that the isospace geometry makes sense.
+You should ALWAYS look at the isospace plot—this is a good check that the
+ data is loaded correctly, and that the isospace geometry makes sense.
  If the mixture data are well outside the source polygon, you have a serious
  violation of mixing model assumptions, and it must be true that either
  1) You're missing a source, or 2) You're using an incorrect discrimination
@@ -3369,7 +3373,7 @@ N), as is most often the case.
  If you have only 1 biotracer, MixSIAR will create a 1-D plot (see 
 \begin_inset CommandInset ref
 LatexCommand nameref
-reference "sub:snail"
+reference "subsec:snail"
 
 \end_inset
 
@@ -3378,7 +3382,7 @@ reference "sub:snail"
  2-D plots (see 
 \begin_inset CommandInset ref
 LatexCommand nameref
-reference "sub:isopod"
+reference "subsec:isopod"
 
 \end_inset
 
@@ -3389,7 +3393,7 @@ reference "sub:isopod"
 Plot your prior
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:uninformativeprior"
+name "subsec:uninformativeprior"
 
 \end_inset
 
@@ -3661,7 +3665,7 @@ key "Brett2014"
 Specify MCMC parameters
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:mcmcparam"
+name "subsec:mcmcparam"
 
 \end_inset
 
@@ -3670,7 +3674,7 @@ name "sub:mcmcparam"
 
 \begin_layout Standard
 It is beyond the scope of this manual to explain Markov Chain Monte Carlo
- (MCMC) methods---see 
+ (MCMC) methods—see 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:BayesianIntros"
@@ -3709,7 +3713,7 @@ test
  If you want, skip ahead to 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Error-structure-options"
+reference "subsec:Error-structure-options"
 
 \end_inset
 
@@ -3753,7 +3757,7 @@ chains
  If your chains are 'long enough,' according to some diagnostics (see 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:MCMCdiagnostics"
+reference "subsec:MCMCdiagnostics"
 
 \end_inset
 
@@ -3813,7 +3817,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="6">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -4322,7 +4326,7 @@ name "tab:mcmc"
 Error structure options
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Error-structure-options"
+name "subsec:Error-structure-options"
 
 \end_inset
 
@@ -4366,7 +4370,7 @@ Process only
  are explained in 
 \begin_inset CommandInset citation
 LatexCommand citet
-key "StockPrep"
+key "Stock2016"
 
 \end_inset
 
@@ -4385,6 +4389,10 @@ In the future you may want to change the output saving options, but not
 
 \begin_layout Standard
 You should see something like this in the R console:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4506,7 +4514,7 @@ name "fig:wolfmodel"
 Using MCMC diagnostics
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:MCMCdiagnostics"
+name "subsec:MCMCdiagnostics"
 
 \end_inset
 
@@ -4523,6 +4531,10 @@ RUN MODEL
 \end_inset
 
  button.
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4538,6 +4550,10 @@ RUN MODEL
 
 \begin_layout Standard
 The R console will have two progress bars at 100% as well:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4630,6 +4646,10 @@ test
 \end_inset
 
  settings:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4761,6 +4781,10 @@ Process output
  button.
  This time it looks like our model is pretty well converged according to
  the Gelman-Rubin:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4777,6 +4801,10 @@ Process output
 \begin_layout Standard
 Looking at the Geweke, we can see that chains 1 and 2 are good, but chain
  3 was not quite converged:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4814,7 +4842,7 @@ very long
 Interpreting MixSIAR output
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Interpreting-MixSIAR-output"
+name "subsec:Interpreting-MixSIAR-output"
 
 \end_inset
 
@@ -4891,8 +4919,12 @@ Region.SD
 \series bold
 Pack.SD
 \series default
- terms---these are the variation in diet for Factor 1 (Region) and Factor
+ terms—these are the variation in diet for Factor 1 (Region) and Factor
  2 (Pack):
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5016,7 +5048,7 @@ sigma_{Pack}$
 
  are about the same, so we can say that Region and Pack contribute about
  equally to the variation in wolves' diets.
- Median and quantile values are printed in Summary Statistics---see Region.SD
+ Median and quantile values are printed in Summary Statistics—see Region.SD
  and Pack.SD.
 \begin_inset CommandInset label
 LatexCommand label
@@ -5227,7 +5259,7 @@ status open
 Posterior plot of overall wolves’ diet
 \series default
 .
- MixSIAR also plots the diet of the overall consumer population, p.global---this
+ MixSIAR also plots the diet of the overall consumer population, p.global—this
  is what we'd expect for a new wolf if we didn't know which region or pack
  it belonged to.
 \begin_inset CommandInset label
@@ -5309,7 +5341,7 @@ name "fig:wolvespairs"
 Saving MixSIAR output
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Saving-MixSIAR-output"
+name "subsec:Saving-MixSIAR-output"
 
 \end_inset
 
@@ -5737,7 +5769,7 @@ load("p.saved")
 Geese Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:geese"
+name "subsec:geese"
 
 \end_inset
 
@@ -5753,7 +5785,7 @@ status open
 
 
 \backslash
-hyperref[sub:wolves]{Wolves Example}
+hyperref[subsec:wolves]{Wolves Example}
 \end_layout
 
 \end_inset
@@ -5920,7 +5952,7 @@ Yes
 \end_layout
 
 \begin_layout Enumerate
-We only have source means, SD, and sample size---not the original 
+We only have source means, SD, and sample size—not the original 
 \begin_inset Quotes eld
 \end_inset
 
@@ -5928,7 +5960,7 @@ raw
 \begin_inset Quotes erd
 \end_inset
 
- data---click 
+ data—click 
 \begin_inset Quotes eld
 \end_inset
 
@@ -6179,7 +6211,7 @@ Process output
  Has our model converged? See Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:MCMCdiagnostics"
+reference "subsec:MCMCdiagnostics"
 
 \end_inset
 
@@ -6193,6 +6225,10 @@ test
 \end_inset
 
  run is not even close to convergence:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6269,6 +6305,10 @@ short
 \end_inset
 
  run is much closer to convergence:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6283,8 +6323,8 @@ short
 \end_layout
 
 \begin_layout Standard
-We will call these good enough for the purposes of this tutorial---would
- NOT accept these as final results.
+We will call these good enough for the purposes of this tutorial—would NOT
+ accept these as final results.
 \end_layout
 
 \begin_layout Subsubsection
@@ -6304,7 +6344,7 @@ reference "fig:geeseGroup1"
 \emph on
 Note that there is no global/overall estimated diet
 \emph default
----this is because we fit Group as a fixed effect instead of a random effect.
+—this is because we fit Group as a fixed effect instead of a random effect.
 \end_layout
 
 \begin_layout Standard
@@ -6400,7 +6440,7 @@ reference "fig:geeseGroup1"
 Lake Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:lake"
+name "subsec:lake"
 
 \end_inset
 
@@ -6550,7 +6590,7 @@ raw
 \begin_inset Quotes erd
 \end_inset
 
- source data---click 
+ source data—click 
 \begin_inset Quotes eld
 \end_inset
 
@@ -6812,6 +6852,10 @@ normal
 \end_inset
 
  run has converged well enough to accept the results:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6996,7 +7040,7 @@ name "fig:lakeminmedmax"
 Palmyra Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:palmyra"
+name "subsec:palmyra"
 
 \end_inset
 
@@ -7139,7 +7183,7 @@ raw
 \begin_inset Quotes erd
 \end_inset
 
- source data---click 
+ source data—click 
 \begin_inset Quotes eld
 \end_inset
 
@@ -7418,6 +7462,10 @@ short
 \end_inset
 
  run has converged well enough to accept the results:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7525,6 +7573,10 @@ reference "fig:palmyradiet"
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7542,7 +7594,7 @@ reference "fig:palmyradiet"
 Killer Whale Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:killer"
+name "subsec:killer"
 
 \end_inset
 
@@ -7673,7 +7725,7 @@ No
 
 \begin_layout Enumerate
 We only have source summary statistics (mean, SD, and sample size), not
- the original “raw” data---Click “Load source means and SDs”.
+ the original “raw” data—Click “Load source means and SDs”.
 \end_layout
 
 \begin_layout Enumerate
@@ -7850,7 +7902,7 @@ name "fig:kwiso"
 Constructing the informative prior
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:informativeprior"
+name "subsec:informativeprior"
 
 \end_inset
 
@@ -8012,6 +8064,10 @@ c(..., ..., ...)
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8387,6 +8443,10 @@ reference "fig:kwdiet"
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8403,18 +8463,18 @@ reference "fig:kwdiet"
 \begin_layout Standard
 Our prior was quite informative on Coho and Sockeye, effectively setting
  them to 0.
- Notice, however, that there was still significant information in our data---evi
-denced by the posteriors for Chinook and Steelhead being very different
- from their priors (Chinook prior mean = 10/14 = 71.4%, Chinook posterior
- mean = 50.5%, Steelhead prior mean = 3/14 = 21.4%, Steelhead posterior mean
- = 43.0%).
+ Notice, however, that there was still significant information in our data—evide
+nced by the posteriors for Chinook and Steelhead being very different from
+ their priors (Chinook prior mean = 10/14 = 71.4%, Chinook posterior mean
+ = 50.5%, Steelhead prior mean = 3/14 = 21.4%, Steelhead posterior mean =
+ 43.0%).
 \end_layout
 
 \begin_layout Subsection
 Isopod Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:isopod"
+name "subsec:isopod"
 
 \end_inset
 
@@ -8614,7 +8674,7 @@ status open
 
 
 \backslash
-hyperref[sub:cladocera]{Cladocera Example}
+hyperref[subsec:cladocera]{Cladocera Example}
 \end_layout
 
 \end_inset
@@ -8734,7 +8794,7 @@ No
 
 \begin_layout Enumerate
 We only have source summary statistics (mean, SD, and sample size), not
- the original “raw” data---Click “Load source means and SDs”.
+ the original “raw” data—Click “Load source means and SDs”.
 \end_layout
 
 \begin_layout Enumerate
@@ -8958,6 +9018,10 @@ Process output
 
  button.
  Check the Gelman-Rubin and Geweke diagnostics as usual:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9075,6 +9139,10 @@ reference "fig:isopoddiet"
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9155,7 +9223,7 @@ name "fig:isopodSite"
 Cladocera Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:cladocera"
+name "subsec:cladocera"
 
 \end_inset
 
@@ -9543,7 +9611,7 @@ id
 \begin_inset Quotes erd
 \end_inset
 
- as a fixed effect---this will estimate the diet of each mixture datapoint
+ as a fixed effect—this will estimate the diet of each mixture datapoint
  separately (sample size of 1).
  This makes sense to do when you think there will be clear differences between
  sites/seasons/etc., but only have 1 or 2 points from each site/season (i.e
@@ -9586,7 +9654,7 @@ No
 
 \begin_layout Enumerate
 We only have source summary statistics (mean, SD, and sample size), not
- the original “raw” data---Click “Load source means and SDs”.
+ the original “raw” data—Click “Load source means and SDs”.
 \end_layout
 
 \begin_layout Enumerate
@@ -9950,6 +10018,13 @@ reference "tab:mcmc"
 
 \begin_layout Subsubsection
 Error term options
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Cladocera-Error-term-options"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9962,6 +10037,10 @@ Process only (N = 1)
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9992,6 +10071,13 @@ process error
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Moore2008"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Stock2016"
 
 \end_inset
 
@@ -10039,6 +10125,10 @@ Process output
  button.
  Check the Gelman-Rubin and Geweke diagnostics as usual (these are not great,
  and should be run longer for a final analysis):
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10158,7 +10248,7 @@ name "fig:cladoceradiet"
 Storm-petrel Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:petrel"
+name "subsec:petrel"
 
 \end_inset
 
@@ -10264,7 +10354,7 @@ stormpetrel_discrimination.csv
 Snail Example
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:snail"
+name "subsec:snail"
 
 \end_inset
 
@@ -10352,7 +10442,7 @@ status open
 
 
 \backslash
-hyperref[sub:scriptversion]{script version}
+hyperref[subsec:scriptversion]{script version}
 \end_layout
 
 \end_inset
@@ -10411,7 +10501,7 @@ status open
 
 
 \backslash
-hyperref[sub:Data-file-format]{Data file format and loading}
+hyperref[subsec:Data-file-format]{Data file format and loading}
 \end_layout
 
 \end_inset
@@ -10460,7 +10550,7 @@ Plot your data with the “Make isospace plot” button.
  Refer to Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:makeisospace"
+reference "subsec:makeisospace"
 
 \end_inset
 
@@ -10473,7 +10563,7 @@ Choose your MCMC parameters (“# of Chains”, “Chain Length”, “Burn-in�
  Refer to Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:mcmcparam"
+reference "subsec:mcmcparam"
 
 \end_inset
 
@@ -10482,10 +10572,24 @@ reference "sub:mcmcparam"
 
 \begin_layout Enumerate
 Choose your error structure.
- See 
+ See Sections 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Error-structure-options"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Cladocera-Error-term-options"
+
+\end_inset
+
+, and for more explanation, 
 \begin_inset CommandInset citation
 LatexCommand citet
-key "StockPrep"
+key "Stock2016"
 
 \end_inset
 
@@ -10497,14 +10601,14 @@ Choose your prior.
  Refer to Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:uninformativeprior"
+reference "subsec:uninformativeprior"
 
 \end_inset
 
  for the uninformative prior and Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:informativeprior"
+reference "subsec:informativeprior"
 
 \end_inset
 
@@ -10548,7 +10652,7 @@ Check that the model has converged using the diagnostics.
  Refer to Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:MCMCdiagnostics"
+reference "subsec:MCMCdiagnostics"
 
 \end_inset
 
@@ -10556,11 +10660,11 @@ reference "sub:MCMCdiagnostics"
 \end_layout
 
 \begin_layout Enumerate
-Look at your results---posterior density plots and summary statistics.
+Look at your results—posterior density plots and summary statistics.
  See Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Interpreting-MixSIAR-output"
+reference "subsec:Interpreting-MixSIAR-output"
 
 \end_inset
 
@@ -10572,7 +10676,7 @@ Save your workspace if you wish.
  See Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Saving-MixSIAR-output"
+reference "subsec:Saving-MixSIAR-output"
 
 \end_inset
 
@@ -10583,7 +10687,7 @@ reference "sub:Saving-MixSIAR-output"
 Data file format and loading
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Data-file-format"
+name "subsec:Data-file-format"
 
 \end_inset
 
@@ -10717,7 +10821,7 @@ Raw source data
 \begin_inset Quotes erd
 \end_inset
 
----original measurements
+—original measurements
 \emph default
 .
  Column labels must match those in the mixture file (e.g.
@@ -10787,7 +10891,7 @@ Source means+SDs
 \begin_inset Quotes erd
 \end_inset
 
----summary statistics
+—summary statistics
 \emph default
 .
  Add 
@@ -11048,7 +11152,7 @@ pm$
 Using the MixSIAR script version
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:scriptversion"
+name "subsec:scriptversion"
 
 \end_inset
 
@@ -11724,7 +11828,14 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 \end_layout
 
 \begin_layout Standard
-The GUI has 3 error structure options.
+The GUI has 3 error structure options 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Stock2016"
+
+\end_inset
+
+.
  To create them in the script version:
 \end_layout
 
@@ -11902,6 +12013,10 @@ target "https://github.com/brianstock/MixSIAR/issues"
 \end_inset
 
 :
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11920,6 +12035,10 @@ The GitHub Issues setup is a very convenient way to ask questions and file
  bug reports.
  Unlike email, it provides a community forum, where you can see previous
  questions/issues and get feedback from many people! See below for an example:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11971,7 +12090,7 @@ Stock, B.
  C.
  and B.
  X.
- Semmens (2013).
+ Semmens (2016).
  MixSIAR GUI User Manual.
  Version 3.1.
  https://github.com/brianstock/MixSIAR/.
@@ -12135,6 +12254,53 @@ Hopkins, J.
  Estimating the diets of animals using stable isotopes and a comprehensive
  Bayesian mixing model.
  PLoS One 7:e28478.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Stock2016"
+
+\end_inset
+
+ explain and demonstrate the differences in the error terms (
+\begin_inset Quotes eld
+\end_inset
+
+Process Error only
+\begin_inset Quotes erd
+\end_inset
+
+ vs.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Process * Resid
+\begin_inset Quotes erd
+\end_inset
+
+ vs.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Resid only
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Quote
+
+\family typewriter
+Stock, B.
+ C., and Semmens, B.
+ X.
+ (2016).
+ Unifying error structures in commonly used biotracer mixing ­models.
+ Ecology, 97(10), 2562–2569.
 \end_layout
 
 \begin_layout Section

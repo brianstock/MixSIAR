@@ -4,13 +4,13 @@ citEntry(entry = "misc",
   title        = "{MixSIAR} GUI User Manual",
   author       = personList(as.person("Brian C. Stock"),
                    as.person("Brice X. Semmens")),
-  year         = "2013",
+  year         = "2016",
   note         = "Version 3.1",
   doi          = "10.5281/zenodo.56159",
   url          = "https://github.com/brianstock/MixSIAR",
 
   textVersion  =
-  paste("B.C. Stock and B.X. Semmens (2013).",
+  paste("B.C. Stock and B.X. Semmens (2016).",
         "MixSIAR GUI User Manual. Version 3.1.",
         "https://github.com/brianstock/MixSIAR.",
         "doi:10.5281/zenodo.56159.")
@@ -48,4 +48,9 @@ citFooter(paste("The primary citation for Bayesian mixing models (MixSIR):",
 "",
 "Parnell, A. C., Phillips, D. L., Bearhop, S., Semmens, B. X., Ward, E. J., Moore, J. W.,",
 "Jackson, A. L., Grey, J., Kelley, D. J., & Inger, R. (2013). Bayesian stable isotope",
-"mixing models. Environmetrics, 24, 387-399.",sep="\n"))
+"mixing models. Environmetrics, 24, 387-399.",
+"",
+"If you use the 'process * resid' or 'resid only' error terms:",
+"",
+"Stock, B. C., & Semmens, B. X. (2016). Unifying error structures in commonly used",
+"biotracer mixing ­models. Ecology, 97(10), 2562–2569.",sep="\n"))

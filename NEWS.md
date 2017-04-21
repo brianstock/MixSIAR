@@ -6,6 +6,8 @@ MixSIAR 3.1.7.9000
 
 ## VERY MINOR IMPROVEMENTS
 
+* Added check/error message: if sources by factor, sources must match for all factor levels
+* Updated CITATION and manual
 
 MixSIAR 3.1.7 (2016-08-15)
 =========================
