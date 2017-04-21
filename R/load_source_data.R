@@ -60,19 +60,19 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   SOURCE <- read.csv(filename)
   source.fac <- length(source_factors)
   if(source.fac > 1){
-    stop(paste("*** Error: More than one source factor.
+    stop(paste("More than one source factor.
     MixSIAR can only fit source data by up to ONE factor.
     Please specify 0 or 1 source factor and try again.",sep=""))
   }
   # source factor must be in colnames(SOURCE)
   if(sum(is.na(match(source_factors,colnames(SOURCE)))) > 0){
-    stop(paste("*** Error: Your 'source_factors' do not match column names in your
+    stop(paste("Your 'source_factors' do not match column names in your
         source data file (case sensitive). Please check your source .csv data
         file and load_source_data line, then try again. ***",sep=""))
   }
   test_fac <- match(source_factors,mix$factors)
   if(source.fac==1 && (length(test_fac)==0 || is.na(test_fac))){
-    stop(paste("*** Error: source factor not in mix$factors.
+    stop(paste("Source factor not in mix$factors.
     You cannot model a source random effect that is not included
     as a random/fixed effect for the mixture/consumer. Either
      1) remove the source factor (reload source data), or
@@ -100,7 +100,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
     CONC_names <- paste("Conc",mix$iso_names,sep="")
     # check that CONC_names are in colnames(SOURCE)
     if(sum(is.na(match(CONC_names,colnames(SOURCE)))) > 0){
-    stop(paste("*** Error: Concentration dependence column names mislabeled.
+    stop(paste("Concentration dependence column names mislabeled.
     Should be 'Conc' + iso_names, e.g. 'Concd13C' if iso_names = 'd13C'.
     Please ensure Conc headings in source data file match iso_names
     in mix data file and try again. Alternatively, you may have set conc_dep=T
@@ -120,7 +120,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
 
   if(data_type=="raw"){
     if(sum(is.na(match(mix$iso_names,colnames(SOURCE)))) > 0){
-      stop(paste("*** Error: With raw source data, the iso_names in mix data
+      stop(paste("With raw source data, the iso_names in mix data
         file must be in the column headings of source data file. Please check
         your source and mix .csv data files and try again. ***",sep=""))}
     S_iso_cols <- match(mix$iso_names,colnames(SOURCE))   # find the column numbers of the user-selected isotopes
@@ -129,6 +129,20 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
       for(fac in 1:length(source_factor_cols)){
         S_factor_levels[fac] <- length(levels(SOURCE[,source_factor_cols[fac]]))
       }
+
+      # if by_factor, test that the sources are IDENTICAL for each level
+      list.sources.bylev <- vector("list", S_factor_levels)
+      test.sources.identical <- rep(TRUE, S_factor_levels)
+      S_factor_levels_names <- levels(as.factor(SOURCE[,source_factor_cols[fac]]))
+      for(lev in 1:S_factor_levels){
+        list.sources.bylev[[lev]] <- SOURCE[SOURCE[,source_factors] == S_factor_levels_names[lev], 1]
+      }
+      if(length(unique(list.sources.bylev))!=1){
+        stop(paste("Sources for each level of *",source_factors,"* do not match.
+        If you have different sources (or # of sources) for levels of *",source_factors,"*,
+        you must fit separate MixSIAR models for each level.",sep=""))        
+      }
+
       if(mix$n.iso > 1) mu <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,source_factor_cols[1]],SOURCE[,1])),colMeans))  # calculate the means for each iso/source/fac1 combination
       if(mix$n.iso==1) mu <- do.call(rbind,lapply(split(SOURCE[,S_iso_cols],list(SOURCE[,source_factor_cols[1]],SOURCE[,1])),mean))
       S_MU <- cbind(mu,rep(1:S_factor_levels,n.sources))   # S_MU has source means by (columns): isotopes and fac1.  Sorted by source name and then factor 1
@@ -196,13 +210,13 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
   if(data_type=="means"){
     # check that MU_names and SIG_names are in colnames(SOURCE)
     if(sum(is.na(match(mix$MU_names,colnames(SOURCE)))) > 0){
-      stop(paste("*** Error: Source mean column names mislabeled.
+      stop(paste("Source mean column names mislabeled.
     Should be 'Mean' + iso_names from mix data file, e.g. 'Meand13C' if
     mix$iso_names = 'd13C'. Please ensure headings in source data file match
     this format and try again. Alternatively, if you have raw source data,
     you should set data_type='raw'.",sep=""))}
     if(sum(is.na(match(mix$SIG_names,colnames(SOURCE)))) > 0){
-      stop(paste("*** Error: Source SD column names mislabeled.
+      stop(paste("Source SD column names mislabeled.
     Should be 'SD' + iso_names from mix data file, e.g. 'SDd13C' if
     mix$iso_names = 'd13C'. Please ensure headings in source data file match
     this format and try again. Alternatively, if you have raw source data,
@@ -213,7 +227,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
 
     sample_size_col <- match("n",colnames(SOURCE))    # Find the column titled "n" be in the source means file, where n is the sample size for each source
     if(is.na(sample_size_col)){
-      stop(paste("*** Error: Source sample sizes missing or entered incorrectly.
+      stop(paste("Source sample sizes missing or entered incorrectly.
         Check your sources .csv data file to be sure you have a column
         titled \"n\" with the sample sizes for each source isotope estimate.",sep=""))
     }
@@ -230,8 +244,22 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
       for(fac in 1:length(source_factor_cols)){
         S_factor_levels[fac] <- length(levels(as.factor(SOURCE[,source_factor_cols[fac]])))
       }
+
+      # if by_factor, test that the sources are IDENTICAL for each level
+      list.sources.bylev <- vector("list", S_factor_levels)
+      test.sources.identical <- rep(TRUE, S_factor_levels)
+      S_factor_levels_names <- levels(as.factor(SOURCE[,source_factor_cols[fac]]))
+      for(lev in 1:S_factor_levels){
+        list.sources.bylev[[lev]] <- SOURCE[SOURCE[,source_factors] == S_factor_levels_names[lev], 1]
+      }
+      if(length(unique(list.sources.bylev))!=1){
+        stop(paste("Sources for each level of *",source_factors,"* do not match.
+        If you have different sources (or # of sources) for levels of *",source_factors,"*,
+        you must fit separate MixSIAR models for each level.",sep=""))        
+      }
+
       if(length(S_sample_size) != (n.sources*S_factor_levels)){
-        stop(paste("*** Error: Source sample sizes missing or entered incorrectly.
+        stop(paste("Source sample sizes missing or entered incorrectly.
         Check your source_means.csv data file to be sure you have a column
         titled \"n\" with the sample sizes for each source isotope estimate.",sep=""))
       }
@@ -263,7 +291,7 @@ load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix
 
   # Error check for zero SD
   if(length(which(S_SIG==0))>0){
-    stop(paste("*** Error: You have at least one source SD = 0.
+    stop(paste("You have at least one source SD = 0.
     Check your source data file to be sure each SD entry is non-zero.",sep=""))
   }
 
