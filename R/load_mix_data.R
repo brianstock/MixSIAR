@@ -184,7 +184,7 @@ load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_
       CE_orig[[i]] <- X[,cont_effects[i]]  # Get the values for CE[[1]] from X (raw consumer file)
       CE[[i]] <- scale(X[,cont_effects[i]],center=TRUE,scale=TRUE)
       CE_center[i] <- attributes(CE[[i]])$"scaled:center"
-      CE_scale[i] <- attributes(CE[[i]])$"scaled:center"
+      CE_scale[i] <- attributes(CE[[i]])$"scaled:scale"
     }
   } # end continuous effects loop
 
