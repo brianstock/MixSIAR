@@ -28,7 +28,7 @@ MixSIAR fits a continuous covariate as a linear regression in ILR/transform-spac
 Two terms are fit for the proportion of each source: an intercept and a slope.
 The plotted line uses the posterior median estimates of the intercept and slope, and
 the lines are curved because of the ILR-transform back into proportion-space. The 
-95% credible intervals are shaded.
+95\% credible intervals are shaded.
 
 If the model contains both a continuous AND a categorical (factor) covariate, MixSIAR
 fits a different intercept term for each factor level and all levels share the
