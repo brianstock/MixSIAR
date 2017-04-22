@@ -112,7 +112,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
     Factor.1 <- mix$FAC[[1]]$values
     cross.fac1 <- array(data=NA,dim=c(factor1_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
     tmp.p.fac1 <- array(data=NA,dim=c(factor1_levels,n.sources))              # dummy variable for inverse ILR calculation
-    if(mix$FAC[[1]]$re) jags.params <- c(jags.params, "p.fac1", "fac1.sig") else jags.params <- c(jags.params, "p.fac1")
+    if(mix$FAC[[1]]$re) jags.params <- c(jags.params, "p.fac1", "ilr.fac1", "fac1.sig") else jags.params <- c(jags.params, "p.fac1", "ilr.fac1")
     f.data <- c(f.data, "factor1_levels", "Factor.1", "cross.fac1", "tmp.p.fac1")
   }
   if(mix$n.effects > 1 & !mix$fere){
@@ -122,7 +122,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
     if(mix$fac_nested[2]) {factor1_lookup <- mix$FAC[[2]]$lookup; f.data <- c(f.data, "factor1_lookup");}
     cross.fac2 <- array(data=NA,dim=c(factor2_levels,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
     tmp.p.fac2 <- array(data=NA,dim=c(factor2_levels,n.sources))              # dummy variable for inverse ILR calculation
-    if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "p.fac2", "fac2.sig") else jags.params <- c(jags.params, "p.fac2")
+    if(mix$FAC[[2]]$re) jags.params <- c(jags.params, "p.fac2", "ilr.fac2", "fac2.sig") else jags.params <- c(jags.params, "p.fac2", "ilr.fac2")
     f.data <- c(f.data, "factor2_levels", "Factor.2", "cross.fac2", "tmp.p.fac2")
   }
 
