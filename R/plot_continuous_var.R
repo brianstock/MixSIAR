@@ -117,11 +117,11 @@ for(ce in 1:mix$n.ce){
 
       # Save the plot to file
       if(output_options[[4]]){ # svalue(plot_post_save_pdf)
-        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",label,".pdf",sep=""))  # svalue(plot_post_name)
+        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",label,"_",fac.lab,".pdf",sep=""))  # svalue(plot_post_name)
         dev.copy2pdf(file=mypath)
       }
       if(output_options[[18]]){ # svalue(plot_post_save_png)
-        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",label,".png",sep=""))  # svalue(plot_post_name)
+        mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",label,"_",fac.lab,".png",sep=""))  # svalue(plot_post_name)
         dev.copy(png,mypath)
       }
     }
