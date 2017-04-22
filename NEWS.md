@@ -3,6 +3,7 @@ MixSIAR 3.1.7.9000
 
 ## MINOR IMPROVEMENTS
 
+* Improved continuous effect output plots: 1) added 95% CI shading, 2) plot each level of fixed effect
 
 ## VERY MINOR IMPROVEMENTS
 
