@@ -560,7 +560,7 @@ if(output_options[[13]]){   # if Heidel is checked
   }
   #heidel.all <- heidel.all[ind,]
   #rownames(heidel.all) <- c(sig_labels,global_labels,fac1_labels,fac2_labels,ind_labels)
-  rownames(heidel.all) <- coda::varnames(jags1.mcmc)
+  rownames(heidel.all) <- coda::varnames(jags1.mcmc)[w]
   colnames(heidel.all) <- colstring
   heidel.all <- round(heidel.all,3)
   heidel.all <- replace(heidel.all,heidel.all==0,"fail")  # A normal call to 'heidel.diag' prints "fail" and "pass", for some reason they turn to 0's and 1's
