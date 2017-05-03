@@ -4,6 +4,9 @@ MixSIAR 3.1.7.9000
 ## MINOR IMPROVEMENTS
 
 * Improved continuous effect output plots: 1) added 95% CI shading, 2) plot each level of fixed effect
+* Fixed bug with 1FE + 1RE: empty levels Heidelberger diagnostic (#100)
+* Fixed bug with 1FE + 1RE: posterior density plots saved over themselves
+* Added return value for output_JAGS function: now returns p.both if 1FE + 1RE
 
 ## VERY MINOR IMPROVEMENTS
 
