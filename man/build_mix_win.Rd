@@ -39,4 +39,3 @@ loaded, or a red_x image if not.
 \code{\link{load_mix_data}}, which is run when the "Load MIX data"
          window is closed by clicking the "I'm finished" button.
 }
-

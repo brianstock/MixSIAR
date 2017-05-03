@@ -39,4 +39,3 @@ WARNING messages are displayed if:
    but did not choose "Process only" error model (MixSIR).
 }
 }
-

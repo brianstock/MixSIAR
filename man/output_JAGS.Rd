@@ -44,6 +44,15 @@ output_JAGS(jags.1, mix, source, output_options = list(summary_save = TRUE,
  \item \code{plot_xy_save_png}: Save xy/trace plot as png?
 }}
 }
+\value{
+\code{p.both} -- only if 2 fixed effects OR 1 fixed + 1 random, otherwise \code{NULL}).
+
+\code{p.both} holds the MCMC chains for the estimated proportions at the different factor levels. Dimensions = [n.draws, f1.levels, f2.levels, n.sources].
+
+Calculated by combining the ilr offsets from global intercept:
+  ilr.both[,f1,f2,src] = ilr.global[,src] + ilr.fac1[,f1,src] + ilr.fac2[,f2,src]
+And then transforming from ilr- to proportion-space.
+}
 \description{
 \code{output_JAGS} processes the mixing model output, prints and saves (in the
 working directory):
@@ -55,4 +64,3 @@ working directory):
  \item trace/XY plots
 }
 }
-

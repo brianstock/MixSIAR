@@ -42,4 +42,3 @@ expression(paste(delta^13, "C (u2030)",sep="")).
 \seealso{
 \code{\link{plot_data}}
 }
-

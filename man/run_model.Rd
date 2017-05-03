@@ -44,4 +44,3 @@ jags.1, a \code{rjags} model object
 \code{\link{write_JAGS_model}}. This happens when the "RUN MODEL" button is
 clicked in the GUI.
 }
-

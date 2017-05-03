@@ -39,4 +39,3 @@ If \code{splancs} is not installed, a WARNING message will appear.
 \seealso{
 Brett (2014): \url{https://www.researchgate.net/profile/Michael_Brett/publication/269873625_Resource_polygon_geometry_predicts_Bayesian_stable_isotope_mixing_model_bias/links/549884090cf2519f5a1de635.pdf}
 }
-

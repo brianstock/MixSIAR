@@ -29,4 +29,3 @@ if not.
 \code{\link{load_source_data}}, which is run when the "Load source data"
          window is closed by clicking the "I'm finished" button.
 }
-

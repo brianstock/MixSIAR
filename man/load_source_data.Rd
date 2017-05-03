@@ -71,4 +71,3 @@ WARNING messages check for:
 \seealso{
 \code{\link{load_mix_data}} and \code{\link{load_discr_data}}
 }
-

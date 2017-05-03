@@ -48,4 +48,3 @@ expression(paste(delta^13, "C (u2030)",sep="")).
 \seealso{
 \code{\link{plot_data_two_iso}}, \code{\link{plot_data_one_iso}}
 }
-

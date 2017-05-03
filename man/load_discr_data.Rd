@@ -25,4 +25,3 @@ TDF is the amount that a consumer's tissue biotracer values are modified
 then set TDF = 0 (ex. essential fatty acids, fatty acid profile data,
 element concentrations).
 }
-

@@ -16,4 +16,3 @@ loaded mix data are accessed via \code{mixsiar$mix}, and the finished
 model output, \code{rjags} object, is \code{mixsiar$jags.1})
 }
 \keyword{datasets}
-

@@ -36,6 +36,15 @@
 #'    \item \code{plot_pairs_save_png}: Save pairs plot as png?
 #'    \item \code{plot_xy_save_png}: Save xy/trace plot as png?
 #'   }
+#'   
+#' @return \code{p.both} -- only if 2 fixed effects OR 1 fixed + 1 random, otherwise \code{NULL}).
+#' 
+#' \code{p.both} holds the MCMC chains for the estimated proportions at the different factor levels. Dimensions = [n.draws, f1.levels, f2.levels, n.sources].
+#' 
+#' Calculated by combining the ilr offsets from global intercept:
+#'   ilr.both[,f1,f2,src] = ilr.global[,src] + ilr.fac1[,f1,src] + ilr.fac2[,f2,src]
+#' And then transforming from ilr- to proportion-space.
+#'   
 output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   summary_save = TRUE,                 # Save the summary statistics as a txt file?
                                                   summary_name = "summary_statistics",    # If yes, specify the base file name (.txt will be appended later)
@@ -340,11 +349,11 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
 
         # Save the plot as a pdf file
         if(output_options[[4]]){ # svalue(plot_post_save_pdf)
-          mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".pdf",sep="")) #  svalue(plot_post_name), factor2_names
+          mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[1]]$labels[f1],"_",mix$FAC[[2]]$labels[f2],".pdf",sep="")) #  svalue(plot_post_name), factor2_names
           dev.copy2pdf(file=mypath)
         }
         if(output_options[[18]]){  # svalue(plot_post_save_png)
-          mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[2]]$labels[f2],".png",sep="")) #  svalue(plot_post_name), factor2_names
+          mypath <- file.path(paste(getwd(),"/",output_options[[5]],"_diet_p_",mix$FAC[[1]]$labels[f1],"_",mix$FAC[[2]]$labels[f2],".png",sep="")) #  svalue(plot_post_name), factor2_names
           dev.copy(png,mypath)
         }
       } # f2
@@ -744,5 +753,10 @@ if(mix$n.ce > 0){
 # Use ggmcmc package to create diagnostic plots
 diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
 ggmcmc::ggmcmc(ggmcmc::ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+
+# Return p.both if 2 FE or 1FE + 1RE
+if(mix$fere){
+  return(p.both)
+} else return(NULL) # otherwise return nothing
 
 } # end function output_JAGS

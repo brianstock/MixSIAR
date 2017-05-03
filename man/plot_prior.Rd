@@ -23,4 +23,3 @@ plot_prior(alpha.prior = 1, source, plot_save_pdf = TRUE,
 and the uninformative prior side-by-side. Your prior is in red, and the
 "uninformative"/generalist prior (alpha = 1) in dark grey.
 }
-

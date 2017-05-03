@@ -59,4 +59,3 @@ mixsiar_gui()
 \code{\link{output_JAGS}} processes the JAGS output (prints/saves
          diagnostics, summary statistics, and plots)
 }
-

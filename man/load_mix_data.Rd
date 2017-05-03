@@ -85,4 +85,3 @@ select 1 or 0.
 \code{load_mix_data} loads the mixture data file and names the biotracers and
 any Fixed, Random, or Continuous Effects.
 }
-
