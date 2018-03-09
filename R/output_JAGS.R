@@ -80,7 +80,7 @@ n.sources <- source$n.sources
 source_names <- source$source_names
 # p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
 # ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
-R2jags::attach.jags(jags.1)
+# R2jags::attach.jags(jags.1)
 jags1.mcmc <- coda::as.mcmc(jags.1)
 n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])
 
@@ -103,7 +103,7 @@ if(mix$fere){
     for(f1 in 1:mix$FAC[[1]]$levels) {
       for(f2 in fac2_lookup[[f1]]){
         for(src in 1:(n.sources-1)) {
-          ilr.both[i,f1,f2,src] <- ilr.global[i,src] + ilr.fac1[i,f1,src] + ilr.fac2[i,f2,src];
+          ilr.both[i,f1,f2,src] <- jags.1$BUGSoutput$sims.list$ilr.global[i,src] + jags.1$BUGSoutput$sims.list$ilr.fac1[i,f1,src] + jags.1$BUGSoutput$sims.list$ilr.fac2[i,f2,src];
           cross.both[i,f1,f2,,src] <- (e[,src]^ilr.both[i,f1,f2,src])/sum(e[,src]^ilr.both[i,f1,f2,src]);
           # ilr.both[,f1,f2,src] <- ilr.global[,src] + ilr.fac1[,f1,src] + ilr.fac2[,f2,src];
         }
@@ -146,26 +146,26 @@ if(!output_options[[9]]){  # if 'suppress XY plot' is NOT checked
       }
     }
     traceplot_labels[length(random_effects)+1] <- "Individual SD"
-    if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac1.sig,jags.1$BUGSoutput$sims.list$fac2.sig,jags.1$BUGSoutput$sims.list$ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
     if(n.re==1){
       if(mix$FAC[[1]]$re){
-        print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac1.sig,jags.1$BUGSoutput$sims.list$ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       } else { # FAC 2 is the 1 random effect
-        print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig,ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+        print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac2.sig,jags.1$BUGSoutput$sims.list$ind.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       }
     }
-    if(n.re==0) print(lattice::xyplot(coda::as.mcmc(ind.sig),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+    if(n.re==0) print(lattice::xyplot(coda::as.mcmc(jags.1$BUGSoutput$sims.list$ind.sig),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
   } else { # Individual SD is not in the model (no 'ind.sig')
     if(n.re > 0){
       dev.new()
       traceplot_labels <- rep("",length(random_effects))
       for(i in 1:length(random_effects)) { traceplot_labels[i] <- paste(random_effects[i]," SD",sep="") }
-      if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig,fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+      if(n.re==2) print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac1.sig,jags.1$BUGSoutput$sims.list$fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
       if(n.re==1){
         if(mix$FAC[[1]]$re){
-          print(lattice::xyplot(coda::as.mcmc(cbind(fac1.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac1.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         } else { # FAC 2 is the 1 random effect
-          print(lattice::xyplot(coda::as.mcmc(cbind(fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
+          print(lattice::xyplot(coda::as.mcmc(cbind(jags.1$BUGSoutput$sims.list$fac2.sig)),strip=lattice::strip.custom(factor.levels=traceplot_labels)))
         }
       }
     }
@@ -268,7 +268,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
       dev.new()
       df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
       for(src in 1:n.sources){
-        df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(p.fac1[,f1,src]) # fill in the p.fac1[f1] values
+        df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(jags.1$BUGSoutput$sims.list$p.fac1[,f1,src]) # fill in the p.fac1[f1] values
         df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
       }
       my.title <- mix$FAC[[1]]$labels[f1]  # formerly factor1_names
@@ -299,7 +299,7 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
           dev.new()
           df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
           for(src in 1:n.sources){
-            df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(p.fac2[,f2,src]) # fill in the p.fac2 values
+            df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(jags.1$BUGSoutput$sims.list$p.fac2[,f2,src]) # fill in the p.fac2 values
             df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
           }
           #my.title <- paste(factor1_names[f1],", ", random_effects[2]," ",f2,sep="") # plot title (ex. "Region 1, Pack 3")
@@ -368,20 +368,20 @@ if(!output_options[[3]]){   # if 'suppress posterior plots' is NOT checked
     x <- c()
     if(output_options[[17]]){ # if Individual is in the model, add ind.sig to the SD plot
       level <- c(level,rep("Individual SD",n.draws))
-      x <- c(x,ind.sig)
+      x <- c(x,jags.1$BUGSoutput$sims.list$ind.sig)
     }
     if(n.re==1){ # if Factor.1 is in the model, add fac1.sig to the SD plot
       if(mix$FAC[[1]]$re){
         level <- c(level,rep(paste(mix$FAC[[1]]$name," SD",sep=""),n.draws))
-        x <- c(x,fac1.sig)
+        x <- c(x,jags.1$BUGSoutput$sims.list$fac1.sig)
       } else { # FAC 2 is the random effect
         level <- c(level,rep(paste(mix$FAC[[2]]$name," SD",sep=""),n.draws))
-        x <- c(x,fac2.sig)
+        x <- c(x,jags.1$BUGSoutput$sims.list$fac2.sig)
       }
     }
     if(n.re==2){ # if Factor.2 is in the model, add fac1.sig and fac2.sig to the SD plot
       level <- c(level,rep(paste(random_effects[1]," SD",sep=""),n.draws), rep(paste(random_effects[2]," SD",sep=""),n.draws))
-      x <- c(x,fac1.sig,fac2.sig)
+      x <- c(x,jags.1$BUGSoutput$sims.list$fac1.sig,jags.1$BUGSoutput$sims.list$fac2.sig)
     }
     df2 <- data.frame(level=level, x=x) # create the SD plot data frame
 
@@ -414,6 +414,8 @@ getMeanSD <- function(x) cbind(round(apply(x,2,mean),3),round(apply(x,2,sd),3))
 stats <- NULL
 sig_stats <- NULL
 sig_labels <- NULL
+eps_stats <- NULL
+eps_labels <- NULL
 # print(mix)
 # print(mix$n.fe)
 if(mix$n.fe == 0){
@@ -427,9 +429,9 @@ if(mix$n.fe == 0){
   rownames(stats) <- global_labels
 }
 if(n.effects > 0 & mix$n.fe != 2){
-  fac1_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac1,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
+  fac1_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac1,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac1_quants <- t(apply(fac1_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac1_means <- cbind(reshape2::melt(round(apply(p.fac1,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac1,c(2,3),sd),3))$value)
+  fac1_means <- cbind(reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac1,c(2,3),mean),3))$value, reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac1,c(2,3),sd),3))$value)
   fac1_stats <- cbind(fac1_means,fac1_quants)
   fac1_labels <- rep(NA,mix$FAC[[1]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -440,14 +442,14 @@ if(n.effects > 0 & mix$n.fe != 2){
   rownames(fac1_stats) <- fac1_labels
   stats <- rbind(stats,fac1_stats)
   if(mix$FAC[[1]]$re){
-    sig_stats <- cbind(getMeanSD(fac1.sig),t(round(apply(fac1.sig,2,getQuant),3)))
+    sig_stats <- cbind(getMeanSD(jags.1$BUGSoutput$sims.list$fac1.sig),t(round(apply(jags.1$BUGSoutput$sims.list$fac1.sig,2,getQuant),3)))
     sig_labels <- paste(mix$FAC[[1]]$name,".SD",sep="")
   }
 }
 if(n.re==2){
-  fac2_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(p.fac2,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
+  fac2_quants <- as.matrix(reshape::cast(reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac2,c(2,3),getQuant),3)),Var3+Var2~Var1)[,-c(1,2)])
   fac2_quants <- t(apply(fac2_quants,1,sort)) # BUG FIX 10/28/14, quantiles were out of order from cast/melt (thanks to Jason Waite)
-  fac2_means <- cbind(reshape2::melt(round(apply(p.fac2,c(2,3),mean),3))$value, reshape2::melt(round(apply(p.fac2,c(2,3),sd),3))$value)
+  fac2_means <- cbind(reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac2,c(2,3),mean),3))$value, reshape2::melt(round(apply(jags.1$BUGSoutput$sims.list$p.fac2,c(2,3),sd),3))$value)
   fac2_stats <- cbind(fac2_means,fac2_quants)
   fac2_labels <- rep(NA,mix$FAC[[2]]$levels*n.sources)
   for(src in 1:n.sources){
@@ -458,7 +460,7 @@ if(n.re==2){
   rownames(fac2_stats) <- fac2_labels
   stats <- rbind(stats,fac2_stats)
   if(mix$FAC[[2]]$re){
-    sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
+    sig_stats <- rbind(sig_stats,cbind(getMeanSD(jags.1$BUGSoutput$sims.list$fac2.sig),t(round(apply(jags.1$BUGSoutput$sims.list$fac2.sig,2,getQuant),3))))
     sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
   }
 }
@@ -484,7 +486,7 @@ if(mix$fere){
   rownames(fac2_stats) <- fac2_labels
   stats <- rbind(stats,fac2_stats)
   if(mix$FAC[[2]]$re){
-    sig_stats <- rbind(sig_stats,cbind(getMeanSD(fac2.sig),t(round(apply(fac2.sig,2,getQuant),3))))
+    sig_stats <- rbind(sig_stats,cbind(getMeanSD(jags.1$BUGSoutput$sims.list$fac2.sig),t(round(apply(jags.1$BUGSoutput$sims.list$fac2.sig,2,getQuant),3))))
     sig_labels <- c(sig_labels,paste(mix$FAC[[2]]$name,".SD",sep=""))
   }
 }
@@ -500,7 +502,7 @@ if(output_options[[17]]){ # include_indiv (if Individual is in the model)
       ind_labels[N*(src-1)+j] <- paste("p.Ind ",j,".",source_names[src],sep="")
     }
   }
-  sig_stats <- rbind(sig_stats,cbind(getMeanSD(ind.sig),t(round(apply(ind.sig,2,getQuant),3))))
+  sig_stats <- rbind(sig_stats,cbind(getMeanSD(jags.1$BUGSoutput$sims.list$ind.sig),t(round(apply(jags.1$BUGSoutput$sims.list$ind.sig,2,getQuant),3))))
   sig_labels <- c(sig_labels,"Individual.SD")
   rownames(ind_stats) <- ind_labels
   stats <- rbind(stats, ind_stats)
@@ -509,6 +511,34 @@ if(output_options[[17]]){ # include_indiv (if Individual is in the model)
 # Add SD stats to the top of the summary
 rownames(sig_stats) <- sig_labels
 stats <- rbind(sig_stats,stats)
+
+# Add epsilon (multiplicative error term) to stat summary
+# Also plot posterior density
+epsTF <- "resid.prop" %in% names(jags.1$BUGSoutput$sims.list)
+if(epsTF){
+  eps_stats <- cbind(getMeanSD(jags.1$BUGSoutput$sims.list$resid.prop),t(round(apply(jags.1$BUGSoutput$sims.list$resid.prop,2,getQuant),3)))
+  eps_labels <- paste0("Epsilon.", 1:mix$n.iso)
+  rownames(eps_stats) <- eps_labels
+  stats <- rbind(eps_stats,stats)
+
+  # posterior plot
+  level <- c()
+  x <- c()
+  for(j in 1:mix$n.iso){
+    level <- c(level,rep(eps_labels[j], n.draws))
+    x <- c(x, jags.1$BUGSoutput$sims.list$resid.prop[,j])    
+  }
+  df2 <- data.frame(level=level, x=x) 
+  
+  dev.new()
+  print(ggplot2::ggplot(df2, ggplot2::aes(x=x, fill=level, colour=level)) +
+  ggplot2::geom_density(alpha=.3) +
+  ggplot2::theme_bw() +
+  ggplot2::xlab(expression(epsilon)) +
+  ggplot2::ylab("Posterior Density") +
+  ggplot2::theme(legend.position=c(.95,.95), legend.justification=c(1,1), legend.title=ggplot2::element_blank()))   # + xlim(0,2)
+
+}
 colnames(stats) <- c("Mean","SD","2.5%","5%","25%","50%","75%","95%","97.5%")
 
 # Pack 1 stats only

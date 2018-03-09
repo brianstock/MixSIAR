@@ -1,3 +1,16 @@
+MixSIAR 3.1.7.9001
+=========================
+
+## MINOR IMPROVEMENTS
+
+* Removed `attach.jags` call (now directly use `jags.1$BUGSoutput$sims.list`)
+* Added epsilon (multiplicative error term) estimates to output (summary stats, posterior plots)
+
+## BUG FIX
+
+* Fixed bug #129 by using `MCMCpack::rdirichlet` instead of `compositions::rDirichlet.rcomp`
+* Small changes to pass R CMD check
+
 MixSIAR 3.1.7.9000
 =========================
 

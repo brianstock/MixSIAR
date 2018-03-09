@@ -1,6 +1,6 @@
 Package: MixSIAR
 Title: Bayesian Mixing Models in R
-Version: 3.1.7.9000
+Version: 3.1.7.9001
 Authors@R: c(
     person("Brian", "Stock", email = "b1stock@ucsd.edu", role = c("cre","aut")),
     person("Brice", "Semmens", email = "semmens@ucsd.edu", role = "aut"),
@@ -30,7 +30,7 @@ Imports:
     reshape (>= 0.8),
     reshape2 (>= 1.4.1),
     lattice (>= 0.20),
-    compositions (>= 1.40),
+    MCMCpack (>= 1.4-2),
     ggmcmc (>= 0.7.2),
     coda (>= 0.18-1)
 Suggests:

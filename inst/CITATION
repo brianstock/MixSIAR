@@ -53,4 +53,4 @@ citFooter(paste("The primary citation for Bayesian mixing models (MixSIR):",
 "If you use the 'process * resid' or 'resid only' error terms:",
 "",
 "Stock, B. C., & Semmens, B. X. (2016). Unifying error structures in commonly used",
-"biotracer mixing ­models. Ecology, 97(10), 2562–2569.",sep="\n"))
+"biotracer mixing models. Ecology, 97(10), 2562-2569.",sep="\n"))

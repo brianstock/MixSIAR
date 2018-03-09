@@ -211,7 +211,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   if(err=="mult") jags.params <- c(jags.params,"resid.prop")
 
   # Set initial values for p.global different for each chain
-  jags.inits <- function(){list(p.global=as.vector(compositions::rDirichlet.rcomp(1,alpha)))}
+  jags.inits <- function(){list(p.global=as.vector(MCMCpack::rdirichlet(1,alpha)))}
 
   #############################################################################
   # Call JAGS

@@ -25,9 +25,9 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
 
 	alpha.unif <- rep(1,n.sources)
 	alpha.jeff <- rep(1/n.sources,n.sources)
-	p = compositions::rDirichlet.rcomp(10000, alpha)
-	p.unif = compositions::rDirichlet.rcomp(10000, alpha.unif)
-	# p.jeff = compositions::rDirichlet.rcomp(10000, alpha.jeff)
+	p = MCMCpack::rdirichlet(10000, alpha)
+	p.unif = MCMCpack::rdirichlet(10000, alpha.unif)
+	# p.jeff = MCMCpack::rdirichlet(10000, alpha.jeff)
 
 	alpha_lab <- paste0("(",paste0(round(alpha,2),collapse=","),")",sep="")
 	alpha.unif_lab <- paste0("(",paste0(round(alpha.unif,2),collapse=","),")",sep="")
