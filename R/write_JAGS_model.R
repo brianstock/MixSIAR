@@ -652,10 +652,12 @@ cat("
 ", file=filename, append=T)
     if(mix$n.iso > 1){
 cat("
-     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+     loglik[i] <- logdensity.mnorm(X_iso[i,], mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     } else { # n.iso == 1, can't use dmnorm
 cat("
-     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);
+     loglik[i] <- logdensity.norm(X_iso[i,], mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     }
 cat("
    }
@@ -702,10 +704,12 @@ cat("
 ", file=filename, append=T)
     if(mix$n.iso > 1){
 cat("
-     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+     X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma.ind[i,,]);
+     loglik[i] <- logdensity.mnorm(X_iso[i,], mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     } else { # n.iso == 1, can't use dmnorm
 cat("
-     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
+     X_iso[i,] ~ dnorm(mix.mu[,i], Sigma.ind[i,,]);
+     loglik[i] <- logdensity.norm(X_iso[i,], mix.mu[,i], Sigma.ind[i,,]);", file=filename, append=T)
     }
 cat("
   }
@@ -724,6 +728,7 @@ cat("
    # Likelihood
    for(i in 1:N) {
      X_iso[i,] ~ dmnorm(mix.mu[,i], Sigma);
+     loglik[i] <- logdensity.mnorm(X_iso[i,], mix.mu[,i], Sigma);
    }
 } # end model
 
@@ -737,6 +742,7 @@ cat("
    # Likelihood
    for(i in 1:N) {
      X_iso[i,] ~ dnorm(mix.mu[,i], Sigma);
+     loglik[i] <- logdensity.norm(X_iso[i,], mix.mu[,i], Sigma);
    }
 } # end model
 
@@ -748,8 +754,8 @@ if(err=="process"){
 cat("
 
   # calculate mix variance and likelihood
-  for(iso in 1:n.iso){
-    for(i in 1:N){
+  for(i in 1:N){
+    for(iso in 1:n.iso){
 ", file=filename, append=T)
     if(source$data_type=="raw"){ # source data = raw, src_tau dim = src,iso,iso
 cat("
@@ -761,7 +767,9 @@ cat("
 cat("
       mix.prcsn[iso,i] <- 1/process.var[iso,i];
       X_iso[i,iso] ~ dnorm(mix.mu[iso,i], mix.prcsn[iso,i]);
+      loglik_mat[i,iso] <- logdensity.norm(X_iso[i,iso], mix.mu[iso,i], mix.prcsn[iso,i]);
     }
+    loglik[i] <- sum(loglik_mat[i,])
   }
 }  # end model
 

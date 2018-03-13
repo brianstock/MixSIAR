@@ -102,7 +102,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   cross <- array(data=NA,dim=c(N,n.sources,n.sources-1))  # dummy variable for inverse ILR calculation
   tmp.p <- array(data=NA,dim=c(N,n.sources))              # dummy variable for inverse ILR calculation
   #jags.params <- c("p.global", "ilr.global")
-  jags.params <- c("p.global")
+  jags.params <- c("p.global","loglik")
 
   # Random/Fixed Effect data (original)
   # fere <- ifelse(mix$n.effects==2 & mix$n.re < 2,TRUE,FALSE)

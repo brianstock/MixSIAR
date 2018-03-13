@@ -32,7 +32,8 @@ Imports:
     lattice (>= 0.20),
     MCMCpack (>= 1.4-2),
     ggmcmc (>= 0.7.2),
-    coda (>= 0.18-1)
+    coda (>= 0.18-1),
+    loo (>= 1.1.0)
 Suggests:
     gWidgets (>= 0.0-54),
     gWidgetsRGtk2 (>= 0.0-83),

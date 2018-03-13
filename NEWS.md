@@ -1,3 +1,10 @@
+MixSIAR 3.1.8
+=========================
+
+## MINOR IMPROVEMENTS
+
+* calculate WAIC and LOO via 'loo' package (need to calculate log-likelihood each datapoint each MCMC draw)
+
 MixSIAR 3.1.7.9001
 =========================
 
