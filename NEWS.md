@@ -1,9 +1,12 @@
 MixSIAR 3.1.8
 =========================
 
-## MINOR IMPROVEMENTS
+## MAJOR IMPROVEMENTS
 
-* calculate WAIC and LOO via 'loo' package (need to calculate log-likelihood each datapoint each MCMC draw)
+* new function 'compare_models' to calculate WAIC and LOO via 'loo' package
+* new function 'combine_sources' to aggregate sources a posteriori
+* new function 'summary_stat' to print summary of posterior after combining sources
+* new function 'plot_intervals' to plot CI of posterior after combining sources
 
 MixSIAR 3.1.7.9001
 =========================

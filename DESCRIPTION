@@ -1,6 +1,6 @@
 Package: MixSIAR
 Title: Bayesian Mixing Models in R
-Version: 3.1.7.9001
+Version: 3.1.8
 Authors@R: c(
     person("Brian", "Stock", email = "b1stock@ucsd.edu", role = c("cre","aut")),
     person("Brice", "Semmens", email = "semmens@ucsd.edu", role = "aut"),
@@ -33,7 +33,10 @@ Imports:
     MCMCpack (>= 1.4-2),
     ggmcmc (>= 0.7.2),
     coda (>= 0.18-1),
-    loo (>= 1.1.0)
+    loo (>= 1.1.0),
+    bayesplot (>= 1.4.0)
+Remotes:
+    stan-dev/bayesplot
 Suggests:
     gWidgets (>= 0.0-54),
     gWidgetsRGtk2 (>= 0.0-83),
