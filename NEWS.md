@@ -1,9 +1,10 @@
 MixSIAR 3.1.8
 =========================
 
-## MAJOR IMPROVEMENTS
+## MINOR IMPROVEMENTS
 
-* new function 'compare_models' to calculate WAIC and LOO via 'loo' package
+* new example: mantis shrimp diet, informative priors + combining sources
+* new function 'compare_models' to perform model selection based on LOO/WAIC weights, via 'loo' package
 * new function 'combine_sources' to aggregate sources a posteriori
 * new function 'summary_stat' to print summary of posterior after combining sources
 * new function 'plot_intervals' to plot CI of posterior after combining sources

@@ -12,12 +12,16 @@ compare_models(x, loo = TRUE)
 \item{loo}{\code{TRUE/FALSE}: compute LOO if \code{TRUE} (preferred), compute WAIC if \code{FALSE}}
 }
 \value{
-Output from \code{loo::compare}, a vector or matrix with class 'compare.loo'. 
-If exactly two MixSIAR models are provided (i.e. if \code{length(x)==2}), then 
-the difference in expected predictive accuracy and the standard error of the 
-difference are returned. \emph{A POSITIVE difference in LOO/WAIC means the expected 
-predictive accuracy for the SECOND model is higher.} If more than two objects 
-are provided then a matrix of summary information is returned.
+Data frame with the following columns:
+
+\itemize{
+ \item \code{Model}: names of \code{x} (input list)
+ \item \code{LOOic} / \code{WAIC}: LOO information criterion or WAIC
+ \item \code{se_LOOic} / \code{se_WAIC}: standard error of LOOic / WAIC
+ \item \code{dLOOic} / \code{dWAIC}: difference between each model and the model with lowest LOOic/WAIC. Best model has dLOOic = 0.
+ \item \code{se_dLOOic} / \code{se_dWAIC}: standard error of the difference between each model and the model with lowest LOOic/WAIC
+ \item \code{weight}: relative support for each model, calculated as Akaike weights (Burnham & Anderson 2002). Can be interpreted as the probability of each model being the truth, given the data observed.
+}
 }
 \description{
 \code{compare_models} uses the \href{https://CRAN.R-project.org/package=loo}{'loo' package}
@@ -33,7 +37,8 @@ In brief:
 \itemize{
  \item LOO and WAIC are preferred over AIC or DIC
  \item LOO is more robust than WAIC
- \item 'loo' estimates standard errors for the difference in LOO between two models
+ \item \code{'loo'} estimates standard errors for the difference in LOO/WAIC between two models
+ \item We can calculate the relative support for each model using LOO/WAIC weights
 }
 }
 \examples{
@@ -76,9 +81,16 @@ compare_models(x=list(jags.1, jags.2), loo=FALSE)
 
 # Get WAIC for model 1
 compare_models(x=list(jags.1), loo=FALSE)
+
+# Create named list of rjags objects to get model names in summary
+x <- list(jags.1, jags.2)
+names(x) <- c("Region + Pack", "Region")
+compare_models(x)
 }
 
 }
 \seealso{
 \href{https://CRAN.R-project.org/package=loo}{'loo' package} and \href{https://link.springer.com/article/10.1007/s11222-016-9696-4}{Vehtari, Gelman, & Gabry (2017)}.
+
+Burnham, KP and Anderson, DR. 2002. Model selection and multimodel inference: a practical information-theoretic approach. Springer Science & Business Media.
 }

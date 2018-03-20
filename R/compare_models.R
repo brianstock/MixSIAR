@@ -12,21 +12,27 @@
 #' \itemize{
 #'  \item LOO and WAIC are preferred over AIC or DIC
 #'  \item LOO is more robust than WAIC
-#'  \item 'loo' estimates standard errors for the difference in LOO between two models
+#'  \item \code{'loo'} estimates standard errors for the difference in LOO/WAIC between two models
+#'  \item We can calculate the relative support for each model using LOO/WAIC weights
 #' }
 #'
 #' @param x list of two or more \code{rjags} model objects (output from \code{\link{run_model}} function)
 #' @param loo \code{TRUE/FALSE}: compute LOO if \code{TRUE} (preferred), compute WAIC if \code{FALSE}
 #'   
-#' @return Output from \code{loo::compare}, a vector or matrix with class 'compare.loo'. 
-#' If exactly two MixSIAR models are provided (i.e. if \code{length(x)==2}), then 
-#' the difference in expected predictive accuracy and the standard error of the 
-#' difference are returned. \emph{A POSITIVE difference in LOO/WAIC means the expected 
-#' predictive accuracy for the SECOND model is higher.} If more than two objects 
-#' are provided then a matrix of summary information is returned.
+#' @return Data frame with the following columns:
 #' 
+#' \itemize{
+#'  \item \code{Model}: names of \code{x} (input list)
+#'  \item \code{LOOic} / \code{WAIC}: LOO information criterion or WAIC
+#'  \item \code{se_LOOic} / \code{se_WAIC}: standard error of LOOic / WAIC
+#'  \item \code{dLOOic} / \code{dWAIC}: difference between each model and the model with lowest LOOic/WAIC. Best model has dLOOic = 0.
+#'  \item \code{se_dLOOic} / \code{se_dWAIC}: standard error of the difference between each model and the model with lowest LOOic/WAIC
+#'  \item \code{weight}: relative support for each model, calculated as Akaike weights (Burnham & Anderson 2002). Can be interpreted as the probability of each model being the truth, given the data observed.
+#' }
+#'
 #' @seealso \href{https://CRAN.R-project.org/package=loo}{'loo' package} and \href{https://link.springer.com/article/10.1007/s11222-016-9696-4}{Vehtari, Gelman, & Gabry (2017)}.
-#' 
+#' @seealso Burnham, KP and Anderson, DR. 2002. Model selection and multimodel inference: a practical information-theoretic approach. Springer Science & Business Media.
+#'
 #' @examples 
 #' \dontrun{
 #' # Model 1 = wolf diet by Region + Pack
@@ -67,6 +73,11 @@
 #' 
 #' # Get WAIC for model 1
 #' compare_models(x=list(jags.1), loo=FALSE)
+#' 
+#' # Create named list of rjags objects to get model names in summary
+#' x <- list(jags.1, jags.2)
+#' names(x) <- c("Region + Pack", "Region")
+#' compare_models(x)
 #' }
 #' 
 compare_models <- function(x, loo=TRUE){
@@ -78,21 +89,56 @@ compare_models <- function(x, loo=TRUE){
     stop(paste("x is not a list of 'rjags' models.
   Retry using e.g. 'compare_models(x=list(jags.1, jags.2))'.",sep=""))    
   }  
-  
+
   n.mods <- length(x)
+  mod.names <- names(x)
   if(n.mods==1){
     if(loo) y <- loo::loo(x[[1]]$BUGSoutput$sims.list$loglik)
     if(!loo) y <- loo::waic(x[[1]]$BUGSoutput$sims.list$loglik)
-    cat("Only 1 model selected, returning LOO/WAIC: \n
-If you meant to compare 2 models, retry using e.g. \n
-'compare_models(x=list(jags.1, jags.2))'.")    
+    cat("Only 1 model selected, returning LOO/WAIC:
+If you meant to compare 2+ models, retry using e.g.
+'compare_models(x=list(jags.1, jags.2))'.\n\n")    
     return(y)
   }
   
   loo.list <- list()
+  nobs <- rep(NA, n.mods)
   for(m in 1:n.mods){
+    nobs[m] <- dim(x[[m]]$BUGSoutput$sims.list$loglik)[2]
     if(loo) loo.list[[m]] <- loo::loo(x[[m]]$BUGSoutput$sims.list$loglik)
     if(!loo) loo.list[[m]] <- loo::waic(x[[m]]$BUGSoutput$sims.list$loglik)
   }
-  return(loo::compare(x=loo.list))
+
+  if(length(unique(nobs))!=1){
+    stop(paste("Number of mix data points not identical for all models.
+  You can only use LOO/WAIC to compare models with the same data.",sep=""))    
+  }  
+
+  # Get LOOic, SE, dLOOic, and weights
+  if(loo){ # LOO
+    LOOic <- sapply(loo.list, function(x) round(x$looic,1))
+    se_LOOic <- sapply(loo.list, function(x) round(x$se_looic,1))
+  } else { # WAIC
+    LOOic <- sapply(loo.list, function(x) round(x$waic,1))
+    se_LOOic <- sapply(loo.list, function(x) round(x$se_waic,1))    
+  }
+  dLOOic <- LOOic - min(LOOic)
+  weight <- round(exp(-0.5*dLOOic) / sum(exp(-0.5*dLOOic)), 3)
+
+  # Get SE of pairwise differences in LOOic/WAIC
+  dSE.mat <- matrix(NA, nrow=n.mods, ncol=n.mods)
+  for(i in 1:(n.mods-1)){
+    for(j in (i+1):n.mods){
+        dSE.mat[i,j] <- 2*loo::compare(x=list(loo.list[[i]], loo.list[[j]]))['se'] # x2 to put on IC/deviance scale
+        dSE.mat[j,i] <- dSE.mat[i,j]
+    }#j
+  }#i  
+  dSE <- round(dSE.mat[, which(dLOOic==0)], 1) # find the model with dLOOic = 0, use that col of dSE.mat
+  
+  # Produce data frame ordered by LOOic/WAIC
+  result <- data.frame(Model=mod.names, LOOic=LOOic, se_LOOic=se_LOOic, dLOOic=dLOOic, se_dLOOic=dSE, weight=weight)
+  result <- result[order(result$LOOic),]
+  if(!loo) names(result) <- c("Model", "WAIC", "se_WAIC", "dWAIC", "se_dWAIC", "weight")
+
+  return(result)
 }
