@@ -47,7 +47,7 @@ mix <- load_mix_data(filename=mix.filename,
 # 'data_type': "means" or "raw", is your source data as means+SD, or do you have raw data
 
 # To run on your data, replace the system.file call with the path to your file
-source.filename <- system.file("extdata", "mantis_sources.csv", package = "MixSIAR")
+source.filename <- system.file("extdata", "mantis_source.csv", package = "MixSIAR")
 
 # Load source data
 source <- load_source_data(filename=source.filename, source_factors=NULL, 
@@ -185,6 +185,7 @@ combined <- combine_sources(jags.1, mix, source, alpha,
 original <- combine_sources(jags.1, mix, source, alpha, 
   groups=list(alphworm="alphworm",brittlestar="brittlestar",clam="clam",crab="crab",fish="fish",snail="snail"))
 
+summary_stat(original)
 summary_stat(combined)
 # summary_stat(combined, savetxt=FALSE)
 # summary_stat(combined, meanSD=FALSE)

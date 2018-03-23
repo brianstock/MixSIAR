@@ -27,11 +27,13 @@
 #'  \item \code{se_LOOic} / \code{se_WAIC}: standard error of LOOic / WAIC
 #'  \item \code{dLOOic} / \code{dWAIC}: difference between each model and the model with lowest LOOic/WAIC. Best model has dLOOic = 0.
 #'  \item \code{se_dLOOic} / \code{se_dWAIC}: standard error of the difference between each model and the model with lowest LOOic/WAIC
-#'  \item \code{weight}: relative support for each model, calculated as Akaike weights (Burnham & Anderson 2002). Can be interpreted as the probability of each model being the truth, given the data observed.
+#'  \item \code{weight}: relative support for each model, calculated as Akaike weights (p.75 Burnham & Anderson 2002). Interpretation: "an estimate of the probability that the model will make the best predictions on new data, conditional on the set of models considered" (McElreath 2015).
 #' }
 #'
-#' @seealso \href{https://CRAN.R-project.org/package=loo}{'loo' package} and \href{https://link.springer.com/article/10.1007/s11222-016-9696-4}{Vehtari, Gelman, & Gabry (2017)}.
-#' @seealso Burnham, KP and Anderson, DR. 2002. Model selection and multimodel inference: a practical information-theoretic approach. Springer Science & Business Media.
+#' @seealso \href{https://CRAN.R-project.org/package=loo}{'loo' package}
+#' @seealso \href{https://link.springer.com/article/10.1007/s11222-016-9696-4}{Vehtari, A, A Gelman, and J Gabry. 2017}. Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. Statistics and Computing.
+#' @seealso Pages 75-88 in \href{http://www.springer.com/us/book/9780387953649}{Burnham, KP and DR Anderson. 2002}. Model selection and multimodel inference: a practical information-theoretic approach. Springer Science & Business Media.
+#' @seealso Pages 188-201 in \href{https://www.crcpress.com/Statistical-Rethinking-A-Bayesian-Course-with-Examples-in-R-and-Stan/McElreath/p/book/9781482253443}{McElreath, R. 2016}. Statistical rethinking: a Bayesian course with examples in R and Stan. CRC Press.
 #'
 #' @examples 
 #' \dontrun{
