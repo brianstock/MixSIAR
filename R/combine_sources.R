@@ -4,6 +4,15 @@
 #' Proportions are summed across posterior draws, since the source proportions
 #' are correlated.
 #'
+#' \emph{Note: Aggregating sources after running the mixing model (a posteriori)
+#' effectively changes the prior weighting on the sources.} Aggregating
+#' uneven numbers of sources will turn an 'uninformative'/generalist
+#' prior into an informative one. Because of this, \code{combine_sources}
+#' automatically generates a message describing this effect and a figure
+#' showing the original prior, the effective/aggregated prior, and what the
+#' 'uninformative'/generalist prior would be if sources were instead grouped
+#' before running the mixing model (a priori).
+#'
 #' @param jags.1 \code{rjags} model object, output from \code{\link{run_model}}
 #' @param mix list, output from \code{\link{load_mix_data}}
 #' @param source list, output from \code{\link{load_source_data}}
@@ -18,7 +27,8 @@
 #'  \item \code{combined$jags.1}: (input) \code{rjags} model object
 #'  \item \code{combined$source.old}: (input) list of original source data
 #'  \item \code{combined$mix}: (input) list of original mix data
-#'  \item \code{combined$alpha.prior}: (input) prior vector
+#'  \item \code{combined$prior.old}: (input) prior vector on original sources
+#'  \item \code{combined$prior.new}: (output) prior vector on combined sources
 #' }
 #'
 #' @seealso \code{\link{summary_stat}} and \code{\link{plot_intervals}}
@@ -149,5 +159,78 @@ combine_sources <- function(jags.1, mix, source, alpha.prior=1, groups){
   # Combine posterior matrices
   post.new <- cbind(old.other, new.global, new.fac1, new.fac2, new.both)
 
-  return(list(post=post.new, source.new=source.new, groups=groups, jags.1=jags.1, source.old=source, mix=mix, alpha.prior=alpha.prior))
+  # Error check on prior input
+  if(length(which(alpha.prior==0))!=0){
+      stop(paste("*** Error: You cannot set any alpha = 0.
+      Instead, set = 0.01.***",sep=""))
+  }
+  if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
+  if(length(alpha.prior)==1) alpha = rep(alpha.prior,n.sources) # All sources have same value
+  if(length(alpha.prior) > 1 & length(alpha.prior) != n.sources) alpha = rep(1,n.sources) # Error checking for user inputted string/ NA
+  if(length(alpha.prior) > 1 & length(alpha.prior) == n.sources) alpha = alpha.prior # All sources have different value inputted by user
+
+  # Simulate old prior
+  N = 20000
+  p.old = MCMCpack::rdirichlet(N, alpha)
+  alpha.unif <- rep(1,n.sources)
+  p.unif.old = MCMCpack::rdirichlet(N, alpha.unif)
+  alpha_lab <- paste0("(",paste0(round(alpha,2),collapse=","),")",sep="")
+  alpha.unif_lab <- paste0("(",paste0(round(alpha.unif,2),collapse=","),")",sep="")
+
+  # Calculate new prior with aggregated sources
+  prior.new <- rep(NA, source.new$n.sources)
+  p.new <- matrix(NA, nrow=N, ncol=source.new$n.sources)
+  for(i in 1:source.new$n.sources){
+    old <- groups[[i]]
+    old.levels <- match(old, source$source_names)
+    prior.new[i] <- sum(alpha[old.levels])
+    if(length(old.levels) > 1) p.new[,i] <- apply(p.old[,old.levels], 1, sum)
+    if(length(old.levels) == 1) p.new[,i] <- p.old[,old.levels]
+  }
+
+  alpha.unif.new <- rep(1,source.new$n.sources)
+  p.unif.new = MCMCpack::rdirichlet(N, alpha.unif.new)
+  alpha.lab.new <- paste0("(",paste0(round(prior.new,2),collapse=","),")",sep="")
+  alpha.unif.lab.new <- paste0("(",paste0(round(alpha.unif.new,2),collapse=","),")",sep="")
+
+  dev.new(width=9, height=7)
+  layout(cbind(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), 
+              matrix(c(seq((2*n.sources)+2, 2*n.sources+2*source.new$n.sources+1), rep(2*n.sources+2*source.new$n.sources+2, 2), rep(2*n.sources+2*source.new$n.sources+3, 2*(n.sources-source.new$n.sources))), ncol=2, byrow=TRUE)), 
+        heights=c(rep(3,n.sources),2))
+  par(mai=rep(0.3,4))
+  for(i in 1:n.sources){
+    hist(p.old[,i], breaks = seq(0,1,length.out=40),col="darkblue", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+    hist(p.unif.old[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+  }
+  par(mai=c(0,0,0,0))
+  plot.new()
+  legend(x="center", ncol=2,legend=c(paste0("Original prior\n",alpha_lab),paste0("\"Uninformative\" prior\n",alpha.unif_lab)),
+         fill=c("darkblue","darkgrey"),bty = "n",cex=1.5)
+
+  par(mai=rep(0.3,4))
+  for(i in 1:source.new$n.sources){
+    hist(p.new[,i], breaks = seq(0,1,length.out=40),col="red", main = source.new$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+    hist(p.unif.new[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = source.new$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+  }
+  par(mai=c(0,0,0,0))
+  plot.new()
+  legend(x="center", ncol=2,legend=c(paste0("New prior\n",alpha.lab.new),paste0("\"Uninformative\" prior\n",alpha.unif.lab.new)),
+         fill=c("red","darkgrey"),bty = "n",cex=1.5)
+
+cat("
+-------------------------------------------------------------------------
+*** WARNING ***
+
+Aggregating sources after running the mixing model (a posteriori)
+effectively changes the prior weighting on the sources. Aggregating
+uneven numbers of sources will turn an 'uninformative'/generalist
+prior into an informative one. Please check your new, aggregated
+prior (red), and note the difference between it and the original prior 
+(blue). The right (grey) column shows what the 'uninformative'/generalist 
+prior would be if you aggregate sources before running the mixing model 
+(a priori).
+-------------------------------------------------------------------------
+",sep="\n")
+
+  return(list(post=post.new, source.new=source.new, groups=groups, jags.1=jags.1, source.old=source, mix=mix, prior.old=alpha, prior.new=prior.new))
 }

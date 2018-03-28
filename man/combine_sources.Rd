@@ -26,13 +26,24 @@ combine_sources(jags.1, mix, source, alpha.prior = 1, groups)
  \item \code{combined$jags.1}: (input) \code{rjags} model object
  \item \code{combined$source.old}: (input) list of original source data
  \item \code{combined$mix}: (input) list of original mix data
- \item \code{combined$alpha.prior}: (input) prior vector
+ \item \code{combined$prior.old}: (input) prior vector on original sources
+ \item \code{combined$prior.new}: (output) prior vector on combined sources
 }
 }
 \description{
 \code{combine_sources} aggregates the proportions from multiple sources.
 Proportions are summed across posterior draws, since the source proportions
 are correlated.
+}
+\details{
+\emph{Note: Aggregating sources after running the mixing model (a posteriori)
+effectively changes the prior weighting on the sources.} Aggregating
+uneven numbers of sources will turn an 'uninformative'/generalist
+prior into an informative one. Because of this, \code{combine_sources}
+automatically generates a message describing this effect and a figure
+showing the original prior, the effective/aggregated prior, and what the
+'uninformative'/generalist prior would be if sources were instead grouped
+before running the mixing model (a priori).
 }
 \examples{
 \dontrun{
