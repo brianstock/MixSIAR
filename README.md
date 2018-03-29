@@ -2,7 +2,7 @@ MixSIAR
 =============
 [![cran version](http://www.r-pkg.org/badges/version/MixSIAR)](https://cran.r-project.org/package=MixSIAR)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/metacran/cranlogs.app)
-[![DOI](https://zenodo.org/badge/20929/brianstock/MixSIAR.svg)](https://zenodo.org/badge/latestdoi/20929/brianstock/MixSIAR)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1209993.svg)](https://doi.org/10.5281/zenodo.1209993)
 
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. 
 
@@ -156,7 +156,7 @@ This software has been improved by the questions, suggestions, and bug reports o
 
 If you use MixSIAR results in publications, please cite the MixSIAR manual as (similar to how you cite R):
 
->B. C. Stock and B. X. Semmens (2016). MixSIAR GUI User Manual. Version 3.1. https://github.com/brianstock/MixSIAR. doi:10.5281/zenodo.56159.
+>B. C. Stock and B. X. Semmens (2016). MixSIAR GUI User Manual. Version 3.1. https://github.com/brianstock/MixSIAR. doi:10.5281/zenodo.1209993.
 
 The primary citation for _Bayesian mixing models_ (MixSIR):
 
