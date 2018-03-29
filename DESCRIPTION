@@ -7,10 +7,7 @@ Authors@R: c(
     person("Eric", "Ward", role = "ctb"),
     person("Andrew", "Parnell", role = "ctb"),
     person("Andrew", "Jackson", role = "ctb"),
-    person("Donald", "Phillips", role = "ctb"),
-    person("Jon", "Moore", role = "ctb"),
-    person("Stuart", "Bearhop", role = "ctb"),
-    person("Richard", "Inger", role = "ctb"))
+    person("Donald", "Phillips", role = "ctb"))
 Description: Creates and runs Bayesian mixing models to analyze
     biotracer data (i.e. stable isotopes, fatty acids), which estimate the
     proportions of source (prey) contributions to a mixture (consumer). 'MixSIAR'
