@@ -295,4 +295,3 @@ If for some reason you can't install using `install.packages`, the GitHub versio
 [Issues]:https://github.com/brianstock/MixSIAR/issues
 [SIAR Facebook group]:https://www.facebook.com/pages/SIAR-Stable-Isotope-Analysis-in-R/148501811896914
 
-
