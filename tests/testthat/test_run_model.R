@@ -44,9 +44,9 @@ test_that("Error messages work",{
   expect_error(run_model(run, mix, source, discr, model_filename,
                          alpha.prior = 0:2, resid_err=TRUE, process_err=TRUE))
 
-  # cannot set informative prior on model with fixed effect
-  mix$n.fe <- 1
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = 1:3, resid_err=TRUE, process_err=TRUE))
+  # # cannot set informative prior on model with fixed effect
+  # mix$n.fe <- 1
+  # expect_error(run_model(run, mix, source, discr, model_filename,
+  #                        alpha.prior = 1:3, resid_err=TRUE, process_err=TRUE))
   file.remove(model_filename)
 })
