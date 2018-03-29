@@ -214,7 +214,7 @@ If for some reason you can't install using `install.packages`, the GitHub versio
 
     ```
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+    devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
@@ -245,7 +245,7 @@ If for some reason you can't install using `install.packages`, the GitHub versio
 
     ```
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+    devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc/R Studio
     ```
@@ -274,7 +274,7 @@ If for some reason you can't install using `install.packages`, the GitHub versio
     ```
     install.packages("devtools")
     library(devtools)
-    devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+    devtools::install_github("brianstock/MixSIAR",
                              dependencies = TRUE, 
                              build_vignettes = TRUE) # FALSE if no pandoc and pandoc-citeproc
     ```

@@ -50,8 +50,10 @@ mix <- load_mix_data(filename=mix.filename,
 source.filename <- system.file("extdata", "mantis_source.csv", package = "MixSIAR")
 
 # Load source data
-source <- load_source_data(filename=source.filename, source_factors=NULL, 
-                            conc_dep=FALSE, data_type="means", mix)
+source <- load_source_data(filename=source.filename, 
+                           source_factors="Habitat", 
+                           conc_dep=TRUE, 
+                           data_type="means", mix)
 
 ################################################################################
 # Load discrimination data, i.e. your:
@@ -95,7 +97,37 @@ plot_data(filename="isospace_plot",
 #   LIGHT GREY = "uninformative" Jeffrey's prior (alpha = 1/n.sources)
 
 # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
-plot_prior(alpha.prior=1,source)
+alpha.unif <- rep(1, source$n.sources)
+plot_prior(alpha.prior=alpha.unif, 
+           source=source,
+           filename="prior_uninf")
+
+# But wait... the GENERALIST prior does not reflect our a priori ecological knowledge!
+# Current thought is that 'smasher' mantis shrimp SPECIALIZE on hard-shelled prey,
+# because they have specialized hammer-like clubs allowing them to break open shells.
+# Let's construct a "specialist" informative prior reflecting the expectation
+# that N. bredini consumes primarily hard-shelled prey. This will be a more
+# conservative test of the hypothesis that N. bredini specializes on hard-shelled prey.
+
+# 'specialist' informative prior (hard-shelled prey get 4x weight of soft-bodied prey,
+# based on dietary observations of N. bredini (Caldwell et al. 1989).
+alpha.spec <- c(1,1,4,4,1,4)
+alpha.spec <- alpha.spec*length(alpha.spec)/sum(alpha.spec)
+plot_prior(alpha.prior=alpha.spec, 
+           source=source,
+           filename="prior_specialist")
+
+# We also have data on prey abundance in the two habitats (coral, seagrass).
+# Construct priors using prey abundance so that the alpha_k sum to n_sources
+alpha.grass <- c(0.35,1.61,0.43,(51.65+0.26),5.18,40.5)*6/100
+plot_prior(alpha.prior=alpha.grass, 
+           source=source,
+           filename="prior_seagrass")
+
+alpha.coral <- c((14.31+24.74),0.01,15.48,(13.81+4.71),8.44,18.51)*6/100
+plot_prior(alpha.prior=alpha.coral, 
+           source=source,
+           filename="prior_coral")
 
 ################################################################################
 # Write JAGS model file (define model structure)
@@ -140,49 +172,48 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # Good idea to use 'test' first to check if
 #   1) the data are loaded correctly, and 
 #   2) the model is specified correctly
-alpha <- rep(1, source$n.sources)
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
-                    alpha.prior = alpha, resid_err, process_err)
+# jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
+#                     alpha.prior = alpha.spec, resid_err, process_err)
 
 # After a test run works, increase the MCMC run to a value that may converge
-# jags.1 <- run_model(run="normal", mix, source, discr, model_filename, 
-                    # alpha.prior = 1, resid_err, process_err)
+jags.spec <- run_model(run="normal", mix, source, discr, model_filename, 
+                    alpha.prior = alpha.spec, resid_err, process_err)
 
 ################################################################################
 # Process JAGS output
 
-# # Choose output options (see ?output_options for details)
-# output_options <- list(summary_save = TRUE,                 
-#                        summary_name = "summary_statistics", 
-#                        sup_post = FALSE,                    
-#                        plot_post_save_pdf = TRUE,           
-#                        plot_post_name = "posterior_density",
-#                        sup_pairs = FALSE,             
-#                        plot_pairs_save_pdf = TRUE,    
-#                        plot_pairs_name = "pairs_plot",
-#                        sup_xy = TRUE,           
-#                        plot_xy_save_pdf = FALSE,
-#                        plot_xy_name = "xy_plot",
-#                        gelman = TRUE,
-#                        heidel = FALSE,  
-#                        geweke = TRUE,   
-#                        diag_save = TRUE,
-#                        diag_name = "diagnostics",
-#                        indiv_effect = FALSE,       
-#                        plot_post_save_png = FALSE, 
-#                        plot_pairs_save_png = FALSE,
-#                        plot_xy_save_png = FALSE)
+# Choose output options (see ?output_options for details)
+output_options <- list(summary_save = TRUE,                 
+                       summary_name = "summary_statistics", 
+                       sup_post = FALSE,                    
+                       plot_post_save_pdf = TRUE,           
+                       plot_post_name = "posterior_density",
+                       sup_pairs = FALSE,             
+                       plot_pairs_save_pdf = TRUE,    
+                       plot_pairs_name = "pairs_plot",
+                       sup_xy = TRUE,           
+                       plot_xy_save_pdf = FALSE,
+                       plot_xy_name = "xy_plot",
+                       gelman = TRUE,
+                       heidel = FALSE,  
+                       geweke = TRUE,   
+                       diag_save = TRUE,
+                       diag_name = "diagnostics",
+                       indiv_effect = FALSE,       
+                       plot_post_save_png = FALSE, 
+                       plot_pairs_save_png = FALSE,
+                       plot_xy_save_png = FALSE)
 
-# # Create diagnostics, summary statistics, and posterior plots
-# output_JAGS(jags.1, mix, source, output_options)
+# Create diagnostics, summary statistics, and posterior plots
+output_JAGS(jags.spec, mix, source, output_options)
 
 # Show original 6 source names
 source$source_names 
 
 # Combine hard-shelled and soft-bodied prey sources
-combined <- combine_sources(jags.1, mix, source, alpha, 
+combined <- combine_sources(jags.spec, mix, source, alpha.spec, 
   groups=list(hard=c("clam","crab","snail"), soft=c("alphworm","brittlestar","fish")))
-original <- combine_sources(jags.1, mix, source, alpha, 
+original <- combine_sources(jags.spec, mix, source, alpha.spec, 
   groups=list(alphworm="alphworm",brittlestar="brittlestar",clam="clam",crab="crab",fish="fish",snail="snail"))
 
 summary_stat(original)

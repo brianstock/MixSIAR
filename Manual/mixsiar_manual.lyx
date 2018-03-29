@@ -1,5 +1,5 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -41,6 +41,8 @@ enumitem
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -73,13 +75,14 @@ enumitem
 \use_package undertilde 1
 \cite_engine natbib
 \cite_engine_type numerical
-\biblio_style plain
+\biblio_style plainnat
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
 \justification true
 \use_refstyle 0
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -92,7 +95,10 @@ enumitem
 \tocdepth 2
 \paragraph_separation skip
 \defskip smallskip
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -114,7 +120,11 @@ Brian Stock and Brice Semmens
 \end_layout
 
 \begin_layout Date
-March 2016 – updated April 2017
+March 2016 
+\end_layout
+
+\begin_layout Date
+last update: March 2018
 \end_layout
 
 \begin_layout Standard
@@ -131,6 +141,7 @@ LatexCommand href
 name "b1stock@ucsd.edu"
 target "b1stock@ucsd.edu"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -140,6 +151,7 @@ LatexCommand href
 name "semmens@ucsd.edu"
 target "semmens@ucsd.edu"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -157,9 +169,41 @@ status open
 RaggedRight
 \end_layout
 
+\begin_layout Plain Layout
+
+
+\backslash
+mbox{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+vfill
+\end_layout
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Please cite as: 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Stock, B.
+ C.
+ and B.
+ X.
+ Semmens (2016).
+ MixSIAR GUI User Manual.
+ Version 3.1.
+ https://github.com/brianstock/MixSIAR/.
+ doi:10.5281/zenodo.47719.
 \end_layout
 
 \begin_layout Standard
@@ -200,6 +244,7 @@ The MixSIAR GUI is a graphical user interface (GUI) that helps you create
 \begin_inset CommandInset citation
 LatexCommand citep
 key "SemmensPrep"
+literal "true"
 
 \end_inset
 
@@ -209,6 +254,7 @@ key "SemmensPrep"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Rcore"
+literal "true"
 
 \end_inset
 
@@ -216,6 +262,7 @@ key "Rcore"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Plummer2003"
+literal "true"
 
 \end_inset
 
@@ -224,6 +271,7 @@ key "Plummer2003"
 LatexCommand href
 name "available online"
 target "https://github.com/brianstock/MixSIAR"
+literal "false"
 
 \end_inset
 
@@ -327,6 +375,7 @@ source
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Moore2008,Ward2010"
+literal "true"
 
 \end_inset
 
@@ -334,6 +383,7 @@ key "Moore2008,Ward2010"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Semmens2009a,Francis2011,Parnell2013"
+literal "true"
 
 \end_inset
 
@@ -341,6 +391,7 @@ key "Semmens2009a,Francis2011,Parnell2013"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Moore2008"
+literal "true"
 
 \end_inset
 
@@ -364,6 +415,7 @@ MixSIR (original Bayesian mixing model,
 LatexCommand href
 name "MATLAB GUI"
 target "http://conserver.iugo-cafe.org/user/brice.semmens/MixSIR"
+literal "false"
 
 \end_inset
 
@@ -371,6 +423,7 @@ target "http://conserver.iugo-cafe.org/user/brice.semmens/MixSIR"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Moore2008"
+literal "true"
 
 \end_inset
 
@@ -383,6 +436,7 @@ SIAR (residual error,
 LatexCommand href
 name "R package"
 target "https://cran.r-project.org/web/packages/siar/index.html"
+literal "false"
 
 \end_inset
 
@@ -391,6 +445,7 @@ target "https://cran.r-project.org/web/packages/siar/index.html"
 LatexCommand href
 name "support group"
 target "https://www.facebook.com/SIAR-Stable-Isotope-Analysis-in-R-148501811896914/"
+literal "false"
 
 \end_inset
 
@@ -398,6 +453,7 @@ target "https://www.facebook.com/SIAR-Stable-Isotope-Analysis-in-R-1485018118969
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Parnell2010"
+literal "true"
 
 \end_inset
 
@@ -409,6 +465,7 @@ Population structure (categorical covariate)
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Semmens2009a"
+literal "true"
 
 \end_inset
 
@@ -445,6 +502,7 @@ Concentration dependence occurs when sources contain variable amounts of
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Phillips2002"
+literal "true"
 
 \end_inset
 
@@ -457,6 +515,7 @@ key "Phillips2002"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Parnell2010"
+literal "true"
 
 \end_inset
 
@@ -468,6 +527,7 @@ Continuous covariate
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Francis2011"
+literal "true"
 
 \end_inset
 
@@ -479,6 +539,7 @@ Source tracer covariance
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Hopkins2012"
+literal "true"
 
 \end_inset
 
@@ -490,6 +551,7 @@ Sources and consumers changing through time (via P-splines)
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Parnell2013"
+literal "true"
 
 \end_inset
 
@@ -500,7 +562,8 @@ key "Parnell2013"
 Multiplicative error structure 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "StockPrep"
+key "Stock2016"
+literal "true"
 
 \end_inset
 
@@ -524,6 +587,7 @@ reference "subsec:features"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "SemmensPrep"
+literal "true"
 
 \end_inset
 
@@ -549,8 +613,8 @@ The current implementation of MixSIAR includes the following model options:
 \end_layout
 
 \begin_layout Itemize
-Any number of biotracers (examples with 1 isotope, 2 isotope, 8 fatty acids,
- and 22 fatty acids)
+Any number of biotracers (examples with 1 and 2 isotopes, 8 and 22 fatty
+ acids)
 \end_layout
 
 \begin_layout Itemize
@@ -798,6 +862,7 @@ Download and install/update
 LatexCommand href
 name "R"
 target "https://cran.r-project.org/bin/"
+literal "false"
 
 \end_inset
 
@@ -822,6 +887,7 @@ sessionInfo()
 LatexCommand href
 name "installr"
 target "http://www.r-statistics.com/2013/03/updating-r-from-r-on-windows-using-the-installr-package/"
+literal "false"
 
 \end_inset
 
@@ -838,6 +904,7 @@ Download and install
 LatexCommand href
 name "JAGS"
 target "http://mcmc-jags.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -852,6 +919,7 @@ If you want to build the vignettes, install
 LatexCommand href
 name "pandoc"
 target "https://github.com/jgm/pandoc/releases/"
+literal "false"
 
 \end_inset
 
@@ -860,6 +928,7 @@ target "https://github.com/jgm/pandoc/releases/"
 LatexCommand href
 name "R Studio"
 target "https://www.rstudio.com/products/rstudio/download/"
+literal "false"
 
 \end_inset
 
@@ -1008,7 +1077,11 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+devtools::install_github("brianstock/MixSIAR
+\begin_inset Quotes erd
+\end_inset
+
+,
 \end_layout
 
 \begin_layout Plain Layout
@@ -1132,6 +1205,7 @@ Download and install/update
 LatexCommand href
 name "R"
 target "https://cran.r-project.org/bin/"
+literal "false"
 
 \end_inset
 
@@ -1162,6 +1236,7 @@ Download and install
 LatexCommand href
 name "JAGS"
 target "http://mcmc-jags.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -1176,6 +1251,7 @@ If you want to build the vignettes, install
 LatexCommand href
 name "pandoc"
 target "https://github.com/jgm/pandoc/releases/"
+literal "false"
 
 \end_inset
 
@@ -1184,6 +1260,7 @@ target "https://github.com/jgm/pandoc/releases/"
 LatexCommand href
 name "R Studio"
 target "https://www.rstudio.com/products/rstudio/download/"
+literal "false"
 
 \end_inset
 
@@ -1257,6 +1334,7 @@ Download and install the newest
 LatexCommand href
 name "GTK+ framework"
 target "http://r.research.att.com/#other"
+literal "false"
 
 \end_inset
 
@@ -1273,6 +1351,7 @@ Install the latest X11 application,
 LatexCommand href
 name "xQuartz"
 target "http://xquartz.macosforge.org/landing/"
+literal "false"
 
 \end_inset
 
@@ -1303,7 +1382,11 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+devtools::install_github("brianstock/MixSIAR
+\begin_inset Quotes erd
+\end_inset
+
+,
 \end_layout
 
 \begin_layout Plain Layout
@@ -1383,6 +1466,7 @@ Download and install/update
 LatexCommand href
 name "R"
 target "https://cran.r-project.org/bin/"
+literal "false"
 
 \end_inset
 
@@ -1413,6 +1497,7 @@ Download and install
 LatexCommand href
 name "JAGS"
 target "http://mcmc-jags.sourceforge.net/"
+literal "false"
 
 \end_inset
 
@@ -1441,6 +1526,7 @@ Download and install
 LatexCommand href
 name "GTK+"
 target "http://www.gtk.org/download/index.php"
+literal "false"
 
 \end_inset
 
@@ -1466,6 +1552,7 @@ If you want to build the vignettes, install
 LatexCommand href
 name "pandoc"
 target "https://github.com/jgm/pandoc/releases/"
+literal "false"
 
 \end_inset
 
@@ -1474,6 +1561,7 @@ target "https://github.com/jgm/pandoc/releases/"
 LatexCommand href
 name "R Studio"
 target "https://www.rstudio.com/products/rstudio/download/"
+literal "false"
 
 \end_inset
 
@@ -1568,7 +1656,11 @@ library(devtools)
 
 \begin_layout Plain Layout
 
-devtools::install_github("brianstock/MixSIAR@*release", # gets latest release
+devtools::install_github("brianstock/MixSIAR
+\begin_inset Quotes erd
+\end_inset
+
+,
 \end_layout
 
 \begin_layout Plain Layout
@@ -1777,11 +1869,9 @@ begin{landscape}
 \backslash
 begingroup
 \backslash
-tabcolsep=3pt
-\backslash
 def
 \backslash
-arraystretch{1.1}
+arraystretch{1.2}
 \end_layout
 
 \end_inset
@@ -1791,6 +1881,7 @@ arraystretch{1.1}
 
 \begin_layout Standard
 \begin_inset Float table
+placement h
 wide false
 sideways false
 status open
@@ -1798,18 +1889,17 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="10">
+<lyxtabular version="3" rows="12" columns="9">
 <features tabularvalignment="middle">
-<column alignment="left" valignment="middle" width="1.1in">
-<column alignment="center" valignment="top" width="1in">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
+<column alignment="left" valignment="middle" width="0.8in">
+<column alignment="center" valignment="top" width="0.85in">
+<column alignment="center" valignment="middle" width="0.8in">
+<column alignment="center" valignment="middle" width="0.65in">
+<column alignment="center" valignment="middle" width="0.85in">
+<column alignment="center" valignment="middle" width="0.8in">
+<column alignment="center" valignment="middle" width="1in">
+<column alignment="center" valignment="middle" width="1in">
+<column alignment="center" valignment="middle" width="1.1in">
 <row>
 <cell alignment="left" valignment="top" topline="true" usebox="none">
 \begin_inset Text
@@ -1824,6 +1914,98 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
+Tracers
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Random effects
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Fixed effects
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Continuous effect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Source data
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Error structure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Informative prior
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Additional features
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset ERT
 status open
 
@@ -1845,6 +2027,98 @@ hyperref[subsec:wolves]{Wolves}
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Region, Pack (nested)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n (by Region)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset ERT
 status open
 
@@ -1862,386 +2136,13 @@ hyperref[subsec:geese]{Geese}
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:lake]{Lake}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:palmyra]{Palmyra}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:killer]{Killer whale}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:petrel]{Storm-petrel}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:snail]{Snail}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:isopod]{Isopod}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-hyperref[subsec:cladocera]{Cladocera}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Biotracers
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C, N
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-8 fatty acids
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-22 fatty acids
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Random effects
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 
 \size footnotesize
-Region, Pack (nested)
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Fixed effects
+2 isotopes
 \end_layout
 
 \end_inset
@@ -2285,7 +2186,18 @@ Group
 \begin_layout Plain Layout
 
 \size footnotesize
-Taxa
+Means/SD/n
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid
 \end_layout
 
 \end_inset
@@ -2307,40 +2219,7 @@ Taxa
 \begin_layout Plain Layout
 
 \size footnotesize
-Region
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Site
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
+Concentration dependence
 \end_layout
 
 \end_inset
@@ -2353,7 +2232,30 @@ Site
 \begin_layout Plain Layout
 
 \size footnotesize
-Continuous effect
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:lake]{Lake}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
 \end_layout
 
 \end_inset
@@ -2397,7 +2299,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
-—
+Raw
 \end_layout
 
 \end_inset
@@ -2408,29 +2310,7 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
+Resid
 \end_layout
 
 \end_inset
@@ -2465,18 +2345,6 @@ Secchi:Mixed
 \begin_layout Plain Layout
 
 \size footnotesize
-Source data
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Means + SD 
 \begin_inset ERT
 status open
 
@@ -2484,23 +2352,12 @@ status open
 
 
 \backslash
-newline
+hyperref[subsec:palmyra]{Palmyra}
 \end_layout
 
 \end_inset
 
-(by Region)
-\end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Means + SD
 \end_layout
 
 \end_inset
@@ -2511,7 +2368,7 @@ Means + SD
 \begin_layout Plain Layout
 
 \size footnotesize
-Raw
+2 isotopes
 \end_layout
 
 \end_inset
@@ -2522,7 +2379,7 @@ Raw
 \begin_layout Plain Layout
 
 \size footnotesize
-Raw
+—
 \end_layout
 
 \end_inset
@@ -2533,7 +2390,7 @@ Raw
 \begin_layout Plain Layout
 
 \size footnotesize
-Means + SD
+Taxa
 \end_layout
 
 \end_inset
@@ -2544,7 +2401,7 @@ Means + SD
 \begin_layout Plain Layout
 
 \size footnotesize
-Raw
+—
 \end_layout
 
 \end_inset
@@ -2566,7 +2423,7 @@ Raw
 \begin_layout Plain Layout
 
 \size footnotesize
-Means + SD
+Resid * Process
 \end_layout
 
 \end_inset
@@ -2577,7 +2434,18 @@ Means + SD
 \begin_layout Plain Layout
 
 \size footnotesize
-Means + SD
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
 \end_layout
 
 \end_inset
@@ -2590,7 +2458,74 @@ Means + SD
 \begin_layout Plain Layout
 
 \size footnotesize
-Error structure
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:killer]{Killer whale}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n
 \end_layout
 
 \end_inset
@@ -2612,7 +2547,7 @@ Resid * Process
 \begin_layout Plain Layout
 
 \size footnotesize
-Resid only
+Fecal contents
 \end_layout
 
 \end_inset
@@ -2623,73 +2558,7 @@ Resid only
 \begin_layout Plain Layout
 
 \size footnotesize
-Resid only
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Resid * Proces
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Resid * Process
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Resid only
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Resid * Process
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Resid * Process
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Process only
+—
 \end_layout
 
 \end_inset
@@ -2702,7 +2571,30 @@ Process only
 \begin_layout Plain Layout
 
 \size footnotesize
-Concentration dependence
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:petrel]{Storm-petrel}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
 \end_layout
 
 \end_inset
@@ -2724,7 +2616,98 @@ Concentration dependence
 \begin_layout Plain Layout
 
 \size footnotesize
-Yes
+Region
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:snail]{Snail}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+1 isotope
 \end_layout
 
 \end_inset
@@ -2768,7 +2751,189 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
+Raw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
 —
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:isopod]{Isopod}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8 fatty acids
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Site
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:cladocera]{Cladocera}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+22 fatty acids
 \end_layout
 
 \end_inset
@@ -2802,6 +2967,165 @@ Yes
 
 \size footnotesize
 —
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:mantis]{Mantis}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Habitat
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+—
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Expert opinion, Prey abundance
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Combine sources
+\emph on
+ a posteriori
 \end_layout
 
 \end_inset
@@ -2814,7 +3138,30 @@ Yes
 \begin_layout Plain Layout
 
 \size footnotesize
-Informative prior
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperref[subsec:alligator]{Alligator}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2 isotopes
 \end_layout
 
 \end_inset
@@ -2836,7 +3183,46 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
-—
+Sex, 
+\end_layout
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Size class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Means/SD/n
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Resid * Process
 \end_layout
 
 \end_inset
@@ -2858,62 +3244,7 @@ Informative prior
 \begin_layout Plain Layout
 
 \size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Fecal contents
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-—
+Compare models with LOO/WAIC
 \end_layout
 
 \end_inset
@@ -2933,7 +3264,7 @@ Fecal contents
 Working examples included with MixSIAR.
 \begin_inset CommandInset label
 LatexCommand label
-name "tab:examples-1"
+name "tab:examples"
 
 \end_inset
 
@@ -3576,6 +3907,7 @@ Constructing informative Bayesian priors
 \begin_inset CommandInset citation
 LatexCommand citet
 key "SemmensPrep"
+literal "true"
 
 \end_inset
 
@@ -3654,6 +3986,7 @@ frac{1}{3}$
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Brett2014"
+literal "true"
 
 \end_inset
 
@@ -4371,6 +4704,7 @@ Process only
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Stock2016"
+literal "true"
 
 \end_inset
 
@@ -4483,6 +4817,7 @@ p
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Semmens2009a"
+literal "true"
 
 \end_inset
 
@@ -4600,6 +4935,7 @@ MixSIAR displays 2 diagnostic tests by default: Gelman-Rubin and Geweke.
 \begin_inset CommandInset citation
 LatexCommand citep
 key "gelman2014bayesian"
+literal "true"
 
 \end_inset
 
@@ -4613,6 +4949,7 @@ key "gelman2014bayesian"
 LatexCommand href
 name "SAS website"
 target "http://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_introbayes_sect008.htm"
+literal "false"
 
 \end_inset
 
@@ -4622,6 +4959,7 @@ target "http://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/vi
 LatexCommand href
 name "Patrick Lam's notes"
 target "http://www.people.fas.harvard.edu/~plam/teaching/methods/convergence/convergence_print.pdf"
+literal "false"
 
 \end_inset
 
@@ -4679,6 +5017,7 @@ ggmcmc
 \begin_inset CommandInset citation
 LatexCommand citep
 key "ggmcmc"
+literal "true"
 
 \end_inset
 
@@ -5795,6 +6134,7 @@ hyperref[subsec:wolves]{Wolves Example}
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Inger2006"
+literal "true"
 
 \end_inset
 
@@ -5804,6 +6144,7 @@ a spp., and Ulva lactuca.
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Parnell2013"
+literal "true"
 
 \end_inset
 
@@ -6452,6 +6793,7 @@ The “Lake Example” data is simulated based on
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Francis2011"
+literal "true"
 
 \end_inset
 
@@ -7052,6 +7394,7 @@ The “Palmyra Example” data is actual data from
 \begin_inset CommandInset citation
 LatexCommand citet
 key "McCauley2012"
+literal "true"
 
 \end_inset
 
@@ -7334,6 +7677,7 @@ ation uncertainty).
 \begin_inset CommandInset citation
 LatexCommand citet
 key "McCauley2012"
+literal "true"
 
 \end_inset
 
@@ -7342,6 +7686,7 @@ key "McCauley2012"
 LatexCommand href
 name "Appendix A"
 target "http://www.esapubs.org/archive/appl/A022/091/appendix-A.htm"
+literal "false"
 
 \end_inset
 
@@ -7914,6 +8259,7 @@ From
 \begin_inset CommandInset citation
 LatexCommand citet
 key "SemmensPrep"
+literal "true"
 
 \end_inset
 
@@ -7930,6 +8276,7 @@ informative prior distributions
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Moore2008"
+literal "true"
 
 \end_inset
 
@@ -8486,6 +8833,7 @@ The Isopod Example is from
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Isopod"
+literal "true"
 
 \end_inset
 
@@ -8758,6 +9106,7 @@ fixed effect
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Isopod"
+literal "true"
 
 \end_inset
 
@@ -8870,6 +9219,7 @@ Note that
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Isopod"
+literal "true"
 
 \end_inset
 
@@ -9235,6 +9585,7 @@ The Cladocera Example is from
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Cladocera"
+literal "true"
 
 \end_inset
 
@@ -9730,6 +10081,7 @@ Note that
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Cladocera"
+literal "true"
 
 \end_inset
 
@@ -10071,6 +10423,7 @@ process error
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Moore2008"
+literal "true"
 
 \end_inset
 
@@ -10078,6 +10431,7 @@ key "Moore2008"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Stock2016"
+literal "true"
 
 \end_inset
 
@@ -10268,6 +10622,7 @@ Storm-petrel Example
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Bicknell2014"
+literal "true"
 
 \end_inset
 
@@ -10366,6 +10721,7 @@ The “Snail Example” data is from
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Yanes2013"
+literal "true"
 
 \end_inset
 
@@ -10424,6 +10780,1991 @@ snail_discrimination.csv
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Subsection
+Mantis Example
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:mantis"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Mantis Example” data is from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Mantis"
+literal "true"
+
+\end_inset
+
+ and demonstrates two additional features in MixSIAR:
+\end_layout
+
+\begin_layout Itemize
+Multiple informative priors
+\end_layout
+
+\begin_layout Itemize
+Combining sources 
+\emph on
+a posteriori 
+\emph default
+using the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+combine_sources
+\end_layout
+
+\end_inset
+
+ function
+\end_layout
+
+\begin_layout Subsubsection
+Load mix data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(MixSIAR)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# find mantis consumer data file within MixSIAR package
+\end_layout
+
+\begin_layout Plain Layout
+
+mix.filename <- system.file("extdata", "mantis_consumer.csv", package = "MixSIAR")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# Load mixture data 
+\end_layout
+
+\begin_layout Plain Layout
+
+mix <- load_mix_data(filename=mix.filename,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      iso_names=c("d13C","d15N"),
+\end_layout
+
+\begin_layout Plain Layout
+
+                      factors="Habitat",
+\end_layout
+
+\begin_layout Plain Layout
+
+                      fac_random=FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      fac_nested=FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      cont_effects=NULL)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Load source data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# find mantis source data file
+\end_layout
+
+\begin_layout Plain Layout
+
+source.filename <- system.file("extdata", "mantis_source.csv", package = "MixSIAR")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# Load source data 
+\end_layout
+
+\begin_layout Plain Layout
+
+source <- load_source_data(filename=source.filename, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                           source_factors=NULL,
+\end_layout
+
+\begin_layout Plain Layout
+
+                           conc_dep=FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+                           data_type="means", mix)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Load discrimination data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# find discrimination data file
+\end_layout
+
+\begin_layout Plain Layout
+
+discr.filename <- system.file("extdata", "mantis_discrimination.csv", package
+ = "MixSIAR")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# Load discrimination data 
+\end_layout
+
+\begin_layout Plain Layout
+
+discr <- load_discr_data(filename=discr.filename, mix)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Plot data
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_data(filename="isospace_plot",
+\end_layout
+
+\begin_layout Plain Layout
+
+          plot_save_pdf=TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+          plot_save_png=FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+          mix,source,discr)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_isospace.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\series bold
+Stable isotope input for the Mantis Example.
+
+\series default
+ Both consumer and source data are by Habitat (color) and source data are
+ labeled.
+ Error bars indicate combined source and discrimination uncertainty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+pm$
+\end_layout
+
+\end_inset
+
+ 1 SD.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:mantis-iso"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Define and plot priors
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# default "UNINFORMATIVE" / GENERALIST prior (alpha = 1) 
+\end_layout
+
+\begin_layout Plain Layout
+
+alpha.unif <- rep(1, source$n.sources) 
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=alpha.unif,
+\end_layout
+
+\begin_layout Plain Layout
+
+           source=source,
+\end_layout
+
+\begin_layout Plain Layout
+
+           filename="prior_uninf")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_prior_uninf.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+Uninformative
+\begin_inset Quotes erd
+\end_inset
+
+/generalist prior for mantis shrimp example with 6 sources.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+But wait...
+ the GENERALIST prior does not reflect our a priori ecological knowledge!
+ The current thought is that 'smasher' mantis shrimp SPECIALIZE on hard-shelled
+ prey, because they have specialized hammer-like clubs allowing them to
+ break open shells.
+ Let's construct a "specialist" informative prior reflecting the expectation
+ that 
+\emph on
+N.
+ bredini
+\emph default
+ consumes primarily hard-shelled prey.
+ This will be a more conservative test of the hypothesis that 
+\emph on
+N.
+ bredini
+\emph default
+ specializes on hard-shelled prey.
+ We rescale the 
+\begin_inset Formula $\alpha_{k}$
+\end_inset
+
+ so they sum to 
+\emph on
+K
+\emph default
+, the number of sources:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# 'specialist' informative prior
+\end_layout
+
+\begin_layout Plain Layout
+
+# hard-shelled prey get 4x weight of soft-bodied prey,
+\end_layout
+
+\begin_layout Plain Layout
+
+# based on dietary observations of N.
+ bredini (Caldwell et al.
+ 1989).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+alpha.spec <- c(1,1,4,4,1,4)
+\end_layout
+
+\begin_layout Plain Layout
+
+# rescale so sum(alpha) = n.sources
+\end_layout
+
+\begin_layout Plain Layout
+
+alpha.spec <- alpha.spec*length(alpha.spec)/sum(alpha.spec)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=alpha.spec,
+\end_layout
+
+\begin_layout Plain Layout
+
+           source=source, 
+\end_layout
+
+\begin_layout Plain Layout
+
+           filename="prior_specialist")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_prior_specialist.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+Specialist
+\begin_inset Quotes erd
+\end_inset
+
+ prior for mantis shrimp example, where hard-shelled prey receive 4x weight
+ of soft-bodied prey.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also have data on prey abundance in the two habitats (coral, seagrass).
+ Let's construct informative priors using prey abundance so that the 
+\begin_inset Formula $\alpha_{k}$
+\end_inset
+
+ sum to 
+\emph on
+K
+\emph default
+, the number of sources.
+ 
+\emph on
+Note: MixSIAR cannot set different informative priors for different levels
+ of a factor (here, coral vs.
+ seagrass).
+ In order to run the abundance prior model, the only option is to run separate
+ models.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Seagrass habitat prior, based on prey abundance
+\end_layout
+
+\begin_layout Plain Layout
+
+alpha.grass <- c(0.35,1.61,0.43,(51.65+0.26),5.18,40.5)*6/100 
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=alpha.grass, source=source, filename="prior_seagrass")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# Coral habitat prior, based on prey abundance
+\end_layout
+
+\begin_layout Plain Layout
+
+alpha.coral <- c((14.31+24.74),0.01,15.48,(13.81+4.71),8.44,18.51)*6/100
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_prior(alpha.prior=alpha.coral, source=source, filename="prior_coral")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_prior_seagrass.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename mantis_prior_coral.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+Abundance
+\begin_inset Quotes erd
+\end_inset
+
+ priors for mantis shrimp example, where the 
+\begin_inset Formula $\alpha_{k}$
+\end_inset
+
+ reflect prey abundance in the two habitats: seagrass (left) and coral rubble
+ (right).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Write JAGS model file
+\end_layout
+
+\begin_layout Standard
+We'll use the default Resid * Process error structure:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+model_filename <- "MixSIAR_model.txt" 
+\end_layout
+
+\begin_layout Plain Layout
+
+resid_err <- TRUE 
+\end_layout
+
+\begin_layout Plain Layout
+
+process_err <- TRUE 
+\end_layout
+
+\begin_layout Plain Layout
+
+write_JAGS_model(model_filename, resid_err, process_err, mix, source) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Run model
+\end_layout
+
+\begin_layout Standard
+Takes about 40 minutes to run.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Good idea to use 'test' first to check if 
+\end_layout
+
+\begin_layout Plain Layout
+
+#   1) the data are loaded correctly, and  
+\end_layout
+
+\begin_layout Plain Layout
+
+#  2) the model is specified correctly 
+\end_layout
+
+\begin_layout Plain Layout
+
+# jags.1 <- run_model(run="test", mix, source, discr, model_filename,  
+\end_layout
+
+\begin_layout Plain Layout
+
+#                     alpha.prior = alpha.spec, resid_err, process_err)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# After a test run works, increase the MCMC run to a value that may converge
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+jags.spec <- run_model(run="normal", mix, source, discr, model_filename,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       alpha.prior = alpha.spec, resid_err, process_err)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Confirm MCMC has converged using diagnostics
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Create diagnostics, summary statistics, and posterior plots 
+\end_layout
+
+\begin_layout Plain Layout
+
+output_JAGS(jags.spec, mix, source)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Combine sources 
+\emph on
+a posteriori
+\end_layout
+
+\begin_layout Standard
+In this study, the primary scientific question was whether 
+\emph on
+N.
+ bredini
+\emph default
+ specializes on hard-shelled prey.
+ To directly answer this question, we can use the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+combine_sources
+\end_layout
+
+\end_inset
+
+ function to group our original 6 sources into 2 groups: hard-shelled versus
+ soft-bodied.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# combine hard-shelled and soft-bodied prey sources 
+\end_layout
+
+\begin_layout Plain Layout
+
+combined <- combine_sources(jags.spec, mix, source, alpha.spec,
+\end_layout
+
+\begin_layout Plain Layout
+
+              groups=list(hard=c("clam","crab","snail"),
+\end_layout
+
+\begin_layout Plain Layout
+
+                          soft=c("alphworm","brittlestar","fish"))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# also pass original grouping to combine_sources so we can compare results
+\end_layout
+
+\begin_layout Plain Layout
+
+original <- combine_sources(jags.spec, mix, source, alpha.spec
+\end_layout
+
+\begin_layout Plain Layout
+
+              groups=list(alphworm="alphworm",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          brittlestar="brittlestar",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          clam="clam",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          crab="crab",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          fish="fish",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          snail="snail"))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An important consideration when grouping sources 
+\emph on
+a posteriori
+\emph default
+ is that you are effectively changing the prior weighting on the sources.
+ Aggregating uneven numbers of sources will turn an 'uninformative'/generalist
+ prior into an informative one.
+ In the mantis shrimp example, this has no effect because each new group
+ has the same number of sources (3), and each group member had the same
+ prior weight (0.4 for soft-bodied, 1.6 for hard-shelled).
+ To highlight this effect, MixSIAR automatically generates a plot of the
+ new, aggregated prior so you can compare to the original and what an 
+\begin_inset Quotes eld
+\end_inset
+
+uninformative
+\begin_inset Quotes erd
+\end_inset
+
+/generalist prior would be with the new number of sources (as if you aggregated
+ sources BEFORE running the model).
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+-------------------------------------------------------------------------
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+*** WARNING ***
+\end_layout
+
+\begin_layout Plain Layout
+
+Aggregating sources after running the mixing model (a posteriori) 
+\end_layout
+
+\begin_layout Plain Layout
+
+effectively changes the prior weighting on the sources.
+ Aggregating uneven
+\end_layout
+
+\begin_layout Plain Layout
+
+numbers of sources will turn an 'uninformative'/generalist prior into an
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+informative one.
+ Please check your new, aggregated prior (red), and note 
+\end_layout
+
+\begin_layout Plain Layout
+
+the difference between it and the original prior  (blue).
+ The right (grey) 
+\end_layout
+
+\begin_layout Plain Layout
+
+column shows what the 'uninformative'/generalist  prior would be if 
+\end_layout
+
+\begin_layout Plain Layout
+
+you aggregate sources before running the mixing model  (a priori).
+ -------------------------------------------------------------------------
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_aggregated_prior.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Original, 6-source (blue) and aggregated, 2-source (red) prior distributions,
+ automatically output from 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+combine_sources
+\end_layout
+
+\end_inset
+
+ function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+ff
+\end_layout
+
+\begin_layout Subsubsection
+Summary statistics (original 6-source model)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Original 6-source model
+\end_layout
+
+\begin_layout Plain Layout
+
+summary_stat(original) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_summary_original.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Aggregated posteriors, 6 sources combined into 2 groups
+\end_layout
+
+\begin_layout Plain Layout
+
+summary_stat(combined) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_summary_combined.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Plot credible intervals
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Original 6-source model
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_intervals(original,toplot="fac1") 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_CI_original_fac1.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Proportion estimates from original 6-source mantis shrimp model: posterior
+ medians (points), 50% credible intervals (thick lines), and 90% credible
+ intervals (thin lines).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# Aggregated posteriors, 6 sources combined into 2 groups
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_intervals(combined,toplot="fac1") 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_CI_combined_fac1.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Proportion estimates after aggregating sources into 2 groups, hard-shelled
+ and soft-bodied: posterior medians (points), 50% credible intervals (thick
+ lines), and 90% credible intervals (thin lines).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# level 1 = Seagrass
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_intervals(combined,toplot="fac1",levels=1)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_CI_combined_seagrass.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Proportion estimates after aggregating sources into 2 groups, only for Seagrass
+ habitat: posterior medians (points), 50% credible intervals (thick lines),
+ and 90% credible intervals (thin lines).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# level 2 = Coral
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_intervals(combined,toplot="fac1",levels=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename mantis_CI_combined_coral.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Proportion estimates after aggregating sources into 2 groups, only for Coral
+ habitat: posterior medians (points), 50% credible intervals (thick lines),
+ and 90% credible intervals (thin lines).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Alligator Example
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:alligator"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The “Alligator Example” highlights the main advantage of MixSIAR over previous
+ mixing model software–the ability to include fixed and random effects as
+ covariates explaining variability in mixture proportions, and calculate
+ relative support for multiple models via information criteria (LOO/WAIC)
+ using the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+compare_models
+\end_layout
+
+\end_inset
+
+ function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Alligator"
+literal "true"
+
+\end_inset
+
+ were interested in freshwater vs.
+ marine resource use by alligators.
+ Their specific scientific questions were:
+\end_layout
+
+\begin_layout Enumerate
+What is 
+\begin_inset Formula $p_{marine}$
+\end_inset
+
+ vs.
+ 
+\begin_inset Formula $p_{freshwater}$
+\end_inset
+
+?
+\end_layout
+
+\begin_layout Enumerate
+How does 
+\begin_inset Formula $p_{marine}$
+\end_inset
+
+ vary with the covariates Length, Sex, and Individual?
+\end_layout
+
+\begin_layout Enumerate
+How variable are individuals’ diets relative to group-level variability?
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Alligator"
+literal "true"
+
+\end_inset
+
+ modeling approach:
+\end_layout
+
+\begin_layout Itemize
+group consumers into 8 subpopulations (all combos of Sex x Size Class)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+2 sexes {male, female}
+\end_layout
+
+\begin_layout Itemize
+4 size classes {small juvenile, large juvenile, subadult, adult}
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+run 8 separate mixing models for each using SIAR 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Parnell2010"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+to calculate 
+\begin_inset Formula $p_{marine}$
+\end_inset
+
+ estimates for the overall population, had to also run a mixing model with
+ all consumers
+\end_layout
+
+\begin_layout Standard
+Instead, using MixSIAR allows the following analysis:
+\end_layout
+
+\begin_layout Itemize
+fit several models with fixed/random/continuous effects
+\end_layout
+
+\begin_layout Itemize
+evaluate relative support for each model using the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+compare_models
+\end_layout
+
+\end_inset
+
+ function
+\end_layout
+
+\begin_layout Subsubsection
+Run models
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset Quotes eld
+\end_inset
+
+mixsiar_script_alligator.R
+\begin_inset Quotes erd
+\end_inset
+
+ for code to run the following 8 models:
+\end_layout
+
+\begin_layout Enumerate
+NULL
+\end_layout
+
+\begin_layout Enumerate
+Habitat (3: fresh, intermediate, marine)
+\end_layout
+
+\begin_layout Enumerate
+Sex (2: male, female)
+\end_layout
+
+\begin_layout Enumerate
+Size class (4: small juv, large juv, sub-adult, adult)
+\end_layout
+
+\begin_layout Enumerate
+Length (continuous effect)
+\end_layout
+
+\begin_layout Enumerate
+Sex + Size class (both as fixed effects)
+\end_layout
+
+\begin_layout Enumerate
+Sex + Length (intercept by sex, same slope)
+\end_layout
+
+\begin_layout Enumerate
+Sex : Size class (create new factor = sex * sclass, closest to original
+ analysis)
+\end_layout
+
+\begin_layout Subsubsection
+Compare models using LOO
+\end_layout
+
+\begin_layout Standard
+The JAGS models should be stored in a list, 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+jags.mod
+\end_layout
+
+\end_inset
+
+, where 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+jags.mod[[i]]
+\end_layout
+
+\end_inset
+
+ is the 
+\emph on
+i
+\emph default
+th model object.
+ Confirm that all models have converged, and then we can use 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+compare_models
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+compare_models
+\end_layout
+
+\end_inset
+
+ uses the 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+loo
+\end_layout
+
+\end_inset
+
+ package to compute LOO (leave-one-out cross-validation) or WAIC (widely
+ applicable information criterion) for 2 of more fit MixSIAR models.
+ LOO and WAIC are 
+\begin_inset Quotes eld
+\end_inset
+
+methods for estimating pointwise out-of-sample prediction accuracy from
+ a fitted Bayesian model using the log-likelihood evaluated at the posterior
+ simulations of the parameter values
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "vehtari2017"
+literal "false"
+
+\end_inset
+
+.
+ In brief:
+\end_layout
+
+\begin_layout Itemize
+LOO and WAIC are preferred over AIC or DIC
+\end_layout
+
+\begin_layout Itemize
+LOO is more robust than WAIC
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+loo
+\end_layout
+
+\end_inset
+
+ estimates standard errors for the difference in LOO/WAIC between two models
+ (dLOOic)
+\end_layout
+
+\begin_layout Itemize
+We can calculate the relative support for each model using Akaike weights
+ (p.75 in 
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "burnham2002"
+literal "false"
+
+\end_inset
+
+).
+ Interpretation: 
+\begin_inset Quotes eld
+\end_inset
+
+an estimate of the probability that the model will make the best predictions
+ on new data, conditional on the set of models considered
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mcelreath2016"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# add model names to 'jags.mod'
+\end_layout
+
+\begin_layout Plain Layout
+
+names(jags.mod) <- c("Null", "Habitat", "Sex", "Size class", "Length",
+\end_layout
+
+\begin_layout Plain Layout
+
+                     "Sex + Size class", "Sex + Length", "Sex : Length")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# get model comparison table
+\end_layout
+
+\begin_layout Plain Layout
+
+(comparison.table <- compare_models(jags.mod))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename alligator_comparison_table.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The model with a continuous effect of Length had the lowest LOOic and received
+ 80% of the Akaike weight, indicating an 80% probability it is the best
+ model (expected predictive performance on new data, out of the models considere
+d, given the data observed).
+ The model with Sex + Length cannot be ruled out (19% weight).
+ dLOOic is the difference in LOOic between each model and the model with
+ lowest LOOic.
+\end_layout
+
+\begin_layout Standard
+We can also plot 
+\begin_inset Formula $p_{marine}$
+\end_inset
+
+ as a function of Length from the best model:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename alligator_p_length.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Posterior estimate of 
+\begin_inset Formula $p_{marine}$
+\end_inset
+
+ as a function of length from Model 5 ('Length').
+ Solid line indicates median, shading is the 95% CI.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can calculate posteriors for derived quantities using the MCMC draws
+ as well.
+ Make sure to calculate the quantity for each individual draw.
+ Here, we show the specialization index of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Newsome2012"
+literal "false"
+
+\end_inset
+
+ as a function of Length:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename alligator_eps_length.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Posterior estimate of 
+\begin_inset Formula $\varepsilon$
+\end_inset
+
+ as a function of length from Model 5.
+ Solid line indicates median, and shading is the 95% CI.
+ Small and large alligators specialize on freshwater and marine prey, respective
+ly, while average length alligators are generalists as they transition from
+ freshwater to marine.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -10590,6 +12931,7 @@ reference "subsec:Cladocera-Error-term-options"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Stock2016"
+literal "true"
 
 \end_inset
 
@@ -10982,6 +13324,7 @@ Concentration dependence
 \begin_inset CommandInset citation
 LatexCommand citet
 key "KochDigest"
+literal "true"
 
 \end_inset
 
@@ -10992,6 +13335,7 @@ key "KochDigest"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Parnell2010"
+literal "true"
 
 \end_inset
 
@@ -11643,6 +13987,7 @@ if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Brett2014"
+literal "true"
 
 \end_inset
 
@@ -11676,6 +14021,7 @@ calc_area
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Brett2014"
+literal "true"
 
 \end_inset
 
@@ -11832,6 +14178,7 @@ The GUI has 3 error structure options
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Stock2016"
+literal "true"
 
 \end_inset
 
@@ -12009,6 +14356,7 @@ We would love to hear feedback, positive or negative, if you use MixSIAR.
 LatexCommand href
 name "GitHub Issues page"
 target "https://github.com/brianstock/MixSIAR/issues"
+literal "false"
 
 \end_inset
 
@@ -12059,6 +14407,7 @@ LatexCommand href
 name "b1stock@ucsd.edu"
 target "b1stock@ucsd.edu"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -12068,6 +14417,7 @@ LatexCommand href
 name "semmens@ucsd.edu"
 target "semmens@ucsd.edu"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -12103,6 +14453,7 @@ A manuscript introducing MixSIAR will be available in the near future! Until
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Parnell2013"
+literal "true"
 
 \end_inset
 
@@ -12130,6 +14481,7 @@ The primary citation for Bayesian mixing models is
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Moore2008"
+literal "true"
 
 \end_inset
 
@@ -12154,6 +14506,7 @@ The residual error term was introduced by
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Parnell2010"
+literal "true"
 
 \end_inset
 
@@ -12177,6 +14530,7 @@ If you are using a hierarchical structure/random effects (Wolves Example),
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Semmens2009a"
+literal "true"
 
 \end_inset
 
@@ -12202,6 +14556,7 @@ If you are using continuous effects, see
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Francis2011"
+literal "true"
 
 \end_inset
 
@@ -12228,6 +14583,7 @@ Francis, T.
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Hopkins2012"
+literal "true"
 
 \end_inset
 
@@ -12260,6 +14616,7 @@ Hopkins, J.
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Stock2016"
+literal "true"
 
 \end_inset
 

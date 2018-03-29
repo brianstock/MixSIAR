@@ -3,6 +3,7 @@ MixSIAR 3.1.8
 
 ## MINOR IMPROVEMENTS
 
+* updated manual
 * new example: alligator diet, model comparison table with LOO/WAIC weights
 * new example: mantis shrimp diet, informative priors + combining sources
 * new function 'compare_models' to perform model selection based on LOO/WAIC weights, via 'loo' package

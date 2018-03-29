@@ -69,13 +69,13 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   if(length(alpha.prior) > 1 & length(alpha.prior) != source$n.sources) alpha = rep(1,source$n.sources) # Error checking for user inputted string/ NA
   if(length(alpha.prior) > 1 & length(alpha.prior) == source$n.sources) alpha = alpha.prior # All sources have different value inputted by user
 
-  # Cannot set informative prior on fixed effects (no p.global)
-  if(!identical(unique(alpha),1) & mix$n.fe>0){
-  stop(paste("Cannot set an informative prior with a fixed effect,
-  since there is no global/overall population. You can set an
-  informative prior on p.global with a random effect.
-  To set a prior on each level of a fixed effect you will have to
-  modify 'write_JAGS_model.R'",sep=""))}
+  # # Cannot set informative prior on fixed effects (no p.global)
+  # if(!identical(unique(alpha),1) & mix$n.fe>0){
+  # stop(paste("Cannot set an informative prior with a fixed effect,
+  # since there is no global/overall population. You can set an
+  # informative prior on p.global with a random effect.
+  # To set a prior on each level of a fixed effect you will have to
+  # modify 'write_JAGS_model.R'",sep=""))}
 
   # Set mcmc parameters
   if(is.list(run)){mcmc <- run} else { # if the user has entered custom mcmc parameters, use them
