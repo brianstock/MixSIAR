@@ -17,25 +17,25 @@ Description: Creates and runs Bayesian mixing models to analyze
     several years of advances since 'MixSIR' and 'SIAR', and includes both GUI
     (graphical user interface) and script versions.
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.4.0)
 Imports:
-    ggplot2 (>= 1.0.1),
-    rjags (>= 4-4),
+    ggplot2 (>= 2.2.1),
+    rjags (>= 4-6),
     R2jags (>= 0.5-7),
     MASS (>= 7.3),
     RColorBrewer (>= 1.1),
-    reshape (>= 0.8),
-    reshape2 (>= 1.4.1),
-    lattice (>= 0.20),
+    reshape (>= 0.8.7),
+    reshape2 (>= 1.4.3),
+    lattice (>= 0.20-35),
     MCMCpack (>= 1.4-2),
-    ggmcmc (>= 0.7.2),
-    coda (>= 0.18-1),
+    ggmcmc (>= 1.1),
+    coda (>= 0.19-1),
     loo (>= 1.1.0),
     bayesplot (>= 1.4.0)
 Suggests:
     gWidgets (>= 0.0-54),
-    gWidgetsRGtk2 (>= 0.0-83),
-    splancs (>= 2.01-38),
+    gWidgetsRGtk2 (>= 0.0-86),
+    splancs (>= 2.01-40),
     knitr,
     rmarkdown,
     testthat
