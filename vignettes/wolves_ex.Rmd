@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install:
+Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r}
 library(MixSIAR)
 mixsiar.dir <- find.package("MixSIAR")
@@ -288,4 +288,4 @@ Then you can call `output_JAGS` to process diagnostics, summary statistics, and 
 output_JAGS(jags.1, mix, source, output_options)
 ```
 
-For a thorough explanation of the output from `output_JAGS`, see the Wolves Example section of the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf). You will also find examples of accessing the MCMC chains for post hoc plotting and analysis there.
+For a thorough explanation of the output from `output_JAGS`, see the Wolves Example section of the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). You will also find examples of accessing the MCMC chains for post hoc plotting and analysis there.

@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
+Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_geese.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r}

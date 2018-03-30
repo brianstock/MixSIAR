@@ -83,7 +83,7 @@ There is an extensive user manual included in the package install. To find the d
 ```
 find.package("MixSIAR")
 ```
-Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
+Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf).
 
 #### Mac OS X
 
@@ -115,7 +115,7 @@ There is an extensive user manual included in the package install. To find the d
 ```
 find.package("MixSIAR")
 ```
-Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
+Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf).
 
 #### Linux
 
@@ -146,7 +146,7 @@ There is an extensive user manual included in the package install. To find the d
 ```
 find.package("MixSIAR")
 ```
-Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
+Alternatively, you can download the manual from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf).
 
 ### FEEDBACK PLEASE!
 
