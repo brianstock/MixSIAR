@@ -43,7 +43,7 @@ There is a more extensive user manual included in the package install. To find t
 find.package("MixSIAR")
 ```
 
-The manual is also available from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_3.1_small.pdf).
+The manual is also available from the GitHub site [here](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf).
 
 ### FULL INSTALL (with GUI)
 

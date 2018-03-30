@@ -9,7 +9,7 @@ Authors@R: c(
     person("Andrew", "Jackson", role = "ctb"),
     person("Donald", "Phillips", role = "ctb"))
 Description: Creates and runs Bayesian mixing models to analyze
-    biotracer data (i.e. stable isotopes, fatty acids), which estimate the
+    biological tracer data (i.e. stable isotopes, fatty acids), which estimate the
     proportions of source (prey) contributions to a mixture (consumer). 'MixSIAR'
     is not one model, but a framework that allows a user to create a mixing model
     based on their data structure and research questions, via options for fixed/
@@ -32,8 +32,6 @@ Imports:
     coda (>= 0.18-1),
     loo (>= 1.1.0),
     bayesplot (>= 1.4.0)
-Remotes:
-    stan-dev/bayesplot
 Suggests:
     gWidgets (>= 0.0-54),
     gWidgetsRGtk2 (>= 0.0-83),
