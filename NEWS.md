@@ -1,4 +1,4 @@
-MixSIAR 3.1.9.9000
+MixSIAR 3.1.10
 =========================
 
 ## MINOR IMPROVEMENTS
