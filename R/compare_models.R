@@ -118,11 +118,11 @@ If you meant to compare 2+ models, retry using e.g.
 
   # Get LOOic, SE, dLOOic, and weights
   if(loo){ # LOO
-    LOOic <- sapply(loo.list, function(x) round(x$looic,1))
-    se_LOOic <- sapply(loo.list, function(x) round(x$se_looic,1))
+    LOOic <- sapply(loo.list, function(x) round(x$estimates["looic", "Estimate"],1))
+    se_LOOic <- sapply(loo.list, function(x) round(x$estimates["looic", "SE"],1))
   } else { # WAIC
-    LOOic <- sapply(loo.list, function(x) round(x$waic,1))
-    se_LOOic <- sapply(loo.list, function(x) round(x$se_waic,1))    
+    LOOic <- sapply(loo.list, function(x) round(x$estimates["waic", "Estimate"],1))
+    se_LOOic <- sapply(loo.list, function(x) round(x$estimates["waic", "SE"],1))    
   }
   dLOOic <- LOOic - min(LOOic)
   weight <- round(exp(-0.5*dLOOic) / sum(exp(-0.5*dLOOic)), 3)

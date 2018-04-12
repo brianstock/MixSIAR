@@ -26,6 +26,16 @@
 #' @param process_err include process error in the model?
 #'
 #' @return jags.1, a \code{rjags} model object
+#' 
+#' \emph{Note: Tracer values are normalized before running the JAGS model.} This
+#' allows the same priors to be used regardless of scale of the tracer data, 
+#' without using the data to select the prior (i.e. by setting the prior mean equal
+#' to the sample mean). Normalizing the tracer data does not affect the proportion
+#' estimates (p_k), but does affect users seeking to plot the posterior predictive
+#' distribution for their data. For each tracer, we calculate the pooled mean and
+#' standard deviation of the mix and source data, then subtract the pooled mean 
+#' and divide by the pooled standard deviation from the mix and source data. 
+#' For details, see lines 226-269.
 #'
 run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, resid_err, process_err){
 #  resid_err <- mixsiar$resid_err
@@ -213,6 +223,51 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   # Set initial values for p.global different for each chain
   jags.inits <- function(){list(p.global=as.vector(MCMCpack::rdirichlet(1,alpha)))}
 
+  # Normalize tracer data. 2 reasons:
+  #   1. Priors need to be on scale of data. This way we can keep same priors.
+  #   2. Should facilitate fitting covariance
+  # How:
+  #   Pool all data for each tracer (source + mix)
+  #   Calculate mean.pool and sd.pool
+  #   Raw data:
+  #     mix and source data: subtract mean.pool and divide by sd.pool
+  #     frac mean and sd: divide by sd.pool
+  #   Mean/SD/n data: 
+  #     mix data: subtract mean.pool and divide by sd.pool
+  #     source means: subtract mean.pool and divide by sd.pool
+  #     source sd, frac mean, frac sd: divide by sd.pool
+  for(j in 1:n.iso){
+    if(source$data_type=="raw"){
+      if(!is.na(source$by_factor)){ # source by factor, dim(SOURCE_array) = [src,iso,f1,r]
+        mean.pool <- mean(c(X_iso[,j], as.vector(SOURCE_array[,j,,])), na.rm=T)
+        sd.pool <- sd(c(X_iso[,j], as.vector(SOURCE_array[,j,,])), na.rm=T)
+        SOURCE_array[,j,,] <- (SOURCE_array[,j,,] - mean.pool) / sd.pool
+      } else { # source NOT by factor, dim(SOURCE_array) = [src,iso,r]
+        mean.pool <- mean(c(X_iso[,j], as.vector(SOURCE_array[,j,])), na.rm=T)
+        sd.pool <- sd(c(X_iso[,j], as.vector(SOURCE_array[,j,])), na.rm=T)
+        SOURCE_array[,j,] <- (SOURCE_array[,j,] - mean.pool) / sd.pool
+      }
+    } else { # source data type = 'means'
+      if(!is.na(source$by_factor)){ # source by factor,  MU_array[src,iso,f1] + SIG2_array[src,iso,f1]
+          mean.pool <- (N*mean(X_iso[,j], na.rm=T) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,]))) / sum(c(as.vector(n_array), N))
+          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j,])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,])^2) + (N-1)*var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          if(N == 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j,])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,])^2) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          MU_array[,j,] <- (MU_array[,j,] - mean.pool) / sd.pool
+          SIG2_array[,j,] <- SIG2_array[,j,] / sd.pool^2
+      } else { # source NOT by factor, MU_array[src,iso] + SIG2_array[src,iso]
+          mean.pool <- (N*mean(X_iso[,j], na.rm=T) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j]))) / sum(c(as.vector(n_array), N))
+          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j])^2) + (N-1)*var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          if(N == 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j])^2) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          MU_array[,j] <- (MU_array[,j] - mean.pool) / sd.pool
+          SIG2_array[,j] <- SIG2_array[,j] / sd.pool^2
+      }
+    }
+    # for all source data scenarios, normalize mix and frac data the same way
+    X_iso[,j] <- (X_iso[,j] - mean.pool) / sd.pool
+    frac_mu[,j] <- frac_mu[,j] / sd.pool
+    frac_sig2[,j] <- frac_sig2[,j] / sd.pool^2    
+  }
+
   #############################################################################
   # Call JAGS
   #############################################################################
@@ -225,7 +280,6 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
                                   n.thin = mcmc$thin,
                                   n.iter = mcmc$chainLength,
                                   DIC = mcmc$calcDIC)
-
   
   return(jags.1)
 } # end run_model function

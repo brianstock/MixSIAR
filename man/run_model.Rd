@@ -38,6 +38,16 @@ input to \code{\link{write_JAGS_model}}).}
 }
 \value{
 jags.1, a \code{rjags} model object
+
+\emph{Note: Tracer values are normalized before running the JAGS model.} This
+allows the same priors to be used regardless of scale of the tracer data, 
+without using the data to select the prior (i.e. by setting the prior mean equal
+to the sample mean). Normalizing the tracer data does not affect the proportion
+estimates (p_k), but does affect users seeking to plot the posterior predictive
+distribution for their data. For each tracer, we calculate the pooled mean and
+standard deviation of the mix and source data, then subtract the pooled mean 
+and divide by the pooled standard deviation from the mix and source data. 
+For details, see lines 226-269.
 }
 \description{
 \code{run_model} calls JAGS to run the mixing model created by

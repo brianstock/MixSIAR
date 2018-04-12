@@ -1,3 +1,12 @@
+MixSIAR 3.1.9.9000
+=========================
+
+## MINOR IMPROVEMENTS
+
+* fixed minor mistakes in manual (new example datasets table)
+* scale mix and source tracer data (so can always use same priors regardless of scale of data)
+* update compare_models to work with loo 2.0.0
+
 MixSIAR 3.1.9
 =========================
 

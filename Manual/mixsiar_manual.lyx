@@ -124,7 +124,7 @@ March 2016
 \end_layout
 
 \begin_layout Date
-last update: March 2018
+last update: April 2018
 \end_layout
 
 \begin_layout Standard
@@ -1891,7 +1891,7 @@ status open
 \begin_inset Tabular
 <lyxtabular version="3" rows="12" columns="9">
 <features tabularvalignment="middle">
-<column alignment="left" valignment="middle" width="0.8in">
+<column alignment="center" valignment="middle" width="0.8in">
 <column alignment="center" valignment="top" width="0.85in">
 <column alignment="center" valignment="middle" width="0.8in">
 <column alignment="center" valignment="middle" width="0.65in">
@@ -1901,11 +1901,13 @@ status open
 <column alignment="center" valignment="middle" width="1in">
 <column alignment="center" valignment="middle" width="1.1in">
 <row>
-<cell alignment="left" valignment="top" topline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 
+\size footnotesize
+Dataset
 \end_layout
 
 \end_inset
@@ -2000,7 +2002,7 @@ Additional features
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2113,7 +2115,7 @@ Resid * Process
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2226,7 +2228,7 @@ Concentration dependence
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2339,7 +2341,7 @@ Resid
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2452,7 +2454,7 @@ Resid * Process
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2565,7 +2567,7 @@ Fecal contents
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2678,7 +2680,7 @@ Resid
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2791,7 +2793,7 @@ Resid * Process
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2831,7 +2833,7 @@ hyperref[subsec:isopod]{Isopod}
 \begin_layout Plain Layout
 
 \size footnotesize
-—
+Site
 \end_layout
 
 \end_inset
@@ -2842,7 +2844,7 @@ hyperref[subsec:isopod]{Isopod}
 \begin_layout Plain Layout
 
 \size footnotesize
-Site
+—
 \end_layout
 
 \end_inset
@@ -2904,7 +2906,7 @@ Resid * Process
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2955,7 +2957,7 @@ hyperref[subsec:cladocera]{Cladocera}
 \begin_layout Plain Layout
 
 \size footnotesize
-—
+ID
 \end_layout
 
 \end_inset
@@ -3017,7 +3019,7 @@ Process
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3132,7 +3134,7 @@ Combine sources
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5102,6 +5104,27 @@ RUN MODEL
 
  button again.
  This will take much longer, about 30 minutes instead of 5 seconds.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Note:
+\emph default
+ MixSIAR normalizes the mixture and source tracer data before running the
+ JAGS model.
+ This most likely should not concern or interest you.
+ If it does, see section 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "subsec:runmodel"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -11785,6 +11808,11 @@ status open
 
 \begin_layout Plain Layout
 
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
 -------------------------------------------------------------------------
  
 \end_layout
@@ -11831,8 +11859,18 @@ column shows what the 'uninformative'/generalist  prior would be if
 \begin_layout Plain Layout
 
 you aggregate sources before running the mixing model  (a priori).
- -------------------------------------------------------------------------
  
+\end_layout
+
+\begin_layout Plain Layout
+
+-------------------------------------------------------------------------
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
 \end_layout
 
 \end_inset
@@ -11842,6 +11880,7 @@ you aggregate sources before running the mixing model  (a priori).
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -11888,10 +11927,6 @@ combine_sources
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-ff
 \end_layout
 
 \begin_layout Subsubsection
@@ -14263,7 +14298,21 @@ Run JAGS model
 \end_layout
 
 \begin_layout Standard
-Note that if using an informative prior, you need to set 
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:runmodel"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Note 1:
+\emph default
+ if using an informative prior, you need to set 
 \begin_inset Flex Code
 status open
 
@@ -14308,6 +14357,118 @@ jags.1 <- run_model(run="test",mix,source,discr,model_filename,
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Note 2:
+\emph default
+ MixSIAR normalizes the mixture and source tracer data before running the
+ JAGS model.
+ This allows the same priors to be used regardless of scale of the tracer
+ data, without using the data to select the prior (i.e.
+ by setting the prior mean equal to the sample mean).
+ Normalizing the tracer data does not affect the proportion estimates (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$p_k$
+\end_layout
+
+\end_inset
+
+), but does affect users seeking to plot the posterior predictive distribution
+ for their data.
+ For each tracer, we calculate the pooled mean and SD of the mix and source
+ data, then subtract these pooled means and SDs from the mix and source
+ data, and divide by the pooled SD.
+ For details, see lines 226-269 of 
+\begin_inset Flex Code
+status open
+
+\begin_layout Plain Layout
+run_model.R
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The diffuse Normal and Gamma priors on the source means and precisions:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+mu_{jk}^{s} 
+\backslash
+sim N(0,1000)$
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$
+\backslash
+frac{1}{{
+\backslash
+omega_{jk}^s}^2} 
+\backslash
+sim Gamma(.001,.001)$
+\end_layout
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+work well for stable isotope and fatty acid tracers, because their order
+ of magnitude is 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+10$^{-1}$-10$^1$
+\end_layout
+
+\end_inset
+
+.
+ For other tracer types that are of larger orders of magnitude (e.g.
+ element concentrations used in sediment mixing can be 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+10$^3$-10$^5$
+\end_layout
+
+\end_inset
+
+, Nosrati et al.
+ 2014), these priors would not work.
+ Instead of using the data to set the prior, we scale the data so the same
+ prior can be used regardless of data scale.
 \end_layout
 
 \begin_layout Subsubsection
