@@ -6,7 +6,7 @@ MixSIAR
 
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. 
 
-MixSIAR represents a collaborative coding project between the investigators behind MixSIR and SIAR: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, Andrew Jackson, Jon Moore, Stuart Bearhop, and Richard Inger.
+MixSIAR represents a collaborative coding project between the investigators behind MixSIR, SIAR, and IsoSource: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, and Andrew Jackson.
 
 MixSIAR incorporates several years of advances in Bayesian mixing model theory since MixSIR and SIAR, currently:
 
@@ -17,7 +17,8 @@ MixSIAR incorporates several years of advances in Bayesian mixing model theory s
 - Continuous covariate (up to 1)
 - Error structure options with covariance (Residual * Process, Residual only)
 - Concentration dependence
-- Ability to plot and include “uninformative”/generalist or informative priors
+- Plot and include “uninformative”/generalist or informative priors
+- Fit multiple models and compare relative support using LOO/WAIC weights
 
 ### QUICK INSTALL (no GUI)
 
