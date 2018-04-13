@@ -250,13 +250,13 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
     } else { # source data type = 'means'
       if(!is.na(source$by_factor)){ # source by factor,  MU_array[src,iso,f1] + SIG2_array[src,iso,f1]
           mean.pool <- (N*mean(X_iso[,j], na.rm=T) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,]))) / sum(c(as.vector(n_array), N))
-          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j,])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,])^2) + (N-1)*var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j,])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,])^2) + (N-1)*stats::var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
           if(N == 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j,])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j,])^2) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
           MU_array[,j,] <- (MU_array[,j,] - mean.pool) / sd.pool
           SIG2_array[,j,] <- SIG2_array[,j,] / sd.pool^2
       } else { # source NOT by factor, MU_array[src,iso] + SIG2_array[src,iso]
           mean.pool <- (N*mean(X_iso[,j], na.rm=T) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j]))) / sum(c(as.vector(n_array), N))
-          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j])^2) + (N-1)*var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
+          if(N > 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j])^2) + (N-1)*stats::var(X_iso[,j], na.rm=T) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
           if(N == 1) sd.pool <- sqrt((sum((as.vector(n_array)-1)*as.vector(SIG2_array[,j])) + as.vector(as.vector(n_array)%*%as.vector(MU_array[,j])^2) + N*mean(X_iso[,j], na.rm=T)^2 - sum(c(as.vector(n_array), N))*mean.pool^2) / (sum(c(as.vector(n_array), N)) - 1))
           MU_array[,j] <- (MU_array[,j] - mean.pool) / sd.pool
           SIG2_array[,j] <- SIG2_array[,j] / sd.pool^2
