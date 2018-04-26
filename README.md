@@ -4,7 +4,7 @@ MixSIAR
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/metacran/cranlogs.app)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1209993.svg)](https://doi.org/10.5281/zenodo.1209993)
 
-*New:* MixSIAR paper available as [PeerJ Preprint](https://peerj.com/preprints/26884/):
+*New: MixSIAR paper available as a* [PeerJ Preprint](https://peerj.com/preprints/26884/):
 
 - Full description of equations
 - Advice/explanation on 4 common issues (error structures, priors, combining sources, covariates)
