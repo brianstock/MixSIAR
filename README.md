@@ -4,7 +4,11 @@ MixSIAR
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/metacran/cranlogs.app)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1209993.svg)](https://doi.org/10.5281/zenodo.1209993)
 
-<span style="color:red">**New:**</span> MixSIAR paper available as [PeerJ Preprint](https://peerj.com/preprints/26884/). Full description of equations, advice/explanation on 4 common issues (error structures, priors, combining sources, covariates), and a case study highlighting new functionality (model selection with LOO/WAIC weights).
+*New:* MixSIAR paper available as [PeerJ Preprint](https://peerj.com/preprints/26884/):
+
+- Full description of equations
+- Advice/explanation on 4 common issues (error structures, priors, combining sources, covariates)
+- Case study highlighting new functionality (model selection with LOO/WAIC weights)
 
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the MixSIAR model framework. Both graphical user interface (GUI) and script versions are available. 
 
