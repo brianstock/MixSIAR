@@ -1,3 +1,11 @@
+MixSIAR 3.1.10.9000
+=========================
+## MINOR IMPROVEMENTS
+
+* 2 tweaks to make it clearer which sources receive which weights when using an informative prior
+  * source names appear in plots from 'plot_prior' function
+  * warning message that asks users to confirm the informative prior matches their alpha vector
+
 MixSIAR 3.1.10
 =========================
 

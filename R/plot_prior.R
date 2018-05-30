@@ -17,6 +17,16 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
       Instead, set = 0.01.***",sep=""))
 	}
 
+cat("
+-------------------------------------------------------------------------
+*** NOTE ***
+
+MixSIAR sorts the sources alphabetically. If you are using an informative
+prior, please check the plot to confirm that the sources you meant to give 
+greater weight in the alpha vector receive greater weight in the prior.
+-------------------------------------------------------------------------
+",sep="\n")
+
 	n.sources <- source$n.sources
 	if(is.numeric(alpha.prior)==F) alpha.prior = 1 # Error checking for user inputted string/ NA
 	if(length(alpha.prior)==1) alpha = rep(alpha.prior,n.sources) # All sources have same value
@@ -37,8 +47,8 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
 	layout(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), heights=c(rep(3,n.sources),2))
 	par(mai=rep(0.3,4))
 	for(i in 1:n.sources){
-		hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
-		hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+		hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+		hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
 		# hist(p.jeff[,i], breaks = seq(0,1,length.out=40),col="lightgrey", main = paste0("Source ",i,": ",alpha.jeff_lab),xlab=expression(p[i]),xlim=c(0,1))
 	}
 
@@ -53,8 +63,8 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
 		layout(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), heights=c(rep(3,n.sources),2))
 		par(mai=rep(0.3,4))
 		for(i in 1:n.sources){
-			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
-			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
 		}
 
 		par(mai=c(0,0,0,0))
@@ -69,8 +79,8 @@ plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=
 		layout(matrix(c(seq(1:(2*n.sources)),(2*n.sources)+1,(2*n.sources)+1), ncol=2, byrow=TRUE), heights=c(rep(3,n.sources),2))
 		par(mai=rep(0.3,4))
 		for(i in 1:n.sources){
-			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
-			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = paste0("Source ",i),xlab=expression(p[i]),xlim=c(0,1))
+			hist(p[,i], breaks = seq(0,1,length.out=40),col="red", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
+			hist(p.unif[,i], breaks = seq(0,1,length.out=40),col="darkgrey", main = source$source_names[i], xlab=expression(p[i]),xlim=c(0,1))
 		}
 
 		par(mai=c(0,0,0,0))
