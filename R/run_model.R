@@ -207,6 +207,7 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   # all.data <- c("X_iso", "N", "n.sources", "n.iso", "alpha", "frac_mu", "frac_sig2", "e", "cross", "tmp.p")
   all.data <- c("X_iso", "N", "n.sources", "n.iso", "alpha", "frac_mu", "e", "cross", "tmp.p")
   jags.data <- c(all.data, f.data, s.data, c.data)
+
   # if(resid_err){
   #   jags.params <- c(jags.params,"var.resid")
   # }
@@ -271,7 +272,10 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
   #############################################################################
   # Call JAGS
   #############################################################################
-  jags.1 <- R2jags::jags(jags.data,
+  
+
+  # call with jags.parallel
+  jags.1 <- R2jags::jags.parallel(jags.data,
                                   inits=jags.inits,
                                   parameters.to.save = jags.params,
                                   model.file = model_filename,
@@ -280,7 +284,8 @@ run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, 
                                   n.thin = mcmc$thin,
                                   n.iter = mcmc$chainLength,
                                   DIC = mcmc$calcDIC)
-  
+
   return(jags.1)
+  # return(data_as_list)
 } # end run_model function
 
