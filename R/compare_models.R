@@ -93,7 +93,7 @@ compare_models <- function(x, loo=TRUE){
   }  
 
   n.mods <- length(x)
-  mod.names <- names(x)
+  mod.names <- if(is.null(names(x))) paste0('model.',1:length(x)) else names(x)
   if(n.mods==1){
     if(loo) y <- loo::loo(x[[1]]$BUGSoutput$sims.list$loglik)
     if(!loo) y <- loo::waic(x[[1]]$BUGSoutput$sims.list$loglik)
