@@ -226,7 +226,16 @@ tmp.p.high <- array(data=NA,dim=c(n.plot, n.sources))              # dummy varia
 p.high <- array(data=NA,dim=c(n.plot, n.sources))
 eps.low <- rep(NA, n.plot)
 eps.med <- rep(NA, n.plot)
-eps.high <- rep(NA, n.plot)    
+eps.high <- rep(NA, n.plot) 
+
+# function to calculate specialization index from Newsome et al. 2012 (Eqn 5)
+calc_eps <- function(f){
+  n.sources <- length(f)
+  gam <- rep(1/n.sources,n.sources)
+  phi <- rep(0,n.sources)
+  phi[1] <- 1
+  sqrt(sum((f-gam)^2))/sqrt(sum((phi-gam)^2))
+}    
 for(i in 1:n.plot){
   for(j in 1:(n.sources-1)){
     cross.med[i,,j] <- (e[,j]^ilr.median[i,j])/sum(e[,j]^ilr.median[i,j]);
@@ -271,14 +280,6 @@ dev.off()
 
 ########################################################################
 # Plot specialization index vs. length from model 5
-calc_eps <- function(f){
-  n.sources <- length(f)
-  gam <- rep(1/n.sources,n.sources)
-  phi <- rep(0,n.sources)
-  phi[1] <- 1
-  sqrt(sum((f-gam)^2))/sqrt(sum((phi-gam)^2))
-} 
-
 df.eps <- data.frame(Length=Cont1.plot, med=eps.med, low=eps.low, high=eps.high)
 low.inc <- high.inc <- rep(NA,n.plot)
 for(i in 2:n.plot){
