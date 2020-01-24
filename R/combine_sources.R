@@ -85,7 +85,7 @@ combine_sources <- function(jags.1, mix, source, alpha.prior=1, groups){
       for(f1 in 1:mix$FAC[[1]]$levels){
         new.fac1.tmp <- matrix(NA, nrow=n.draws, ncol=source.new$n.sources)
         colnames(new.fac1.tmp) <- paste0("p.fac1[",f1,",",1:source.new$n.sources,"]")
-        old.fac1.tmp <- post.mat[,grep(paste0("p.fac1\\[",f1), colnames(post.mat))]
+        old.fac1.tmp <- post.mat[,grep(paste0("p.fac1\\[",f1,","), colnames(post.mat))]
         for(i in 1:source.new$n.sources){
           old <- groups[[i]]
           old.levels <- match(old, source$source_names)
@@ -99,7 +99,7 @@ combine_sources <- function(jags.1, mix, source, alpha.prior=1, groups){
       for(f2 in 1:mix$FAC[[2]]$levels){
         new.fac2.tmp <- matrix(NA, nrow=n.draws, ncol=source.new$n.sources)
         colnames(new.fac2.tmp) <- paste0("p.fac2[",f2,",",1:source.new$n.sources,"]")
-        old.fac2.tmp <- post.mat[,grep(paste0("p.fac2\\[",f2), colnames(post.mat))]
+        old.fac2.tmp <- post.mat[,grep(paste0("p.fac2\\[",f2,","), colnames(post.mat))]
         for(i in 1:source.new$n.sources){
           old <- groups[[i]]
           old.levels <- match(old, source$source_names)
