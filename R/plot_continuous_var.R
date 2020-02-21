@@ -261,7 +261,11 @@ for(ce in 1:mix$n.ce){
   df <- data.frame(sources=rep(NA,n.draws*n.sources), x=rep(NA,n.draws*n.sources))  # create empty data frame
   is.odd <- length(cont) %% 2                # mod 2 division - odd length will return 1, even length returns 0
   if(is.odd==1) {med_ind <- which(cont==median(cont))}   # find the index of median(Cont1)
-  if(is.odd==0) {med_ind <- which(cont==max(sort(cont[which(cont<median(cont))])))}   # If Cont.1 is even, this finds the index of the value just below the median. Here, median(Cont.1) has no corresponding index.
+  if(is.odd==0){ # If Cont.1 is even, this finds the index of the value just below the median. Here, median(Cont.1) has no corresponding index.
+    if(sum(cont==median(cont)) < length(cont)/2) med_ind <- which(cont==max(sort(cont[which(cont<median(cont))]))) else {
+      med_ind <- which(cont==median(cont))[1]
+    }
+  }   
   for(src in 1:n.sources){
     df$x[seq(1+n.draws*(src-1),src*n.draws)] <- as.matrix(p.ind[,med_ind,src]) # fill in the p.ind values
     df$sources[seq(1+n.draws*(src-1),src*n.draws)] <- rep(source_names[src],n.draws)  # fill in the source names
