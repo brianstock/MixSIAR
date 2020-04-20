@@ -9,6 +9,8 @@
 #' @param plot_save_pdf T/F, save the plot as a pdf?
 #' @param plot_save_png T/F, save the plot as a png?
 #' @param filename name of the file to save (e.g. "prior_plot")
+#' 
+#' @export
 #'
 plot_prior <- function(alpha.prior = 1,source,plot_save_pdf=TRUE, plot_save_png=FALSE, filename="prior_plot"){
 	# Error check for alpha = 0

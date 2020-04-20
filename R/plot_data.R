@@ -33,6 +33,7 @@
 #' @param return_obj T/F, whether or not to return ggplot object for further modification, defaults to F
 #'
 #' @seealso \code{\link{plot_data_two_iso}}, \code{\link{plot_data_one_iso}}
+#' @export
 plot_data <- function(filename,plot_save_pdf,plot_save_png,mix,source,discr, return_obj=FALSE){
   # check that discr rownames match source_names
   if(!identical(rownames(discr$mu),source$source_names)){

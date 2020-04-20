@@ -87,7 +87,6 @@ x <- list(jags.1, jags.2)
 names(x) <- c("Region + Pack", "Region")
 compare_models(x)
 }
-
 }
 \seealso{
 \href{https://CRAN.R-project.org/package=loo}{'loo' package}

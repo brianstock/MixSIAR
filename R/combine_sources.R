@@ -47,6 +47,7 @@
 #' apply(combined$post, 2, median)
 #' summary_stat(combined, meanSD=FALSE, quantiles=c(.025,.5,.975), savetxt=FALSE)
 #' }
+#' @export
 #' 
 combine_sources <- function(jags.1, mix, source, alpha.prior=1, groups){
   old.source.names <- sort(unlist(groups, use.names=FALSE))

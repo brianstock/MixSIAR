@@ -44,6 +44,7 @@
 #' Calculated by combining the ilr offsets from global intercept:
 #'   ilr.both[,f1,f2,src] = ilr.global[,src] + ilr.fac1[,f1,src] + ilr.fac2[,f2,src]
 #' And then transforming from ilr- to proportion-space.
+#' @export
 #'   
 output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   summary_save = TRUE,                 # Save the summary statistics as a txt file?

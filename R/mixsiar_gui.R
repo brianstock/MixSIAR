@@ -26,7 +26,7 @@
 #'    \item \code{mixsiar$discr}: discrimination (TDF) data, output of \code{\link{load_discr_data}}
 #'    \item \code{mixsiar$jags.1}: rjags model object with MCMC chains, output of \code{\link{run_model}}
 #'  }
-#'
+#' @export
 #' @examples
 #' mixsiar_gui()
 #'

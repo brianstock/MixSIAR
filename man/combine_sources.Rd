@@ -58,7 +58,6 @@ combined <- combine_sources(jags.1, mix, source, alpha.prior=alpha,
 apply(combined$post, 2, median)
 summary_stat(combined, meanSD=FALSE, quantiles=c(.025,.5,.975), savetxt=FALSE)
 }
-
 }
 \seealso{
 \code{\link{summary_stat}} and \code{\link{plot_intervals}}

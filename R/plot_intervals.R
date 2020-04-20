@@ -26,7 +26,7 @@
 #'   } 
 #' 
 #' @return NULL
-#'
+#' @export
 #' @seealso \code{\link{combine_sources}} and \code{\link{summary_stat}}
 #' 
 #' @examples 

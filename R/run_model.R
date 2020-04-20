@@ -24,7 +24,7 @@
 #' @param alpha.prior Dirichlet prior on p.global (default = 1, uninformative)
 #' @param resid_err include residual error in the model?
 #' @param process_err include process error in the model?
-#'
+#' @export
 #' @return jags.1, a \code{rjags} model object
 #' 
 #' \emph{Note: Tracer values are normalized before running the JAGS model.} This

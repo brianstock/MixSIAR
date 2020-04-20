@@ -19,6 +19,7 @@
 #'
 #' @seealso \code{\link{load_source_data}}, which is run when the "Load source data"
 #'          window is closed by clicking the "I'm finished" button.
+#' @export
 build_source_win <- function(){
   mix <- mixsiar$mix
   if(!exists("mix")){

@@ -23,6 +23,7 @@
 #' passed from \code{\link{output_JAGS}}
 #'
 #' @seealso Francis et al. 2011
+#' @export
 plot_continuous_var <- function(jags.1, mix, source, output_options){
 # added only to pass R CMD check
 # ilr.global <- x <- p.global <- p.ind <- sources <- ..scaled.. <- NULL

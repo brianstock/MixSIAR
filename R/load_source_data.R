@@ -55,6 +55,7 @@
 #' }
 #'
 #' @seealso \code{\link{load_mix_data}} and \code{\link{load_discr_data}}
+#' @export
 #'
 load_source_data <- function(filename,source_factors=NULL,conc_dep,data_type,mix){
   SOURCE <- read.csv(filename)

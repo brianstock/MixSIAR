@@ -14,6 +14,7 @@
 #'  \item \code{discr$mu}, matrix of discrimination means
 #'  \item \code{discr$sig2}, matrix of discrimination variances
 #' }
+#' @export
 load_discr_data <- function(filename,mix){
   DISCR <- read.csv(filename)
   row.names(DISCR)<-DISCR[,1]     # store the row names of DISCR (sources)

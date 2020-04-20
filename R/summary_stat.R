@@ -15,7 +15,7 @@
 #' @param filename character, file name to save results as (\code{.txt} will be appended automatically)
 #'  
 #' @return NULL
-#'  
+#' @export  
 #' @seealso \code{\link{combine_sources}} and \code{\link{plot_intervals}}
 
 #' @examples 

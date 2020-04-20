@@ -29,6 +29,7 @@
 #'
 #' @seealso \code{\link{load_mix_data}}, which is run when the "Load MIX data"
 #'          window is closed by clicking the "I'm finished" button.
+#' @export
 build_mix_win <- function(){
 mix_win <- gWidgets::gwindow("Read in your MIXTURE data",visible=FALSE) # set visible=F here so that it shows up all at once when the function is finished building the window (visible=T at end of function)
 mix_grp_all <- gWidgets::ggroup(horizontal=F, container=mix_win)

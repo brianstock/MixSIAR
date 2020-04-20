@@ -69,6 +69,7 @@
 #'
 #' If more than 1 Continuous Effect is selected, a WARNING prompts the user to
 #' select 1 or 0.
+#' @export
 #'
 load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
   X <- read.csv(filename)         # raw consumer data

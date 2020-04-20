@@ -81,6 +81,7 @@
 #' names(x) <- c("Region + Pack", "Region")
 #' compare_models(x)
 #' }
+#' @export
 #' 
 compare_models <- function(x, loo=TRUE){
   if(class(x)!="list"){
