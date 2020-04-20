@@ -45,16 +45,19 @@ plot_data <- function(filename,plot_save_pdf,plot_save_png,mix,source,discr, ret
   if(mix$n.iso==1){
     plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj)
     if(return_obj == TRUE) {
-      return(plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj))
+      g = plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj)
     }
   } else {
     for(iso1 in 1:(mix$n.iso-1)){
       for(iso2 in (iso1+1):mix$n.iso){
         plot_data_two_iso(c(iso1,iso2),mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj)
         if(return_obj == TRUE) {
-          return(plot_data_two_iso(c(iso1,iso2),mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj))
+          g = plot_data_two_iso(c(iso1,iso2),mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj)
         }
       }
     }
+  }
+  if(return_obj == TRUE) {
+    return(g)
   }
 } # end plot_data function

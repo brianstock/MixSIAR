@@ -12,7 +12,7 @@ plot_data_two_iso(
   filename,
   plot_save_pdf,
   plot_save_png,
-  return_obj = TRUE
+  return_obj = FALSE
 )
 }
 \arguments{
