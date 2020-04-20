@@ -25,7 +25,7 @@
 #' @param return_obj T/F, whether or not to return ggplot object for further modification, defaults to F
 #'
 #' @seealso \code{\link{plot_data}}
-plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj=TRUE){
+plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj=FALSE){
   # added only to pass R CMD check
   x <- y <- ymin <- ymax <- scolour <- xmin <- xmax <- label <- NULL
 
