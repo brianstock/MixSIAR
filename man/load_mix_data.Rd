@@ -4,8 +4,14 @@
 \alias{load_mix_data}
 \title{Load mixture data}
 \usage{
-load_mix_data(filename, iso_names, factors, fac_random, fac_nested,
-  cont_effects)
+load_mix_data(
+  filename,
+  iso_names,
+  factors,
+  fac_random,
+  fac_nested,
+  cont_effects
+)
 }
 \arguments{
 \item{filename}{csv file with the mixture/consumer data}

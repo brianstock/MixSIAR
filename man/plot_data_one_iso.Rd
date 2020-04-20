@@ -4,7 +4,15 @@
 \alias{plot_data_one_iso}
 \title{Plot biotracer data (1-D)}
 \usage{
-plot_data_one_iso(mix, source, discr, filename, plot_save_pdf, plot_save_png)
+plot_data_one_iso(
+  mix,
+  source,
+  discr,
+  filename,
+  plot_save_pdf,
+  plot_save_png,
+  return_obj = FALSE
+)
 }
 \arguments{
 \item{mix}{output from \code{\link{load_mix_data}}}
@@ -18,6 +26,8 @@ plot_data_one_iso(mix, source, discr, filename, plot_save_pdf, plot_save_png)
 \item{plot_save_pdf}{T/F, save the plot(s) as a pdf?}
 
 \item{plot_save_png}{T/F, save the plot(s) as a png?}
+
+\item{return_obj}{T/F, whether or not to return ggplot object for further modification, defaults to F}
 }
 \description{
 \code{plot_data_one_iso} creates a 1-D plot of mix and source tracer data and

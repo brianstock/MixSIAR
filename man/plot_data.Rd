@@ -4,7 +4,15 @@
 \alias{plot_data}
 \title{Plot biotracer data}
 \usage{
-plot_data(filename, plot_save_pdf, plot_save_png, mix, source, discr)
+plot_data(
+  filename,
+  plot_save_pdf,
+  plot_save_png,
+  mix,
+  source,
+  discr,
+  return_obj = FALSE
+)
 }
 \arguments{
 \item{filename}{name of the plot file(s) to save (e.g. "isospace_plot")}
@@ -18,6 +26,8 @@ plot_data(filename, plot_save_pdf, plot_save_png, mix, source, discr)
 \item{source}{output from \code{\link{load_source_data}}}
 
 \item{discr}{output from \code{\link{load_discr_data}}}
+
+\item{return_obj}{T/F, whether or not to return ggplot object for further modification, defaults to F}
 }
 \description{
 \code{plot_data} creates plot(s) of the biotracer data and saves the plot(s)

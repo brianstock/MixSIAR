@@ -4,9 +4,15 @@
 \alias{summary_stat}
 \title{Summary statistics from posterior of MixSIAR model}
 \usage{
-summary_stat(combined, toprint = "all", groupby = "factor", meanSD = TRUE,
-  quantiles = c(0.025, 0.25, 0.5, 0.75, 0.975), savetxt = TRUE,
-  filename = "summary_statistics")
+summary_stat(
+  combined,
+  toprint = "all",
+  groupby = "factor",
+  meanSD = TRUE,
+  quantiles = c(0.025, 0.25, 0.5, 0.75, 0.975),
+  savetxt = TRUE,
+  filename = "summary_statistics"
+)
 }
 \arguments{
 \item{combined}{list, output from \code{\link{combine_sources}} function}

@@ -4,8 +4,16 @@
 \alias{plot_data_two_iso}
 \title{Plot biotracer data (2-D)}
 \usage{
-plot_data_two_iso(isotopes, mix, source, discr, filename, plot_save_pdf,
-  plot_save_png)
+plot_data_two_iso(
+  isotopes,
+  mix,
+  source,
+  discr,
+  filename,
+  plot_save_pdf,
+  plot_save_png,
+  return_obj = TRUE
+)
 }
 \arguments{
 \item{isotopes}{2-vector of biotracer indices to plot (e.g. c(1,2) or c(2,3))}
@@ -21,6 +29,8 @@ plot_data_two_iso(isotopes, mix, source, discr, filename, plot_save_pdf,
 \item{plot_save_pdf}{T/F, save the plot(s) as a pdf?}
 
 \item{plot_save_png}{T/F, save the plot(s) as a png?}
+
+\item{return_obj}{T/F, whether or not to return ggplot object for further modification, defaults to F}
 }
 \description{
 \code{plot_data_two_iso} creates a 2-D plot of mix and source tracer data and

@@ -4,7 +4,9 @@
 \name{mixsiar}
 \alias{mixsiar}
 \title{mixsiar}
-\format{An object of class \code{environment} of length 0.}
+\format{
+An object of class \code{environment} of length 0.
+}
 \usage{
 mixsiar
 }

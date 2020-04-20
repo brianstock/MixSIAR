@@ -4,8 +4,13 @@
 \alias{plot_prior}
 \title{Plot prior}
 \usage{
-plot_prior(alpha.prior = 1, source, plot_save_pdf = TRUE,
-  plot_save_png = FALSE, filename = "prior_plot")
+plot_prior(
+  alpha.prior = 1,
+  source,
+  plot_save_pdf = TRUE,
+  plot_save_png = FALSE,
+  filename = "prior_plot"
+)
 }
 \arguments{
 \item{alpha.prior}{vector of alpha (dirichlet hyperparameters, none can be = 0)}

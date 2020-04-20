@@ -4,8 +4,15 @@
 \alias{plot_intervals}
 \title{Plot posterior uncertainty intervals from a MixSIAR model}
 \usage{
-plot_intervals(combined, toplot = "p", levels = NULL, groupby = "factor",
-  savepdf = FALSE, filename = "post_intervals", ...)
+plot_intervals(
+  combined,
+  toplot = "p",
+  levels = NULL,
+  groupby = "factor",
+  savepdf = FALSE,
+  filename = "post_intervals",
+  ...
+)
 }
 \arguments{
 \item{combined}{list, output from \code{\link{combine_sources}} function}

@@ -4,8 +4,13 @@
 \alias{write_JAGS_model}
 \title{Write the JAGS model file}
 \usage{
-write_JAGS_model(filename = "MixSIAR_model.txt", resid_err = TRUE,
-  process_err = TRUE, mix, source)
+write_JAGS_model(
+  filename = "MixSIAR_model.txt",
+  resid_err = TRUE,
+  process_err = TRUE,
+  mix,
+  source
+)
 }
 \arguments{
 \item{filename}{the JAGS model file is saved in the working directory as 'filename'

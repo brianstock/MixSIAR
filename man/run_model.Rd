@@ -4,8 +4,16 @@
 \alias{run_model}
 \title{Run the JAGS model}
 \usage{
-run_model(run, mix, source, discr, model_filename, alpha.prior = 1, resid_err,
-  process_err)
+run_model(
+  run,
+  mix,
+  source,
+  discr,
+  model_filename,
+  alpha.prior = 1,
+  resid_err,
+  process_err
+)
 }
 \arguments{
 \item{run}{list of MCMC parameters (chainLength, burn, thin, chains, calcDIC).

@@ -4,14 +4,18 @@
 \alias{output_JAGS}
 \title{Process mixing model output from JAGS}
 \usage{
-output_JAGS(jags.1, mix, source, output_options = list(summary_save = TRUE,
-  summary_name = "summary_statistics", sup_post = FALSE, plot_post_save_pdf =
-  TRUE, plot_post_name = "posterior_density", sup_pairs = FALSE,
-  plot_pairs_save_pdf = TRUE, plot_pairs_name = "pairs_plot", sup_xy = TRUE,
-  plot_xy_save_pdf = FALSE, plot_xy_name = "xy_plot", gelman = TRUE, heidel =
-  FALSE, geweke = TRUE, diag_save = TRUE, diag_name = "diagnostics",
-  indiv_effect = FALSE, plot_post_save_png = FALSE, plot_pairs_save_png = FALSE,
-  plot_xy_save_png = FALSE))
+output_JAGS(
+  jags.1,
+  mix,
+  source,
+  output_options = list(summary_save = TRUE, summary_name = "summary_statistics",
+    sup_post = FALSE, plot_post_save_pdf = TRUE, plot_post_name = "posterior_density",
+    sup_pairs = FALSE, plot_pairs_save_pdf = TRUE, plot_pairs_name = "pairs_plot", sup_xy
+    = TRUE, plot_xy_save_pdf = FALSE, plot_xy_name = "xy_plot", gelman = TRUE, heidel =
+    FALSE, geweke = TRUE, diag_save = TRUE, diag_name = "diagnostics", indiv_effect =
+    FALSE, plot_post_save_png = FALSE, plot_pairs_save_png = FALSE, plot_xy_save_png =
+    FALSE)
+)
 }
 \arguments{
 \item{jags.1}{rjags model object, output from \code{\link{run_model}} function}
