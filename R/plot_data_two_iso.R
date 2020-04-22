@@ -23,7 +23,7 @@
 #' @param plot_save_pdf T/F, save the plot(s) as a pdf?
 #' @param plot_save_png T/F, save the plot(s) as a png?
 #' @param return_obj T/F, whether or not to return ggplot object for further modification, defaults to F
-#'
+#' @export
 #' @seealso \code{\link{plot_data}}
 plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj=FALSE){
   # added only to pass R CMD check
