@@ -12,7 +12,7 @@
 #' @param fac_nested vector of TRUE/FALSE, TRUE if factor is nested within the
 #'          other. Only applies if 2 factors. NULL otherwise.
 #' @param cont_effects vector of continuous effect column headings in 'filename'
-#'
+#' 
 #' @return \code{mix}, a list including:
 #' \itemize{
 #'  \item \code{mix$data}: dataframe, raw mix/consumer data (all columns in 'filename'),
@@ -70,7 +70,6 @@
 #' If more than 1 Continuous Effect is selected, a WARNING prompts the user to
 #' select 1 or 0.
 #' @export
-#'
 load_mix_data <- function(filename,iso_names,factors,fac_random,fac_nested,cont_effects){
   X <- read.csv(filename)         # raw consumer data
   n.iso <- length(iso_names)      # number of isotopes
