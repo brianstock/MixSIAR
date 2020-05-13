@@ -24,9 +24,9 @@ test_that("Killer whale ex works",{
   process_err <- TRUE
   write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
-  run <- list(chainLength=3, burn=1, thin=1, chains=3, calcDIC=TRUE)
+  run <- list(chainLength=5, burn=2, thin=1, chains=3, calcDIC=TRUE)
   invisible(capture.output(
-    jags.uninf <- run_model(run,mix,source,discr,model_filename)
+    jags.uninf <- run_model(run,mix,source,discr,model_filename,alpha.prior=1)
   ))
   expect_is(jags.uninf,"rjags")
   file.remove(model_filename)

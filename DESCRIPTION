@@ -19,7 +19,6 @@ Depends:
     R (>= 3.6.0)
 Imports:
     ggplot2 (>= 2.2.1),
-    rjags (>= 4-6),
     R2jags (>= 0.5-7),
     MASS (>= 7.3),
     RColorBrewer (>= 1.1),
