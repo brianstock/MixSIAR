@@ -14,7 +14,7 @@
 #'
 #' @param filename character, csv file with the source data.
 #' @param source_factors character, column heading in 'filename' that matches
-#'   a Fixed or Random Effect from the mixture data (\code{mixsiar$mix$factors}).
+#'   a Fixed or Random Effect from the mixture data (\code{mix$factors}).
 #'   Only used if you have source data by a factor (e.g. "Region"), otherwise \code{NULL}.
 #' @param conc_dep T/F, \code{TRUE} indicates you have concentration dependence
 #'   data in 'filename'.

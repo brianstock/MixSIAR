@@ -1,10 +1,8 @@
 ---
-title: "MixSIAR Script Example (Lake)"
-author: "Brian Stock"
-date: "March 10, 2016"
+title: "Ex 3: Lake"
 output: html_vignette
 vignette: >
-  %\VignetteIndexEntry{MixSIAR Script Example (Lake)}
+  %\VignetteIndexEntry{Ex 3: Lake}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc} 
 ---
@@ -12,7 +10,7 @@ vignette: >
 Here we step through the Lake Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_lake.R` in the `example_scripts` folder of the MixSIAR package install:
-```{r}
+```{r, eval=FALSE}
 library(MixSIAR)
 mixsiar.dir <- find.package("MixSIAR")
 paste0(mixsiar.dir,"/example_scripts")
@@ -152,14 +150,12 @@ Choose one of the MCMC run options:
 
 First use `run = "test"` to check if 1) the data are loaded correctly and 2) the model is specified correctly:
 ```{r, eval=FALSE}
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
-                    alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename)
 ```
 
 After a test run works, increase the MCMC run to a value that may converge:
 ```{r, eval=FALSE}
-jags.1 <- run_model(run="normal", mix, source, discr, model_filename,
-                    alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="normal", mix, source, discr, model_filename)
 ```
 
 ### Analyze diagnostics and output

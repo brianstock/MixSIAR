@@ -14,7 +14,7 @@ output_JAGS(
     = TRUE, plot_xy_save_pdf = FALSE, plot_xy_name = "xy_plot", gelman = TRUE, heidel =
     FALSE, geweke = TRUE, diag_save = TRUE, diag_name = "diagnostics", indiv_effect =
     FALSE, plot_post_save_png = FALSE, plot_pairs_save_png = FALSE, plot_xy_save_png =
-    FALSE)
+    FALSE, diag_save_ggmcmc = TRUE)
 )
 }
 \arguments{
@@ -26,26 +26,27 @@ output_JAGS(
 
 \item{output_options}{list containing options for plots and saving:
 \itemize{
- \item \code{summary_save}: Save the summary statistics as a txt file?
- \item \code{summary_name}: Summary statistics file name (.txt will be appended)
- \item \code{sup_post}: Suppress posterior density plot output in R?
- \item \code{plot_post_save_pdf}: Save posterior density plots as pdfs?
- \item \code{plot_post_name}: Posterior plot file name(s) (.pdf/.png will be appended)
- \item \code{sup_pairs}: Suppress pairs plot output in R?
- \item \code{plot_pairs_save_pdf}: Save pairs plot as pdf?
- \item \code{plot_pairs_name}: Pairs plot file name (.pdf/.png will be appended)
- \item \code{sup_xy}: Suppress xy/trace plot output in R?
- \item \code{plot_xy_save_pdf}: Save xy/trace plot as pdf?
- \item \code{plot_xy_name}: XY/trace plot file name (.pdf/.png will be appended)
- \item \code{gelman}: Calculate Gelman-Rubin diagnostic test?
- \item \code{heidel}: Calculate Heidelberg-Welch diagnostic test?
- \item \code{geweke}: Calculate Geweke diagnostic test?
- \item \code{diag_save}: Save the diagnostics as a .txt file?
- \item \code{diag_name}: Diagnostics file name (.txt will be appended)
- \item \code{indiv_effect}: artifact, set to FALSE
- \item \code{plot_post_save_png}: Save posterior density plots as pngs?
- \item \code{plot_pairs_save_png}: Save pairs plot as png?
- \item \code{plot_xy_save_png}: Save xy/trace plot as png?
+ \item \code{summary_save}: Save the summary statistics as a txt file? Default = \code{TRUE}
+ \item \code{summary_name}: Summary statistics file name (.txt will be appended). Default = \code{"summary_statistics"}
+ \item \code{sup_post}: Suppress posterior density plot output in R? Default = \code{FALSE}
+ \item \code{plot_post_save_pdf}: Save posterior density plots as pdfs? Default = \code{TRUE}
+ \item \code{plot_post_name}: Posterior plot file name(s) (.pdf/.png will be appended) Default = \code{"posterior_density"}
+ \item \code{sup_pairs}: Suppress pairs plot output in R? Default = \code{FALSE}
+ \item \code{plot_pairs_save_pdf}: Save pairs plot as pdf? Default = \code{TRUE}
+ \item \code{plot_pairs_name}: Pairs plot file name (.pdf/.png will be appended) Default = \code{"pairs_plot"}
+ \item \code{sup_xy}: Suppress xy/trace plot output in R? Default = \code{TRUE}
+ \item \code{plot_xy_save_pdf}: Save xy/trace plot as pdf? Default = \code{FALSE}
+ \item \code{plot_xy_name}: XY/trace plot file name (.pdf/.png will be appended) Default = \code{"xy_plot"}
+ \item \code{gelman}: Calculate Gelman-Rubin diagnostic test? Default = \code{TRUE}
+ \item \code{heidel}: Calculate Heidelberg-Welch diagnostic test? Default = \code{FALSE}
+ \item \code{geweke}: Calculate Geweke diagnostic test? Default = \code{TRUE}
+ \item \code{diag_save}: Save the diagnostics as a .txt file? Default = \code{TRUE}
+ \item \code{diag_name}: Diagnostics file name (.txt will be appended) Default = \code{"diagnostics"}
+ \item \code{indiv_effect}: artifact, set to FALSE 
+ \item \code{plot_post_save_png}: Save posterior density plots as pngs? Default = \code{FALSE}
+ \item \code{plot_pairs_save_png}: Save pairs plot as png? Default = \code{FALSE}
+ \item \code{plot_xy_save_png}: Save xy/trace plot as png? Default = \code{FALSE}
+ \item \code{diag_save_ggmcmc}: Save ggmcmc diagnostics as pdf? Default = \code{TRUE}
 }}
 }
 \value{

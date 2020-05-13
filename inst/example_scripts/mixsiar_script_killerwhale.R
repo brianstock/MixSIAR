@@ -87,8 +87,8 @@ process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("very long" took ~5 min)
-jags.inf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
-# jags.inf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
+jags.inf <- run_model(run="test",mix,source,discr,model_filename,alpha.prior=kw.alpha)
+# jags.inf <- run_model(run="very long",mix,source,discr,model_filename,alpha.prior=kw.alpha)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.inf, mix, source)

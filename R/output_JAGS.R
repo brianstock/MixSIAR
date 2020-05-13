@@ -15,26 +15,27 @@
 #' @param source output from \code{\link{load_source_data}}
 #' @param output_options list containing options for plots and saving:
 #'   \itemize{
-#'    \item \code{summary_save}: Save the summary statistics as a txt file?
-#'    \item \code{summary_name}: Summary statistics file name (.txt will be appended)
-#'    \item \code{sup_post}: Suppress posterior density plot output in R?
-#'    \item \code{plot_post_save_pdf}: Save posterior density plots as pdfs?
-#'    \item \code{plot_post_name}: Posterior plot file name(s) (.pdf/.png will be appended)
-#'    \item \code{sup_pairs}: Suppress pairs plot output in R?
-#'    \item \code{plot_pairs_save_pdf}: Save pairs plot as pdf?
-#'    \item \code{plot_pairs_name}: Pairs plot file name (.pdf/.png will be appended)
-#'    \item \code{sup_xy}: Suppress xy/trace plot output in R?
-#'    \item \code{plot_xy_save_pdf}: Save xy/trace plot as pdf?
-#'    \item \code{plot_xy_name}: XY/trace plot file name (.pdf/.png will be appended)
-#'    \item \code{gelman}: Calculate Gelman-Rubin diagnostic test?
-#'    \item \code{heidel}: Calculate Heidelberg-Welch diagnostic test?
-#'    \item \code{geweke}: Calculate Geweke diagnostic test?
-#'    \item \code{diag_save}: Save the diagnostics as a .txt file?
-#'    \item \code{diag_name}: Diagnostics file name (.txt will be appended)
-#'    \item \code{indiv_effect}: artifact, set to FALSE
-#'    \item \code{plot_post_save_png}: Save posterior density plots as pngs?
-#'    \item \code{plot_pairs_save_png}: Save pairs plot as png?
-#'    \item \code{plot_xy_save_png}: Save xy/trace plot as png?
+#'    \item \code{summary_save}: Save the summary statistics as a txt file? Default = \code{TRUE}
+#'    \item \code{summary_name}: Summary statistics file name (.txt will be appended). Default = \code{"summary_statistics"}
+#'    \item \code{sup_post}: Suppress posterior density plot output in R? Default = \code{FALSE}
+#'    \item \code{plot_post_save_pdf}: Save posterior density plots as pdfs? Default = \code{TRUE}
+#'    \item \code{plot_post_name}: Posterior plot file name(s) (.pdf/.png will be appended) Default = \code{"posterior_density"}
+#'    \item \code{sup_pairs}: Suppress pairs plot output in R? Default = \code{FALSE}
+#'    \item \code{plot_pairs_save_pdf}: Save pairs plot as pdf? Default = \code{TRUE}
+#'    \item \code{plot_pairs_name}: Pairs plot file name (.pdf/.png will be appended) Default = \code{"pairs_plot"}
+#'    \item \code{sup_xy}: Suppress xy/trace plot output in R? Default = \code{TRUE}
+#'    \item \code{plot_xy_save_pdf}: Save xy/trace plot as pdf? Default = \code{FALSE}
+#'    \item \code{plot_xy_name}: XY/trace plot file name (.pdf/.png will be appended) Default = \code{"xy_plot"}
+#'    \item \code{gelman}: Calculate Gelman-Rubin diagnostic test? Default = \code{TRUE}
+#'    \item \code{heidel}: Calculate Heidelberg-Welch diagnostic test? Default = \code{FALSE}
+#'    \item \code{geweke}: Calculate Geweke diagnostic test? Default = \code{TRUE}
+#'    \item \code{diag_save}: Save the diagnostics as a .txt file? Default = \code{TRUE}
+#'    \item \code{diag_name}: Diagnostics file name (.txt will be appended) Default = \code{"diagnostics"}
+#'    \item \code{indiv_effect}: artifact, set to FALSE 
+#'    \item \code{plot_post_save_png}: Save posterior density plots as pngs? Default = \code{FALSE}
+#'    \item \code{plot_pairs_save_png}: Save pairs plot as png? Default = \code{FALSE}
+#'    \item \code{plot_xy_save_png}: Save xy/trace plot as png? Default = \code{FALSE}
+#'    \item \code{diag_save_ggmcmc}: Save ggmcmc diagnostics as pdf? Default = \code{TRUE}
 #'   }
 #'   
 #' @return \code{p.both} -- only if 2 fixed effects OR 1 fixed + 1 random, otherwise \code{NULL}).
@@ -66,7 +67,8 @@ output_JAGS <- function(jags.1, mix, source, output_options=list(
                                                   indiv_effect = FALSE,                   # Is Individual a random effect in the model? (already specified)
                                                   plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
                                                   plot_pairs_save_png = FALSE,            # Save pairs plot as png?
-                                                  plot_xy_save_png = FALSE)){             # Save xy/trace plot as png?){
+                                                  plot_xy_save_png = FALSE,
+                                                  diag_save_ggmcmc = TRUE)){             # Save ggmcmc diagnostics as pdf?
 mcmc.chains <- jags.1$BUGSoutput$n.chains
 N <- mix$N
 n.re <- mix$n.re
@@ -782,8 +784,10 @@ if(mix$n.ce > 0){
 }
 
 # Use ggmcmc package to create diagnostic plots
-diag_filename <- paste(getwd(),"/",output_options[[16]],".pdf",sep="")
-ggmcmc::ggmcmc(ggmcmc::ggs(jags1.mcmc),file=diag_filename,plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+if(!is.null(output_options$diag_save_ggmcmc)) if(output_options$diag_save_ggmcmc){
+  diag_filename <- paste(getwd(),"/",output_options$diag_name,".pdf",sep="")
+  ggmcmc::ggmcmc(ggmcmc::ggs(jags1.mcmc), file=diag_filename, plot=c("Rhat","geweke","density","traceplot","running","autocorrelation","crosscorrelation"))
+}
 
 # Return p.both if 2 FE or 1FE + 1RE
 if(mix$fere){

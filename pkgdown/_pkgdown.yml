@@ -1,0 +1,44 @@
+navbar:
+  left:
+    - text: "Vignettes"
+      icon: fas fa-book
+      menu:
+      -  text: "Overview"
+         href: articles/index.html
+      -  text: "Ex 1: Wolves"
+         href: articles/wolves_ex.html
+      -  text: "Ex 2: Geese"
+         href: articles/geese_ex.html
+      -  text: "Ex 3: Lake"
+         href: articles/lake_ex.html
+      -  text: "Ex 4: Killer whale"
+         href: articles/killerwhale_ex.html
+      -  text: "Ex 5: Isopod"
+         href: articles/isopod_ex.html
+      -  text: "Ex 6: Cladocera"
+         href: articles/cladocera_ex.html
+
+    - text: "Functions"
+      icon: fa-file-code-o
+      href: reference/index.html
+    - text: "Source code"
+      icon: fa-github fa-lg
+      href: https://github.com/brianstock/MixSIAR
+  right:
+    - icon: fa-question-circle-o
+      text: "Issues"
+      href: https://github.com/brianstock/MixSIAR/issues/
+
+articles:
+  - title: "MixSIAR tutorial"
+    desc: >
+      These vignettes provide an introduction to fitting Bayesian mixing models using MixSIAR. 
+      They get progressively more complex, so we advise working through them in order unless you 
+      are only interested in a specific topic.
+    contents:
+      - wolves_ex
+      - geese_ex
+      - lake_ex
+      - killerwhale_ex
+      - isopod_ex
+      - cladocera_ex

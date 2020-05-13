@@ -77,7 +77,7 @@ plot_data(filename="isospace_plot",
           mix,source,discr)
 
 # If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s)
-#   *Note 1: discrimination SD is added to the source SD (see calc_area.r for details)
+#   *Note 1: discrimination SD is added to the source SD (see calc_area.R for details)
 #   *Note 2: If source data are by factor (as in wolf ex), computes area for each polygon
 #             (one for each of 3 regions in wolf ex)
 if(mix$n.iso==2) calc_area(source=source,mix=mix,discr=discr)
@@ -134,12 +134,10 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # Good idea to use 'test' first to check if
 #   1) the data are loaded correctly, and 
 #   2) the model is specified correctly
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
-                    alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior = 1)
 
 # After a test run works, increase the MCMC run to a value that may converge
-# jags.1 <- run_model(run="normal", mix, source, discr, model_filename, 
-                    # alpha.prior = 1, resid_err, process_err)
+# jags.1 <- run_model(run="normal", mix, source, discr, model_filename, alpha.prior = 1)
 
 ################################################################################
 # Process JAGS output
@@ -164,7 +162,8 @@ output_options <- list(summary_save = TRUE,
                        indiv_effect = FALSE,       
                        plot_post_save_png = FALSE, 
                        plot_pairs_save_png = FALSE,
-                       plot_xy_save_png = FALSE)
+                       plot_xy_save_png = FALSE,
+                       diag_save_ggmcmc = FALSE)
 
 # Create diagnostics, summary statistics, and posterior plots
 output_JAGS(jags.1, mix, source, output_options)

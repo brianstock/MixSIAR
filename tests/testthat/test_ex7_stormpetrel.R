@@ -25,8 +25,7 @@ test_that("Storm-petrel ex works",{
 
   run <- list(chainLength=3, burn=1, thin=1, chains=3, calcDIC=TRUE)
   invisible(capture.output(
-    jags.1 <- run_model(run, mix, source, discr, model_filename,
-                      alpha.prior = 1, resid_err, process_err)
+    jags.1 <- run_model(run, mix, source, discr, model_filename)
   ))
 
   expect_is(jags.1,"rjags")

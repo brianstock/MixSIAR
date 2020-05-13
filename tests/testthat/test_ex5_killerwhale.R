@@ -26,7 +26,7 @@ test_that("Killer whale ex works",{
 
   run <- list(chainLength=3, burn=1, thin=1, chains=3, calcDIC=TRUE)
   invisible(capture.output(
-    jags.uninf <- run_model(run,mix,source,discr,model_filename,alpha.prior = 1, resid_err, process_err)
+    jags.uninf <- run_model(run,mix,source,discr,model_filename)
   ))
   expect_is(jags.uninf,"rjags")
   file.remove(model_filename)
@@ -38,7 +38,7 @@ test_that("Killer whale ex works",{
   model_filename <- "MixSIAR_model_kw_inf.txt"   # Name of the JAGS model file
   write_JAGS_model(model_filename, resid_err, process_err, mix, source)
   invisible(capture.output(
-    jags.inf <- run_model(run=run,mix,source,discr,model_filename,alpha.prior=kw.alpha, resid_err, process_err)
+    jags.inf <- run_model(run=run,mix,source,discr,model_filename,alpha.prior=kw.alpha)
   ))
   expect_is(jags.inf,"rjags")
   file.remove(model_filename)

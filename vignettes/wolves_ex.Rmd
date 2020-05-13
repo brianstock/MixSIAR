@@ -1,16 +1,14 @@
 ---
-title: "MixSIAR Script Example (Wolves)"
-author: "Brian Stock"
-date: "March 10, 2016"
+title: "Ex 1: Wolves"
 output: html_vignette
 vignette: >
-  %\VignetteIndexEntry{MixSIAR Script Example (Wolves)}
+  %\VignetteIndexEntry{Ex 1: Wolves}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc} 
 ---
 
 Here we show how to do a mixing model analysis using the **script** version of MixSIAR. For a demonstration of the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a clean, runnable `.R` script, look at `mixsiar_script_wolves.R` in the `example_scripts` folder of the MixSIAR package install:
-```{r}
+```{r, eval=FALSE}
 library(MixSIAR)
 mixsiar.dir <- find.package("MixSIAR")
 paste0(mixsiar.dir,"/example_scripts")
@@ -32,26 +30,26 @@ While the GUI may be convenient for users less familiar with R, we advise using 
 The basic MixSIAR workflow is the same using a script or the GUI:
 
 1. Load data files:
-    + Mixture (["load_mix_data"](#load-mixture-data))
-    + Sources (["load_source_data"](#load-source-data))
-    + Discrimination (TDF) (["load_discr_data"](#load-discrimination-data))
+    + Mixture (`load_mix_data()`)
+    + Sources (`load_source_data()`)
+    + Discrimination (TDF) (`load_discr_data()`)
     
 2. Pre-model checks
-    + Plot your data (["plot_data"](#plot-data))
-    + Calculate convex hull area (["calc_area"](#calculate-convex-hull-area))
-    + Plot your prior (["plot_prior"](#plot-prior))
+    + Plot your data (`plot_data()`)
+    + Calculate convex hull area (`calc_area()`)
+    + Plot your prior (`plot_prior()`)
 
 3. Choose model structure options
-    + Write JAGS model file (["write_JAGS_model"](#write-JAGS-model-file))
+    + Write JAGS model file (`write_JAGS_model()`)
     
 4. Run model
-    + Run the JAGS model (["run_model"](#run-model))
+    + Run the JAGS model (`run_model()`)
 
 5. Use diagnostics to decide if the model has converged
-    + Check diagnostics (["output_JAGS"](#analyze-diagnostics-and-output))
+    + Check diagnostics (`output_JAGS()`)
 
 6. Analyze output
-    + Check summary statistics and posterior density plots (["output_JAGS"](#analyze-diagnostics-and-output))
+    + Check summary statistics and posterior density plots (`output_JAGS()`)
 
 ## Wolves Example
 
@@ -244,14 +242,12 @@ run <- list(chainLength=200000, burn=150000, thin=50, chains=3, calcDIC=TRUE)
 
 Good idea to use `run = "test"` first to check if 1) the data are loaded correctly and 2) the model is specified correctly:
 ```{r, eval=FALSE}
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
-                    alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename)
 ```
 
 After a test run works, increase the MCMC run to a value that may converge
 ```{r, eval=FALSE}
-jags.1 <- run_model(run="normal", mix, source, discr, model_filename, 
-                    # alpha.prior = 1, resid_err, process_err)
+jags.1 <- run_model(run="normal", mix, source, discr, model_filename)
 ```
 
 `jags.1` will be an `rjags` object where you can access the MCMC chains for plotting, aggregating sources a posteriori, etc.
@@ -280,7 +276,8 @@ output_options <- list(summary_save = TRUE,
                        indiv_effect = FALSE,
                        plot_post_save_png = FALSE,
                        plot_pairs_save_png = FALSE,
-                       plot_xy_save_png = FALSE)
+                       plot_xy_save_png = FALSE,
+                       diag_save_ggmcmc = FALSE)
 ```
 
 Then you can call `output_JAGS` to process diagnostics, summary statistics, and create posterior density plots:

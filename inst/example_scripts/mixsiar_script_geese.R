@@ -47,8 +47,8 @@ process_err <- FALSE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("test" first, then "short")
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
-#jags.1 <- run_model(run="short", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1)
+#jags.1 <- run_model(run="short", mix, source, discr, model_filename, alpha.prior=1)
 
 # Process diagnostics, summary stats, and posterior plots
 output_JAGS(jags.1, mix, source)

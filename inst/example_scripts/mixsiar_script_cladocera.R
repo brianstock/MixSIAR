@@ -86,10 +86,10 @@ process_err <- TRUE
 write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 
 # Run the JAGS model ("test" first, then "normal")
-jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1)
 
 ## "normal" took my laptop ~30 minutes to run
-#jags.1 <- run_model(run="normal", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+#jags.1 <- run_model(run="normal", mix, source, discr, model_filename, alpha.prior=1)
 
 # Process diagnostics, summary stats, and posterior plots
 # Note that since we fit “id” as a fixed effect, there is no inference on diet at

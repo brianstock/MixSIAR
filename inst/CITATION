@@ -1,5 +1,25 @@
 citHeader("To cite MixSIAR in publications use:")
 
+citEntry(entry = "Article",
+  title        = "Analyzing mixing systems using a new generation of Bayesian tracer mixing models",
+  author       = personList(as.person("Brian C. Stock"),
+                   as.person("Andrew L. Jackson"),
+                   as.person("Eric J. Ward"),
+                   as.person("Andrew C. Parnell"),
+                   as.person("Donald L. Phillips"),
+                   as.person("Brice X. Semmens")),
+  journal      = "PeerJ",
+  year         = "2018",
+  volume       = "6",
+  pages        = "e5096",
+  url          = "https://doi.org/10.7717/peerj.5096",
+
+  textVersion  =
+  paste("Stock BC, Jackson AL, Ward EJ, Parnell AC, Phillips DL, Semmens BX. 2018.",
+        "Analyzing mixing systems using a new generation of Bayesian tracer mixing models.",
+        "PeerJ 6:e5096 https://doi.org/10.7717/peerj.5096")
+)
+
 citEntry(entry = "misc",
   title        = "{MixSIAR} GUI User Manual",
   author       = personList(as.person("Brian C. Stock"),
@@ -10,7 +30,7 @@ citEntry(entry = "misc",
   url          = "https://github.com/brianstock/MixSIAR",
 
   textVersion  =
-  paste("B.C. Stock and B.X. Semmens (2016).",
+  paste("Stock BC and Semmens BX. 2016.",
         "MixSIAR GUI User Manual. Version 3.1.",
         "https://github.com/brianstock/MixSIAR.",
         "doi:10.5281/zenodo.1209993.")

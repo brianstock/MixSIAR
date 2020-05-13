@@ -23,7 +23,7 @@ If source$by_factor = TRUE, \code{calc_area} returns a vector, where
   the areas of the Region 1 convex hull, Region 2 convex hull, etc.)
 }
 \description{
-\code{calc_area} calculates the normalized surface area of the SOURCE + TDF
+\code{calc_area()} calculates the normalized surface area of the SOURCE + TDF
  convex hull, only if there are exactly 2 biotracers.
 }
 \details{
@@ -32,9 +32,8 @@ combined SOURCE + TDF variance to normalize the surface area:
 \deqn{\sqrt{\sigma^2_source + \sigma^2_discr}}
 This is the variance used in fitting the mixing model.
 
-\code{calc_area} relies on the \code{areapl} function from \code{splancs}
-package, which is not automatically installed as a dependency by \code{MixSIAR}.
-If \code{splancs} is not installed, a WARNING message will appear.
+\code{calc_area()} relies on the \code{splancs::areapl()} function from the \code{splancs}
+package. If \code{splancs} is not installed, a WARNING message will appear.
 }
 \seealso{
 Brett (2014): \url{https://www.researchgate.net/profile/Michael_Brett/publication/269873625_Resource_polygon_geometry_predicts_Bayesian_stable_isotope_mixing_model_bias/links/549884090cf2519f5a1de635.pdf}

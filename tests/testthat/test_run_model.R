@@ -17,32 +17,27 @@ test_that("Error messages work",{
   discr.filename <- system.file("extdata", "wolves_discrimination.csv", package = "MixSIAR")
   discr <- load_discr_data(filename=discr.filename, mix)
 
-  model_filename <- "MixSIAR_model.txt"
-  resid_err <- TRUE
-  process_err <- TRUE
-  write_JAGS_model(model_filename, resid_err, process_err, mix, source)
-
   run <- list(chainLength=3, burn=1, thin=1, chains=3, calcDIC=TRUE)
-
+  model_filename <- "MixSIAR_model.txt"
+  
   # process and resid error cannot both be false
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                        alpha.prior = 1, resid_err=FALSE, process_err=FALSE))
+  resid_err <- FALSE; process_err <- FALSE
+  expect_error(write_JAGS_model(model_filename, resid_err, process_err, mix, source))
 
   # if mix$N==1, must choose process error only (MixSIR)
   mix$N <- 1
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = 1, resid_err=TRUE, process_err=FALSE))
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = 1, resid_err=TRUE, process_err=TRUE))
+  resid_err <- TRUE; process_err <- FALSE;
+  expect_error(write_JAGS_model(model_filename, resid_err, process_err, mix, source))
+
+  resid_err <- TRUE; process_err <- TRUE;
+  expect_error(write_JAGS_model(model_filename, resid_err, process_err, mix, source))
 
   # Error checks on alpha prior
   mix$N <- 66 # put N back to what it should be
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = "blah", resid_err=TRUE, process_err=TRUE))
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = 1:5, resid_err=TRUE, process_err=TRUE))
-  expect_error(run_model(run, mix, source, discr, model_filename,
-                         alpha.prior = 0:2, resid_err=TRUE, process_err=TRUE))
+  write_JAGS_model(model_filename, resid_err, process_err, mix, source)
+  expect_error(run_model(run, mix, source, discr, model_filename, alpha.prior = "blah"))
+  expect_error(run_model(run, mix, source, discr, model_filename, alpha.prior = 1:5))
+  expect_error(run_model(run, mix, source, discr, model_filename, alpha.prior = 0:2))
 
   # # cannot set informative prior on model with fixed effect
   # mix$n.fe <- 1

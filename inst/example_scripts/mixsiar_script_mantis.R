@@ -172,12 +172,10 @@ write_JAGS_model(model_filename, resid_err, process_err, mix, source)
 # Good idea to use 'test' first to check if
 #   1) the data are loaded correctly, and 
 #   2) the model is specified correctly
-# jags.1 <- run_model(run="test", mix, source, discr, model_filename, 
-#                     alpha.prior = alpha.spec, resid_err, process_err)
+# jags.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior = alpha.spec)
 
 # After a test run works, increase the MCMC run to a value that may converge
-jags.spec <- run_model(run="normal", mix, source, discr, model_filename, 
-                    alpha.prior = alpha.spec, resid_err, process_err)
+jags.spec <- run_model(run="normal", mix, source, discr, model_filename, alpha.prior = alpha.spec)
 
 ################################################################################
 # Process JAGS output
@@ -202,7 +200,8 @@ output_options <- list(summary_save = TRUE,
                        indiv_effect = FALSE,       
                        plot_post_save_png = FALSE, 
                        plot_pairs_save_png = FALSE,
-                       plot_xy_save_png = FALSE)
+                       plot_xy_save_png = FALSE,
+                       diag_save_ggmcmc = FALSE)
 
 # Create diagnostics, summary statistics, and posterior plots
 output_JAGS(jags.spec, mix, source, output_options)

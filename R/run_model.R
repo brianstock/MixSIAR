@@ -22,8 +22,8 @@
 #' @param model_filename name of JAGS model file (usually should match \code{filename}
 #'   input to \code{\link{write_JAGS_model}}).
 #' @param alpha.prior Dirichlet prior on p.global (default = 1, uninformative)
-#' @param resid_err include residual error in the model?
-#' @param process_err include process error in the model?
+#' @param resid_err include residual error in the model? (no longer used, read from `model_filename`)
+#' @param process_err include process error in the model? (no longer used, read from `model_filename`)
 #' @export
 #' @return jags.1, a \code{rjags} model object
 #' 
@@ -37,27 +37,12 @@
 #' and divide by the pooled standard deviation from the mix and source data. 
 #' For details, see lines 226-269.
 #'
-run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, resid_err, process_err){
-#  resid_err <- mixsiar$resid_err
-#  process_err <- mixsiar$process_err
-
-  if(!process_err && !resid_err){
-    stop(paste("Invalid error structure, must choose one of:
-    1. Residual * Process (resid_err=TRUE, process_err=TRUE)
-    2. Residual only (resid_err=TRUE, process_err=FALSE)
-    3. Process only (resid_err=FALSE, process_err=TRUE)",sep=""))
-  }
-  if(resid_err && !process_err) err <- "resid"
-  if(process_err && !resid_err) err <- "process"
-  if(resid_err && process_err) err <- "mult"
-  if(mix$N==1 && err!="process"){
-    stop(paste("Invalid error structure. If N=1 mix datapoint,
-    must choose Process only error model (MixSIR).
-    Set resid_err=FALSE and process_err=TRUE.",sep=""))}
-  if(mix$n.fe==1 && mix$N==mix$FAC[[1]]$levels && err!="process"){
-    stop(paste("Invalid error structure. If fitting each individual
-    mix datapoint separately, must choose Process only error model (MixSIR).
-    Set resid_err=FALSE and process_err=TRUE.",sep=""))}
+run_model <- function(run, mix, source, discr, model_filename, alpha.prior = 1, resid_err=NULL, process_err=NULL){
+  # get error structure from JAGS model text file line 8 
+  err_raw <- read.table(model_filename, comment.char = '', sep=":", skip=7, nrows=1, colClasses="character")
+  if(err_raw[1,2] == " Residual only") err <- "resid"
+  if(err_raw[1,2] == " Process only (MixSIR, for N = 1)") err <- "process"
+  if(err_raw[1,2] == " Residual * Process") err <- "mult"
 
   # Error checks on prior
   if(length(alpha.prior)==1){

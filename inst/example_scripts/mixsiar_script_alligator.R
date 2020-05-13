@@ -135,7 +135,7 @@ for(mod in 1:n.mod){
   
   # Run the JAGS model
   # "short" MCMC length is plenty long for all models to converge
-  jags.mod[[mod]] <- run_model(run="short", mix[[mod]], source[[mod]], discr[[mod]], model_filename, alpha.prior=1, resid_err, process_err)
+  jags.mod[[mod]] <- run_model(run="short", mix[[mod]], source[[mod]], discr[[mod]], model_filename, alpha.prior=1)
   
   # Process diagnostics, summary stats, and posterior plots
   # output_JAGS(jags.mod[[mod]], mix[[mod]], source[[mod]])
@@ -159,7 +159,8 @@ for(mod in 1:n.mod){
                                                   indiv_effect = FALSE,                   # Is Individual a random effect in the model? (already specified)
                                                   plot_post_save_png = FALSE,             # Save posterior density plots as pngs?
                                                   plot_pairs_save_png = FALSE,            # Save pairs plot as png?
-                                                  plot_xy_save_png = FALSE))
+                                                  plot_xy_save_png = FALSE,
+                                                  diag_save_ggmcmc = FALSE))
   graphics.off()
   
   # Move back up to root directory

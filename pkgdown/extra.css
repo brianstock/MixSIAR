@@ -1,0 +1,20 @@
+blockquote{
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  padding: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.fas fa-check fa-lg{
+  color:#bb00ff;
+}
+
+.attribution{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 10px;
+    color:grey;
+}

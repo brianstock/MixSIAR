@@ -1,10 +1,29 @@
-MixSIAR 3.1.10.9000
+MixSIAR 3.1.11
 =========================
+## MAJOR CHANGE
+
+For `MixSIAR` to remain on CRAN, had to remove the `mixsiar_gui()` function. `mixsiar_gui()` is now found in the new GitHub-only package `MixSIARgui`.
+
+```
+devtools::install_github("brianstock/MixSIARgui", dependencies=T) # installs MixSIAR as dependency
+library(MixSIARgui) # also loads MixSIAR
+mixsiar_gui()
+```
+
 ## MINOR IMPROVEMENTS
 
+* Allow `output_JAGS()` to suppress diagnostic pdf plots with `output_options$diag_save_ggmcmc = FALSE`
+* Allow `plot_data()` to return the ggplot object so that it can be modified by the user
 * 2 tweaks to make it clearer which sources receive which weights when using an informative prior
-  * source names appear in plots from 'plot_prior' function
+  * source names appear in plots from `plot_prior()` function
   * warning message that asks users to confirm the informative prior matches their alpha vector
+* Update/fix alligator ex
+  * moved `calc_eps()`
+  * add code to plot cont effect + random effects of individuals (`mixsiar_script_alligator_length_ind.R`)
+
+## BUG FIX
+
+* Fix error when combining sources with > 9 sources
 
 MixSIAR 3.1.10
 =========================

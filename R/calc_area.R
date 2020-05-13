@@ -1,6 +1,6 @@
 #' Calculate the normalized surface area of the source convex hull
 #'
-#' \code{calc_area} calculates the normalized surface area of the SOURCE + TDF
+#' \code{calc_area()} calculates the normalized surface area of the SOURCE + TDF
 #'  convex hull, only if there are exactly 2 biotracers.
 #'
 #' Important detail is that, unlike in Brett (2014), \code{calc_area} uses the
@@ -8,9 +8,8 @@
 #' \deqn{\sqrt{\sigma^2_source + \sigma^2_discr}}
 #' This is the variance used in fitting the mixing model.
 #'
-#' \code{calc_area} relies on the \code{areapl} function from \code{splancs}
-#' package, which is not automatically installed as a dependency by \code{MixSIAR}.
-#' If \code{splancs} is not installed, a WARNING message will appear.
+#' \code{calc_area()} relies on the \code{splancs::areapl()} function from the \code{splancs}
+#' package. If \code{splancs} is not installed, a WARNING message will appear.
 #'
 #' @param source output from \code{\link{load_source_data}}
 #' @param mix output from \code{\link{load_mix_data}}

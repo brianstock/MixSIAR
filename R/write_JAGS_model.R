@@ -777,9 +777,4 @@ cat("
 ", file=filename, append=T)
 } # end MixSIR error section (N = 1)
 
-# Assign "resid_err" and "process_err" to the mixsiar environment, so they are
-#  accessible by "run_model" function without a user having to re-specify (and match!)
-assign("resid_err", resid_err, envir = mixsiar)
-assign("process_err", process_err, envir = mixsiar)
-
 } # end function write_JAGS_model
