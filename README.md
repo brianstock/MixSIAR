@@ -42,7 +42,7 @@ library(MixSIAR)
 
 ## Tutorial
 
-We suggest walking through the vignettes to familiarize yourself with MixSIAR.
+We suggest walking through the [vignettes](http://brianstock.github.io/MixSIAR/articles/index.html) to familiarize yourself with MixSIAR.
 
 There is also an extensive user manual included in the package install. To find the directory location on your computer:
 ```

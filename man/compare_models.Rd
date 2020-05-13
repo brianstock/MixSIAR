@@ -95,5 +95,5 @@ compare_models(x)
 
 Pages 75-88 in \href{http://www.springer.com/us/book/9780387953649}{Burnham, KP and DR Anderson. 2002}. Model selection and multimodel inference: a practical information-theoretic approach. Springer Science & Business Media.
 
-Pages 188-201 in \href{https://www.crcpress.com/Statistical-Rethinking-A-Bayesian-Course-with-Examples-in-R-and-Stan/McElreath/p/book/9781482253443}{McElreath, R. 2016}. Statistical rethinking: a Bayesian course with examples in R and Stan. CRC Press.
+Pages 188-201 in \href{https://www.routledge.com/Statistical-Rethinking-A-Bayesian-Course-with-Examples-in-R-and-STAN/McElreath/p/book/9780367139919}{McElreath, R. 2016}. Statistical rethinking: a Bayesian course with examples in R and Stan. CRC Press.
 }
