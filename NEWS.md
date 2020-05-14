@@ -1,8 +1,12 @@
+MixSIAR 3.1.11.9000
+=========================
+
+
 MixSIAR 3.1.11
 =========================
 ## MAJOR CHANGE
 
-For `MixSIAR` to remain on CRAN, had to remove the `mixsiar_gui()` function. `mixsiar_gui()` is now found in the new GitHub-only package `MixSIARgui`.
+For `MixSIAR` to remain on CRAN, had to remove the `mixsiar_gui()` function. `mixsiar_gui()` is now found in the new GitHub-only package [`MixSIARgui`](https://github.com/brianstock/MixSIARgui).
 
 ```
 devtools::install_github("brianstock/MixSIARgui", dependencies=T) # installs MixSIAR as dependency

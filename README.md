@@ -28,7 +28,7 @@ For details, please see the [MixSIAR paper](https://peerj.com/articles/5096/):
 
 ## Installation
 
-The GUI has been removed from the CRAN version of MixSIAR (if desired, see MixSIARgui). Running MixSIAR with scripts is easier to install and better for repeated analysis.
+The GUI has been removed from the CRAN version of MixSIAR (if desired, see [MixSIARgui](https://github.com/brianstock/MixSIARgui) on GitHub). Running MixSIAR with scripts is easier to install and better for repeated analysis.
 
 1. Download and install/update [R](https://cran.r-project.org/).
 
