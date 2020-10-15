@@ -2,7 +2,7 @@ Package: MixSIAR
 Title: Bayesian Mixing Models in R
 Version: 3.1.12
 Authors@R: c(
-    person("Brian", "Stock", email = "b1stock@ucsd.edu", role = c("cre","aut")),
+    person("Brian", "Stock", email = "bstock09@gmail.com", role = c("cre","aut")),
     person("Brice", "Semmens", email = "semmens@ucsd.edu", role = "aut"),
     person("Eric", "Ward", role = "ctb"),
     person("Andrew", "Parnell", role = "ctb"),
