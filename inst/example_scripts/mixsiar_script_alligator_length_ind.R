@@ -81,66 +81,49 @@ label <- mix$cont_effects[ce]
 cont <- mix$CE[[ce]]
 ilr.cont <- get(paste("ilr.cont",ce,sep=""))
 
+n.plot = 200
+chain.len = dim(p.global)[1]
+Cont1.plot <- seq(from=round(min(cont),1), to=round(max(cont),1), length.out=n.plot)
+ilr.plot <- array(NA,dim=c(n.plot, n.sources-1, chain.len))
+for(src in 1:n.sources-1){
+  for(i in 1:n.plot){
+    ilr.plot[i,src,] <- ilr.global[,src] + ilr.cont[,src]*Cont1.plot[i]
+  }
+}
+
+# Transform every draw from ILR-space to p-space
+e <- matrix(rep(0,n.sources*(n.sources-1)),nrow=n.sources,ncol=(n.sources-1))
+for(i in 1:(n.sources-1)){
+  e[,i] <- exp(c(rep(sqrt(1/(i*(i+1))),i),-sqrt(i/(i+1)),rep(0,n.sources-i-1)))
+  e[,i] <- e[,i]/sum(e[,i])
+}
+# dummy variables for inverse ILR calculation
+cross <- array(data=NA,dim=c(n.plot, chain.len, n.sources, n.sources-1))  
+tmp <- array(data=NA,dim=c(n.plot, chain.len, n.sources))  
+p.plot <- array(data=NA,dim=c(n.plot, chain.len, n.sources))  
+for(i in 1:n.plot){
+  for(d in 1:chain.len){
+    for(j in 1:(n.sources-1)){
+      cross[i,d,,j] <- (e[,j]^ilr.plot[i,j,d])/sum(e[,j]^ilr.plot[i,j,d]);
+    }
+    for(src in 1:n.sources){
+      tmp[i,d,src] <- prod(cross[i,d,src,]);
+    }
+    for(src in 1:n.sources){
+      p.plot[i,d,src] <- tmp[i,d,src]/sum(tmp[i,d,]);
+    }
+  }
+}
+# now take quantiles, after ILR transform of every draw
 # get_high <- function(x){return(quantile(x,.975))} # 95% CI 
 # get_low <- function(x){return(quantile(x,.025))}
 get_high <- function(x){return(quantile(x,.95))} # 90% CI 
 get_low <- function(x){return(quantile(x,.05))}    
 # get_high <- function(x){return(quantile(x,.75))} # 50% CI 
-# get_low <- function(x){return(quantile(x,.25))}    
-n.plot = 200
-chain.len = dim(p.global)[1]
-Cont1.plot <- seq(from=round(min(cont),1), to=round(max(cont),1), length.out=n.plot)
-ilr.plot <- array(NA,dim=c(n.plot, n.sources-1, chain.len))
-ilr.median <- array(NA,dim=c(n.plot, n.sources-1))
-ilr.low <- array(NA,dim=c(n.plot, n.sources-1))
-ilr.high <- array(NA,dim=c(n.plot, n.sources-1))
-for(src in 1:n.sources-1){
-  for(i in 1:n.plot){
-   ilr.plot[i,src,] <- ilr.global[,src] + ilr.cont[,src]*Cont1.plot[i]
-   ilr.low[i,src] <- get_low(ilr.plot[i,src,])
-   ilr.median[i,src] <- median(ilr.plot[i,src,])
-   ilr.high[i,src] <- get_high(ilr.plot[i,src,])
-  }
-}
-
-# Transform regression lines from ILR-space to p-space
-e <- matrix(rep(0,n.sources*(n.sources-1)),nrow=n.sources,ncol=(n.sources-1))
-for(i in 1:(n.sources-1)){
-   e[,i] <- exp(c(rep(sqrt(1/(i*(i+1))),i),-sqrt(i/(i+1)),rep(0,n.sources-i-1)))
-   e[,i] <- e[,i]/sum(e[,i])
-}
-cross.med <- array(data=NA,dim=c(n.plot, n.sources, n.sources-1))  # dummy variable for inverse ILR calculation
-tmp.p.med <- array(data=NA,dim=c(n.plot, n.sources))              # dummy variable for inverse ILR calculation
-p.median <- array(data=NA,dim=c(n.plot, n.sources))
-cross.low <- array(data=NA,dim=c(n.plot, n.sources, n.sources-1))  # dummy variable for inverse ILR calculation
-tmp.p.low <- array(data=NA,dim=c(n.plot, n.sources))              # dummy variable for inverse ILR calculation
-p.low <- array(data=NA,dim=c(n.plot, n.sources))
-cross.high <- array(data=NA,dim=c(n.plot, n.sources, n.sources-1))  # dummy variable for inverse ILR calculation
-tmp.p.high <- array(data=NA,dim=c(n.plot, n.sources))              # dummy variable for inverse ILR calculation
-p.high <- array(data=NA,dim=c(n.plot, n.sources))
-eps.low <- rep(NA, n.plot)
-eps.med <- rep(NA, n.plot)
-eps.high <- rep(NA, n.plot)    
-for(i in 1:n.plot){
-  for(j in 1:(n.sources-1)){
-    cross.med[i,,j] <- (e[,j]^ilr.median[i,j])/sum(e[,j]^ilr.median[i,j]);
-    cross.low[i,,j] <- (e[,j]^ilr.low[i,j])/sum(e[,j]^ilr.low[i,j]);
-    cross.high[i,,j] <- (e[,j]^ilr.high[i,j])/sum(e[,j]^ilr.high[i,j]);
-  }
-  for(src in 1:n.sources){
-    tmp.p.med[i,src] <- prod(cross.med[i,src,]);
-    tmp.p.low[i,src] <- prod(cross.low[i,src,]);
-    tmp.p.high[i,src] <- prod(cross.high[i,src,]);
-  }
-  for(src in 1:n.sources){
-    p.median[i,src] <- tmp.p.med[i,src]/sum(tmp.p.med[i,]);
-    p.low[i,src] <- tmp.p.low[i,src]/sum(tmp.p.low[i,]);
-    p.high[i,src] <- tmp.p.high[i,src]/sum(tmp.p.high[i,]);
-  }
-  eps.med[i] <- calc_eps(p.median[i,])
-  eps.low[i] <- calc_eps(p.low[i,])
-  eps.high[i] <- calc_eps(p.high[i,])
-}
+# get_low <- function(x){return(quantile(x,.25))}  
+p.low <- apply(p.plot, c(1,3), get_low)
+p.high <- apply(p.plot, c(1,3), get_high)
+p.median <- apply(p.plot, c(1,3), median)
 colnames(p.median) <- source_names
 
 Cont1.plot <- Cont1.plot*mix$CE_scale + mix$CE_center # transform Cont1.plot (x-axis) back to the original scale
@@ -163,10 +146,10 @@ print(ggplot(df.ind) +
   geom_ribbon(data=df[df$source=="Marine",], mapping=aes(x=x, ymin=low, ymax=high), alpha=0.35, fill=cols[6]) +
   geom_line(data=df[df$source=="Marine",], mapping=aes(x=x, y=median), size=1.5, color=cols[9]) +  
   geom_linerange(mapping=aes(x=Length, y=p, group=Ind), stat = "summary", color=cols[6], size=1, 
-               fun.ymin = function(z) {quantile(z,0.05)},
-               fun.ymax = function(z) {quantile(z,0.95)}) +  
+               fun.min = function(z) {quantile(z,0.05)},
+               fun.max = function(z) {quantile(z,0.95)}) +  
   geom_point(mapping=aes(x=Length, y=p, group=Ind), stat = "summary", shape = 21, color=cols[9], fill=cols[9], size=3,
-               fun.y = function(z) {quantile(z,0.5)}) +  
+               fun = function(z) {quantile(z,0.5)}) +  
   scale_y_continuous(limits=c(0,1), expand=c(0.01,0.01)) +
   ylab(expression(italic(p)[marine])) +
   xlab("Total length (cm)") +

@@ -1,6 +1,6 @@
 Package: MixSIAR
 Title: Bayesian Mixing Models in R
-Version: 3.1.11.9000
+Version: 3.1.12
 Authors@R: c(
     person("Brian", "Stock", email = "b1stock@ucsd.edu", role = c("cre","aut")),
     person("Brice", "Semmens", email = "semmens@ucsd.edu", role = "aut"),
@@ -18,7 +18,7 @@ Description: Creates and runs Bayesian mixing models to analyze
 Depends:
     R (>= 3.6.0)
 Imports:
-    ggplot2 (>= 2.2.1),
+    ggplot2 (>= 3.3.0),
     R2jags (>= 0.5-7),
     MASS (>= 7.3),
     RColorBrewer (>= 1.1),
@@ -42,4 +42,4 @@ Encoding: UTF-8
 License: GPL-3
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

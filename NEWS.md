@@ -1,6 +1,13 @@
 MixSIAR 3.1.11.9000
 =========================
 
+## MINOR IMPROVEMENTS
+
+* `plot_continuous_var()` has new arguments `alphaCI` (sets credible interval width) and `exclude_sources_below`, which allows you to remove sources from the plot whose median proportion is below a specified level for all values of the continuous variable (i.e. only plot sources with median contributions above 5%).
+
+## BUG FIX
+
+* Fixed two bugs in `plot_continuous_var()` #198 and #212
 
 MixSIAR 3.1.11
 =========================

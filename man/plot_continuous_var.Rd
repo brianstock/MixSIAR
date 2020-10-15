@@ -4,7 +4,14 @@
 \alias{plot_continuous_var}
 \title{Plot proportions by a continuous covariate}
 \usage{
-plot_continuous_var(jags.1, mix, source, output_options)
+plot_continuous_var(
+  jags.1,
+  mix,
+  source,
+  output_options,
+  alphaCI = 0.05,
+  exclude_sources_below = 0.1
+)
 }
 \arguments{
 \item{jags.1}{output from \code{\link{run_model}}}
@@ -13,8 +20,11 @@ plot_continuous_var(jags.1, mix, source, output_options)
 
 \item{source}{output from \code{\link{load_source_data}}}
 
-\item{output_options}{list containing options for plots and saving,
-passed from \code{\link{output_JAGS}}}
+\item{output_options}{list containing options for plots and saving, passed from \code{\link{output_JAGS}}}
+
+\item{alphaCI}{alpha level for credible intervals (default = 0.05, 95\% CI)}
+
+\item{exclude_sources_below}{don't plot sources with median proportion below this level for entire range of continuous effect variable (default = 0.1)}
 }
 \description{
 \code{plot_continuous_var} creates a plot of how the mixture proportions

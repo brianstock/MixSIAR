@@ -40,6 +40,11 @@ install.packages("MixSIAR", dependencies=TRUE)
 library(MixSIAR)
 ```
 
+If you want the latest changes and bug fixes not yet on CRAN, you can install the GitHub version:
+```
+remotes::install_github("brianstock/MixSIAR", dependencies=T)
+```
+
 ## Tutorial
 
 We suggest walking through the [vignettes](http://brianstock.github.io/MixSIAR/articles/index.html) to familiarize yourself with MixSIAR.
