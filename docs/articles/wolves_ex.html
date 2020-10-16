@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MixSIAR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.12</span>
       </span>
     </div>
 
@@ -117,11 +117,13 @@
     
     
 <p>Here we show how to do a mixing model analysis using the <strong>script</strong> version of MixSIAR. For a demonstration of the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_wolves.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MixSIAR</span>)
-<span class="no">mixsiar.dir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span>(<span class="st">"MixSIAR"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">mixsiar.dir</span>,<span class="st">"/example_scripts"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span>
+<span class="va">mixsiar.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"MixSIAR"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"/example_scripts"</span><span class="op">)</span></pre></div>
 <p>You can run the wolves example script with:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/source.html">source</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">mixsiar.dir</span>,<span class="st">"/example_scripts/mixsiar_script_wolves.R"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"/example_scripts/mixsiar_script_wolves.R"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p>While the GUI may be convenient for users less familiar with R, we advise using the script version of MixSIAR for several reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p><em>Repeatability</em>: You can run different models and have a record of the commands that created each one. There are many reasons you’d want to do this. For example, you may want to compare model results with an uninformative prior vs. an informative prior, one error term option vs. another, grouping sources a priori vs. a posteriori, different MCMC run lengths, etc.</p></li>
@@ -178,7 +180,8 @@
 <div id="load-mixsiar-package" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-mixsiar-package" class="anchor"></a>Load MixSIAR package</h3>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MixSIAR</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span></pre></div>
 </div>
 <div id="load-mixture-data" class="section level3">
 <h3 class="hasAnchor">
@@ -197,16 +200,17 @@
 </li>
 </ul>
 <p>The wolves consumer data has 2 covariates: Region and Pack, where Pack is nested within Region (<code>fac_nested=c(FALSE,TRUE)</code>). By “nested”, we mean that all wolves in a given pack are in the same region - each pack is entirely within one region. This is an excellent example of <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/wolf_model.png">hierarchical structure</a>, fit with 2 random effects (<code>fac_random=c(TRUE,TRUE)</code>).</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">mix.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"wolves_consumer.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">mix.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"wolves_consumer.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
 <span class="co"># Load the mixture/consumer data</span>
-<span class="no">mix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_mix_data.html">load_mix_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">mix.filename</span>,
-                     <span class="kw">iso_names</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"d13C"</span>,<span class="st">"d15N"</span>),
-                     <span class="kw">factors</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Region"</span>,<span class="st">"Pack"</span>),
-                     <span class="kw">fac_random</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">TRUE</span>,<span class="fl">TRUE</span>),
-                     <span class="kw">fac_nested</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">FALSE</span>,<span class="fl">TRUE</span>),
-                     <span class="kw">cont_effects</span><span class="kw">=</span><span class="kw">NULL</span>)</pre></body></html></div>
+<span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_mix_data.html">load_mix_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">mix.filename</span>, 
+                     iso_names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span>, 
+                     factors<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Region"</span>,<span class="st">"Pack"</span><span class="op">)</span>, 
+                     fac_random<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>,<span class="cn">TRUE</span><span class="op">)</span>, 
+                     fac_nested<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>,<span class="cn">TRUE</span><span class="op">)</span>, 
+                     cont_effects<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></pre></div>
 </div>
 <div id="load-source-data" class="section level3">
 <h3 class="hasAnchor">
@@ -223,15 +227,16 @@
 </li>
 </ul>
 <p>If you look at <code>wolves_sources.csv</code>, you will see that each Region has different isotope values - this is specified with <code>source_factors="Region"</code>. We do not have concentration dependence data here, so <code>conc_dep=FALSE</code>. We only have source summary statistics (Mean, SD, and sample size), not the original “raw”" data, so <code>data_type="means"</code>. <em>Note that <code>wolves_sources.csv</code> has a column titled “n”" with the sample size of each source estimate. This must be in your source data file when you run your data!</em></p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">source.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"wolves_sources.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">source.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"wolves_sources.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
 <span class="co"># Load the source data</span>
-<span class="no">source</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_source_data.html">load_source_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">source.filename</span>,
-                           <span class="kw">source_factors</span><span class="kw">=</span><span class="st">"Region"</span>,
-                           <span class="kw">conc_dep</span><span class="kw">=</span><span class="fl">FALSE</span>,
-                           <span class="kw">data_type</span><span class="kw">=</span><span class="st">"means"</span>,
-                           <span class="no">mix</span>)</pre></body></html></div>
+<span class="va">source</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_source_data.html">load_source_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">source.filename</span>,
+                           source_factors<span class="op">=</span><span class="st">"Region"</span>, 
+                           conc_dep<span class="op">=</span><span class="cn">FALSE</span>, 
+                           data_type<span class="op">=</span><span class="st">"means"</span>, 
+                           <span class="va">mix</span><span class="op">)</span></pre></div>
 </div>
 <div id="load-discrimination-data" class="section level3">
 <h3 class="hasAnchor">
@@ -244,11 +249,12 @@
 <p><code>filename</code>: name of the CSV file with discrimination data</p>
 </li>
 </ul>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">discr.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"wolves_discrimination.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">discr.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"wolves_discrimination.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
 <span class="co"># Load the discrimination/TDF data</span>
-<span class="no">discr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_discr_data.html">load_discr_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">discr.filename</span>, <span class="no">mix</span>)</pre></body></html></div>
+<span class="va">discr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_discr_data.html">load_discr_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">discr.filename</span>, <span class="va">mix</span><span class="op">)</span></pre></div>
 </div>
 <div id="plot-data" class="section level3">
 <h3 class="hasAnchor">
@@ -266,8 +272,9 @@
 </ul>
 <p>You should <em>always</em> look at the isospace plot—this is a good check that the data is loaded correctly, and that the isospace geometry makes sense. If the mixture data are well outside the source polygon, you have a serious violation of mixing model assumptions, and it must be true that either 1) You’re missing a source, or 2) You’re using an incorrect discrimination factor. MixSIAR, like SIAR, fits a residual error term, and thus will always find a solution <em>even if it is nonsensical.</em></p>
 <p>Also note that the MixSIAR isospace plot adds the discrimination means <em>AND SDs</em> to the raw source values. This is because model uses the source + discrimination values to fit the mixture data, calculated as <span class="math inline">\(\sqrt{\sigma^2_{source} + \sigma^2_{discr}}\)</span>, under the assumption of independence. Error bars indicate <span class="math inline">\(\pm\)</span> 1 SD.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Make an isospace plot</span>
-<span class="fu"><a href="../reference/plot_data.html">plot_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="st">"isospace_plot"</span>, <span class="kw">plot_save_pdf</span><span class="kw">=</span><span class="fl">TRUE</span>, <span class="kw">plot_save_png</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="no">mix</span>,<span class="no">source</span>,<span class="no">discr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># Make an isospace plot</span>
+<span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="st">"isospace_plot"</span>, plot_save_pdf<span class="op">=</span><span class="cn">TRUE</span>, plot_save_png<span class="op">=</span><span class="cn">FALSE</span>, <span class="va">mix</span>,<span class="va">source</span>,<span class="va">discr</span><span class="op">)</span></pre></div>
 </div>
 <div id="calculate-convex-hull-area" class="section level3">
 <h3 class="hasAnchor">
@@ -275,8 +282,9 @@
 <p>If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s) as in <a href="http://www.int-res.com/articles/suppl/m514p001_supp.pdf">Brett (2014)</a>.</p>
 <p><strong>Note 1:</strong> discrimination SD is added to the source SD (see ?calc_area for details)</p>
 <p><strong>Note 2:</strong> If source data are by factor (as in wolf ex), computes area for each polygon (one for each of 3 regions in wolf ex)</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># Calculate the convex hull area, standardized by source variance</span>
-<span class="fu"><a href="../reference/calc_area.html">calc_area</a></span>(<span class="kw">source</span><span class="kw">=</span><span class="no">source</span>,<span class="kw">mix</span><span class="kw">=</span><span class="no">mix</span>,<span class="kw">discr</span><span class="kw">=</span><span class="no">discr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># Calculate the convex hull area, standardized by source variance</span>
+<span class="fu"><a href="../reference/calc_area.html">calc_area</a></span><span class="op">(</span>source<span class="op">=</span><span class="va">source</span>,mix<span class="op">=</span><span class="va">mix</span>,discr<span class="op">=</span><span class="va">discr</span><span class="op">)</span></pre></div>
 <pre><code>## [1]  0.8750158 13.9726701 13.6440547</code></pre>
 </div>
 <div id="plot-prior" class="section level3">
@@ -290,8 +298,9 @@
 </ul>
 <p>Bayesian analyses require priors, and MixSIAR includes a <code>plot_prior</code> function to plot the prior on the mixture (diet) proportions (at the highest hierarchical level, p.global). The prior represents our knowledge about the proportions before we consider the biotracer data. A natural tendency is to want a flat/“uninformative” prior, where all values between 0 and 1 are equally likely. However, because proportions are not independent, there is no truly uninformative prior (e.g. the histograms are not flat). The best we can do with the Dirichlet distribution is set <span class="math inline">\(\alpha\)</span> = c(1,1,1), which is uninformative on the simplex. In other words, all combinations of the proportions are equally likely. See the section titled “Constructing informative Bayesian priors” in the forthcoming MixSIAR paper.</p>
 <p>Because the mean of the “uninformative” prior, <span class="math inline">\(\alpha\)</span> = c(1,1,1), is <span class="math inline">\(\frac{1}{n.sources}\)</span>, we also call it the generalist prior. This reflects two facts: 1) it is not really uninformative, and 2) for weakly informative data it shifts the posterior towards a generalist diet, <span class="math inline">\(p_1 = p_2 = p_3 = \frac{1}{3}\)</span>. The amount of shift depends on the informativeness (quality and quantity) of the data.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)</span>
-<span class="fu"><a href="../reference/plot_prior.html">plot_prior</a></span>(<span class="kw">alpha.prior</span><span class="kw">=</span><span class="fl">1</span>,<span class="no">source</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)</span>
+<span class="fu"><a href="../reference/plot_prior.html">plot_prior</a></span><span class="op">(</span>alpha.prior<span class="op">=</span><span class="fl">1</span>,<span class="va">source</span><span class="op">)</span></pre></div>
 </div>
 <div id="write-jags-model-file" class="section level3">
 <h3 class="hasAnchor">
@@ -305,11 +314,12 @@
 </ol>
 <p>In the Wolves Example we want the “Residual * Process” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
 <p><strong>Note:</strong> If you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same behavior as <code>siarsolo</code> in SIAR.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># Write the JAGS model file</span>
-<span class="no">model_filename</span> <span class="kw">&lt;-</span> <span class="st">"MixSIAR_model.txt"</span>   <span class="co"># Name of the JAGS model file</span>
-<span class="no">resid_err</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>
-<span class="no">process_err</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>
-<span class="fu"><a href="../reference/write_JAGS_model.html">write_JAGS_model</a></span>(<span class="no">model_filename</span>, <span class="no">resid_err</span>, <span class="no">process_err</span>, <span class="no">mix</span>, <span class="no">source</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="co"># Write the JAGS model file</span>
+<span class="va">model_filename</span> <span class="op">&lt;-</span> <span class="st">"MixSIAR_model.txt"</span>   <span class="co"># Name of the JAGS model file</span>
+<span class="va">resid_err</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+<span class="va">process_err</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+<span class="fu"><a href="../reference/write_JAGS_model.html">write_JAGS_model</a></span><span class="op">(</span><span class="va">model_filename</span>, <span class="va">resid_err</span>, <span class="va">process_err</span>, <span class="va">mix</span>, <span class="va">source</span><span class="op">)</span></pre></div>
 </div>
 <div id="run-model" class="section level3">
 <h3 class="hasAnchor">
@@ -376,40 +386,45 @@
 </tbody>
 </table>
 <p>You can also set custom MCMC parameters, e.g:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">run</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">chainLength</span><span class="kw">=</span><span class="fl">200000</span>, <span class="kw">burn</span><span class="kw">=</span><span class="fl">150000</span>, <span class="kw">thin</span><span class="kw">=</span><span class="fl">50</span>, <span class="kw">chains</span><span class="kw">=</span><span class="fl">3</span>, <span class="kw">calcDIC</span><span class="kw">=</span><span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">run</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chainLength<span class="op">=</span><span class="fl">200000</span>, burn<span class="op">=</span><span class="fl">150000</span>, thin<span class="op">=</span><span class="fl">50</span>, chains<span class="op">=</span><span class="fl">3</span>, calcDIC<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <p>Good idea to use <code>run = "test"</code> first to check if 1) the data are loaded correctly and 2) the model is specified correctly:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">jags.1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span>(<span class="kw">run</span><span class="kw">=</span><span class="st">"test"</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">discr</span>, <span class="no">model_filename</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="va">jags.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span><span class="op">(</span>run<span class="op">=</span><span class="st">"test"</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, <span class="va">model_filename</span><span class="op">)</span></pre></div>
 <p>After a test run works, increase the MCMC run to a value that may converge</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">jags.1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span>(<span class="kw">run</span><span class="kw">=</span><span class="st">"normal"</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">discr</span>, <span class="no">model_filename</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="va">jags.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span><span class="op">(</span>run<span class="op">=</span><span class="st">"normal"</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, <span class="va">model_filename</span><span class="op">)</span></pre></div>
 <p><code>jags.1</code> will be an <code>rjags</code> object where you can access the MCMC chains for plotting, aggregating sources a posteriori, etc.</p>
 </div>
 <div id="analyze-diagnostics-and-output" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyze-diagnostics-and-output" class="anchor"></a>Analyze diagnostics and output</h3>
 <p>First you can set output options like file names, plot file types, etc. (see ?output_JAGS for details).</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">output_options</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">summary_save</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">summary_name</span> <span class="kw">=</span> <span class="st">"summary_statistics"</span>,
-                       <span class="kw">sup_post</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_post_save_pdf</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">plot_post_name</span> <span class="kw">=</span> <span class="st">"posterior_density"</span>,
-                       <span class="kw">sup_pairs</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_pairs_save_pdf</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">plot_pairs_name</span> <span class="kw">=</span> <span class="st">"pairs_plot"</span>,
-                       <span class="kw">sup_xy</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">plot_xy_save_pdf</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_xy_name</span> <span class="kw">=</span> <span class="st">"xy_plot"</span>,
-                       <span class="kw">gelman</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">heidel</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">geweke</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">diag_save</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                       <span class="kw">diag_name</span> <span class="kw">=</span> <span class="st">"diagnostics"</span>,
-                       <span class="kw">indiv_effect</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_post_save_png</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_pairs_save_png</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">plot_xy_save_png</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                       <span class="kw">diag_save_ggmcmc</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="va">output_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>summary_save <span class="op">=</span> <span class="cn">TRUE</span>,
+                       summary_name <span class="op">=</span> <span class="st">"summary_statistics"</span>,
+                       sup_post <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_post_save_pdf <span class="op">=</span> <span class="cn">TRUE</span>,
+                       plot_post_name <span class="op">=</span> <span class="st">"posterior_density"</span>,
+                       sup_pairs <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_pairs_save_pdf <span class="op">=</span> <span class="cn">TRUE</span>,
+                       plot_pairs_name <span class="op">=</span> <span class="st">"pairs_plot"</span>,
+                       sup_xy <span class="op">=</span> <span class="cn">TRUE</span>,
+                       plot_xy_save_pdf <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_xy_name <span class="op">=</span> <span class="st">"xy_plot"</span>,
+                       gelman <span class="op">=</span> <span class="cn">TRUE</span>,
+                       heidel <span class="op">=</span> <span class="cn">FALSE</span>,
+                       geweke <span class="op">=</span> <span class="cn">TRUE</span>,
+                       diag_save <span class="op">=</span> <span class="cn">TRUE</span>,
+                       diag_name <span class="op">=</span> <span class="st">"diagnostics"</span>,
+                       indiv_effect <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_post_save_png <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_pairs_save_png <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_xy_save_png <span class="op">=</span> <span class="cn">FALSE</span>,
+                       diag_save_ggmcmc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <p>Then you can call <code>output_JAGS</code> to process diagnostics, summary statistics, and create posterior density plots:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/output_JAGS.html">output_JAGS</a></span>(<span class="no">jags.1</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">output_options</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="fu"><a href="../reference/output_JAGS.html">output_JAGS</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
 <p>For a thorough explanation of the output from <code>output_JAGS</code>, see the Wolves Example section of the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. You will also find examples of accessing the MCMC chains for post hoc plotting and analysis there.</p>
 </div>
 </div>
@@ -430,7 +445,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

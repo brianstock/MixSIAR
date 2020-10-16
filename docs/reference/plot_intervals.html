@@ -75,7 +75,7 @@ Calls bayesplot::mcmc_intervals." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MixSIAR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.12</span>
       </span>
     </div>
 
@@ -159,15 +159,15 @@ Calls bayesplot::mcmc_intervals." />
 Calls <a href='http://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>bayesplot::mcmc_intervals</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_intervals</span>(
-  <span class='no'>combined</span>,
-  <span class='kw'>toplot</span> <span class='kw'>=</span> <span class='st'>"p"</span>,
-  <span class='kw'>levels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>groupby</span> <span class='kw'>=</span> <span class='st'>"factor"</span>,
-  <span class='kw'>savepdf</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"post_intervals"</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>plot_intervals</span><span class='op'>(</span>
+  <span class='va'>combined</span>,
+  toplot <span class='op'>=</span> <span class='st'>"p"</span>,
+  levels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  groupby <span class='op'>=</span> <span class='st'>"factor"</span>,
+  savepdf <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  filename <span class='op'>=</span> <span class='st'>"post_intervals"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,23 +219,24 @@ Calls <a href='http://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>bayes
     <div class='dont-index'><p><code><a href='combine_sources.html'>combine_sources</a></code> and <code><a href='summary_stat.html'>summary_stat</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># 1. run mantis shrimp example</span>
-<span class='no'>original</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combine_sources.html'>combine_sources</a></span>(<span class='no'>jags.1</span>, <span class='no'>mix</span>, <span class='no'>source</span>, <span class='no'>alpha</span>,
-                <span class='kw'>groups</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alphworm</span><span class='kw'>=</span><span class='st'>"alphworm"</span>,<span class='kw'>brittlestar</span><span class='kw'>=</span><span class='st'>"brittlestar"</span>,<span class='kw'>clam</span><span class='kw'>=</span><span class='st'>"clam"</span>,
-                           <span class='kw'>crab</span><span class='kw'>=</span><span class='st'>"crab"</span>,<span class='kw'>fish</span><span class='kw'>=</span><span class='st'>"fish"</span>,<span class='kw'>snail</span><span class='kw'>=</span><span class='st'>"snail"</span>))
+<span class='va'>original</span> <span class='op'>&lt;-</span> <span class='fu'><a href='combine_sources.html'>combine_sources</a></span><span class='op'>(</span><span class='va'>jags.1</span>, <span class='va'>mix</span>, <span class='va'>source</span>, <span class='va'>alpha</span>, 
+                groups<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>alphworm<span class='op'>=</span><span class='st'>"alphworm"</span>,brittlestar<span class='op'>=</span><span class='st'>"brittlestar"</span>,clam<span class='op'>=</span><span class='st'>"clam"</span>,
+                           crab<span class='op'>=</span><span class='st'>"crab"</span>,fish<span class='op'>=</span><span class='st'>"fish"</span>,snail<span class='op'>=</span><span class='st'>"snail"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># 2. combine 6 sources into 2 groups of interest (hard-shelled vs. soft-bodied)</span>
 <span class='co'>#   'hard' = 'clam' + 'crab' + 'snail'           # group 1 = hard-shelled prey</span>
 <span class='co'>#   'soft' = 'alphworm' + 'brittlestar' + 'fish' # group 2 = soft-bodied prey</span>
-<span class='no'>combined</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combine_sources.html'>combine_sources</a></span>(<span class='no'>jags.1</span>, <span class='no'>mix</span>, <span class='no'>source</span>, <span class='kw'>alpha.prior</span><span class='kw'>=</span><span class='no'>alpha</span>,
-                <span class='kw'>groups</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>hard</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"clam"</span>,<span class='st'>"crab"</span>,<span class='st'>"snail"</span>), <span class='kw'>soft</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alphworm"</span>,<span class='st'>"brittlestar"</span>,<span class='st'>"fish"</span>)))
+<span class='va'>combined</span> <span class='op'>&lt;-</span> <span class='fu'><a href='combine_sources.html'>combine_sources</a></span><span class='op'>(</span><span class='va'>jags.1</span>, <span class='va'>mix</span>, <span class='va'>source</span>, alpha.prior<span class='op'>=</span><span class='va'>alpha</span>, 
+                groups<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>hard<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"clam"</span>,<span class='st'>"crab"</span>,<span class='st'>"snail"</span><span class='op'>)</span>, soft<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alphworm"</span>,<span class='st'>"brittlestar"</span>,<span class='st'>"fish"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>plot_intervals</span>(<span class='no'>combined</span>,<span class='kw'>toplot</span><span class='kw'>=</span><span class='st'>"fac1"</span>)
-<span class='fu'>plot_intervals</span>(<span class='no'>original</span>,<span class='kw'>toplot</span><span class='kw'>=</span><span class='st'>"fac1"</span>)
-<span class='fu'>plot_intervals</span>(<span class='no'>combined</span>,<span class='kw'>toplot</span><span class='kw'>=</span><span class='st'>"fac1"</span>,<span class='kw'>levels</span><span class='kw'>=</span><span class='fl'>1</span>)
-<span class='fu'>plot_intervals</span>(<span class='no'>combined</span>,<span class='kw'>toplot</span><span class='kw'>=</span><span class='st'>"fac1"</span>,<span class='kw'>levels</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='fu'>plot_intervals</span><span class='op'>(</span><span class='va'>combined</span>,toplot<span class='op'>=</span><span class='st'>"fac1"</span><span class='op'>)</span>
+<span class='fu'>plot_intervals</span><span class='op'>(</span><span class='va'>original</span>,toplot<span class='op'>=</span><span class='st'>"fac1"</span><span class='op'>)</span>
+<span class='fu'>plot_intervals</span><span class='op'>(</span><span class='va'>combined</span>,toplot<span class='op'>=</span><span class='st'>"fac1"</span>,levels<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'>plot_intervals</span><span class='op'>(</span><span class='va'>combined</span>,toplot<span class='op'>=</span><span class='st'>"fac1"</span>,levels<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 
-}</div></pre>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -251,7 +252,7 @@ Calls <a href='http://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>bayes
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

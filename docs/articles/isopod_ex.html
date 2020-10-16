@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MixSIAR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.12</span>
       </span>
     </div>
 
@@ -118,11 +118,13 @@
     
 <p>Here we step through the Isopod Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
 <p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_isopod.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MixSIAR</span>)
-<span class="no">mixsiar.dir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span>(<span class="st">"MixSIAR"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">mixsiar.dir</span>,<span class="st">"/example_scripts"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span>
+<span class="va">mixsiar.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"MixSIAR"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"/example_scripts"</span><span class="op">)</span></pre></div>
 <p>You can run the isopod example script directly with:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/source.html">source</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">mixsiar.dir</span>,<span class="st">"/example_scripts/mixsiar_script_isopod.R"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"/example_scripts/mixsiar_script_isopod.R"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <div id="isopod-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#isopod-example" class="anchor"></a>Isopod Example</h2>
@@ -138,46 +140,50 @@
 <div id="load-mixsiar-package" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-mixsiar-package" class="anchor"></a>Load MixSIAR package</h3>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MixSIAR</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span></pre></div>
 </div>
 <div id="load-mixture-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-mixture-data" class="anchor"></a>Load mixture data</h3>
 <p>See ?load_mix_data for details.</p>
 <p>The isopod consumer data has 1 covariate (<code>factors="Site"</code>), which we fit as a random effect (<code>fac_random=TRUE</code>). “Site” is not nested within another factor (<code>fac_nested=FALSE</code>). There are no continuous effects (<code>cont_effects=NULL</code>).</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">mix.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"isopod_consumer.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">mix.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"isopod_consumer.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
-<span class="no">mix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_mix_data.html">load_mix_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">mix.filename</span>,
-                     <span class="kw">iso_names</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"c16.4w3"</span>,<span class="st">"c18.2w6"</span>,<span class="st">"c18.3w3"</span>,<span class="st">"c18.4w3"</span>,<span class="st">"c20.4w6"</span>,<span class="st">"c20.5w3"</span>,<span class="st">"c22.5w3"</span>,<span class="st">"c22.6w3"</span>),
-                     <span class="kw">factors</span><span class="kw">=</span><span class="st">"Site"</span>,
-                     <span class="kw">fac_random</span><span class="kw">=</span><span class="fl">TRUE</span>,
-                     <span class="kw">fac_nested</span><span class="kw">=</span><span class="fl">FALSE</span>,
-                     <span class="kw">cont_effects</span><span class="kw">=</span><span class="kw">NULL</span>)</pre></body></html></div>
+<span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_mix_data.html">load_mix_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">mix.filename</span>,
+                     iso_names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"c16.4w3"</span>,<span class="st">"c18.2w6"</span>,<span class="st">"c18.3w3"</span>,<span class="st">"c18.4w3"</span>,<span class="st">"c20.4w6"</span>,<span class="st">"c20.5w3"</span>,<span class="st">"c22.5w3"</span>,<span class="st">"c22.6w3"</span><span class="op">)</span>,
+                     factors<span class="op">=</span><span class="st">"Site"</span>,
+                     fac_random<span class="op">=</span><span class="cn">TRUE</span>,
+                     fac_nested<span class="op">=</span><span class="cn">FALSE</span>,
+                     cont_effects<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></pre></div>
 </div>
 <div id="load-source-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-source-data" class="anchor"></a>Load source data</h3>
 <p>See ?load_source_data for details.</p>
 <p>We do not have any fixed/random/continuous effects or concentration dependence in the source data (<code>source_factors=NULL</code>, <code>conc_dep=FALSE</code>). We only have source means, SD, and sample size—not the original “raw” data (<code>data_type="means"</code>).</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">source.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"isopod_sources.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">source.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"isopod_sources.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
-<span class="no">source</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_source_data.html">load_source_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">source.filename</span>,
-                           <span class="kw">source_factors</span><span class="kw">=</span><span class="kw">NULL</span>,
-                           <span class="kw">conc_dep</span><span class="kw">=</span><span class="fl">FALSE</span>,
-                           <span class="kw">data_type</span><span class="kw">=</span><span class="st">"means"</span>,
-                           <span class="no">mix</span>)</pre></body></html></div>
+<span class="va">source</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_source_data.html">load_source_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">source.filename</span>,
+                           source_factors<span class="op">=</span><span class="cn">NULL</span>,
+                           conc_dep<span class="op">=</span><span class="cn">FALSE</span>,
+                           data_type<span class="op">=</span><span class="st">"means"</span>,
+                           <span class="va">mix</span><span class="op">)</span></pre></div>
 </div>
 <div id="load-discrimination-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-discrimination-data" class="anchor"></a>Load discrimination data</h3>
 <p>See ?load_discr_data for details.</p>
 <p>Note that <a href="http://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># Replace the system.file call with the path to your file</span>
-<span class="no">discr.filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"isopod_discrimination.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"MixSIAR"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># Replace the system.file call with the path to your file</span>
+<span class="va">discr.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"isopod_discrimination.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
 
-<span class="no">discr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/load_discr_data.html">load_discr_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">discr.filename</span>, <span class="no">mix</span>)</pre></body></html></div>
+<span class="va">discr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_discr_data.html">load_discr_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="va">discr.filename</span>, <span class="va">mix</span><span class="op">)</span></pre></div>
 </div>
 <div id="plot-data" class="section level3">
 <h3 class="hasAnchor">
@@ -189,8 +195,9 @@
 <li>Are one or more of your sources confounded/hidden?</li>
 </ul>
 <p>When there are more than 2 biotracers, MixSIAR currently plots every pairwise combination. Here, that means <span class="math inline">\({8 \choose 2} = 28\)</span> plots are produced. In the future, MixSIAR will offer non-metric multidimensional scaling (NMDS) plots for these cases.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Make an isospace plot</span>
-<span class="fu"><a href="../reference/plot_data.html">plot_data</a></span>(<span class="kw">filename</span><span class="kw">=</span><span class="st">"isospace_plot"</span>, <span class="kw">plot_save_pdf</span><span class="kw">=</span><span class="fl">TRUE</span>, <span class="kw">plot_save_png</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="no">mix</span>,<span class="no">source</span>,<span class="no">discr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># Make an isospace plot</span>
+<span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>filename<span class="op">=</span><span class="st">"isospace_plot"</span>, plot_save_pdf<span class="op">=</span><span class="cn">TRUE</span>, plot_save_png<span class="op">=</span><span class="cn">FALSE</span>, <span class="va">mix</span>,<span class="va">source</span>,<span class="va">discr</span><span class="op">)</span></pre></div>
 </div>
 <div id="plot-prior" class="section level3">
 <h3 class="hasAnchor">
@@ -201,32 +208,37 @@
 <li>DARK GREY = “uninformative”/generalist (alpha = 1)</li>
 <li>LIGHT GREY = “uninformative” Jeffrey’s prior (alpha = 1/n.sources)</li>
 </ul>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)</span>
-<span class="fu"><a href="../reference/plot_prior.html">plot_prior</a></span>(<span class="kw">alpha.prior</span><span class="kw">=</span><span class="fl">1</span>,<span class="no">source</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)</span>
+<span class="fu"><a href="../reference/plot_prior.html">plot_prior</a></span><span class="op">(</span>alpha.prior<span class="op">=</span><span class="fl">1</span>,<span class="va">source</span><span class="op">)</span></pre></div>
 </div>
 <div id="write-jags-model-file" class="section level3">
 <h3 class="hasAnchor">
 <a href="#write-jags-model-file" class="anchor"></a>Write JAGS model file</h3>
 <p>In the Isopod Example we demo the “Residual only” error option. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># Write the JAGS model file</span>
-<span class="no">model_filename</span> <span class="kw">&lt;-</span> <span class="st">"MixSIAR_model.txt"</span>
-<span class="no">resid_err</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>
-<span class="no">process_err</span> <span class="kw">&lt;-</span> <span class="fl">FALSE</span>
-<span class="fu"><a href="../reference/write_JAGS_model.html">write_JAGS_model</a></span>(<span class="no">model_filename</span>, <span class="no">resid_err</span>, <span class="no">process_err</span>, <span class="no">mix</span>, <span class="no">source</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="co"># Write the JAGS model file</span>
+<span class="va">model_filename</span> <span class="op">&lt;-</span> <span class="st">"MixSIAR_model.txt"</span>
+<span class="va">resid_err</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+<span class="va">process_err</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
+<span class="fu"><a href="../reference/write_JAGS_model.html">write_JAGS_model</a></span><span class="op">(</span><span class="va">model_filename</span>, <span class="va">resid_err</span>, <span class="va">process_err</span>, <span class="va">mix</span>, <span class="va">source</span><span class="op">)</span></pre></div>
 </div>
 <div id="run-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#run-model" class="anchor"></a>Run model</h3>
 <p>First use <code>run = "test"</code> to check if 1) the data are loaded correctly and 2) the model is specified correctly:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">jags.1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span>(<span class="kw">run</span><span class="kw">=</span><span class="st">"test"</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">discr</span>, <span class="no">model_filename</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="va">jags.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span><span class="op">(</span>run<span class="op">=</span><span class="st">"test"</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, <span class="va">model_filename</span><span class="op">)</span></pre></div>
 <p>After a test run works, increase the MCMC run to a value that may converge:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">jags.1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span>(<span class="kw">run</span><span class="kw">=</span><span class="st">"normal"</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">discr</span>, <span class="no">model_filename</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="va">jags.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_model.html">run_model</a></span><span class="op">(</span>run<span class="op">=</span><span class="st">"normal"</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, <span class="va">model_filename</span><span class="op">)</span></pre></div>
 </div>
 <div id="analyze-diagnostics-and-output" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyze-diagnostics-and-output" class="anchor"></a>Analyze diagnostics and output</h3>
 <p>See ?output_JAGS for details.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/output_JAGS.html">output_JAGS</a></span>(<span class="no">jags.1</span>, <span class="no">mix</span>, <span class="no">source</span>, <span class="no">output_options</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="fu"><a href="../reference/output_JAGS.html">output_JAGS</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
 <p>Since we fit Site as a random effect, we can make inference on diet at the overall population level (<code>p.global</code>, <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/isopod_posterior_density_diet_p_global.pdf">posterior plot</a>) as well as at individual sites (Site CP, <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/isopod_posterior_density_diet_p_CP.pdf">posterior plot</a>).</p>
 </div>
 </div>
@@ -247,7 +259,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
