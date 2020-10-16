@@ -53,7 +53,7 @@ The basic MixSIAR workflow is the same using a script or the GUI:
 
 ## Wolves Example
 
-The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
+The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](https://doi.org/10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
 + 2 random effects (Region and Pack), where Pack is nested within Region
@@ -160,7 +160,7 @@ This is your chance to check:
   
   `plot_save_png`: TRUE or FALSE, should MixSIAR save the plot as a .png?
 
-You should *always* look at the isospace plot---this is a good check that the data is loaded correctly, and that the isospace geometry makes sense. If the mixture data are well outside the source polygon, you have a serious violation of mixing model assumptions, and it must be true that either 1) You're missing a source, or 2) You're using an incorrect discrimination factor. MixSIAR, like SIAR, fits a residual error term, and thus will always find a solution *even if it is nonsensical.*
+You should *always* look at the isospace plot---this is a good check that the data is loaded correctly, and that the isospace geometry makes sense. If the mixture data are well outside the source polygon, you have a serious violation of mixing model assumptions, and it must be true that either 1) You're missing a source, or 2) You're using an incorrect discrimination factor. MixSIAR, like SIAR, can fit a residual error term and thus always find a solution *even if it is nonsensical.*
 
 Also note that the MixSIAR isospace plot adds the discrimination means *AND SDs* to the raw source values. This is because model uses the source + discrimination values to fit the mixture data, calculated as $\sqrt{\sigma^2_{source} + \sigma^2_{discr}}$, under the assumption of independence. Error bars indicate $\pm$ 1 SD.
 
@@ -192,7 +192,7 @@ Define your prior, and then plot using "plot_prior"
 
 Bayesian analyses require priors, and MixSIAR includes a `plot_prior` function to plot the prior on the mixture (diet) proportions (at the highest hierarchical level, p.global). The prior represents our knowledge about the proportions before we consider the biotracer data. A natural tendency is to want a flat/"uninformative" prior, where all values between 0 and 1 are equally likely. However, because proportions are not independent, there is no truly uninformative prior (e.g. the histograms are not flat). The best we can do with the Dirichlet distribution is set $\alpha$ = c(1,1,1), which is uninformative on the simplex. In other words, all combinations of the proportions are equally likely. See the section titled "Constructing informative Bayesian priors" in the forthcoming MixSIAR paper.
 
-Because the mean of the "uninformative" prior, $\alpha$ = c(1,1,1), is $\frac{1}{n.sources}$, we also call it the generalist prior. This reflects two facts: 1) it is not really uninformative, and 2) for weakly informative data it shifts the posterior towards a generalist diet, $p_1 = p_2 = p_3 = \frac{1}{3}$. The amount of shift depends on the informativeness (quality and quantity) of the data.
+Because the mean of the "uninformative" prior, $\alpha$ = c(1,1,1), is $\frac{1}{n.sources}$, we also call it the generalist prior. This reflects two facts: 1) it is not really uninformative, and 2) for weakly informative data it shifts the posterior towards a generalist diet, $p_1 = p_2 = p_3 = \frac{1}{3}$. The amount of shift depends on the informativeness of the data (quality, quantity, and polygon geometry).
 
 ```{r, eval=FALSE}
 # default "UNINFORMATIVE" / GENERALIST prior (alpha = 1)
@@ -209,9 +209,9 @@ There are 3 error term options available:
 2. Residual only (`resid_err = TRUE`, `process_err = FALSE`)
 3. Process only (`resid_err = FALSE`, `process_err = TRUE`)
 
-In the Wolves Example we want the "Residual * Process" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in Stock and Semmens (in revision).
+In the Wolves Example we want the "Residual * Process" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in [Stock and Semmens (2016)](https://doi.org/10.1002/ecy.1517).
 
-**Note:** If you have only 1 mix datapoint, you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same behavior as `siarsolo` in SIAR.
+**Note:** If you have only 1 mix datapoint (or 1 mix datapoint per factor level, i.e. region or pack in this example), you have no information about the mixture/consumer variability. In this case, we use the original MixSIR error model (which does not fit a residual error term). This is the same behavior as `siarsolo` in SIAR.
 
 ```{r, eval=FALSE}
 # Write the JAGS model file

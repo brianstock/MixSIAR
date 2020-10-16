@@ -23,7 +23,7 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_lake.R"))
 
 ## Lake Example
 
-The Lake Example data is simulated based on [Francis et al. 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01597.x/full) and we include it as a example of how MixSIAR can include a **continuous effect**. Here we examine the diet of zooplankton in 21 lakes using:
+The Lake Example data is simulated based on [Francis et al. 2011](https://doi.org/10.1111/j.1461-0248.2011.01597.x) and we include it as a example of how MixSIAR can include a **continuous effect**. Here we examine the diet of zooplankton in 21 lakes using:
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
 + 1 **continuous effect** (Secchi Depth : Mixed Layer Depth)
@@ -124,7 +124,7 @@ plot_prior(alpha.prior=1,source)
 
 ### Write JAGS model file
     
-In the Lake Example we demo the "Residual only" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in Stock and Semmens (in revision).
+In the Lake Example we demo the "Residual only" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in [Stock and Semmens (2016)](https://doi.org/10.1002/ecy.1517).
 
 ```{r, eval=FALSE}
 # Write the JAGS model file

@@ -78,7 +78,7 @@ source <- load_source_data(filename=source.filename,
 
 See ?load_discr_data for details.
 
-Note that [Galloway et al. 2014](https://www.int-res.com/abstracts/meps/v507/p219-232) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
+Note that [Galloway et al. 2014](https://doi.org/10.3354/meps10860) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
 
 ```{r}
 # Replace the system.file call with the path to your file
@@ -117,7 +117,7 @@ plot_prior(alpha.prior=1,source)
 
 ### Write JAGS model file
     
-In the Isopod Example we demo the "Residual only" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in Stock and Semmens (in revision).
+In the Isopod Example we demo the "Residual only" error option. The differences between "Residual * Process", "Residual only", and "Process only" are explained in [Stock and Semmens (2016)](https://doi.org/10.1002/ecy.1517).
 
 ```{r, eval=FALSE}
 # Write the JAGS model file

@@ -184,7 +184,7 @@
 <h3 class="hasAnchor">
 <a href="#load-discrimination-data" class="anchor"></a>Load discrimination data</h3>
 <p>See ?load_discr_data for details.</p>
-<p>Note that <a href="https://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
+<p>Note that <a href="https://doi.org/10.1111/fwb.12394">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># Replace the system.file call with the path to your file</span>
 <span class="va">discr.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"cladocera_discrimination.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>
@@ -213,7 +213,7 @@
 <div id="write-jags-model-file" class="section level3">
 <h3 class="hasAnchor">
 <a href="#write-jags-model-file" class="anchor"></a>Write JAGS model file</h3>
-<p>Here we fit the <strong>“Process only” error</strong> model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in Stock and Semmens (in revision).</p>
+<p>Here we fit the <strong>“Process only” error</strong> model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources. The differences between “Residual * Process”, “Residual only”, and “Process only” are explained in <a href="https://doi.org/10.1002/ecy.1517">Stock and Semmens (2016)</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="co"># Write the JAGS model file</span>
 <span class="va">model_filename</span> <span class="op">&lt;-</span> <span class="st">"MixSIAR_model.txt"</span>
