@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Isopod Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
+Here we step through the Isopod Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_isopod.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r, eval=FALSE}
@@ -23,7 +23,7 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_isopod.R"))
 
 ## Isopod Example
 
-The Isopod Example is from [Galloway et al. 2014](http://www.int-res.com/abstracts/meps/v507/p219-232) and demonstrates MixSIAR applied to an **8-dimensional fatty acid dataset**. Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites in Puget Sound, WA:
+The Isopod Example is from [Galloway et al. 2014](https://www.int-res.com/abstracts/meps/v507/p219-232) and demonstrates MixSIAR applied to an **8-dimensional fatty acid dataset**. Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites in Puget Sound, WA:
 
 + **8 biotracers** (carbon 16.4w3, 18.2w6, 18.3w3, 18.4w3, 20.4w6, 20.5w3, 22.5w3, 22.6w3)
 + 1 random effect (Site)
@@ -78,7 +78,7 @@ source <- load_source_data(filename=source.filename,
 
 See ?load_discr_data for details.
 
-Note that [Galloway et al. 2014](http://www.int-res.com/abstracts/meps/v507/p219-232) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
+Note that [Galloway et al. 2014](https://www.int-res.com/abstracts/meps/v507/p219-232) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
 
 ```{r}
 # Replace the system.file call with the path to your file

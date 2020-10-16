@@ -116,7 +116,7 @@
 
     
     
-<p>Here we step through the Cladocera Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
+<p>Here we step through the Cladocera Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="https://brianstock.github.io/MixSIAR/articles/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
 <p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_cladocera.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span>
@@ -128,7 +128,7 @@
 <div id="cladocera-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cladocera-example" class="anchor"></a>Cladocera Example</h2>
-<p>The Cladocera Example is from <a href="http://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full">Galloway et al. 2014</a> and demonstrates MixSIAR applied to a 22-dimensional fatty acid dataset. Here the 14 mixture datapoints are Cladocera (water flea) fatty acid profiles from 6 lakes in Finland over 2 seasons. Besides the high dimensionality, the other difference with this analysis is that we fit each mixture datapoint individually, because there is no clear covariate structure (some sites have 2 seasons, some have 1, some sites in the same lake). We do this by creating an “id” column and treating “id” as a fixed effect.</p>
+<p>The Cladocera Example is from <a href="https://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full">Galloway et al. 2014</a> and demonstrates MixSIAR applied to a 22-dimensional fatty acid dataset. Here the 14 mixture datapoints are Cladocera (water flea) fatty acid profiles from 6 lakes in Finland over 2 seasons. Besides the high dimensionality, the other difference with this analysis is that we fit each mixture datapoint individually, because there is no clear covariate structure (some sites have 2 seasons, some have 1, some sites in the same lake). We do this by creating an “id” column and treating “id” as a fixed effect.</p>
 <ul>
 <li>
 <strong>22 biotracers</strong> (carbon 14.0, 16.0, 16.1w9, 16.1w7, 16.2w4, 16.3w3, 16.4w3, 17.0, 18.0, 18.1w9, 18.1w7, 18.2w6, 18.3w6, 18.3w3, 18.4w3, 18.5w3, 20.0, 22.0, 20.4w6, 20.5w3, 22.6w3, BrFA)</li>
@@ -136,7 +136,7 @@
 <strong>Mix datapoints fit independently</strong> (“process error” only, MixSIR)</li>
 <li>Source data as means and SDs</li>
 </ul>
-<p>Here we fit the “process error” model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources (see <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2008.01163.x/full">Moore and Semmens 2008</a>).</p>
+<p>Here we fit the “process error” model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources (see <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2008.01163.x/full">Moore and Semmens 2008</a>).</p>
 <p>Here we treat “id” as a fixed effect—this will estimate the diet of each mixture data point separately (sample size of 1). This makes sense to do when you think there will be clear differences between sites/seasons/etc., but only have 1 or 2 points from each site/season (i.e, you don’t have enough data to estimate a site/season effect). If you are interested in the site/season effect, you need replicates within each site/season, and then it is best to fit site/season as a fixed or random effect.</p>
 <p>Fatty acid data greatly increase the number of biotracers beyond the typical 2 stable isotopes, d13C and d15N, which gives the mixing model power to resolve more sources. We caution, however, that using fatty acid data is not a panacea for the “underdetermined” problem (# sources &gt; # biotracers + 1). As the number of sources increases, the “uninformative” prior <span class="math inline">\((\alpha=1)\)</span> has greater influence, even if there are many more biotracers than sources. See the <a href="https://github.com/brianstock/MixSIAR/blob/master/Manual/cladocera_prior_plot.pdf">Cladocera Example prior</a> with 7 sources and 22 biotracers.</p>
 <div id="load-mixsiar-package" class="section level3">
@@ -184,7 +184,7 @@
 <h3 class="hasAnchor">
 <a href="#load-discrimination-data" class="anchor"></a>Load discrimination data</h3>
 <p>See ?load_discr_data for details.</p>
-<p>Note that <a href="http://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
+<p>Note that <a href="https://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># Replace the system.file call with the path to your file</span>
 <span class="va">discr.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"cladocera_discrimination.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>

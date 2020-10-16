@@ -116,7 +116,7 @@
 
     
     
-<p>Here we step through the Isopod Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
+<p>Here we step through the Isopod Example using the <strong>script</strong> version of MixSIAR. For a demonstration using the <strong>GUI</strong> version, see the <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf">MixSIAR Manual</a>. For a thorough walkthrough of how to use MixSIAR in a script, see the <a href="https://brianstock.github.io/MixSIAR/articles/wolves_ex.html">Wolves Example</a>, which provides more commentary and explanation.</p>
 <p>For a clean, runnable <code>.R</code> script, look at <code>mixsiar_script_isopod.R</code> in the <code>example_scripts</code> folder of the MixSIAR package install:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span>
@@ -128,7 +128,7 @@
 <div id="isopod-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#isopod-example" class="anchor"></a>Isopod Example</h2>
-<p>The Isopod Example is from <a href="http://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> and demonstrates MixSIAR applied to an <strong>8-dimensional fatty acid dataset</strong>. Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites in Puget Sound, WA:</p>
+<p>The Isopod Example is from <a href="https://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> and demonstrates MixSIAR applied to an <strong>8-dimensional fatty acid dataset</strong>. Here the mixture data are isopod polyunsaturated fatty acid (PUFA) profiles, with 5 replicates at each of 6 sites in Puget Sound, WA:</p>
 <ul>
 <li>
 <strong>8 biotracers</strong> (carbon 16.4w3, 18.2w6, 18.3w3, 18.4w3, 20.4w6, 20.5w3, 22.5w3, 22.6w3)</li>
@@ -178,7 +178,7 @@
 <h3 class="hasAnchor">
 <a href="#load-discrimination-data" class="anchor"></a>Load discrimination data</h3>
 <p>See ?load_discr_data for details.</p>
-<p>Note that <a href="http://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
+<p>Note that <a href="https://www.int-res.com/abstracts/meps/v507/p219-232">Galloway et al. 2014</a> conducted feeding trials to create a “resource library”. In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see <code>isopod_discrimination.csv</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># Replace the system.file call with the path to your file</span>
 <span class="va">discr.filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"isopod_discrimination.csv"</span>, package <span class="op">=</span> <span class="st">"MixSIAR"</span><span class="op">)</span>

@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Lake Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
+Here we step through the Lake Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_lake.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r, eval=FALSE}
@@ -23,7 +23,7 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_lake.R"))
 
 ## Lake Example
 
-The Lake Example data is simulated based on [Francis et al. 2011](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01597.x/full) and we include it as a example of how MixSIAR can include a **continuous effect**. Here we examine the diet of zooplankton in 21 lakes using:
+The Lake Example data is simulated based on [Francis et al. 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01597.x/full) and we include it as a example of how MixSIAR can include a **continuous effect**. Here we examine the diet of zooplankton in 21 lakes using:
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
 + 1 **continuous effect** (Secchi Depth : Mixed Layer Depth)
@@ -100,7 +100,7 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 
 ### Calculate convex hull area
 
-Calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](http://www.int-res.com/articles/suppl/m514p001_supp.pdf).
+Calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](https://www.int-res.com/articles/suppl/m514p001_supp.pdf).
 
 **Note 1:** discrimination SD is added to the source SD (see ?calc_area for details)
 

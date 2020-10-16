@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Cladocera Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
+Here we step through the Cladocera Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_cladocera.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r, eval=FALSE}
@@ -23,13 +23,13 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_cladocera.R"))
 
 ## Cladocera Example
 
-The Cladocera Example is from [Galloway et al. 2014](http://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full) and demonstrates MixSIAR applied to a 22-dimensional fatty acid dataset. Here the 14 mixture datapoints are Cladocera (water flea) fatty acid profiles from 6 lakes in Finland over 2 seasons. Besides the high dimensionality, the other difference with this analysis is that we fit each mixture datapoint individually, because there is no clear covariate structure (some sites have 2 seasons, some have 1, some sites in the same lake). We do this by creating an "id" column and treating "id" as a fixed effect.
+The Cladocera Example is from [Galloway et al. 2014](https://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full) and demonstrates MixSIAR applied to a 22-dimensional fatty acid dataset. Here the 14 mixture datapoints are Cladocera (water flea) fatty acid profiles from 6 lakes in Finland over 2 seasons. Besides the high dimensionality, the other difference with this analysis is that we fit each mixture datapoint individually, because there is no clear covariate structure (some sites have 2 seasons, some have 1, some sites in the same lake). We do this by creating an "id" column and treating "id" as a fixed effect.
 
 + **22 biotracers** (carbon 14.0, 16.0, 16.1w9, 16.1w7, 16.2w4, 16.3w3, 16.4w3, 17.0, 18.0, 18.1w9, 18.1w7, 18.2w6, 18.3w6, 18.3w3, 18.4w3, 18.5w3, 20.0, 22.0, 20.4w6, 20.5w3, 22.6w3, BrFA)
 + **Mix datapoints fit independently** ("process error" only, MixSIR)
 + Source data as means and SDs
 
-Here we fit the "process error" model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources (see [Moore and Semmens 2008](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2008.01163.x/full)).
+Here we fit the "process error" model of MixSIR, which we MUST do when we only have one mix datapoint (or here, one mix datapoint per fixed effect). With only one datapoint, there is no information to estimate an additional mixture variance term, so we have to assume a fixed variance based on the variance of the sources (see [Moore and Semmens 2008](https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2008.01163.x/full)).
 
 Here we treat "id" as a fixed effect---this will estimate the diet of each mixture data point separately (sample size of 1). This makes sense to do when you think there will be clear differences between sites/seasons/etc., but only have 1 or 2 points from each site/season (i.e, you don’t have enough data to estimate a site/season effect). If you are interested in the site/season effect, you need replicates within each site/season, and then it is best to fit site/season as a fixed or random effect.
 
@@ -84,7 +84,7 @@ source <- load_source_data(filename=source.filename,
 
 See ?load_discr_data for details.
 
-Note that [Galloway et al. 2014](http://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
+Note that [Galloway et al. 2014](https://onlinelibrary.wiley.com/doi/10.1111/fwb.12394/full) conducted feeding trials to create a "resource library". In the mixing model, the sources are actually consumers fed exclusively each of the sources. This allowed them to set the discrimination = 0 (see `isopod_discrimination.csv`).
 
 ```{r}
 # Replace the system.file call with the path to your file

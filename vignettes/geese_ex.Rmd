@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
-Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](http://htmlpreview.github.com/?https://github.com/brianstock/MixSIAR/blob/master/inst/doc/wolves_ex.html), which provides more commentary and explanation.
+Here we step through the Geese Example using the **script** version of MixSIAR. For a demonstration using the **GUI** version, see the [MixSIAR Manual](https://github.com/brianstock/MixSIAR/blob/master/inst/mixsiar_manual_small.pdf). For a thorough walkthrough of how to use MixSIAR in a script, see the [Wolves Example](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html), which provides more commentary and explanation.
 
 For a clean, runnable `.R` script, look at `mixsiar_script_geese.R` in the `example_scripts` folder of the MixSIAR package install:
 ```{r, eval=FALSE}
@@ -23,7 +23,7 @@ source(paste0(mixsiar.dir,"/example_scripts/mixsiar_script_geese.R"))
 
 ## Geese Example
 
-The "Geese Example" uses data from [Inger et al. (2006)](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full) of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in [Parnell et al. (2013)](http://onlinelibrary.wiley.com/doi/10.1002/env.2221/full):
+The "Geese Example" uses data from [Inger et al. (2006)](https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2656.2006.01142.x/full) of 251 wintering geese feeding on terrestrial grasses, Zostera spp., Enteromorpha spp., and Ulva lactuca. This is the same data included as a demo in SIAR and in [Parnell et al. (2013)](https://onlinelibrary.wiley.com/doi/10.1002/env.2221/full):
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
 + 1 **fixed effect** (Group)
@@ -98,7 +98,7 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 
 ### Calculate convex hull area
 
-Calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](http://www.int-res.com/articles/suppl/m514p001_supp.pdf).
+Calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](https://www.int-res.com/articles/suppl/m514p001_supp.pdf).
 
 **Note 1:** discrimination SD is added to the source SD (see ?calc_area for details)
 

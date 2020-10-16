@@ -53,7 +53,7 @@ The basic MixSIAR workflow is the same using a script or the GUI:
 
 ## Wolves Example
 
-The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
+The "Wolves Example" uses data reconstructed from (not identical to) [Semmens et al. 2009](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0006187). Here, we investigate the diet of 66 wolves in British Columbia with:
 
 + 2 biotracers ($\delta^{13}$C, $\delta^{15}$N)
 + 2 random effects (Region and Pack), where Pack is nested within Region
@@ -171,7 +171,7 @@ plot_data(filename="isospace_plot", plot_save_pdf=TRUE, plot_save_png=FALSE, mix
 
 ### Calculate convex hull area
 
-If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](http://www.int-res.com/articles/suppl/m514p001_supp.pdf).
+If 2 isotopes/tracers, calculate normalized surface area of the convex hull polygon(s) as in [Brett (2014)](https://www.int-res.com/articles/suppl/m514p001_supp.pdf).
 
 **Note 1:** discrimination SD is added to the source SD (see ?calc_area for details)
 

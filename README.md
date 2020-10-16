@@ -1,7 +1,7 @@
 MixSIAR
 =============
-[![cran version](http://www.r-pkg.org/badges/version/MixSIAR)](https://cran.r-project.org/package=MixSIAR)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/metacran/cranlogs.app)
+[![cran version](https://www.r-pkg.org/badges/version/MixSIAR)](https://cran.r-project.org/package=MixSIAR)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/MixSIAR?)](https://github.com/r-hub/cranlogs.app)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1209993.svg)](https://doi.org/10.5281/zenodo.1209993)
 
 MixSIAR is an R package that helps you create and run Bayesian mixing models to analyze biotracer data (i.e. stable isotopes, fatty acids), following the [MixSIAR model framework](https://peerj.com/articles/5096/). MixSIAR represents a collaborative coding project between the investigators behind MixSIR, SIAR, and IsoSource: Brice Semmens, Brian Stock, Eric Ward, Andrew Parnell, Donald Phillips, and Andrew Jackson.
