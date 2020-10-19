@@ -17,6 +17,8 @@ navbar:
          href: articles/isopod_ex.html
       -  text: "Ex 6: Cladocera"
          href: articles/cladocera_ex.html
+      -  text: "Modifying output plots"
+         href: articles/modify_output.html         
 
     - text: "Functions"
       icon: fa-file-code-o

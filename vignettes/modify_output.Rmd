@@ -1,0 +1,206 @@
+---
+title: "Modifying MixSIAR plots"
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{Modifying MixSIAR plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc} 
+---
+
+MixSIAR generates lots of output from a fit model. Up to version 3.1.12, by default these were printed to the R console with options to suppress this behavior and save png/pdf/txt files instead. Modifying these plots is necessary to make publication/presentation-quality figures. In version 3.1.13, we added the capability to return the `ggplot2` objects in order to make this process easier.
+
+As suggested in [#235](https://github.com/brianstock/MixSIAR/issues/235), `output_JAGS` has been split into separate functions. To maintain backward compatibility, the original `output_JAGS` function remains untouched and will continue to behave as before. However, a new argument to the `output_options` list is used (`output_options$return_obj = TRUE`) to return objects from the new functions:
+
++ `output_diagnostics`: named list of three data frames (one each for Gelman, Heidelberg-Welch, and Geweke)
++ `output_stats`: data frame of summary statistics
++ `output_posteriors`: named nested list of `ggplot` objects
+
+  - `global`: overall/global proportions
+  - `fac1`: factor 1 (if in model)
+  - `fac2`: factor 2 (if in model)
+  - `both`: if model with 2 fixed effects or 1 fixed effect + 1 random effect (cannot plot one without the other)
+  - `cont`: continuous effect (if in model)
+  - `sig`: random effect variance terms (if model has random effects)
+  - `epsilon`: multiplicative error term (if model uses "Residual * Process" error)
+
+Below, we demonstrate how to modify output from the [Wolves](https://brianstock.github.io/MixSIAR/articles/wolves_ex.html) and [Alligator](https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R) examples. If you have not already done so, see these vignettes first for more commentary and explanation.
+
+## Install MixSIAR from Github
+
+The latest changes are not yet on CRAN. Install the GitHub version:
+```{r, eval=FALSE}
+install.packages("devtools")
+remotes::install_github("brianstock/MixSIAR", dependencies=T)
+```
+
+## Run wolves example
+
+Run the wolves example with:
+```{r, eval=FALSE}
+library(MixSIAR)
+mixsiar.dir <- find.package("MixSIAR")
+source(file.path(mixsiar.dir,"example_scripts","mixsiar_script_wolves_normal.R"))
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+library(MixSIAR)
+load(url("https://github.com/brianstock/MixSIAR/blob/master/Manual/wolves_normal.RData"))
+```
+
+## Set output options to return `ggplot` objects
+
+```{r}
+output_options <- list(summary_save = TRUE,                 
+                       summary_name = "summary_statistics", 
+                       sup_post = TRUE,                    
+                       plot_post_save_pdf = FALSE,           
+                       plot_post_name = "posterior_density",
+                       sup_pairs = TRUE,             
+                       plot_pairs_save_pdf = TRUE,    
+                       plot_pairs_name = "pairs_plot",
+                       sup_xy = TRUE,           
+                       plot_xy_save_pdf = TRUE,
+                       plot_xy_name = "xy_plot",
+                       gelman = TRUE,
+                       heidel = FALSE,  
+                       geweke = TRUE,   
+                       diag_save = TRUE,
+                       diag_name = "diagnostics",
+                       indiv_effect = FALSE,       
+                       plot_post_save_png = FALSE, 
+                       plot_pairs_save_png = FALSE,
+                       plot_xy_save_png = FALSE,
+                       diag_save_ggmcmc = FALSE,
+                       return_obj = TRUE)
+
+```
+
+## Diagnostics
+
+The diagnostics output can be saved as a list of data frames:
+
+```{r}
+diag <- output_diagnostics(jags.1, mix, source, output_options)
+```
+
+There is one data frame for each of: Gelman-Rubin, Geweke, and Heidelberger-Welch.
+
+```{r}
+names(diag)
+```
+
+```{r}
+head(diag$gelman)
+```
+
+```{r}
+head(diag$geweke)
+```
+
+## Summary statistics
+
+The summary statistics can be saved as a data frame.
+
+```{r}
+df.stats <- output_stats(jags.1, mix, source, output_options)
+```
+
+You can access individual stats using the rownames.
+
+```{r}
+rownames(df.stats)
+```
+
+For example, look at the Salmon diet proportion for Pack 4 wolves:
+```{r}
+df.stats[rownames(df.stats) == "p.Pack 4.Salmon",]
+```
+
+For example, get the 95% CI for the Deer diet proportion for Region 1 wolves:
+```{r}
+df.stats[rownames(df.stats) == "p.Region 1.Deer",c("2.5%","97.5%")]
+```
+
+Note that you can also do the same from the MCMC draws directly. `p.fac1` is the diet proportion by Region (factor 1), indexed as `[MCMC chain, Region, Source]`. See that these match the stats above.
+```{r}
+source$source_names # confirm that Deer = source 1
+quantile(jags.1$BUGSoutput$sims.list$p.fac1[,1,1], probs=c(.025,.975))
+```
+
+Calculate the probability that the Region 2 Deer diet proportion is greater than 0.7.
+
+```{r}
+# Total num draws
+tot <- length(jags.1$BUGSoutput$sims.list$p.fac1[,2,1])
+# Num draws above 0.7
+above <- length(which(jags.1$BUGSoutput$sims.list$p.fac1[,2,1] > 0.7))
+# Prob that the diet proportion is above 70%
+(prob <- above/tot)
+```
+
+Or maybe we want the probability that Pack 4 eats more Deer than Pack 7:
+
+```{r}
+df.stats[rownames(df.stats) %in% c("p.Pack 4.Deer","p.Pack 7.Deer"),]
+```
+
+```{r}
+(prob.Deer.Pack4.Pack7 <- sum(jags.1$BUGSoutput$sims.list$p.fac2[,4,1] > jags.1$BUGSoutput$sims.list$p.fac2[,7,1])/tot)
+```
+
+We can also get a complete posterior probability for the *difference* between Pack 4 and Pack 7 (i.e. is Pack4 - Pack7 greater than 0?)
+
+```{r}
+p.Deer.Pack4.Pack7 <- jags.1$BUGSoutput$sims.list$p.fac2[,4,1] - jags.1$BUGSoutput$sims.list$p.fac2[,7,1]
+hist(p.Deer.Pack4.Pack7,breaks=50,col="grey", main="Difference between Deer proportions, Pack 4 - Pack 7")
+abline(v=0,col="red",lty=2,lwd=3)
+```
+
+## Posterior density plots
+
+We can access the posterior density plots for later modification since we set `output_options$return_obj = TRUE`.
+
+```{r}
+g.post <- output_posteriors(jags.1, mix, source, output_options)
+```
+
+`g.post` is a named nested list of `ggplot` objects
+
+  - `global`: overall/global proportions
+  - `fac1`: factor 1 (if in model)
+  - `fac2`: factor 2 (if in model)
+  - `both`: if model with 2 fixed effects or 1 fixed effect + 1 random effect (cannot plot one without the other)
+  - `cont`: continuous effect (if in model)
+  - `sig`: random effect variance terms (if model has random effects)
+  - `epsilon`: multiplicative error term (if model uses "Residual * Process" error)
+
+```{r}
+names(g.post)
+```
+
+The default `p.global` posterior density plot looks ok.
+
+```{r}
+g.post$global
+```
+
+The Region plots are in the nested list `g.post$fac1` (likewise for Pack plots, in `g.post$fac2`). Plot Region 1:
+
+```{r}
+g.post$fac1[[1]]
+```
+
+Plot Pack 5 with a different color palette.
+```{r}
+# note the 'ggplot2::' is only necessary for building this vignette
+# in your code you can simply load ggplot2 with library(ggplot2)
+g.post$fac2[[5]] + 
+  ggplot2::scale_fill_manual(values=c("#999999", "#E69F00", "#56B4E9")) + 
+  ggplot2::scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9"))
+```
+
+## Continuous effect
+
+The [Alligator Example](https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R) has a continuous effect.
+
+

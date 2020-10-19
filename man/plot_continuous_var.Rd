@@ -20,7 +20,7 @@ plot_continuous_var(
 
 \item{source}{output from \code{\link{load_source_data}}}
 
-\item{output_options}{list containing options for plots and saving, passed from \code{\link{output_JAGS}}}
+\item{output_options}{list containing options for plots and saving, passed from \code{\link{output_JAGS}} or \code{\link{output_posteriors}}}
 
 \item{alphaCI}{alpha level for credible intervals (default = 0.05, 95\% CI)}
 
