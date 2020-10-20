@@ -158,14 +158,21 @@
 <h1 class="page-header" data-toc-text="3.1.12.9000">
 <a href="#mixsiar-3-1-12-9000" class="anchor"></a>MixSIAR 3.1.12.9000<small> Unreleased </small>
 </h1>
+<div id="minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<ul>
+<li>split <code>output_JAGS</code> function into several functions that can return objects for later manipulation <a href='https://github.com/brianstock/MixSIAR/issues/235'>#235</a></li>
+</ul>
+</div>
 </div>
     <div id="mixsiar-3-1-12" class="section level1">
 <h1 class="page-header" data-toc-text="3.1.12">
 <a href="#mixsiar-3-1-12" class="anchor"></a>MixSIAR 3.1.12<small> Unreleased </small>
 </h1>
-<div id="minor-improvements" class="section level2">
+<div id="minor-improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-1" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>
 <code><a href="../reference/plot_continuous_var.html">plot_continuous_var()</a></code> has new arguments <code>alphaCI</code> (sets credible interval width) and <code>exclude_sources_below</code>, which allows you to remove sources from the plot whose median proportion is below a specified level for all values of the continuous variable (i.e. only plot sources with median contributions above 5%).</li>
@@ -191,9 +198,9 @@
 library(MixSIARgui) # also loads MixSIAR
 mixsiar_gui()</a></code></pre>
 </div>
-<div id="minor-improvements-1" class="section level2">
+<div id="minor-improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-1" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-2" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Allow <code><a href="../reference/output_JAGS.html">output_JAGS()</a></code> to suppress diagnostic pdf plots with <code>output_options$diag_save_ggmcmc = FALSE</code>
 </li>
@@ -225,9 +232,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.10">
 <a href="#mixsiar-3-1-10" class="anchor"></a>MixSIAR 3.1.10<small> 2018-04-13 </small>
 </h1>
-<div id="minor-improvements-2" class="section level2">
+<div id="minor-improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-2" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-3" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>fixed minor mistakes in manual (new example datasets table)</li>
 <li>scale mix and source tracer data (so can always use same priors regardless of scale of data)</li>
@@ -245,9 +252,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.8">
 <a href="#mixsiar-3-1-8" class="anchor"></a>MixSIAR 3.1.8<small> Unreleased </small>
 </h1>
-<div id="minor-improvements-3" class="section level2">
+<div id="minor-improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-3" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-4" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>updated manual</li>
 <li>new example: alligator diet, model comparison table with LOO/WAIC weights</li>
@@ -263,9 +270,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.7.9001">
 <a href="#mixsiar-3-1-7-9001" class="anchor"></a>MixSIAR 3.1.7.9001<small> Unreleased </small>
 </h1>
-<div id="minor-improvements-4" class="section level2">
+<div id="minor-improvements-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-4" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-5" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Removed <code>attach.jags</code> call (now directly use <code>jags.1$BUGSoutput$sims.list</code>)</li>
 <li>Added epsilon (multiplicative error term) estimates to output (summary stats, posterior plots)</li>
@@ -285,9 +292,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.7.9000">
 <a href="#mixsiar-3-1-7-9000" class="anchor"></a>MixSIAR 3.1.7.9000<small> Unreleased </small>
 </h1>
-<div id="minor-improvements-5" class="section level2">
+<div id="minor-improvements-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-5" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-6" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Improved continuous effect output plots: 1) added 95% CI shading, 2) plot each level of fixed effect</li>
 <li>Fixed bug with 1FE + 1RE: empty levels Heidelberger diagnostic (<a href='https://github.com/brianstock/MixSIAR/issues/100'>#100</a>)</li>
@@ -308,9 +315,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.7">
 <a href="#mixsiar-3-1-7-2016-08-15" class="anchor"></a>MixSIAR 3.1.7 (2016-08-15)<small> 2016-08-23 </small>
 </h1>
-<div id="minor-improvements-6" class="section level2">
+<div id="minor-improvements-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-6" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-7" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Changed resid.prop prior from dchisqr(3) to dunif(0,20)</li>
 </ul>
@@ -367,9 +374,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.3">
 <a href="#mixsiar-3-1-3-2016-06-01" class="anchor"></a>MixSIAR 3.1.3 (2016-06-01)<small> Unreleased </small>
 </h1>
-<div id="minor-improvements-7" class="section level2">
+<div id="minor-improvements-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-7" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-8" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Tests via testthat package (see “tests/testthat” folder)</li>
 <li>Changes to pass R CMD check for submission to CRAN</li>
@@ -380,9 +387,9 @@ mixsiar_gui()</a></code></pre>
 <h1 class="page-header" data-toc-text="3.1.2">
 <a href="#mixsiar-3-1-2-2016-03-16" class="anchor"></a>MixSIAR 3.1.2 (2016-03-16)<small> Unreleased </small>
 </h1>
-<div id="minor-improvements-8" class="section level2">
+<div id="minor-improvements-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-8" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-9" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>download latest release by default (instead of master)</li>
 <li>updated citation info</li>
@@ -400,9 +407,9 @@ mixsiar_gui()</a></code></pre>
 <li>Added vignettes for script examples, see browseVignettes(“MixSIAR”)</li>
 </ul>
 </div>
-<div id="minor-improvements-9" class="section level2">
+<div id="minor-improvements-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-9" class="anchor"></a>MINOR IMPROVEMENTS</h2>
+<a href="#minor-improvements-10" class="anchor"></a>MINOR IMPROVEMENTS</h2>
 <ul>
 <li>Tested package install on Windows, Mac, Linux</li>
 <li>Revised install instructions</li>

@@ -7,6 +7,10 @@ vignette: >
   \usepackage[utf8]{inputenc} 
 ---
 
+```{r include=F, echo=F}
+knitr::opts_chunk$set(fig.width=7, fig.height=5) 
+```
+
 MixSIAR generates lots of output from a fit model. Up to version 3.1.12, by default these were printed to the R console with options to suppress this behavior and save png/pdf/txt files instead. Modifying these plots is necessary to make publication/presentation-quality figures. In version 3.1.13, we added the capability to return the `ggplot2` objects in order to make this process easier.
 
 As suggested in [#235](https://github.com/brianstock/MixSIAR/issues/235), `output_JAGS` has been split into separate functions. To maintain backward compatibility, the original `output_JAGS` function remains untouched and will continue to behave as before. However, a new argument to the `output_options` list is used (`output_options$return_obj = TRUE`) to return objects from the new functions:
@@ -209,18 +213,14 @@ source(file.path(mixsiar.dir,"example_scripts","mixsiar_script_alligator.R")) # 
 save.image("where/to/save/output/alligator_short.RData") # specify path, where to save file
 ```
 
-```{r setup2, include=FALSE, echo=FALSE}
-load(url("https://github.com/brianstock/MixSIAR/blob/master/Manual/alligator_normal.RData?raw=true"))
-```
-
 First change `output_options` to return the `ggplot` objects, then get the posterior density plots
-```{r}
+```{r eval=F}
 output_options$return_obj = TRUE
-g.post <- output_posteriors(jags.1, mix, source, output_options)
+g.post <- output_posteriors(jags.mod[[5]], mix[[5]], source[[5]], output_options)
 ```
 
 In this case there is no `g.post$fac1`, `g.post$fac2`, or `g.post$sig` because there are no fixed/random effects. There is a `g.post$cont`, which holds the plots for the continuous effect, Length.
-```{r}
+```{r eval=F}
 names(g.post)
 ```
 
@@ -231,21 +231,21 @@ names(g.post)
 - proportions of the median(Length) alligator
 - proportions of the max(Length) alligator
 
-```{r}
+```{r eval=F}
 g.post$cont[[1]] +
   ggplot2::theme(legend.position="right")
 ```
 
-```{r}
+```{r eval=F}
 g.post$cont[[2]] +
   ggplot2::scale_fill_grey()
 ```
 
-```{r}
+```{r eval=F}
 g.post$cont[[3]]
 ```
 
-```{r}
+```{r eval=F}
 g.post$cont[[4]]
 ```
 
@@ -254,14 +254,14 @@ The `plot_continuous_var` function has a couple other options you can modify:
 - `alphaCI`: alpha level to use for credible interval width (default = 0.05, 95% CI)
 - `exclude_sources_below`: proportion threshhold to include sources in the plot. Some sources can be estimated at very low proportions, and this makes the plot less clear. Setting `exclude_sources_below = 0.1` will remove sources with *median* proportion less than 10% for *all values of the continuous variable*.
 
-```{r}
+```{r eval=F}
 g.cont <- plot_continuous_var(jags.1, mix, source, output_options, alphaCI=0.05, exclude_sources_below=0.1)
 g.cont
 ```
 
 Compare to plot using 80% CI:
 
-```{r}
+```{r eval=F}
 g.cont80 <- plot_continuous_var(jags.1, mix, source, output_options, alphaCI=0.2)
 g.cont80
 ```

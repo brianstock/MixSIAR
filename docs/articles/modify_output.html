@@ -120,11 +120,356 @@
     
     
 <p>MixSIAR generates lots of output from a fit model. Up to version 3.1.12, by default these were printed to the R console with options to suppress this behavior and save png/pdf/txt files instead. Modifying these plots is necessary to make publication/presentation-quality figures. In version 3.1.13, we added the capability to return the <code>ggplot2</code> objects in order to make this process easier.</p>
+<p>As suggested in <a href="https://github.com/brianstock/MixSIAR/issues/235">#235</a>, <code>output_JAGS</code> has been split into separate functions. To maintain backward compatibility, the original <code>output_JAGS</code> function remains untouched and will continue to behave as before. However, a new argument to the <code>output_options</code> list is used (<code>output_options$return_obj = TRUE</code>) to return objects from the new functions:</p>
+<ul>
+<li>
+<code>output_diagnostics</code>: named list of three data frames (one each for Gelman, Heidelberg-Welch, and Geweke)</li>
+<li>
+<code>output_stats</code>: data frame of summary statistics</li>
+<li>
+<p><code>output_posteriors</code>: named nested list of <code>ggplot</code> objects</p>
+<ul>
+<li>
+<code>global</code>: overall/global proportions</li>
+<li>
+<code>fac1</code>: factor 1 (if in model)</li>
+<li>
+<code>fac2</code>: factor 2 (if in model)</li>
+<li>
+<code>both</code>: if model with 2 fixed effects or 1 fixed effect + 1 random effect (cannot plot one without the other)</li>
+<li>
+<code>cont</code>: continuous effect (if in model)</li>
+<li>
+<code>sig</code>: random effect variance terms (if model has random effects)</li>
+<li>
+<code>epsilon</code>: multiplicative error term (if model uses “Residual * Process” error)</li>
+</ul>
+</li>
+</ul>
+<p>Below, we demonstrate how to modify output from the <a href="https://brianstock.github.io/MixSIAR/articles/wolves_ex.html">Wolves</a> and <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R">Alligator</a> examples. If you have not already done so, see these vignettes first for more commentary and explanation.</p>
+<div id="install-mixsiar-from-github" class="section level2">
+<h2 class="hasAnchor">
+<a href="#install-mixsiar-from-github" class="anchor"></a>Install MixSIAR from Github</h2>
+<p>The latest changes are not yet on CRAN. Install the GitHub version:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"brianstock/MixSIAR"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></pre></div>
+</div>
+<div id="run-wolves-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#run-wolves-example" class="anchor"></a>Run wolves example</h2>
+<p>Run the wolves example with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/brianstock/MixSIAR">MixSIAR</a></span><span class="op">)</span>
+<span class="va">mixsiar.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"MixSIAR"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"example_scripts"</span>,<span class="st">"mixsiar_script_wolves_normal.R"</span><span class="op">)</span><span class="op">)</span></pre></div>
+</div>
+<div id="set-output-options-to-return-ggplot-objects" class="section level2">
+<h2 class="hasAnchor">
+<a href="#set-output-options-to-return-ggplot-objects" class="anchor"></a>Set output options to return <code>ggplot</code> objects</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">output_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>summary_save <span class="op">=</span> <span class="cn">TRUE</span>,                 
+                       summary_name <span class="op">=</span> <span class="st">"summary_statistics"</span>, 
+                       sup_post <span class="op">=</span> <span class="cn">TRUE</span>,                    
+                       plot_post_save_pdf <span class="op">=</span> <span class="cn">FALSE</span>,           
+                       plot_post_name <span class="op">=</span> <span class="st">"posterior_density"</span>,
+                       sup_pairs <span class="op">=</span> <span class="cn">TRUE</span>,             
+                       plot_pairs_save_pdf <span class="op">=</span> <span class="cn">TRUE</span>,    
+                       plot_pairs_name <span class="op">=</span> <span class="st">"pairs_plot"</span>,
+                       sup_xy <span class="op">=</span> <span class="cn">TRUE</span>,           
+                       plot_xy_save_pdf <span class="op">=</span> <span class="cn">TRUE</span>,
+                       plot_xy_name <span class="op">=</span> <span class="st">"xy_plot"</span>,
+                       gelman <span class="op">=</span> <span class="cn">TRUE</span>,
+                       heidel <span class="op">=</span> <span class="cn">FALSE</span>,  
+                       geweke <span class="op">=</span> <span class="cn">TRUE</span>,   
+                       diag_save <span class="op">=</span> <span class="cn">TRUE</span>,
+                       diag_name <span class="op">=</span> <span class="st">"diagnostics"</span>,
+                       indiv_effect <span class="op">=</span> <span class="cn">FALSE</span>,       
+                       plot_post_save_png <span class="op">=</span> <span class="cn">FALSE</span>, 
+                       plot_pairs_save_png <span class="op">=</span> <span class="cn">FALSE</span>,
+                       plot_xy_save_png <span class="op">=</span> <span class="cn">FALSE</span>,
+                       diag_save_ggmcmc <span class="op">=</span> <span class="cn">FALSE</span>,
+                       return_obj <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+</div>
+<div id="diagnostics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#diagnostics" class="anchor"></a>Diagnostics</h2>
+<p>The diagnostics output can be saved as a list of data frames:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="va">diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/output_diagnostics.html">output_diagnostics</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
+<pre><code>## 
+## ################################################################################
+## # Gelman-Rubin Diagnostic
+## ################################################################################
+## 
+## Generally the Gelman diagnostic should be &lt; 1.05
+## 
+## Out of 129 variables: 36 &gt; 1.01
+##                       14 &gt; 1.05
+##                       6 &gt; 1.1
+## 
+## The worst variables are:
+##               Point est. Upper C.I.
+## p.global[1]     1.275049   1.784637
+## ilr.fac2[7,1]   1.162670   1.470657
+## ilr.fac2[6,1]   1.135328   1.393819
+## p.global[2]     1.125475   1.350543
+## p.global[3]     1.112949   1.348698
+## ilr.fac1[3,1]   1.101600   1.283350
+## p.fac1[2,1]     1.087942   1.275346
+## ilr.fac1[2,1]   1.074415   1.175729
+## p.fac1[1,1]     1.070492   1.221413
+## p.fac1[2,2]     1.069061   1.214832
+## 
+## ################################################################################
+## # Geweke Diagnostic
+## ################################################################################
+## 
+## The Geweke diagnostic is a standard z-score, so we'd expect 5% to be outside +/-1.96
+## Number of variables outside +/-1.96 in each chain (out of 129):
+## 
+##        Chain 1 Chain 2 Chain 3
+## Geweke       5      11      18</code></pre>
+<p>There is one data frame for each of: Gelman-Rubin, Geweke, and Heidelberger-Welch.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">diag</span><span class="op">)</span></pre></div>
+<pre><code>## [1] "gelman" "geweke"</code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">diag</span><span class="op">$</span><span class="va">gelman</span><span class="op">)</span></pre></div>
+<pre><code>##               Point est. Upper C.I.
+## deviance        1.000846   1.004629
+## fac1.sig        1.058615   1.158511
+## fac2.sig        1.013372   1.042530
+## ilr.fac1[1,1]   1.018531   1.033886
+## ilr.fac1[2,1]   1.074415   1.175729
+## ilr.fac1[3,1]   1.101600   1.283350</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">diag</span><span class="op">$</span><span class="va">geweke</span><span class="op">)</span></pre></div>
+<pre><code>##               chain1 chain2 chain3
+## deviance       1.054 -0.795  0.444
+## fac1.sig       0.522 -1.348 -0.341
+## fac2.sig       0.531 -1.165 -2.463
+## ilr.fac1[1,1] -0.015 -0.016 -0.091
+## ilr.fac1[2,1]  0.498  0.751 -1.551
+## ilr.fac1[3,1] -0.840  2.162 -0.996</code></pre>
+</div>
+<div id="summary-statistics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#summary-statistics" class="anchor"></a>Summary statistics</h2>
+<p>The summary statistics can be saved as a data frame.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">df.stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/output_stats.html">output_stats</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
+<pre><code>## 
+## ################################################################################
+## # Summary Statistics
+## ################################################################################
+## 
+## DIC = 14.13675
+## 
+##                            Mean    SD  2.5%    5%   25%   50%   75%   95% 97.5%
+## Epsilon.1                 1.045 0.379 0.478 0.530 0.774 0.988 1.252 1.723 1.894
+## Epsilon.2                 0.462 0.187 0.211 0.233 0.332 0.427 0.557 0.796 0.933
+## Region.SD                 0.902 0.867 0.033 0.062 0.349 0.698 1.184 2.392 3.088
+## Pack.SD                   1.292 0.575 0.555 0.630 0.912 1.168 1.525 2.358 2.761
+## p.global.Deer             0.575 0.182 0.156 0.224 0.466 0.598 0.708 0.837 0.870
+## p.global.Marine Mammals   0.178 0.115 0.028 0.037 0.097 0.157 0.232 0.389 0.484
+## p.global.Salmon           0.247 0.159 0.042 0.054 0.124 0.214 0.338 0.545 0.642
+## p.Region 1.Deer           0.689 0.169 0.280 0.365 0.595 0.718 0.816 0.907 0.928
+## p.Region 2.Deer           0.560 0.156 0.215 0.286 0.461 0.569 0.666 0.804 0.841
+## p.Region 3.Deer           0.486 0.218 0.052 0.103 0.335 0.504 0.645 0.822 0.875
+## p.Region 1.Marine Mammals 0.128 0.105 0.005 0.011 0.052 0.101 0.176 0.326 0.392
+## p.Region 2.Marine Mammals 0.179 0.104 0.029 0.043 0.102 0.162 0.235 0.371 0.431
+## p.Region 3.Marine Mammals 0.230 0.164 0.013 0.028 0.109 0.193 0.316 0.556 0.649
+## p.Region 1.Salmon         0.183 0.146 0.011 0.022 0.078 0.149 0.246 0.476 0.584
+## p.Region 2.Salmon         0.261 0.144 0.057 0.074 0.154 0.234 0.339 0.537 0.603
+## p.Region 3.Salmon         0.284 0.209 0.027 0.042 0.129 0.232 0.388 0.717 0.845
+## p.Pack 1.Deer             0.856 0.029 0.795 0.805 0.837 0.858 0.877 0.901 0.909
+## p.Pack 2.Deer             0.734 0.042 0.653 0.664 0.702 0.736 0.766 0.797 0.806
+## p.Pack 3.Deer             0.831 0.037 0.757 0.768 0.807 0.833 0.858 0.890 0.900
+## p.Pack 4.Deer             0.461 0.050 0.355 0.375 0.431 0.465 0.495 0.541 0.557
+## p.Pack 5.Deer             0.293 0.065 0.156 0.180 0.251 0.297 0.338 0.390 0.412
+## p.Pack 6.Deer             0.751 0.030 0.681 0.695 0.733 0.755 0.772 0.790 0.796
+## p.Pack 7.Deer             0.371 0.051 0.251 0.281 0.345 0.378 0.405 0.437 0.446
+## p.Pack 8.Deer             0.288 0.097 0.030 0.098 0.237 0.296 0.351 0.434 0.454
+## p.Pack 1.Marine Mammals   0.054 0.037 0.001 0.002 0.021 0.051 0.084 0.120 0.129
+## p.Pack 2.Marine Mammals   0.097 0.072 0.001 0.003 0.026 0.088 0.165 0.213 0.222
+## p.Pack 3.Marine Mammals   0.068 0.045 0.001 0.003 0.029 0.065 0.104 0.143 0.155
+## p.Pack 4.Marine Mammals   0.067 0.052 0.002 0.003 0.023 0.056 0.099 0.166 0.185
+## p.Pack 5.Marine Mammals   0.077 0.063 0.001 0.003 0.027 0.064 0.115 0.203 0.228
+## p.Pack 6.Marine Mammals   0.171 0.042 0.068 0.090 0.150 0.180 0.201 0.224 0.230
+## p.Pack 7.Marine Mammals   0.495 0.072 0.323 0.363 0.467 0.509 0.541 0.580 0.592
+## p.Pack 8.Marine Mammals   0.373 0.125 0.012 0.073 0.330 0.404 0.458 0.513 0.531
+## p.Pack 1.Salmon           0.090 0.055 0.003 0.006 0.042 0.089 0.133 0.178 0.190
+## p.Pack 2.Salmon           0.169 0.107 0.004 0.010 0.065 0.178 0.266 0.323 0.335
+## p.Pack 3.Salmon           0.100 0.066 0.002 0.007 0.042 0.096 0.153 0.212 0.228
+## p.Pack 4.Salmon           0.472 0.086 0.283 0.315 0.420 0.478 0.533 0.603 0.621
+## p.Pack 5.Salmon           0.630 0.110 0.386 0.434 0.562 0.639 0.703 0.798 0.820
+## p.Pack 6.Salmon           0.079 0.063 0.003 0.006 0.032 0.064 0.108 0.202 0.243
+## p.Pack 7.Salmon           0.134 0.109 0.005 0.011 0.058 0.110 0.181 0.331 0.408
+## p.Pack 8.Salmon           0.339 0.213 0.027 0.065 0.197 0.297 0.423 0.824 0.932</code></pre>
+<p>You can access individual stats using the rownames.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">df.stats</span><span class="op">)</span></pre></div>
+<pre><code>##  [1] "Epsilon.1"                 "Epsilon.2"                
+##  [3] "Region.SD"                 "Pack.SD"                  
+##  [5] "p.global.Deer"             "p.global.Marine Mammals"  
+##  [7] "p.global.Salmon"           "p.Region 1.Deer"          
+##  [9] "p.Region 2.Deer"           "p.Region 3.Deer"          
+## [11] "p.Region 1.Marine Mammals" "p.Region 2.Marine Mammals"
+## [13] "p.Region 3.Marine Mammals" "p.Region 1.Salmon"        
+## [15] "p.Region 2.Salmon"         "p.Region 3.Salmon"        
+## [17] "p.Pack 1.Deer"             "p.Pack 2.Deer"            
+## [19] "p.Pack 3.Deer"             "p.Pack 4.Deer"            
+## [21] "p.Pack 5.Deer"             "p.Pack 6.Deer"            
+## [23] "p.Pack 7.Deer"             "p.Pack 8.Deer"            
+## [25] "p.Pack 1.Marine Mammals"   "p.Pack 2.Marine Mammals"  
+## [27] "p.Pack 3.Marine Mammals"   "p.Pack 4.Marine Mammals"  
+## [29] "p.Pack 5.Marine Mammals"   "p.Pack 6.Marine Mammals"  
+## [31] "p.Pack 7.Marine Mammals"   "p.Pack 8.Marine Mammals"  
+## [33] "p.Pack 1.Salmon"           "p.Pack 2.Salmon"          
+## [35] "p.Pack 3.Salmon"           "p.Pack 4.Salmon"          
+## [37] "p.Pack 5.Salmon"           "p.Pack 6.Salmon"          
+## [39] "p.Pack 7.Salmon"           "p.Pack 8.Salmon"</code></pre>
+<p>For example, look at the Salmon diet proportion for Pack 4 wolves:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="va">df.stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">df.stats</span><span class="op">)</span> <span class="op">==</span> <span class="st">"p.Pack 4.Salmon"</span>,<span class="op">]</span></pre></div>
+<pre><code>##  Mean    SD  2.5%    5%   25%   50%   75%   95% 97.5% 
+## 0.472 0.086 0.283 0.315 0.420 0.478 0.533 0.603 0.621</code></pre>
+<p>For example, get the 95% CI for the Deer diet proportion for Region 1 wolves:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="va">df.stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">df.stats</span><span class="op">)</span> <span class="op">==</span> <span class="st">"p.Region 1.Deer"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2.5%"</span>,<span class="st">"97.5%"</span><span class="op">)</span><span class="op">]</span></pre></div>
+<pre><code>##  2.5% 97.5% 
+## 0.280 0.928</code></pre>
+<p>Note that you can also do the same from the MCMC draws directly. <code>p.fac1</code> is the diet proportion by Region (factor 1), indexed as <code>[MCMC chain, Region, Source]</code>. See that these match the stats above.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="va">source</span><span class="op">$</span><span class="va">source_names</span> <span class="co"># confirm that Deer = source 1</span></pre></div>
+<pre><code>## [1] "Deer"           "Marine Mammals" "Salmon"</code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac1</span><span class="op">[</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span>, probs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.025</span>,<span class="fl">.975</span><span class="op">)</span><span class="op">)</span></pre></div>
+<pre><code>##      2.5%     97.5% 
+## 0.2796300 0.9282151</code></pre>
+<p>Calculate the probability that the Region 2 Deer diet proportion is greater than 0.7.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="co"># Total num draws</span>
+<span class="va">tot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac1</span><span class="op">[</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<span class="co"># Num draws above 0.7</span>
+<span class="va">above</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac1</span><span class="op">[</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># Prob that the diet proportion is above 70%</span>
+<span class="op">(</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="va">above</span><span class="op">/</span><span class="va">tot</span><span class="op">)</span></pre></div>
+<pre><code>## [1] 0.187</code></pre>
+<p>Or maybe we want the probability that Pack 4 eats more Deer than Pack 7:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="va">df.stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">df.stats</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"p.Pack 4.Deer"</span>,<span class="st">"p.Pack 7.Deer"</span><span class="op">)</span>,<span class="op">]</span></pre></div>
+<pre><code>##                Mean    SD  2.5%    5%   25%   50%   75%   95% 97.5%
+## p.Pack 4.Deer 0.461 0.050 0.355 0.375 0.431 0.465 0.495 0.541 0.557
+## p.Pack 7.Deer 0.371 0.051 0.251 0.281 0.345 0.378 0.405 0.437 0.446</code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="op">(</span><span class="va">prob.Deer.Pack4.Pack7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac2</span><span class="op">[</span>,<span class="fl">4</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac2</span><span class="op">[</span>,<span class="fl">7</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="va">tot</span><span class="op">)</span></pre></div>
+<pre><code>## [1] 0.9236667</code></pre>
+<p>We can also get a complete posterior probability for the <em>difference</em> between Pack 4 and Pack 7 (i.e. is Pack4 - Pack7 greater than 0?)</p>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="va">p.Deer.Pack4.Pack7</span> <span class="op">&lt;-</span> <span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac2</span><span class="op">[</span>,<span class="fl">4</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">jags.1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">p.fac2</span><span class="op">[</span>,<span class="fl">7</span>,<span class="fl">1</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p.Deer.Pack4.Pack7</span>,breaks<span class="op">=</span><span class="fl">50</span>,col<span class="op">=</span><span class="st">"grey"</span>, main<span class="op">=</span><span class="st">"Difference between Deer proportions, Pack 4 - Pack 7"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">0</span>,col<span class="op">=</span><span class="st">"red"</span>,lty<span class="op">=</span><span class="fl">2</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span></pre></div>
+<p><img src="modify_output_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+</div>
+<div id="posterior-density-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#posterior-density-plots" class="anchor"></a>Posterior density plots</h2>
+<p>We can access the posterior density plots for later modification since we set <code>output_options$return_obj = TRUE</code>.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="va">g.post</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/output_posteriors.html">output_posteriors</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
+<p><code>g.post</code> is a named nested list of <code>ggplot</code> objects</p>
+<ul>
+<li>
+<code>global</code>: overall/global proportions</li>
+<li>
+<code>fac1</code>: factor 1 (if in model)</li>
+<li>
+<code>fac2</code>: factor 2 (if in model)</li>
+<li>
+<code>both</code>: if model with 2 fixed effects or 1 fixed effect + 1 random effect (cannot plot one without the other)</li>
+<li>
+<code>cont</code>: continuous effect (if in model)</li>
+<li>
+<code>sig</code>: random effect variance terms (if model has random effects)</li>
+<li>
+<code>epsilon</code>: multiplicative error term (if model uses “Residual * Process” error)</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">g.post</span><span class="op">)</span></pre></div>
+<pre><code>## [1] "global"  "fac1"    "fac2"    "sig"     "epsilon"</code></pre>
+<p>The default <code>p.global</code> posterior density plot looks ok.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">global</span></pre></div>
+<p><img src="modify_output_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p>The Region plots are in the nested list <code>g.post$fac1</code> (likewise for Pack plots, in <code>g.post$fac2</code>). Plot Region 1:</p>
+<div class="sourceCode" id="cb35"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">fac1</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
+<p><img src="modify_output_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p>Plot Pack 5 with a different color palette.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit">
+<span class="co"># note the 'ggplot2::' is only necessary for building this vignette</span>
+<span class="co"># in your code you can simply load ggplot2 with library(ggplot2)</span>
+<span class="va">g.post</span><span class="op">$</span><span class="va">fac2</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> 
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<p><img src="modify_output_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+</div>
+<div id="continuous-effect" class="section level2">
+<h2 class="hasAnchor">
+<a href="#continuous-effect" class="anchor"></a>Continuous effect</h2>
+<p>The <a href="https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R">Alligator Example</a> has a continuous effect. It takes awhile to run and we only use model 5 (Length) below, so instead of running the entire example you can run only model 5. If you want to run all 8 models (full example), it’s a good idea to save the results for later.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># clear wolves ex objects</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">mixsiar.dir</span>,<span class="st">"example_scripts"</span>,<span class="st">"mixsiar_script_alligator.R"</span><span class="op">)</span><span class="op">)</span> <span class="co"># run all 8 models</span>
+<span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span><span class="st">"where/to/save/output/alligator_short.RData"</span><span class="op">)</span> <span class="co"># specify path, where to save file</span></pre></div>
+<p>First change <code>output_options</code> to return the <code>ggplot</code> objects, then get the posterior density plots</p>
+<div class="sourceCode" id="cb38"><pre class="downlit">
+<span class="va">output_options</span><span class="op">$</span><span class="va">return_obj</span> <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="va">g.post</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/output_posteriors.html">output_posteriors</a></span><span class="op">(</span><span class="va">jags.mod</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>, <span class="va">mix</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>, <span class="va">source</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>, <span class="va">output_options</span><span class="op">)</span></pre></div>
+<p>In this case there is no <code>g.post$fac1</code>, <code>g.post$fac2</code>, or <code>g.post$sig</code> because there are no fixed/random effects. There is a <code>g.post$cont</code>, which holds the plots for the continuous effect, Length.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">g.post</span><span class="op">)</span></pre></div>
+<p><code>g.post$cont</code> has 4 plots, each of which can be modified:</p>
+<ul>
+<li>proportion vs. continuous variable (Length)</li>
+<li>proportions of the min(Length) alligator</li>
+<li>proportions of the median(Length) alligator</li>
+<li>proportions of the max(Length) alligator</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">cont</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"right"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb41"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">cont</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_grey.html">scale_fill_grey</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb42"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">cont</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit">
+<span class="va">g.post</span><span class="op">$</span><span class="va">cont</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></pre></div>
+<p>The <code>plot_continuous_var</code> function has a couple other options you can modify:</p>
+<ul>
+<li>
+<code>alphaCI</code>: alpha level to use for credible interval width (default = 0.05, 95% CI)</li>
+<li>
+<code>exclude_sources_below</code>: proportion threshhold to include sources in the plot. Some sources can be estimated at very low proportions, and this makes the plot less clear. Setting <code>exclude_sources_below = 0.1</code> will remove sources with <em>median</em> proportion less than 10% for <em>all values of the continuous variable</em>.</li>
+</ul>
+<div class="sourceCode" id="cb44"><pre class="downlit">
+<span class="va">g.cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_continuous_var.html">plot_continuous_var</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span>, alphaCI<span class="op">=</span><span class="fl">0.05</span>, exclude_sources_below<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span>
+<span class="va">g.cont</span></pre></div>
+<p>Compare to plot using 80% CI:</p>
+<div class="sourceCode" id="cb45"><pre class="downlit">
+<span class="va">g.cont80</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_continuous_var.html">plot_continuous_var</a></span><span class="op">(</span><span class="va">jags.1</span>, <span class="va">mix</span>, <span class="va">source</span>, <span class="va">output_options</span>, alphaCI<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span>
+<span class="va">g.cont80</span></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
