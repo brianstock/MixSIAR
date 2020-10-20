@@ -73,40 +73,20 @@ source_names <- source$source_names
 # p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
 # ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
 # R2jags::attach.jags(jags.1)
-jags1.mcmc <- coda::as.mcmc(jags.1)
+# jags1.mcmc <- coda::as.mcmc(jags.1)
+as.mcmc.rjags <- function(x){
+  n.chains <- x$n.chains
+  sims <- x$sims.array
+  n.thin <- x$n.thin
+  if(n.chains==1) return(coda::mcmc(sims[, 1, ], thin=n.thin))
+  out <- vector("list", length=n.chains)
+  for (i in seq(n.chains)) out[[i]] <- coda::mcmc(sims[, i, ], thin=n.thin)
+  out <- coda::mcmc.list(out)
+  varnames(out) <- dimnames(sims)[[3]]
+  return(out)
+}
+jags1.mcmc <- as.mcmc.rjags(jags.1$BUGSoutput)
 n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])
-
-# Post-processing for 2 FE or 1FE + 1RE
-#   calculate p.both = ilr.global + ilr.fac1 + ilr.fac2
-if(mix$fere){
-  fac2_lookup <- list()
-  for(f1 in 1:mix$FAC[[1]]$levels){
-    fac2_lookup[[f1]] <- unique(mix$FAC[[2]]$values[which(mix$FAC[[1]]$values==f1)])
-  }
-  ilr.both <- array(NA,dim=c(n.draws,mix$FAC[[1]]$levels, mix$FAC[[2]]$levels, n.sources-1))
-  p.both <- array(NA,dim=c(n.draws,mix$FAC[[1]]$levels, mix$FAC[[2]]$levels, n.sources))
-  cross.both <- array(data=NA,dim=c(n.draws,mix$FAC[[1]]$levels, mix$FAC[[2]]$levels,n.sources,n.sources-1))
-  e <- matrix(rep(0,n.sources*(n.sources-1)),nrow=n.sources,ncol=(n.sources-1))
-  for(i in 1:(n.sources-1)){
-    e[,i] <- exp(c(rep(sqrt(1/(i*(i+1))),i),-sqrt(i/(i+1)),rep(0,n.sources-i-1)))
-    e[,i] <- e[,i]/sum(e[,i])
-  }
-  for(i in 1:n.draws){
-    for(f1 in 1:mix$FAC[[1]]$levels) {
-      for(f2 in fac2_lookup[[f1]]){
-        for(src in 1:(n.sources-1)) {
-          ilr.both[i,f1,f2,src] <- jags.1$BUGSoutput$sims.list$ilr.global[i,src] + jags.1$BUGSoutput$sims.list$ilr.fac1[i,f1,src] + jags.1$BUGSoutput$sims.list$ilr.fac2[i,f2,src];
-          cross.both[i,f1,f2,,src] <- (e[,src]^ilr.both[i,f1,f2,src])/sum(e[,src]^ilr.both[i,f1,f2,src]);
-          # ilr.both[,f1,f2,src] <- ilr.global[,src] + ilr.fac1[,f1,src] + ilr.fac2[,f2,src];
-        }
-        for(src in 1:n.sources) {
-          p.both[i,f1,f2,src] <- prod(cross.both[i,f1,f2,src,]);
-        }
-        p.both[i,f1,f2,] <- p.both[i,f1,f2,]/sum(p.both[i,f1,f2,]);
-      } # f2
-    } # f1
-  }
-} # end fere
 
 ################################################################################
 # Calulate diagnostics

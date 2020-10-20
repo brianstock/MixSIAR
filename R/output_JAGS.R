@@ -84,7 +84,19 @@ source_names <- source$source_names
 # p.global <- ilr.global <- ilr.fac1 <- ilr.fac2 <- fac1.sig <- fac2.sig <- NULL
 # ind.sig <- ..scaled.. <- p.fac1 <- p.fac2 <- p.ind <- sources <- NULL
 # R2jags::attach.jags(jags.1)
-jags1.mcmc <- coda::as.mcmc(jags.1)
+# jags1.mcmc <- coda::as.mcmc(jags.1)
+as.mcmc.rjags <- function(x){
+  n.chains <- x$n.chains
+  sims <- x$sims.array
+  n.thin <- x$n.thin
+  if(n.chains==1) return(coda::mcmc(sims[, 1, ], thin=n.thin))
+  out <- vector("list", length=n.chains)
+  for (i in seq(n.chains)) out[[i]] <- coda::mcmc(sims[, i, ], thin=n.thin)
+  out <- coda::mcmc.list(out)
+  varnames(out) <- dimnames(sims)[[3]]
+  return(out)
+}
+jags1.mcmc <- as.mcmc.rjags(jags.1$BUGSoutput)
 n.draws <- length(jags.1$BUGSoutput$sims.list$p.global[,1])
 
 # Post-processing for 2 FE or 1FE + 1RE
