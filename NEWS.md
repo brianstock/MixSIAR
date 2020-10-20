@@ -1,6 +1,9 @@
 MixSIAR 3.1.12.9000
 =========================
 
+## MINOR IMPROVEMENTS
+
+* split `output_JAGS` function into several functions that can return objects for later manipulation #235
 
 MixSIAR 3.1.12
 =========================

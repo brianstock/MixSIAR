@@ -44,7 +44,7 @@ source(file.path(mixsiar.dir,"example_scripts","mixsiar_script_wolves_normal.R")
 
 ```{r setup, include=FALSE, echo=FALSE}
 library(MixSIAR)
-load(url("https://github.com/brianstock/MixSIAR/blob/master/Manual/wolves_normal.RData"))
+load(url("https://github.com/brianstock/MixSIAR/blob/master/Manual/wolves_normal.RData?raw=true"))
 ```
 
 ## Set output options to return `ggplot` objects
@@ -201,6 +201,69 @@ g.post$fac2[[5]] +
 
 ## Continuous effect
 
-The [Alligator Example](https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R) has a continuous effect.
+The [Alligator Example](https://github.com/brianstock/MixSIAR/blob/master/inst/example_scripts/mixsiar_script_alligator.R) has a continuous effect. It takes awhile to run and we only use model 5 (Length) below, so instead of running the entire example you can run only model 5. If you want to run all 8 models (full example), it's a good idea to save the results for later.
+
+```{r eval=F}
+rm(list=ls()) # clear wolves ex objects
+source(file.path(mixsiar.dir,"example_scripts","mixsiar_script_alligator.R")) # run all 8 models
+save.image("where/to/save/output/alligator_short.RData") # specify path, where to save file
+```
+
+```{r setup2, include=FALSE, echo=FALSE}
+load(url("https://github.com/brianstock/MixSIAR/blob/master/Manual/alligator_normal.RData?raw=true"))
+```
+
+First change `output_options` to return the `ggplot` objects, then get the posterior density plots
+```{r}
+output_options$return_obj = TRUE
+g.post <- output_posteriors(jags.1, mix, source, output_options)
+```
+
+In this case there is no `g.post$fac1`, `g.post$fac2`, or `g.post$sig` because there are no fixed/random effects. There is a `g.post$cont`, which holds the plots for the continuous effect, Length.
+```{r}
+names(g.post)
+```
+
+`g.post$cont` has 4 plots, each of which can be modified:
+
+- proportion vs. continuous variable (Length)
+- proportions of the min(Length) alligator
+- proportions of the median(Length) alligator
+- proportions of the max(Length) alligator
+
+```{r}
+g.post$cont[[1]] +
+  ggplot2::theme(legend.position="right")
+```
+
+```{r}
+g.post$cont[[2]] +
+  ggplot2::scale_fill_grey()
+```
+
+```{r}
+g.post$cont[[3]]
+```
+
+```{r}
+g.post$cont[[4]]
+```
+
+The `plot_continuous_var` function has a couple other options you can modify:
+
+- `alphaCI`: alpha level to use for credible interval width (default = 0.05, 95% CI)
+- `exclude_sources_below`: proportion threshhold to include sources in the plot. Some sources can be estimated at very low proportions, and this makes the plot less clear. Setting `exclude_sources_below = 0.1` will remove sources with *median* proportion less than 10% for *all values of the continuous variable*.
+
+```{r}
+g.cont <- plot_continuous_var(jags.1, mix, source, output_options, alphaCI=0.05, exclude_sources_below=0.1)
+g.cont
+```
+
+Compare to plot using 80% CI:
+
+```{r}
+g.cont80 <- plot_continuous_var(jags.1, mix, source, output_options, alphaCI=0.2)
+g.cont80
+```
 
 

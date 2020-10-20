@@ -132,7 +132,7 @@ If you meant to compare 2+ models, retry using e.g.
   dSE.mat <- matrix(NA, nrow=n.mods, ncol=n.mods)
   for(i in 1:(n.mods-1)){
     for(j in (i+1):n.mods){
-        dSE.mat[i,j] <- 2*loo::compare(x=list(loo.list[[i]], loo.list[[j]]))['se'] # x2 to put on IC/deviance scale
+        dSE.mat[i,j] <- 2*loo::loo_compare(x=list(loo.list[[i]], loo.list[[j]]))['se'] # x2 to put on IC/deviance scale
         dSE.mat[j,i] <- dSE.mat[i,j]
     }#j
   }#i  
