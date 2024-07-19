@@ -82,8 +82,8 @@ plot_data_two_iso <- function(isotopes,mix,source,discr,filename,plot_save_pdf,p
                            scolour = source_color)
 
   source.labels <- data.frame(
-    x = MU_plot[index,1] - rep(1,source$n.sources),    # label sources just left
-    y = MU_plot[index,2] + rep(0.75,source$n.sources),    # and up from their means
+    x = MU_plot[index,1] - rep(0.6,source$n.sources),    # label sources just left
+    y = MU_plot[index,2] + rep(0.6,source$n.sources),    # and up from their means
     label = source$source_names
   )
   .e <- environment()
