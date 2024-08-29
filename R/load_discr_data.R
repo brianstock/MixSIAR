@@ -18,8 +18,6 @@
 load_discr_data <- function(filename,mix){
   DISCR <- read.csv(filename)
   row.names(DISCR)<-DISCR[,1]     # store the row names of DISCR (sources)
-  DISCR <- as.matrix(DISCR[-1])   # remove source names column of DISCR
-  DISCR <- DISCR[order(rownames(DISCR)),]  # rearrange DISCR so sources are in alphabetical order
 
   # Make sure the iso columns of discr_mu and discr_sig2 are in the same order as S_MU and S_SIG
   # check that MU_names and SIG_names are in colnames(DISCR)
@@ -33,9 +31,13 @@ load_discr_data <- function(filename,mix){
     Should be 'SD' + iso_names from mix data file, e.g. 'SDd13C' if
     mix$iso_names = 'd13C'. Please ensure headings in discr data file match
     this format and try again.",sep=""))}
-
+  
   discr_mu_cols <- match(mix$MU_names,colnames(DISCR))   # get the column numbers of DISCR that correspond to the means
   discr_sig_cols <- match(mix$SIG_names,colnames(DISCR))   # get the column numbers of DISCR that correspond to the SDs
+  
+  DISCR <- as.matrix(DISCR[,c(discr_mu_cols, discr_sig_cols)] )   # select isotope columns and convert to matrix
+  DISCR <- DISCR[order(rownames(DISCR)),]  # rearrange DISCR so sources are in alphabetical order
+
   discr_mu <- as.matrix(DISCR[,discr_mu_cols])                            # DISCR means
   discr_sig2 <- as.matrix(DISCR[,discr_sig_cols]*DISCR[,discr_sig_cols])    # DISCR variances
 
