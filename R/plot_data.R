@@ -34,7 +34,14 @@
 #'
 #' @seealso \code{\link{plot_data_two_iso}}, \code{\link{plot_data_one_iso}}
 #' @export
-plot_data <- function(filename,plot_save_pdf,plot_save_png,mix,source,discr, return_obj=FALSE){
+plot_data <- function(filename,
+                      plot_save_pdf=TRUE,
+                      plot_save_png=FALSE,
+                      mix,
+                      source,
+                      discr,
+                      return_obj=FALSE,
+                      show_plot=FALSE){
   # check that discr rownames match source_names
   if(!identical(rownames(discr$mu),source$source_names)){
     stop(paste("*** Error: Source names do not match in source and discr
@@ -43,30 +50,63 @@ plot_data <- function(filename,plot_save_pdf,plot_save_png,mix,source,discr, ret
     stop(paste("*** Error: Source names do not match in source and discr
     data files. Please check your source and discr data file row names.",sep=""))}
 
+  # initialize an empty list to store plot objects if return_obj=TRUE
+  plots <- list() 
+
+  # case 1: single tracer
   if(mix$n.iso==1){
-    plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj)
-    if(return_obj == TRUE) {
-      g = plot_data_one_iso(mix,source,discr,filename,plot_save_pdf,plot_save_png,return_obj=return_obj)
-    }
+
+    # create and save plot object 
+    ## return_obj = TRUE returns plot object, but does not print unless explicitly called
+    g <- plot_data_one_iso(
+      mix = mix, 
+      source = source, 
+      discr = discr,
+      filename = filename,
+      plot_save_pdf = plot_save_pdf,
+      plot_save_png = plot_save_png,
+      return_obj = TRUE
+    )
+
+    # optionally: display plot (show_plot = TRUE)
+    if (isTRUE(show_plot)) print(g)
+    
+    # optionally: store plot object 
+    if (isTRUE(return_obj)) plots[["iso1"]] <- g
+
+  # case 2: multiple tracers
   } else {
-    for(iso1 in 1:(mix$n.iso-1)){
-      for(iso2 in (iso1+1):mix$n.iso){
-        plot_data_two_iso(isotopes=c(iso1,iso2),mix=mix,source=source,
-          discr=discr,
-          filename=filename,
-          plot_save_pdf=plot_save_pdf,
-          plot_save_png=plot_save_png,return_obj=return_obj)
-        if(return_obj == TRUE) {
-          g = plot_data_two_iso(isotopes=c(iso1,iso2),mix=mix,source=source,
-            discr=discr,
-            filename=filename,
-            plot_save_pdf=plot_save_pdf,
-            plot_save_png=plot_save_png,return_obj=return_obj)
+
+    for (iso1 in 1:(mix$n.iso - 1)) {
+      for (iso2 in (iso1 + 1):mix$n.iso) {
+
+        # create and save plot object 
+        ## return_obj = TRUE returns plot object, but does not print unless explicitly called
+        g <- plot_data_two_iso(
+          isotopes = c(iso1, iso2),
+          mix = mix, source = source, discr = discr,
+          filename = filename,
+          plot_save_pdf = plot_save_pdf,
+          plot_save_png = plot_save_png,
+          return_obj = TRUE
+        )
+
+        # optionally: display plot (show_plot = TRUE)
+        ## not recommended if using .rmd files as can trigger "too many open devices" issues
+        if (isTRUE(show_plot)) print(g)
+        
+        # optionally: store plot object 
+        if (isTRUE(return_obj)) {
+          nm <- paste0(mix$iso_names[iso1], "_vs_", mix$iso_names[iso2])
+          plots[[nm]] <- g
         }
       }
     }
   }
-  if(return_obj == TRUE) {
-    return(g)
-  }
+
+  # return plot objects only if requested
+  if (isTRUE(return_obj)) return(plots)
+  
+  # suppress printing NULL when plot objects are saved but not returned
+  invisible(NULL)
 } # end plot_data function

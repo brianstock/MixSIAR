@@ -6,7 +6,7 @@
 #' then set TDF = 0 (ex. essential fatty acids, fatty acid profile data,
 #' element concentrations).
 #'
-#' @param filename csv file with the discrimination data
+#' @param filename csv file or dataframe with the discrimination data
 #' @param mix output from \code{\link{load_mix_data}}
 #'
 #' @return discr, a list including:
@@ -16,7 +16,7 @@
 #' }
 #' @export
 load_discr_data <- function(filename,mix){
-  DISCR <- read.csv(filename)
+  if(grepl(".*.csv", filename)[1]) DISCR <- read.csv(filename) else DISCR <- as.data.frame(filename) #allows for data.frame or .csv path input
   row.names(DISCR)<-DISCR[,1]     # store the row names of DISCR (sources)
   DISCR <- as.matrix(DISCR[-1])   # remove source names column of DISCR
   DISCR <- DISCR[order(rownames(DISCR)),]  # rearrange DISCR so sources are in alphabetical order
