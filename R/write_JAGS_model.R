@@ -760,7 +760,7 @@ cat("
 ", file=filename, append=T)
     if(source$data_type=="raw"){ # source data = raw, src_tau dim = src,iso,iso
 cat("
-      process.var[iso,i] <- inprod(1/src_tau[,iso,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
+      process.var[iso,i] <- inprod(src_cov[,iso,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
     } else { # source data = means+SD, src_tau dim = src, iso
 cat("
       process.var[iso,i] <- inprod(1/src_tau[,iso],p2[i,]) + inprod(frac_sig2[,iso],p2[i,]);", file=filename, append=T)
